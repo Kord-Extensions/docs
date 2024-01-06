@@ -1,0 +1,184 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat"><html lang="en-US" data-colors-preset="contrast" data-primary-color="#3F56CE"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8">  <meta name="built-on" content="2024-01-06T13:11:40.603687948"><meta name="build-number" content="${buildNumber}">       <title>Custom Converters | Kord Extensions</title><script id="virtual-toc-data" type="application/json">[{"id":"build-configuration","level":0,"title":"Build Configuration","anchor":"#build-configuration"},{"id":"anatomy","level":0,"title":"Converter Anatomy","anchor":"#anatomy"},{"id":"anatomy-constructor","level":1,"title":"Constructor","anchor":"#anatomy-constructor"},{"id":"anatomy-properties","level":1,"title":"Properties","anchor":"#anatomy-properties"},{"id":"anatomy-functions","level":1,"title":"Functions","anchor":"#anatomy-functions"},{"id":"converter-annotation","level":0,"title":"@Converter Annotation","anchor":"#converter-annotation"},{"id":"using","level":0,"title":"Using Custom Converters","anchor":"#using"}]</script><script id="topic-shortcuts" type="application/json"></script><link href="/app.css" rel="stylesheet">
+<link href="/custom.css" rel="stylesheet">   <link rel="apple-touch-icon" sizes="180x180" href="https://jetbrains.com/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="https://jetbrains.com/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="https://jetbrains.com/favicon-16x16.png"><link rel="manifest" href="https://jetbrains.com/site.webmanifest"><link rel="mask-icon" href="https://jetbrains.com/safari-pinned-tab.svg" color="#000000"><meta name="msapplication-TileColor" content="#000000"/><meta name="msapplication-TileImage" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-144x144.png"/><meta name="msapplication-square70x70logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-70x70.png"/><meta name="msapplication-square150x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-150x150.png"/><meta name="msapplication-wide310x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x150.png"/><meta name="msapplication-square310x310logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x310.png"/>  <meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Custom Converters | Kord Extensions"/><meta property="og:description" content=""/><meta property="og:image" content=""/><meta property="og:site_name" content="Kord Extensions Help"/><meta property="og:type" content="website"/><meta property="og:locale" content="en_US"/><meta property="og:url" content="/custom-converters.html"/><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Custom Converters | Kord Extensions"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json"> { "@context": "http://schema.org", "@type": "WebPage", "@id": "/custom-converters.html#webpage", "url": "/custom-converters.html", "name": "Custom Converters | Kord Extensions", "description": "", "image": "", "inLanguage":"en-US" }</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json"> { "@type": "WebSite", "@id": "/#website", "url": "/", "name": "Kord Extensions Help" }</script><!-- End Schema.org --></head>      <body data-id="Custom-Converters" data-main-title="Custom Converters" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}"  data-template="article"  data-breadcrumbs="Core-Documentation.topic|Core Documentation ✏️///Commands.topic|Commands///Converters.topic|Converters"  data-edit-url="https://github.com/Kord-Extensions/docs/tree/root/topics/core/commands/converters/Custom-Converters.topic"  >   <div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>Kord Extensions  Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="Custom-Converters"   id="Custom-Converters.topic">Custom Converters</h1>  <aside class="prompt" data-type="note" data-title="" id="13702057_2"><p>This section will use <a href="https://github.com/Kord-Extensions/kord-extensions/blob/root/kord-extensions/src/main/kotlin/com/kotlindiscord/kord/extensions/commands/converters/impl/SnowflakeConverter.kt" id="13702057_3"   data-external="true" rel="noopener noreferrer" >the bundled Snowflake converter</a> as an example below.</p></aside><p id="13702057_4">When the <a href="converters.html#bundled" id="13702057_5" data-tooltip="Kord Extensions provides a number of converters for common data types, which you can make use of in your bots."  >bundled converters</a> don't meet your needs, you can create your own. Kord Extensions provides utilities that make creating your own converters easier, generating converter builder functions automatically.</p><section class="chapter"><h2 id="build-configuration" data-toc="build-configuration"   >Build Configuration</h2><p id="13702057_6">Before getting started, you'll need to set up KSP and the converter annotation processor.</p><div class="tabs" id="13702057_7" data-group="build-system"><div class="tabs__content" data-gtm="tab" id="13702057_8" data-sync-tabs="gradle-kotlin" data-title="Gradle (Kotlin)"><p id="13702057_9">First, add the dependencies to your <code class="code" id="13702057_10">gradle/libs.versions.toml</code>. <a href="https://github.com/google/ksp/releases" id="13702057_11"   data-external="true" rel="noopener noreferrer" >Check GitHub</a> for the latest version of KSP.</p><br><div class="code-block" data-lang="ini"    data-title="Ini"     >
+					[versions]
+					kord-extensions = &quot;1.7.1-SNAPSHOT&quot;
+					ksp = &quot;KSP VERSION HERE&quot;
+
+					[libraries]
+					ksp = {
+						module = &quot;com.google.devtools.ksp:symbol-processing-api&quot;,
+						version.ref = &quot;ksp&quot;
+					}
+
+					kord-extensions-processor = {
+						module = &quot;com.kotlindiscord.kord.extensions:annotation-processor&quot;,
+						version.ref = &quot;kord-extensions&quot;
+					}
+				</div><p id="13702057_14">Then, update your <code class="code" id="13702057_15">build.gradle.kts</code>.</p><br><div class="code-block" data-lang="kotlin"    data-title="Kotlin"     >
+					plugins {
+						// ...
+
+						idea
+						id(&quot;com.google.devtools.ksp&quot;) version &quot;KSP VERSION HERE&quot;
+					}
+
+					dependencies {
+						// ...
+
+						ksp(libs.kord.extensions.processor)
+					}
+
+					idea { // Fixes IntelliJ indexing and build optimisation
+						module {
+							// Not using += due to https://github.com/gradle/gradle/issues/8749
+							// (Gradle closed this as fixed, but they broke it again)
+							sourceDirs = sourceDirs +
+								file(&quot;${layout.buildDirectory}/generated/ksp/main/kotlin&quot;)
+
+							testSources.setFrom(
+								testSources.from + file(&quot;${layout.buildDirectory}/generated/ksp/test/kotlin&quot;)
+							)
+
+							generatedSourceDirs = generatedSourceDirs +
+								file(&quot;${layout.buildDirectory}/generated/ksp/main/kotlin&quot;) +
+								file(&quot;${layout.buildDirectory}/generated/ksp/test/kotlin&quot;)
+						}
+					}
+				</div></div><div class="tabs__content" data-gtm="tab" id="13702057_18" data-sync-tabs="gradle-groovy" data-title="Gradle (Groovy)"><p id="13702057_19">First, add the dependencies to your <code class="code" id="13702057_20">gradle/libs.versions.toml</code>. <a href="https://github.com/google/ksp/releases" id="13702057_21"   data-external="true" rel="noopener noreferrer" >Check GitHub</a> for the latest version of KSP.</p><br><div class="code-block" data-lang="ini"    data-title="Ini"     >
+					[versions]
+					kord-extensions = &quot;1.7.1-SNAPSHOT&quot;
+					ksp = &quot;KSP VERSION HERE&quot;
+
+					[libraries]
+					ksp = {
+						module = &quot;com.google.devtools.ksp:symbol-processing-api&quot;,
+						version.ref = &quot;ksp&quot;
+					}
+
+					kord-extensions-processor = {
+						module = &quot;com.kotlindiscord.kord.extensions:annotation-processor&quot;,
+						version.ref = &quot;kord-extensions&quot;
+					}
+				</div><p id="13702057_24">Then, update your <code class="code" id="13702057_25">build.gradle</code>.</p><br><div class="code-block" data-lang="groovy"    data-title="Groovy"     >
+					plugins {
+						// ...
+
+						id &quot;idea&quot;
+						id &quot;com.google.devtools.ksp&quot; version &quot;KSP VERSION HERE&quot;
+					}
+
+					dependencies {
+						// ...
+
+						ksp libs.kord.extensions.processor
+					}
+
+					idea { // Fixes IntelliJ indexing and build optimisation
+						module {
+							// Not using += due to https://github.com/gradle/gradle/issues/8749
+							// (Gradle closed this as fixed, but they broke it again)
+							sourceDirs = sourceDirs +
+								file(&quot;${layout.buildDirectory}/generated/ksp/main/kotlin&quot;)
+
+							testSources.setFrom(
+								testSources.from + file(&quot;${layout.buildDirectory}/generated/ksp/test/kotlin&quot;)
+							)
+
+							generatedSourceDirs = generatedSourceDirs +
+								file(&quot;${layout.buildDirectory}/generated/ksp/main/kotlin&quot;) +
+								file(&quot;${layout.buildDirectory}/generated/ksp/test/kotlin&quot;)
+						}
+					}
+				</div></div><div class="tabs__content" data-gtm="tab" id="13702057_28" data-sync-tabs="maven" data-title="Maven"><aside class="prompt" data-type="warning" data-title="" id="13702057_29"><p id="13702057_30">Kord Extensions is developed using Gradle, and none of the developers are familiar with Maven.</p><p id="13702057_31">If you know how to set this up using Maven, and you've tested that it all works, please feel free to contribute this section.</p></aside></div></div></section><section class="chapter"><h2 id="anatomy" data-toc="anatomy"   >Converter Anatomy</h2><p id="13702057_32">All converters extend one of the converter base types. Most of your converters will inherit the <code class="code" id="13702057_33">SingleConverter</code> type, and follow a strict structure. Once you've written your converter, you'll add the <code class="code" id="13702057_34">@Converter</code> annotation, which will configure the annotation processor to generate your converter's builders and DSL functions.</p><p id="13702057_35">All converter types take a generic type parameter, referred to as <code class="code" id="13702057_36">T</code>. This type represents the resulting rich type your converter provides to users when they finish parsing arguments. The only restriction for this type is that it can&rsquo;t be nullable.</p><section class="chapter"><h3 id="anatomy-constructor" data-toc="anatomy-constructor"   >Constructor</h3><p id="13702057_37">Your converter's constructor must take a single parameter, the <a href="converters.html#settings-all-validators" id="13702057_38" data-tooltip="Validators allow you to validate the argument's value after it's been filled, potentially returning an error to the user if the value fails to validate."  >validator</a> provided by the user. This parameter should be nullable, default to <code class="code" id="13702057_39">null</code>, and the validator's generic type parameter must match the one provided to your converter.</p><p id="13702057_40">The converter base types define this constructor parameter, so you'll need to override it.</p><div class="code-collapse" data-lang="kotlin"     data-is-expanded="false" data-synopsis="Example: Snowflake Converter"   >
+				public class SnowflakeConverter(
+				    override var validator: Validator&lt;Snowflake&gt; = null
+				) : SingleConverter&lt;Snowflake&gt;() {
+					// ...
+				}
+			</div><p id="13702057_42">Your converter's constructor may take additional parameters, as defined in the <code class="code" id="13702057_43">builderConstructorArguments</code> property in the <code class="code" id="13702057_44">@Converter</code> annotation, and explained below.</p></section><section class="chapter"><h3 id="anatomy-properties" data-toc="anatomy-properties"   >Properties</h3><p id="13702057_45">Your converter must override some properties defined by the base converter types:</p><div class="table-wrapper"><table class="wide" id="13702057_46"><thead><tr class="ijRowHead" id="13702057_47"><th id="13702057_48"><p>Name</p></th><th id="13702057_49"><p>Type</p></th><th id="13702057_50"><p>Description</p></th></tr></thead><tbody><tr id="13702057_51"><td id="13702057_52"><p><code class="code" id="13702057_53">signatureTypeString</code></p></td><td id="13702057_54"><p><code class="code" id="13702057_55">String</code></p></td><td id="13702057_56"><p>A <a href="internationalisation.html" id="13702057_57" data-tooltip="Start typing here..."  >translation key</a> referring to a short description explaining the type of data this converter handles. Shown in help commands for <a href="chat-commands.html" id="13702057_58" data-tooltip="Privileged Intents and You"  >Chat Commands</a> and errors for all command types.</p></td></tr></tbody></table></div><p id="13702057_59">Additionally, you may override the following properties as required:</p><div class="table-wrapper"><table class="wide" id="13702057_60"><thead><tr class="ijRowHead" id="13702057_61"><th id="13702057_62"><p>Name</p></th><th id="13702057_63"><p>Type</p></th><th id="13702057_64"><p>Description</p></th></tr></thead><tbody><tr id="13702057_65"><td id="13702057_66"><p><code class="code" id="13702057_67">bundle</code></p></td><td id="13702057_68"><p><code class="code" id="13702057_69">String?</code></p></td><td id="13702057_70"><p>A <a href="internationalisation.html" id="13702057_71" data-tooltip="Start typing here..."  >translation bundle</a>, used to resolve translations for this converter. Defaults to <code class="code" id="13702057_72">null</code>, which will result in the default Kord Extensions bundle being used.</p></td></tr><tr id="13702057_73"><td id="13702057_74"><p><code class="code" id="13702057_75">errorTypeString</code></p></td><td id="13702057_76"><p><code class="code" id="13702057_77">String?</code></p></td><td id="13702057_78"><p>A <a href="internationalisation.html" id="13702057_79" data-tooltip="Start typing here..."  >translation key</a> representing a longer description for this converter's handled type than <code class="code" id="13702057_80">signatureTypeString</code>. Used in &quot;invalid value&quot; errors instead of <code class="code" id="13702057_81">signatureTypeString</code> if provided. Defaults to <code class="code" id="13702057_82">null</code>.</p></td></tr><tr id="13702057_83"><td id="13702057_84"><p><code class="code" id="13702057_85">showTypeInSignature</code></p></td><td id="13702057_86"><p><code class="code" id="13702057_87">Boolean</code></p></td><td id="13702057_88"><p>Whether the <code class="code" id="13702057_89">signatureTypeString</code> should be shown in help commands for <a href="chat-commands.html" id="13702057_90" data-tooltip="Privileged Intents and You"  >Chat Commands</a>. Defaults to <code class="code" id="13702057_91">true</code></p></td></tr></tbody></table></div><div class="code-collapse" data-lang="kotlin"     data-is-expanded="false" data-synopsis="Example: Snowflake Converter"   >
+			    override val signatureTypeString: String = &quot;converters.snowflake.signatureType&quot;
+                override val bundle: String = DEFAULT_KORDEX_BUNDLE
+			</div></section><section class="chapter"><h3 id="anatomy-functions" data-toc="anatomy-functions"   >Functions</h3><p id="13702057_93">Your converter must override some functions defined by the base converter types.</p><section class="chapter"><h4 id="anatomy-functions-string" data-toc="anatomy-functions-string"   >String Parsing</h4><p id="13702057_94">All converter types must implement the <code class="code" id="13702057_95">parse</code> function, responsible for parsing arguments from a stream of string-based tokens. <a href="chat-commands.html" id="13702057_96" data-tooltip="Privileged Intents and You"  >Chat Commands</a> use this function to parse arguments from Discord messages into rich types.</p><p id="13702057_97">This function takes the following parameters:</p><ul class="list _ul" id="13702057_98"><li class="list__item" id="13702057_99"><p id="13702057_100"><code class="code" id="13702057_101">parser: StringParser?</code> - Instance of Kord Extensions' String parser. Call <code class="code" id="13702057_102">parser.parseNext()</code> to attempt to retrieve the next argument string token provided by the user.</p><p id="13702057_103">May be <code class="code" id="13702057_104">null</code> when <code class="code" id="13702057_105">named</code> is provided. Wrapping converters (e.g. <code class="code" id="13702057_106">SingleToOptional</code>) used internally may also call <code class="code" id="13702057_107">parse</code> with a <code class="code" id="13702057_108">parser</code> value of <code class="code" id="13702057_109">null</code>.</p></li><li class="list__item" id="13702057_110"><p id="13702057_111"><code class="code" id="13702057_112">context: CommandContext</code> - <a href="commands.html#context-objects" id="13702057_113" data-tooltip="When a command is executed, the provided action block is run. This block is a receiver function against a subtype of the CommandContext type, which provides an API that allows you to work with the command's execution data and respond to the user."  >Context Objects</a> representing the command being executed.</p><p id="13702057_114"><span id="13702057_115" ><b>Note:</b></span> It is important your converter can parse arguments using only the API provided by the base <code class="code" id="13702057_116">CommandContext</code> type. The converter may check the type and respond accordingly, but this parameter can be of an unusual context type that may exist for any number of purposes, and your converter can't break in these scenarios.</p></li><li class="list__item" id="13702057_117"><p><code class="code" id="13702057_118">named: String?</code> - Set when users provide values using keyword arguments. <span id="13702057_119" ><b>Note:</b></span> It's important your converter prioritises this parameter when provided, instead of trying to parse values from the <code class="code" id="13702057_120">parser</code>.</p></li></ul><p id="13702057_121">This function must return a Boolean representing whether your converter managed to successfully parse a value - <code class="code" id="13702057_122">true</code> if it did, and <code class="code" id="13702057_123">false</code> otherwise. If your converter managed to parse a value, it must store that value in the <code class="code" id="13702057_124">parsed</code> class property.</p><p id="13702057_125">To provide specific errors to users, your converter may throw a <a href="exceptions.html#functional-discord-relayed" id="13702057_126" data-tooltip="This exception is used when your extension code needs to bail for some reason, whilst providing a message that should be relayed to the actioning user if there is one."  ><code class="code" id="13702057_127">DiscordRelayedException</code></a>.</p><div class="code-collapse" data-lang="kotlin"     data-is-expanded="false" data-synopsis="Example: Snowflake Converter"   >
+				    override suspend fun parse(parser: StringParser?, context: CommandContext, named: String?): Boolean {
+						// Use `named`, try the parser, then give up if neither are present.
+				        val arg: String = named ?: parser?.parseNext()?.data ?: return false
+
+				        try {
+							// Try to parse the value and store it.
+				            this.parsed = Snowflake(arg)
+				        } catch (e: NumberFormatException) {
+							// Invalid Snowflake, supply a relevant error to the user.
+				            throw DiscordRelayedException(
+				                context.translate(&quot;converters.snowflake.error.invalid&quot;, replacements = arrayOf(arg))
+				            )
+				        }
+
+						// Parsing was successful, report that by returning `true`.
+				        return true
+				    }
+				</div></section><section class="chapter"><h4 id="anatomy-functions-slash" data-toc="anatomy-functions-slash"   >Slash Commands</h4><p id="13702057_129">All converter types that extend <code class="code" id="13702057_130">SlashCommandConverter</code> (which includes all converters that extend <code class="code" id="13702057_131">SingleConverter</code>) must implement two additional functions.</p><ul class="list _ul" id="13702057_132"><li class="list__item" id="13702057_133"><p><code class="code" id="13702057_134">toSlashOption</code> - Convert the given <code class="code" id="13702057_135">Argument</code> parameter to the corresponding Kord <a href="https://dokka.kord.dev/rest/dev.kord.rest.builder.interaction/-options-builder/index.html" id="13702057_136"   data-external="true" rel="noopener noreferrer" ><code class="code" id="13702057_137">OptionsBuilder</code></a> subtype. For most converter types, <a href="https://dokka.kord.dev/rest/dev.kord.rest.builder.interaction/-string-choice-builder/index.html" id="13702057_138"   data-external="true" rel="noopener noreferrer" ><code class="code" id="13702057_139">StringChoiceBuilder</code></a> will be the best option.</p></li><li class="list__item" id="13702057_140"><p><code class="code" id="13702057_141">parseOption</code> - Using the given <a href="commands.html#context-objects" id="13702057_142" data-tooltip="When a command is executed, the provided action block is run. This block is a receiver function against a subtype of the CommandContext type, which provides an API that allows you to work with the command's execution data and respond to the user."  >command context object</a>, parse the Kord <a href="https://dokka.kord.dev/core/dev.kord.core.entity.interaction/-option-value/index.html" id="13702057_143"   data-external="true" rel="noopener noreferrer" ><code class="code" id="13702057_144">OptionValue</code></a> into the converter's rich type. This function behaves similarly to the <code class="code" id="13702057_145">parse</code> function mentioned in <a href="#anatomy-functions-string" id="13702057_146" data-tooltip="All converter types must implement the parse function, responsible for parsing arguments from a stream of string-based tokens. use this function to parse arguments from Discord messages into rich types."  >the previous section</a>.</p></li></ul><div class="code-collapse" data-lang="kotlin"     data-is-expanded="false" data-synopsis="Example: Snowflake Converter"   >
+					override suspend fun toSlashOption(arg: Argument&lt;*&gt;): OptionsBuilder =
+						StringChoiceBuilder(arg.displayName, arg.description).apply { required = true }
+
+					override suspend fun parseOption(context: CommandContext, option: OptionValue&lt;*&gt;): Boolean {
+						// Get the correct option value type, and give up if an unexpected type is provided.
+						val optionValue = (option as? StringOptionValue)?.value ?: return false
+
+						try {
+							// Try to parse the value and store it.
+							this.parsed = Snowflake(optionValue)
+						} catch (e: NumberFormatException) {
+							// Invalid Snowflake, supply a relevant error to the user.
+							throw DiscordRelayedException(
+								context.translate(&quot;converters.snowflake.error.invalid&quot;, replacements = arrayOf(optionValue))
+							)
+						}
+
+						// Parsing was successful, report that by returning `true`.
+						return true
+					}
+				</div></section></section></section><section class="chapter"><h2 id="converter-annotation" data-toc="converter-annotation"   >@Converter Annotation</h2><p id="13702057_148">Once you've written your converter, it should something like the example below.</p><div class="code-collapse" data-lang="kotlin"     data-is-expanded="false" data-synopsis="Example: Snowflake Converter"   >
+			public class SnowflakeConverter(
+				override var validator: Validator&lt;Snowflake&gt; = null
+			) : SingleConverter&lt;Snowflake&gt;() {
+				override val signatureTypeString: String = &quot;converters.snowflake.signatureType&quot;
+				override val bundle: String = DEFAULT_KORDEX_BUNDLE
+
+				override suspend fun parse(parser: StringParser?, context: CommandContext, named: String?): Boolean {
+					val arg: String = named ?: parser?.parseNext()?.data ?: return false
+
+					try {
+						this.parsed = Snowflake(arg)
+					} catch (e: NumberFormatException) {
+						throw DiscordRelayedException(
+							context.translate(&quot;converters.snowflake.error.invalid&quot;, replacements = arrayOf(arg))
+						)
+					}
+
+					return true
+				}
+
+				override suspend fun toSlashOption(arg: Argument&lt;*&gt;): OptionsBuilder =
+					StringChoiceBuilder(arg.displayName, arg.description).apply { required = true }
+
+				override suspend fun parseOption(context: CommandContext, option: OptionValue&lt;*&gt;): Boolean {
+					val optionValue = (option as? StringOptionValue)?.value ?: return false
+
+					try {
+						this.parsed = Snowflake(optionValue)
+					} catch (e: NumberFormatException) {
+						throw DiscordRelayedException(
+							context.translate(&quot;converters.snowflake.error.invalid&quot;, replacements = arrayOf(optionValue))
+						)
+					}
+
+					return true
+				}
+			}
+		</div><p id="13702057_150">This converter is functional, but it still needs converter functions before users can define arguments with it. To make this easier, Kord Extensions provides a special <code class="code" id="13702057_151">@Converter</code> annotation that will generate everything you need.</p><p id="13702057_152">To use it, annotate your converter class with <code class="code" id="13702057_153">@Converter</code> and provide the relevant parameters.</p><div class="code-collapse" data-lang="kotlin"     data-is-expanded="false" data-synopsis="Example: Snowflake Converter"   >
+			@Converter(
+			    &quot;snowflake&quot;,
+
+			    types = [ConverterType.DEFAULTING, ConverterType.LIST, ConverterType.OPTIONAL, ConverterType.SINGLE]
+			)
+		</div><div class="table-wrapper"><table class="wide" id="13702057_155"><thead><tr class="ijRowHead" id="13702057_156"><th id="13702057_157"><p>Name</p></th><th id="13702057_158"><p>Type</p></th><th id="13702057_159"><p>Description</p></th></tr></thead><tbody><tr id="annotation-parameters-required:header:text:center"><td id="13702057_160" colspan="3"><p>Required Parameters</p></td></tr><tr id="13702057_161"><td id="13702057_162"><p><code class="code" id="13702057_163">names</code></p></td><td id="13702057_164"><p><code class="code" id="13702057_165">vararg String</code></p></td><td id="13702057_166"><p id="13702057_167">Converter name, used to generate the names of the converter DSL functions. Ideally a single, lower-case word.</p><p id="13702057_168">When specified, multiple names will result in a set of DSL functions for each provided name. This may be useful for converters using words that differ in different English dialects, such as &quot;color&quot; and &quot;colour.&quot;</p></td></tr><tr id="13702057_169"><td id="13702057_170"><p><code class="code" id="13702057_171">types</code></p></td><td id="13702057_172"><p><code class="code" id="13702057_173">Array&lt;ConverterType&gt;</code></p></td><td id="13702057_174"><p id="13702057_175">Array of <code class="code" id="13702057_176">ConverterType</code> enum entries.</p><ul class="list _ul" id="13702057_177"><li class="list__item" id="13702057_178"><p id="13702057_179">First, provide <code class="code" id="13702057_180">SINGLE</code> or <code class="code" id="13702057_181">COALESCING</code> based on your converter's base type.</p><ul class="list _ul" id="13702057_182"><li class="list__item" id="13702057_183"><p><code class="code" id="13702057_184">SingleConverter</code> - provide <code class="code" id="13702057_185">SINGLE</code>.</p></li><li class="list__item" id="13702057_186"><p><code class="code" id="13702057_187">CoalescingConverter</code> - provide <code class="code" id="13702057_188">COALESCING</code>.</p></li></ul><p id="13702057_189"><span id="13702057_190" ><b>These options are mutually exclusive and cannot be provided together.</b></span></p></li><li class="list__item" id="13702057_191"><p>Converters extending <code class="code" id="13702057_192">ChoiceConverter</code> must additionally provide <code class="code" id="13702057_193">CHOICE</code>.</p></li><li class="list__item" id="13702057_194"><p>Any combination of <code class="code" id="13702057_195">DEFAULTING</code>, <code class="code" id="13702057_196">LIST</code> and <code class="code" id="13702057_197">OPTIONAL</code> may be additionally provided as desired.</p></li></ul></td></tr><tr id="annotation-parameters-optional:header:text:center"><td id="13702057_198" colspan="3"><p>Optional Parameters</p></td></tr><tr id="annotation-parameters-imports:div:bottom"><td id="13702057_199"><p><code class="code" id="13702057_200">imports</code></p></td><td id="13702057_201"><p><code class="code" id="13702057_202">Array&lt;String&gt;</code></p></td><td id="13702057_203"><p>Extra imports required by your converter. These will be provided in all generated files.</p></td></tr><tr id="13702057_204"><td id="13702057_205"><p><code class="code" id="13702057_206">builderConstructorArguments</code></p></td><td id="13702057_207"><p><code class="code" id="13702057_208">Array&lt;String&gt;</code></p></td><td id="13702057_209"><p id="13702057_210">Arguments to add to the generated builders' constructors. This must be a full definition (including visibility modifiers and <code class="code" id="13702057_211">val/var</code>).</p><p id="13702057_212">Prefix an argument with <code class="code" id="13702057_213">!!</code> to prevent it from being passed into the converter's constructor.</p></td></tr><tr id="13702057_214"><td id="13702057_215"><p><code class="code" id="13702057_216">builderGeneric</code></p></td><td id="13702057_217"><p><code class="code" id="13702057_218">String</code></p></td><td id="13702057_219"><p>Generic type parameter that the generated builders should take. This must be a full definition (including name and type bound), and multiple may be provided.</p></td></tr><tr id="13702057_220"><td id="13702057_221"><p><code class="code" id="13702057_222">builderFields</code></p></td><td id="13702057_223"><p><code class="code" id="13702057_224">Array&lt;String&gt;</code></p></td><td id="13702057_225"><p id="13702057_226">Extra fields that will be defined within the generated builders. This must be a full definition (including visibility modifiers and <code class="code" id="13702057_227">val/var</code>).</p><p id="13702057_228">For required values that users must provide, use <code class="code" id="13702057_229">lateinit var</code>.</p></td></tr><tr id="annotation-parameters-builder-general:div:bottom"><td id="13702057_230"><p><code class="code" id="13702057_231">builderSuffixedWhere</code></p></td><td id="13702057_232"><p><code class="code" id="13702057_233">String</code></p></td><td id="13702057_234"><p>Extra bounds for the generated builders' generic type parameters, to be provided after <code class="code" id="13702057_235">where</code> in their signatures.</p></td></tr><tr id="13702057_236"><td id="13702057_237"><p><code class="code" id="13702057_238">builderBuildFunctionPreStatements</code></p></td><td id="13702057_239"><p><code class="code" id="13702057_240">Array&lt;String&gt;</code></p></td><td id="13702057_241"><p>Extra lines of code to add to the generated builders' <code class="code" id="13702057_242">build</code> functions before the converter object is constructed.</p></td></tr><tr id="13702057_243"><td id="13702057_244"><p><code class="code" id="13702057_245">builderBuildFunctionStatements</code></p></td><td id="13702057_246"><p><code class="code" id="13702057_247">Array&lt;String&gt;</code></p></td><td id="13702057_248"><p>Extra lines of code to add to the generated builders' <code class="code" id="13702057_249">build</code> functions after the converter object is constructed.</p></td></tr><tr id="13702057_250"><td id="13702057_251"><p><code class="code" id="13702057_252">builderInitStatements</code></p></td><td id="13702057_253"><p><code class="code" id="13702057_254">Array&lt;String&gt;</code></p></td><td id="13702057_255"><p>Extra lines of code to add to the generated builders' <code class="code" id="13702057_256">init</code> blocks.</p></td></tr><tr id="annotation-parameters-builder-statements:div:bottom"><td id="13702057_257"><p><code class="code" id="13702057_258">builderExtraStatements</code></p></td><td id="13702057_259"><p><code class="code" id="13702057_260">Array&lt;String&gt;</code></p></td><td id="13702057_261"><p>Extra lines of code to add to the generated builders' class bodies, after their <code class="code" id="13702057_262">init</code> blocks and fields.</p></td></tr><tr id="13702057_263"><td id="13702057_264"><p><code class="code" id="13702057_265">functionBuilderArguments</code></p></td><td id="13702057_266"><p><code class="code" id="13702057_267">Array&lt;String&gt;</code></p></td><td id="13702057_268"><p>Arguments to add to the generated builder functions, which will be passed into the builders' constructors. This must be a full definition (including name and type).</p></td></tr><tr id="13702057_269"><td id="13702057_270"><p><code class="code" id="13702057_271">functionGeneric</code></p></td><td id="13702057_272"><p><code class="code" id="13702057_273">String</code></p></td><td id="13702057_274"><p id="13702057_275">Generic type parameter that the generated builder functions should take. This must be a full definition (including name and type bound), and it will be <code class="code" id="13702057_276">reified</code> automatically.</p><p id="13702057_277">Only one type parameter is currently supported.</p></td></tr><tr id="13702057_278"><td id="13702057_279"><p><code class="code" id="13702057_280">functionSuffixedWhere</code></p></td><td id="13702057_281"><p><code class="code" id="13702057_282">String</code></p></td><td id="13702057_283"><p>Extra bounds for the generated builder functions' type parameters, to be provided after <code class="code" id="13702057_284">where</code> in their signatures.</p></td></tr></tbody></table></div><p id="13702057_285">Code will be generated when the <code class="code" id="13702057_286">build</code> project is compiled, and you can find it in your project's <code class="code" id="13702057_287">build/</code> folder, under <code class="code" id="13702057_288">generated/main/kotlin/</code>. Kord Extensions aims to generate well-formatted code, and it includes comments to illustrate precisely where code will be injected.</p><p id="13702057_289">As <a href="converters.html#bundled" id="13702057_290" data-tooltip="Kord Extensions provides a number of converters for common data types, which you can make use of in your bots."  >the bundled converters</a> make use of the annotation processor, you can look at them for more examples. They can be found <a href="https://github.com/Kord-Extensions/kord-extensions/tree/root/kord-extensions/src/main/kotlin/com/kotlindiscord/kord/extensions/commands/converters/impl" id="13702057_291"   data-external="true" rel="noopener noreferrer" >on GitHub</a>.</p></section><section class="chapter"><h2 id="using" data-toc="using"   >Using Custom Converters</h2><p id="13702057_292">Your custom converters may be used in the same manner described on the <a href="converters.html#usage" id="13702057_293" data-tooltip="Converters provide builder functions that you can use to define your command arguments. These functions are available for use within classes that extend Arguments, as briefly explained on the commands overview page."  >converters page</a>. Create <a href="commands.html#arguments-classes" id="13702057_294" data-tooltip="While don't support command arguments, the other command types do. To specify your command's arguments, you'll need to create a class that extends the Arguments type."  >an Arguments class</a>, define arguments using your converter's builder functions, and use it in your command definitions.</p></section><div class="last-modified"> Last modified: 06 January 2024</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom">  <a class="navigation-links__prev" href="converters.html">Converters</a>   <a class="navigation-links__next" href="events.html">Events</a>  </div></article><div id="disqus_thread"></div></div></section></main></div>  <script src="/app.js" type="application/javascript"></script></body></html>
