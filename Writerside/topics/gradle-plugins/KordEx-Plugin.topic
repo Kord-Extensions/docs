@@ -202,8 +202,25 @@
     </chapter>
 
     <chapter title="Setting Up" id="setting-up">
+		<p>
+			First, add the required Maven repos to your <code>settings.gradle.kts</code>.
+		</p>
+
+		<code-block lang="kotlin">
+			pluginManagement {
+				repositories {
+					gradlePluginPortal()
+					mavenCentral()
+
+					maven("https://snapshots-repo.kordex.dev")
+					maven("https://releases-repo.kordex.dev")
+				}
+			}
+		</code-block>
+
         <p>
-            First, add the KordEx Gradle plugin to your <code>build.gradle.kts</code>.
+            Next, add the KordEx Gradle plugin to your <code>settings.gradle.kts</code>
+			or <code>build.gradle.kts</code>.
         </p>
 
         <code-block lang="kotlin">
