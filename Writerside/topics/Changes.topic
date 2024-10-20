@@ -3,9 +3,2624 @@
         SYSTEM "https://resources.jetbrains.com/writerside/1.0/xhtml-entities.dtd">
 <topic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/topic.v2.xsd"
-       title="Changes ⏳" id="Changes">
+       title="Changes" id="Changes">
 
-    <p>
-        TODO: Write a proper changelog
-    </p>
+	<show-structure depth="2" />
+
+	<p>
+		This page contains historical changelogs for all Kord Extensions projects, taken from GitHub, Discord, and
+		this documentation site, slightly edited for better grammar and more sensible styling.
+	</p>
+
+	<p>
+		Please note that changelogs taken from Discord will have a more conversational tone.
+	</p>
+
+    <chapter title="Kord Extensions" id="kordex">
+		<chapter title="v2.2.1-SNAPSHOT" id="kordex-2.2.1-SNAPSHOT">
+			<format style="italic">
+				Published to Discord on August 31st, 2024.
+			</format>
+
+			<p>
+				<format style="bold">KordEx 2.2.1-SNAPSHOT</format> has been pushed and will be published in about 15
+				minutes.
+				It includes these changes:
+			</p>
+
+			<list type="bullet">
+				<li>
+					Clean up the translation provider <code>translate</code> functions, which were a tricky mess to
+					navigate at times.
+				</li>
+
+				<li>
+					<p>
+						Make the default translations provider scan through loaded plugins
+						(if the plugin system is enabled) to locate bundles provided by them.
+					</p>
+
+					<list type="bullet">
+						<li>
+							This also comes with some extra debug-level logging to help you figure out what's going on.
+						</li>
+
+						<li>
+							If you're unfamiliar with the translations system,
+							<a href="https://github.com/Kord-Extensions/template-plugin">the plugin template repo</a>
+							now contains some bundled translations to help you figure out how things work.
+						</li>
+					</list>
+				</li>
+			</list>
+
+			<p>
+				As always, let me know how you get on!
+			</p>
+		</chapter>
+
+		<chapter title="v2.2.0-SNAPSHOT" id="kordex-2.2.0-SNAPSHOT">
+			<format style="italic">
+				Published to Discord on August 23rd, 2024.
+			</format>
+
+			<p>
+				It's time for another version bump, specifically to <code>2.2.0-SNAPSHOT</code>.
+				That was fast, huh?
+			</p>
+
+			<p>
+				This release contains the following changes:
+			</p>
+
+			<list type="bullet">
+				<li>
+					Update to Kotlin <code>2.0.20</code>. Finally, a stable release with the fixes we needed!
+				</li>
+
+				<li>
+					Move all the nested builders out of the <code>ExtensibleBotBuilder</code> class,
+					and into their own separate class files, including their corresponding nested types.
+					Naturally, if you've written any extension functions using one of these classes as a receiver,
+					you'll need to update them.
+					I tried to make this deprecate cleanly, but unfortunately, I couldn't -
+					you can't place type aliases anywhere other than the top-level of a file!
+				</li>
+
+				<li>
+					Rewrite the <code>about { }</code> builder for the corresponding extension.
+					This removes the default "general" information command (and mandatory footer),
+					instead allowing you to create your own fully custom commands while providing a default,
+					configurable "copyright" subcommand.
+					For more information on this, please <a href="About.topic">read the new docs</a>.
+					I feel like it's a lot less obnoxious, personally!
+				</li>
+
+				<li>
+					<a href="https://github.com/Kord-Extensions/kord-extensions/issues/324">#324</a> —
+					Fix an error thrown by the data collection system when the plugin system was disabled.
+					Instead of simply not creating a plugin manager, KordEx will now create one in all cases
+					but won't try to load any plugins if the plugin system is disabled.
+				</li>
+			</list>
+
+			<p>
+				As always, this release will be available once GitHub builds it, in about 15 minutes.
+				Let me know how you get on!
+			</p>
+		</chapter>
+
+		<chapter title="v2.1.0-SNAPSHOT" id="kordex-2.1.0-SNAPSHOT">
+			<format style="italic">
+				Published to Discord on August 20th, 2024.
+			</format>
+
+			<p>
+				I've gone ahead and pushed an update to KordEx v2, which will be released as
+				<code>2.1.0-SNAPSHOT</code>.
+				This version provides the following updates:
+			</p>
+
+			<list type="bullet">
+				<li><format style="bold">Kotlin:</format> <code>2.0.20-Beta1</code> -> <code>2.0.20-RC2</code></li>
+			</list>
+
+			<list type="bullet">
+				<li><format style="bold">JEmoji:</format> <code>1.4.1</code> -> <code>1.5.1</code></li>
+				<li><format style="bold">KAML:</format> <code>0.60.0</code> -> <code>0.61.0</code></li>
+				<li><format style="bold">KSP:</format> <code>2.0.20-Beta1-1.0.22</code> -> <code>2.0.20-RC2-1.0.24</code></li>
+				<li><format style="bold">Logback:</format> <code>1.5.6</code> -> <code>1.5.7</code></li>
+				<li><format style="bold">MongoDB:</format> <code>5.1.2</code> -> <code>5.1.3</code></li>
+				<li><format style="bold">OSHI:</format> <code>6.6.2</code> -> <code>6.6.3</code></li>
+				<li><format style="bold">Sentry:</format> <code>7.12.0</code> -> <code>7.14.0</code></li>
+				<li><format style="bold">SLF4J:</format> <code>2.0.13</code> -> <code>2.0.16</code></li>
+			</list>
+
+			<p>
+				I did not update Gradle to 8.10 as the licenser plugin we're using runs into a StackOverflowError with
+				that version.
+			</p>
+
+			<p>
+				If you're using the KordEx Gradle plugin,
+				there's nothing you need to do other than to update your Kotlin version to <code>2.0.20-RC2</code>
+				(or set it to ignore the Kotlin version if this isn't possible for you).
+			</p>
+		</chapter>
+
+		<chapter title="v2.0.0-SNAPSHOT" id="kordex-2.0.0-SNAPSHOT">
+			<format style="italic">
+				Published to the docs on August 13th, 2024.
+			</format>
+
+			<p>
+				This update's summary <a href="About.topic" anchor="version-2">was published on this page</a>.
+			</p>
+		</chapter>
+
+		<chapter title="v1.9.0-SNAPSHOT" id="kordex-1.9.0-SNAPSHOT">
+			<format style="italic">
+				Published to Discord on July 1st, 2024.
+			</format>
+
+			<p>
+				This release targets <format style="bold">Kotlin <code>2.0.20-Beta1</code></format>
+				and <format style="bold">Kord <code>0.15.0-SNAPSHOT</code>.</format>
+				Due to our distribution model and Kord updating <code>kotlinx.serialization</code>,
+				you must update to Kotlin 2.0.20-Beta1 or later to use this release!
+			</p>
+
+			<p>
+				Additionally, as we're forced to use a beta version of Kotlin 2,
+				please note that IDEA's Kotlin plugin will erroneously display compiler errors that were caused by
+				bugs in earlier versions of Kotlin 2.
+				To be specific, expect errors regarding broken typing for generic types explicitly defined using
+				<code>T &amp; Any</code>.
+				If you're working with the KordEx code directly, please rely on build output rather than IDE hints for
+				the time being.
+			</p>
+
+			<p>
+				Thanks is due in particular to LustigerLurch for helping with the K2 porting work. Cheers!
+			</p>
+
+			<p>
+				This release is available <format style="italic">right now!</format>
+				Have at it, and let me know how you get on!
+			</p>
+
+			<chapter title="Other Changes" id="kordex-1.9.0-SNAPSHOT-other-changes">
+				<list type="bullet">
+					<li>
+						<p>
+							Checks have been updated to support more of Kord's built-in events
+							and now support more data from previously supported events, including:
+						</p>
+
+						<list type="bullet">
+							<li><code>AutoModerationActionExecutionEvent</code></li>
+							<li><code>AutoModerationEvent</code></li>
+
+							<li>
+								<p><code>GuildAuditLogEntryCreateEvent</code></p>
+
+								<list type="bullet">
+									<li>
+										<format style="bold">Note:</format> Kord does not currently support the
+										<code>guildId</code> field on audit log entries.
+									</li>
+								</list>
+							</li>
+
+							<li><code>GuildScheduledEventEvent</code></li>
+							<li><code>InviteCreateEvent</code></li>
+							<li><code>PresenceUpdateEvent</code></li>
+							<li><code>ThreadChannelDeleteEvent</code></li>
+							<li><code>ThreadMembersUpdateEvent</code></li>
+							<li><code>ThreadUpdateEvent</code></li>
+						</list>
+					</li>
+
+					<li>
+						A new <code>FixedLengthQueue&lt;T&gt;</code> container type.
+						If you need this, please read the KDoc comments!
+					</li>
+				</list>
+			</chapter>
+
+			<chapter title="Dependency Updates" id="kordex-1.9.0-SNAPSHOT-dependency-updates">
+				<list type="bullet">
+					<li><format style="bold">Apache Commons Validator:</format> <code>1.9.0</code></li>
+					<li><format style="bold">Groovy:</format> <code>3.0.22</code></li>
+					<li><format style="bold">JUnit:</format> <code>5.10.3</code></li>
+					<li><format style="bold">KAML:</format> <code>0.60.0</code></li>
+					<li><format style="bold">Kord:</format> <code>0.15.0-SNAPSHOT</code></li>
+					<li><format style="bold">KSP:</format> <code>2.0.20-Beta1-1.0.22</code></li>
+					<li><format style="bold">Ktor:</format> <code>2.3.12</code></li>
+					<li><format style="bold">Kotlin:</format> <code>2.0.20-Beta1</code></li>
+					<li><format style="bold">Kotlin Logging:</format> <code>7.0.0</code></li>
+					<li><format style="bold">kotlinx.serialization:</format> <code>1.7.1</code></li>
+					<li><format style="bold">MongoDB:</format> <code>5.1.1</code></li>
+					<li><format style="bold">Sentry Java:</format> <code>7.10.0</code></li>
+				</list>
+			</chapter>
+		</chapter>
+
+		<chapter title="v1.8.1-SNAPSHOT" id="kordex-1.8.1-SNAPSHOT">
+			<format style="italic">
+				Published to Discord on June 3rd, 2024.
+			</format>
+
+			<p>
+				It's time for a new snapshot - <code>1.8.1-SNAPSHOT</code> to be precise.
+			</p>
+
+			<p>
+				This snapshot cycle begins with a change to choice converters. Specifically:
+			</p>
+
+			<list type="bullet">
+				<li>
+					<p>
+						Choice converters now support chat commands.
+						(<a href="https://github.com/Kord-Extensions/kord-extensions/issues/137">#137</a>)
+					</p>
+
+					<list type="bullet">
+						<li>
+							When used with chat commands,
+							choice converters will accept either keys (case-insensitively) or values
+							(case-insensitively where appropriate), in that order.
+						</li>
+
+						<li>
+							When used with chat commands and provided with an invalid value,
+							choice converters will provide an error message along with a list of possible options.
+						</li>
+					</list>
+				</li>
+			</list>
+
+			<p>
+				This is a new snapshot cycle because I want to be sure it doesn't break your existing bots.
+				If this is some functionality you've been waiting for, please thoroughly test your bots before updating!
+			</p>
+
+			<p>
+				This should be available in around 15 minutes, as usual.
+			</p>
+
+			<p>
+				And sorry for keeping you all waiting!
+			</p>
+		</chapter>
+
+		<chapter title="v1.8.0-SNAPSHOT" id="kordex-1.8.0-SNAPSHOT">
+			<format style="italic">
+				Published to Discord on February 21st, 2024.
+			</format>
+
+			<p>
+				I've just pushed a new version of KordEx,
+				to update dependencies and align with Kord's new <code>0.14.0-SNAPSHOT</code> releases.
+			</p>
+
+			<list type="bullet">
+				<li><code>jemoji</code>: 1.3.3 -> 1.3.4</li>
+				<li><code>junit</code>: 5.10.1 -> 5.10.2</li>
+				<li><code>kaml</code>: 0.56.0 -> 0.57.0</li>
+				<li><code>kotlin-logging</code>: 6.0.2 -> 6.0.3</li>
+				<li><code>kord</code>: 0.13.0-SNAPSHOT -> 0.14.0-SNAPSHOT</li>
+				<li><code>ktor</code>: 2.3.7 -> 2.3.8</li>
+				<li><code>kotlinx-coroutines</code>: 1.7.3 -> 1.8.0</li>
+				<li><code>kotlinx-serialization</code>: 1.6.2 -> 1.6.3</li>
+				<li><code>logback</code>: 1.4.14 -> 1.5.0</li>
+				<li><code>sentry</code>: 7.1.0 -> 7.3.0</li>
+				<li><code>slf4j</code>: 2.0.11 -> 2.0.12</li>
+				<li><code>time4j</code>: 5.9.3 -> 5.9.4</li>
+			</list>
+
+			<p>
+				This release will be available under <code>1.8.0-SNAPSHOT</code> once it's been built, in about 10-15
+				minutes.
+			</p>
+		</chapter>
+
+		<chapter title="v1.7.2-SNAPSHOT" id="kordex-1.7.2-SNAPSHOT">
+			<format style="italic">
+				Published to Discord on February 21st, 2024.
+			</format>
+
+			<p>
+				A new paginator feature!
+			</p>
+
+			<p>
+				This is a quick message to announce the release of KordEx <code>1.7.2-SNAPSHOT</code>,
+				which includes some breaking changes to the paginator API for those of you with custom paginators.
+			</p>
+
+			<p>
+				This also brings a new user-facing change — paginator chunking!
+				Requested by beerpsi, this allows you to specify a chunkedPages property in your paginator builders,
+				which will cause the paginator to display its pages in chunks of the given size.
+				This may be useful for paginators with a lot of small embeds.
+			</p>
+
+			<p>
+				When <code>chunkedPages</code> is set to <code>1</code> (the default),
+				the paginator will behave as it always has.
+				Set it to any value up to 9, however,
+				and that many pages will be displayed to your users at once.
+				When you do this, an extra embed will be generated at the bottom,
+				containing information about the current/total pages, switchable groups,
+				and so on — instead of placing this at the bottom of each page embed.
+			</p>
+
+			<p>
+				As always, <code>1.7.2-SNAPSHOT</code> is building and will be available in 10-15 minutes.
+				Math is hard, so please let me know how you get on!
+			</p>
+		</chapter>
+
+		<chapter title="v1.7.1-SNAPSHOT" id="kordex-1.7.1-SNAPSHOT">
+			<format style="italic">
+				Published to Discord on November 30th, 2023.
+			</format>
+
+			<p>
+				Hello!
+				Today's update is potentially exciting for those of you using the Sentry integration,
+				bringing a few long-overdue changes.
+			</p>
+
+			<p>
+				Today's changes are part of
+				<a href="https://github.com/Kord-Extensions/kord-extensions/issues/260">issue #260</a>,
+				submitted by Pyrrha yesterday.
+			</p>
+
+			<p>
+				It's worth noting that
+				<format style="bold">these are breaking changes for anyone using the Sentry integration!</format>
+				Please review your integration usage before pushing any updates!
+			</p>
+
+			<list type="bullet">
+				<li>
+					The Sentry <code>Scope</code> and <code>Breadcrumb</code> objects are no longer exposed.
+					Instead, a set of classes based on the new <code>SentryCapture</code> type have been added,
+					and these have replaced the aforementioned Sentry objects in all builders and functions.
+				</li>
+
+				<li>
+					<p>
+						It is now possible to define what types of data may be submitted to Sentry via the new
+						<code>defaultDataTypes</code> builder, which you can find in the extensions -> sentry builder.
+						Use the following properties to change what can be submitted:
+						<code>arguments</code>, <code>channels</code>, <code>guilds</code>, <code>roles</code>,
+						and <code>users</code>.
+					</p>
+
+					<list type="bullet">
+						<li>
+							For chat commands, command arguments and message content are both considered
+							<code>arguments</code>.
+							This is also true for Mappings Extension query strings.
+							Slash command arguments are not currently submitted.
+						</li>
+					</list>
+				</li>
+
+				<li>
+					The Sentry builder now also provides the <code>dataTypeTransformer</code> and
+					<code>predicate</code> builders, to further customize what can be submitted to Sentry based on an
+					individual <code>SentryCapture</code> subtype.
+				</li>
+
+				<li>
+					The new <code>SentryCapture</code> types expose more of the Sentry APIs than before,
+					allowing you to provide scope hints and severity levels, among other things.
+				</li>
+
+				<li>
+					<p>
+						When adding data to the <code>data</code>, <code>hints</code>, and <code>tags</code> maps
+						defined in the <code>SentryCapture</code> subtypes,
+						you can now define how the integration should filter the values within based on their keys,
+						using one of two methods:
+					</p>
+
+					<list type="bullet">
+						<li>
+							Prefix the key with the type and a dot
+							(e.g. <code>channel.key</code>) — the key will not be modified if it's submitted.
+						</li>
+
+						<li>
+							Suffix the key with the type and two colons
+							(e.g. <code>key::channel</code>) — the colons and type will be removed from the key if
+							it's submitted.
+						</li>
+					</list>
+				</li>
+			</list>
+
+			<p>
+				<format style="bold">Note:</format> Key-based filtering does not support nested container types,
+				as this doesn't appear to be possible within Kotlin's type system.
+				However, it's generally best not to nest data too far regardless.
+			</p>
+
+			<p>
+				The <a href="Sentry.topic">configuration docs</a> have already been updated if you need them.
+			</p>
+
+			<p>
+				As always, please give things a try and let me know how you get on!
+			</p>
+
+			<chapter title="Disclaimer" id="kordex-1.7.1-SNAPSHOT-disclaimer">
+				<p>
+					While these new changes are designed to make it easier for you to comply with data protection laws
+					(such as the GDPR), please note that I am not a lawyer.
+					I'm also not qualified to make privacy-related decisions about your bots on your behalf.
+				</p>
+
+				<p>
+					I'm happy to fix any data leakage issues or improve the above systems,
+					but it's your responsibility to ensure that your usage of Sentry complies with any relevant privacy
+					laws.
+				</p>
+			</chapter>
+		</chapter>
+
+		<chapter title="v1.7.0-SNAPSHOT" id="kordex-1.7.0-SNAPSHOT">
+			<format style="italic">
+				Published to Discord on November 24th, 2023.
+			</format>
+
+			<p>
+				The new KordEx snapshot cycle begins with <code>1.7.0-SNAPSHOT</code> targeting Kord
+				<code>0.13.0-SNAPSHOT</code>.
+				This release contains breaking deprecations, so remember to rebuild your code before pushing an update!
+			</p>
+
+			<p>
+				As always, feel free to give things a try, and let us know if you run into any issues!
+			</p>
+		</chapter>
+
+		<chapter title="v1.6.0" id="kordex-1.6.0">
+			<format style="italic">
+				Published to GitHub on November 24th, 2023.
+			</format>
+
+			<p>
+				This release targets Kord <code>0.12.0</code>, the latest stable release for Kord.
+				Hot off the presses for those of you who rely on stable releases!
+			</p>
+
+			<format style="bold">Highlights from this release:</format>
+
+			<list type="bullet">
+				<li>
+					Transitioned to a new Discord server.
+					You can also now <a href="https://ko-fi.com/gsc">support development via Ko-fi!</a>
+				</li>
+
+				<li>
+					Began work on <a href="https://docs.kordex.dev">a new documentation site with Writerside.</a>
+					You can find the source <a href="https://github.com/kord-extensions/docs">in its own repository.</a>
+				</li>
+
+				<li>
+					We now use Kotlin 1.9.20 and Java 17, and you should too.
+				</li>
+
+				<li>
+					We've updated a bunch of dependencies.
+					Read more in the <code>libs.versions.toml</code> file.
+				</li>
+
+				<li>
+					Created an experimental <code>ChangeSet</code> type, used to compare voice states. We need feedback on this!
+				</li>
+
+				<li>
+					Introduced extra first-party data adapters, such as the MongoDB data adapter.
+				</li>
+
+				<li>
+					An in-development custom plugin system to better meet KordEx's needs.
+				</li>
+
+				<li>
+					A generic interaction context type to support more generalized code.
+				</li>
+
+				<li>
+					A paginator mutation system, allowing for changes to pages, paginators and paginator components.
+				</li>
+
+				<li>
+					New checks that match the bot application's owner and team roles.
+				</li>
+
+				<li>
+					New supported locale: Korean by Penta0308.
+				</li>
+
+				<li>
+					Many small fixes, quality-of-life features and updates that aren't large enough to detail here.
+				</li>
+			</list>
+
+			<format style="bold">Community Contributions:</format>
+
+			<list type="bullet">
+				<li>
+					#200 by DeDiamondPro — More select menu types.
+				</li>
+
+				<li>
+					#201 by NoCommend and sschr15 — Convert mappings extension configuration to storage units.
+				</li>
+
+				<li>
+					#211 by Lukellmann — Fix breaking changes from Kord Kotlin/JS support.
+				</li>
+
+				<li>
+					#212 by Lukellmann — Fix compilation error caused by source-incompatible Kord change.
+				</li>
+
+				<li>
+					#222 by ADudeCalledLeo — Allow slash command groups and subcommands at the same level.
+				</li>
+
+				<li>
+					#243 by sschr15 — Update Linkie and add 3 new namespaces.
+				</li>
+			</list>
+
+			<p>
+				As always, if you run into any problems, please let us know!
+			</p>
+		</chapter>
+
+		<chapter title="v1.6.0-SNAPSHOT" id="kordex-1.6.0-SNAPSHOT">
+			<format style="italic">
+				Published to Discord on October 27th, 2023.
+			</format>
+
+			<p>
+				I've just gone ahead and pushed KordEx version <code>1.6.0-SNAPSHOT</code>.
+			</p>
+
+			<p>
+				This release was pushed in part to address
+				<a href="https://github.com/Kord-Extensions/kord-extensions/issues/216">#216,</a>
+				which required breaking structural changes.
+			</p>
+
+			<list type="bullet">
+				<li>
+					<code>EphemeralInteractionContext</code> and <code>PublicInteractionContext</code> now both extend
+					the new <code>InteractionContext</code> interface,
+					which provides a common base type exposing the functionality present in both subtypes.
+				</li>
+
+				<li>
+					As the interaction context functions have been moved to a base interface, they are no longer inline.
+					You'll find them directly within their respective types, and you will need to remove the imports
+					you were using.
+				</li>
+
+				<li>
+					<code>respondPublic</code> and <code>respondEphemeral</code>, which were used to deliberately send
+					Discord the wrong follow-up type, have been moved to a single base function named
+					<code>respondOpposite</code>.
+				</li>
+
+				<li>
+					New opt-in annotations have been added to warn you when a function call may result in unexpected
+					behavior.
+					For the time being, this is only being used for some of the interaction context functions,
+					but they may be used more widely later.
+				</li>
+
+				<li>
+					[<a href="https://github.com/Kord-Extensions/kord-extensions/issues/214">#214</a>]
+					<code>ArgumentParsingException</code> now includes the relevant <code>locale</code> and
+					<code>bundle</code> properties, which can be used for further customization of error messages.
+				</li>
+			</list>
+
+			<p>
+				As always, let me know if you run into any issues.
+			</p>
+		</chapter>
+
+		<chapter title="v1.5.12-SNAPSHOT" id="kordex-1.5.12-SNAPSHOT">
+			<format style="italic">
+				Published to Discord on October 27th, 2023.
+			</format>
+
+			<p>
+				Another quick update, KordEx version <code>1.5.11-SNAPSHOT</code>.
+			</p>
+
+			<p>
+				This version tracks Kord <code>0.12.0-SNAPSHOT</code>, and contains the following dependency updates:
+			</p>
+
+			<list type="bullet">
+				<li><code>jansi</code> 2.4.1</li>
+				<li><code>jsoup</code> 1.16.2</li>
+				<li><code>kord</code> 0.12.0-SNAPSHOT</li>
+				<li><code>ktor</code> 2.3.5</li>
+				<li><code>mongodb</code> 4.11.0</li>
+				<li><code>sentry</code> 6.32.0</li>
+			</list>
+
+			<p>
+				I've also begun rewriting the documentation using Writerside — you can keep an eye on that progress
+				<a href="https://github.com/Kord-Extensions/docs">here.</a>
+			</p>
+
+			<p>
+				As always, let me know if you run into any issues.
+			</p>
+		</chapter>
+
+		<chapter title="v1.5.10-SNAPSHOT" id="kordex-1.5.10-SNAPSHOT">
+			<format style="italic">
+				Published to Discord on October 5th, 2023.
+			</format>
+
+			<p>
+				Quick notification to announce the release of KordEx version <code>1.5.10-SNAPSHOT</code>.
+			</p>
+
+			<list type="bullet">
+				<li>
+					Work has begun on a new plugin system, supporting proper constraints and a more reasonable
+					class-loading pattern.
+					This system is self-contained, and you'll be able to use it in any project if you wish to — but
+					there's more work to be done on it right now.
+
+					<format style="bold">
+						If you have any feedback or information on what might be useful from a plugin system, please
+						let me know!
+					</format>
+				</li>
+
+				<li>
+					KordEx now requires <format style="bold">at least Java 13</format>
+					as it now makes use of APIs only available since that version.
+				</li>
+
+				<li>
+					KordEx has been updated to Kord version <code>0.11.1</code>.
+				</li>
+			</list>
+
+			<p>
+				As always, let me know if you run into any issues.
+			</p>
+		</chapter>
+
+		<chapter title="v1.5.9-SNAPSHOT" id="kordex-1.5.9-SNAPSHOT">
+			<format style="italic">
+				Published to Discord on August 9th, 2023.
+			</format>
+
+			<p>
+				I've just pushed KordEx <code>1.5.9-SNAPSHOT</code> to GitHub, and it should be available on Maven in 15-20 minutes.
+			</p>
+
+			<p>
+				This is a dependency update version — KordEx is now built against Kord 0.11.0-SNAPSHOT
+				and makes use of Kotlin 1.9.0.
+				As always, please let me know if you run into any issues!
+			</p>
+		</chapter>
+
+		<chapter title="v1.5.8-SNAPSHOT" id="kordex-1.5.8-SNAPSHOT">
+			<format style="italic">
+				Published to Discord on June 18th, 2023.
+			</format>
+
+			<p>
+				<code>1.5.8-SNAPSHOT</code> has been released, to follow Kord's new snapshot policy
+				(and track Kord <code>0.10.0-SNAPSHOT</code>).
+				As usual, it should be available on Sonatype Snapshots in about 15 minutes.
+			</p>
+
+			<p>
+				I've also added a small util - <code>User.tagOrUsername()</code> - which returns a username with or
+				without a discriminator, depending on whether a user has migrated to the new username system.
+			</p>
+
+			<p>
+				This will be removed pretty quickly once Discord has fully migrated everyone, so be warned.
+			</p>
+		</chapter>
+
+		<chapter title="v1.5.7-SNAPSHOT" id="kordex-1.5.7-SNAPSHOT">
+			<format style="italic">
+				Published to Discord on March 25th, 2023.
+			</format>
+
+			<p>
+				<code>1.5.7-SNAPSHOT</code> (based on Kord <code>0.9.x-SNAPSHOT</code>) has been published, and
+				that'll be the working version for now.
+			</p>
+		</chapter>
+
+		<chapter title="v1.5.6" id="kordex-1.5.6">
+			<format style="italic">
+				Published to GitHub on March 25th, 2023.
+			</format>
+
+			<p>
+				This release targets Kord <code>0.8.0</code>, the latest stable release for Kord.
+				It's been over a year since the previous stable Kord release,
+				so it's also been a year since the previous stable KordEx release.
+				How time flies, right?
+			</p>
+
+			<p>
+				Please note that as of this release, the <code>develop</code> branch is going away.
+				Please re-parent your PRs to target the <code>root</code> branch.
+			</p>
+
+			<format style="bold">A note about Maven repos:</format>
+
+			<p>
+				Please be aware that as of this release, KordEx is now being deployed to these Maven servers:
+			</p>
+
+			<list type="bullet">
+				<li><format style="bold">Releases:</format> Maven Central</li>
+				<li><format style="bold">Snapshots:</format> Sonatype Snapshots</li>
+			</list>
+
+			<p>
+				KordEx releases will no longer be published to the Kotlin Discord maven repo.
+			</p>
+
+			<format style="bold">Highlights of this release:</format>
+
+			<list type="bullet">
+				<li>
+					We now use Kotlin 1.8.0, and you should too
+				</li>
+
+				<li>
+					Support for Modal forms has been added, which function similarly to argument classes
+					and can be provided to your commands and components in the same way
+				</li>
+
+				<li>
+					KordEx is now capable of intercepting unknown Kord events and submitting its own events in their
+					place.
+					Initially, this just includes the experimental member screening events available on a handful of
+					servers,
+					but PRs will be accepted for other event types that Kord doesn't plan on supporting
+				</li>
+
+				<li>
+					A data adapter and storage unit system have been added,
+					allowing extensions to more easily store data,
+					with the ability for individual bots to define how that data should be stored.
+					Note, however, that this is an early version of that system, and it will likely be changed
+					significantly later
+				</li>
+
+				<li>
+					A module, <code>extra-pluralkit</code>, has been created to make things easier for bots that wish
+					to support PluralKit, a widespread accessibility tool on Discord that's mainly used by plural
+					systems
+				</li>
+
+				<li>
+					Additional checks have been added that allow you to test for NSFW channels and guild NSFW levels,
+					among other things
+				</li>
+
+				<li>
+					A cache map object with an extra typed API has been added,
+					allowing you to cache data between checks and make use of it in the body of your commands.
+					This also allows you to cache data between task runs and provide extra event context for Kord events
+				</li>
+
+				<li>
+					Commands were given their own translation bundles, which fall back to their extension's if missing
+				</li>
+
+				<li>
+					Slash commands may be fully localized
+				</li>
+
+				<li>
+					Many misc utils have been added, and fixes and additions have been made for existing utils
+				</li>
+
+				<li>
+					Individual converts have been updated with new features and fixes
+				</li>
+
+				<li>
+					The test bot has been moved to its own module, which makes it easier to look over and modify
+				</li>
+			</list>
+
+			<p>
+				As always, if you run into any problems, please let us know!
+			</p>
+		</chapter>
+
+		<chapter title="v1.5.6-SNAPSHOT" id="kordex-1.5.6-SNAPSHOT">
+			<format style="italic">
+				Published to Discord on December 15th, 2022.
+			</format>
+
+			<p>
+				I've been hard at work, finally bringing an abstraction for Discord's modals to KordEx.
+				As of this message, <code>1.5.6-SNAPSHOT</code> has been pushed,
+				which includes my first attempt at getting an abstraction together.
+			</p>
+
+			<p>
+				To use modals, create a class that extends <code>ModalForm</code>, and pass the constructor into your
+				command and component functions — just how you would with your argument classes.
+				If you're using this with a command that already has arguments,
+				then this should go <format style="bold">after</format> your <code>Arguments</code> class constructor
+				reference — <code>ephemeralSlashCommand(::MyArgs, MyModal) { ...</code>.
+			</p>
+
+			<p>
+				Within your new class, you can create variables that store widgets,
+				which can be created by using the <code>lineText</code> and <code>paragraphText</code> builder
+				functions.
+				Remember to provide a label for all of your widgets!
+			</p>
+
+			<p>
+				This introduces a new (nullable due to Kotlin's type system) parameter to your <code>action</code>
+				blocks — which you can get at like this: <code>action { modal -> ...</code>.
+				You can access the input data provided by the user by accessing the <code>value</code> property on
+				each widget.
+			</p>
+
+			<p>
+				Modal titles, widget labels, etc. are translatable and will inherit the bundle you're using in the
+				definition context — so, the bundle your component or command is using.
+				You can also define the bundle in your <code>ModalForm</code> subtype instead if you prefer.
+			</p>
+		</chapter>
+
+		<chapter title="v1.5.5-SNAPSHOT" id="kordex-1.5.5-SNAPSHOT">
+			<format style="italic">
+				Published to Discord on July 8th, 2022.
+			</format>
+
+			<p>
+				I've just pushed up <code>1.5.5-SNAPSHOT</code>,
+				which uses Kotlin <code>1.7.10</code>
+				and is based on Kord's <code>0.8.x-SNAPSHOT</code> versions again.
+			</p>
+
+			<p>
+				Please note that all KordEx dependencies have been updated —
+				as usual, you'll find them in the <code>libs.versions.toml</code>
+			</p>
+
+			<p>
+				Let me know if you run into any issues!
+			</p>
+		</chapter>
+
+		<chapter title="v1.5.3-SNAPSHOT" id="kordex-1.5.3-SNAPSHOT">
+			<format style="italic">
+				Published to Discord on April 17th, 2022.
+			</format>
+
+			<p>
+				KordEx 1.5.3-SNAPSHOT has been pushed to GitHub and is currently building.
+				However, there are a number of things to be aware of:
+			</p>
+
+			<list type="bullet">
+				<li>
+					Support for Java versions older than Java 11 had to be dropped, due to dependencies also dropping
+					support
+				</li>
+
+				<li>
+					This version of KordEx <format style="bold">was not built with Kotlin 1.6.20;</format>
+					however, everything else has been updated
+				</li>
+			</list>
+
+			<p>
+				That last point is particularly notable because it turns out that Kotlin 1.6.20 is causing a lot of
+				problems for several projects.
+			</p>
+
+			<list type="bullet">
+				<li>
+					There's a compiler bug that breaks compilation for classes
+					containing functions that take a suspending callable argument with a default value
+				</li>
+
+				<li>
+					KSP has a number of serious problems on 1.6.20 which entirely break our annotation processor
+				</li>
+
+				<li>
+					Both KSP and the Kotlin compiler have developed issues which don't show up unless you're doing a
+					clean build,
+					which makes me worry that there are serious consistency issues in build output
+				</li>
+			</list>
+
+			<p>
+				In short, Kotlin 1.6.20 has showstopping issues that make me feel like it should never have been
+				pushed as a stable release.
+				The same goes for KSP 1.0.5, which only supports Kotlin 1.6.20.
+			</p>
+
+			<p>
+				While it's possible that your bots may build just fine with Kotlin 1.6.20,
+				and it's true that Kord has managed to move to Kotlin 1.6.20,
+				<format style="bold">I do not recommend moving to it for your bots.</format>
+				I'd advise that you stick with Kotlin 1.6.10 until these issues are fixed,
+				which may require another Kotlin compiler release cycle.
+			</p>
+		</chapter>
+
+		<chapter title="v1.5.2-RC1" id="kordex-1.5.2-RC1">
+			<format style="italic">
+				Published to GitHub on February 6th, 2022.
+			</format>
+
+			<p>
+				This release targets Kord <code>0.8.0-M9</code>, the latest stable release for Kord.
+				We've been waiting for this one for some time — it's nice to get something new out there for you!
+			</p>
+
+			<format style="bold">A note about Maven repos:</format>
+
+			<p>
+				Please be aware that as of this release, the following Maven repos are no longer being mirrored by the
+				Kotlin Discord Maven server:
+			</p>
+
+			<list type="bullet">
+				<li>Bintray: Exposed, Kord, KTor</li>
+				<li>Google</li>
+				<li>Maven Central</li>
+				<li>Sonatype Snapshots</li>
+			</list>
+
+			<p>
+				You'll need to update your buildscripts to correspond with these changes.
+				If you run into any trouble, you can always take a look at the KordEx template project again.
+			</p>
+
+			<format style="bold">Highlights of this release:</format>
+
+			<list type="bullet">
+				<li>
+					KordEx is now licensed under the Mozilla Public License.
+					It previously used The MIT License, but I felt that this was a little too weak.
+				</li>
+
+				<li>
+					Rewritten converter function syntax, which now uses a DSL instead of a function call.
+					This makes things overall much cleaner and allows us to add additional features to the argument
+					system easily.
+					Speaking of which...
+				</li>
+
+				<li>
+					Command arguments now support <code>mutate { }</code> and <code>autoComplete { }</code>
+					(for slash commands) options.
+					Additionally,
+					validation now uses <code>validate { }</code>, which uses an API that's much closer to how checks
+					work elsewhere.
+				</li>
+
+				<li>
+					Improvements to application command registration,
+					including not trying to remove commands that were already removed via a batch update.
+				</li>
+
+				<li>
+					Easier disabling of components, optional locking for guild member requests,
+					Sentry support for scheduled tasks,
+					and the removal of the requirement for paginator page groups to have the same number of pages.
+				</li>
+
+				<li>
+					Extra utilities, such as better names for timeout-related fields,
+					an async start function that launches,
+					convenience single-action functions for modifying Members quickly,
+					easy functions for supplying maps to autocomplete interactions,
+					and more!
+				</li>
+
+				<li>
+					An early version of a dynamic plugin loading system.
+					Because you can't get at classes from loaded plugins, this currently is limited in usefulness,
+					but we'll be expanding upon it later on.
+				</li>
+
+				<li>
+					A myriad of bug fixes and new translations.
+				</li>
+
+				<li>
+					<format style="bold">Mappings Extension:</format> Support for Quilt Mappings, Hashed Mojmap and
+					slash command autocomplete for MC versions.
+				</li>
+
+				<li>
+					<format style="bold">Phishing Extension:</format> Better filtering, redirect support, and usage of
+					the Sinking Yachts websocket for instant domain list updates.
+				</li>
+			</list>
+
+			<p>
+				At the moment, the wiki hasn't been updated for these changes.
+				Unfortunately, I lack the time to update them quickly, but they'll get there!
+			</p>
+
+			<p>
+				As always, if you run into any problems, please let us know!
+			</p>
+		</chapter>
+
+		<chapter title="v1.5.2-SNAPSHOT" id="kordex-1.5.2-SNAPSHOT">
+			<format style="italic">
+				Published to Discord on January 16th, 2022.
+			</format>
+
+			<p>
+				I've just merged KordEx 1.5.2-SNAPSHOT.
+				This new version of KordEx contains the new DSL-style converter builder system,
+				which additionally requires that your custom converters make use of KSP and the <code>@Converter</code>
+				annotation.
+				It also adds check-style <code>validate {}</code> builders for validation
+				(eg via <code>failIf()</code>) and a <code>mutate {}</code> function allowing you to return a
+				changed final value.
+			</p>
+
+			<p>
+				This system is <format style="italic">not</format> documented yet and may not be for some time.
+				However, I encourage you to try this out with bots that don't have custom converters just to see how
+				things work.
+				For the most part, it should be easy to figure things out — let's say you have a converter like this:
+			</p>
+
+			<code-block lang="kotlin">
+				val username by string("username", "Username to delete from the universe")
+			</code-block>
+
+			<p>
+				You would update this by switching to the new syntax:
+			</p>
+
+			<code-block lang="kotlin">
+				val username by string {
+					name = "username"
+					description = "Username to delete from the universe"
+				}
+			</code-block>
+
+			<p>
+				Of course, your IDE autocomplete will help you out here.
+				Additionally, please note that all coalescing converter functions have been renamed,
+				replacing <code>coalesced</code> with <code>coalescing</code> in the function name.
+			</p>
+		</chapter>
+
+		<chapter title="v1.5.1-RC1" id="kordex-1.5.1-RC1">
+			<format style="italic">
+				Published to GitHub on October 12th, 2021.
+			</format>
+
+			<p>
+				This release is our first "stable" release in quite a long time,
+				targeting Kord <code>0.8.0-M7</code>.
+				The reason for this is largely due to Kord's extremely long snapshot cycle,
+				which itself was caused by many changes to Discord's APIs.
+				In turn, this means that this release contains a mind-boggling number of internal changes.
+			</p>
+
+			<p>
+				We've done our best to keep things as compatible as possible, API-wise. Despite this, though, we've had no choice but to break a few things.
+			</p>
+
+			<p>Highlights of this release:</p>
+
+			<list type="bullet">
+				<li>
+					With a lot of help from ByteAlex, we've been able to eliminate many, many unnecessary cache hits,
+					making use of behaviors rather than entities wherever possible.
+					This makes KordEx far more suitable for large bots with different caching requirements.
+				</li>
+
+				<li>
+					Full support for message and user commands have been added,
+					which comes with a full rewrite of the application commands system.
+					Application commands now always require a <code>public</code> or <code>ephemeral</code> type, to
+					help keep things safe.
+					Additionally, our old message commands are now named chat commands and have their functions
+					prefixed with <code>chat</code>.
+				</li>
+
+				<li>
+					The components system has been fully rewritten,
+					including a similar typing requirement to application commands.
+					It comes with a <code>ComponentContainer</code> type which makes it easier to re-use components,
+					as well as a callback registry for advanced use-cases
+					(such as components that need to work after a restart).
+				</li>
+
+				<li>
+					The Sentry integration has been rewritten,
+					and you'll find a <code>SentryContext</code> provided everywhere you'd expect to be able to make
+					use of Sentry,
+					instead of a plain list of breadcrumbs.
+					This, along with several other improvements, should make Sentry much more pleasant to work with.
+				</li>
+
+				<li>
+					Our translation platform
+					<a href="https://hosted.weblate.org/engage/kord-extensions/">has been switched to Weblate</a>.
+					If you're a translator (or would like to help with translations), please head over there!
+				</li>
+
+				<li>
+					Lots of deprecated things have now been removed.
+					If you were still using them, well, you were warned!
+				</li>
+			</list>
+
+			<p>
+				There are far too many changes to list here.
+				The existing pages on the wiki have been rewritten for this release,
+				and we'd suggest taking a look at them to refresh your knowledge.
+				There's still documentation work that needs doing, but we'll get there!
+			</p>
+
+			<p>
+				As always, if you run into any problems, please let us know!
+			</p>
+		</chapter>
+
+		<chapter title="v1.5.1-SNAPSHOT" id="kordex-1.5.1-SNAPSHOT">
+			<format style="italic">
+				Published to Discord on October 7th, 2021.
+			</format>
+
+			<p>
+				<format style="bold">KordEx 1.5.1-SNAPSHOT is now live!</format>
+			</p>
+
+			<p>
+				I decided to bump the version in line with the update to Kord 0.8.0-M6.
+				This release beings a bunch of underlying changes that people have been waiting for in Kord,
+				and it also brings the following fixes on top of the current snapshot work:
+			</p>
+
+			<list type="bullet">
+				<li>
+					Fix for <code>deferredAck</code> being inverted for ephemeral components
+				</li>
+
+				<li>
+					Load order has now returned to what it was before the automatic intent generation feature was added,
+					so the <code>Kord</code> instance is once again created a lot earlier.
+				</li>
+			</list>
+		</chapter>
+
+		<chapter title="v1.5.0-SNAPSHOT" id="kordex-1.5.0-SNAPSHOT">
+			<format style="italic">
+				Published to Discord on September 6th, 2021.
+			</format>
+
+			<p>
+				As of the latest push, <format style="bold">KordEx 1.5.0-SNAPSHOT is ready for testing!</format>
+			</p>
+
+			<p>
+				A lot of things have changed in this release. For an overview, take a look at
+				<a href="https://github.com/Kord-Extensions/kord-extensions/issues/72">the tracking issue</a> —	but
+				I'll list some things you may be wondering below.
+			</p>
+
+			<list type="bullet">
+				<li>
+					<p>
+						Every single command function has been replaced:
+					</p>
+
+					<list type="bullet">
+						<li>
+							Message commands are now chat commands, with the <code>command</code> DSL function being
+							renamed to <code>chatCommand</code> - and they're disabled by default, in line with
+							Discord's requirements for larger bots
+						</li>
+
+						<li>
+							Slash commands have been split into <code>publicSlashCommand</code> and
+							<code>ephemeralSlashCommand</code>
+						</li>
+
+						<li>
+							Message and user commands have been added, with <code>public*</code> and
+							<code>ephemeral*</code> DSL functions
+						</li>
+					</list>
+				</li>
+
+				<li>
+					Interaction-based commands/components no longer have <code>autoAck</code>,
+					but you can use the <code>initialResponse</code> DSL to ack with response or call the
+					<code>edit</code> function in your <code>action</code> to edit the acknowledged response
+				</li>
+
+				<li>
+					Components have been completely revamped,
+					and everything is typed similarly to how the interaction-based commands are now —
+					though, since components are centralized now, no timeout mechanism has been provided for them
+				</li>
+
+				<li>
+					Scheduled tasks for the <code>Scheduler</code> now have an easy <code>restart</code> function
+				</li>
+
+				<li>
+					Paginators have been split out into four types
+					(chat, public followup, public response, and ephemeral response),
+					matching the contexts you'd use them in.
+					This means you can have an ephemeral interaction and the paginator will edit its initial response,
+					finally!
+				</li>
+			</list>
+
+			<p>
+				There are many, many other changes, big and small.
+				We'd massively appreciate it if people could start testing this release
+				and provide us with feedback on what's not working properly — and what needs changing.
+			</p>
+
+			<p>
+				If something is missing,
+				please leave a comment on
+				<a href="https://github.com/Kord-Extensions/kord-extensions/issues/72">the tracking issue</a>
+			</p>
+		</chapter>
+
+		<chapter title="v1.4.4-RC4" id="kordex-1.4.4-RC4">
+			<format style="italic">
+				Published to GitHub on August 21st, 2021.
+			</format>
+
+			<format style="bold">Changes since v1.4.4-RC3:</format>
+
+			<list type="bullet">
+				<li>
+					Fix error when you have paginator pages with empty footer text
+				</li>
+
+				<li>
+					Add suspending paginator DSL functions in both types of command context
+				</li>
+
+				<li>
+					Set up VSC Web for medium-complexity PRs — head to the <code>develop</code>
+					branch on GitHub and hit <code>.</code> on your keyboard!
+				</li>
+
+				<li>
+					Make translation debug logging less verbose by moving it to <code>trace</code> logging
+				</li>
+
+				<li>
+					<code>Allow for enabling the Sentry integration without adding the Sentry extension</code>
+				</li>
+
+				<li>
+					Allow for customizing the KordBuilder during setup
+				</li>
+
+				<li>
+					<format style="bold">Mappings module:</format> Fix a bad Linkie dependency
+				</li>
+			</list>
+
+			<p>
+				The following issues were solved in this release:
+			</p>
+
+			<list type="bullet">
+				<li>
+					<a href="https://github.com/Kord-Extensions/kord-extensions/issues/69">#69 (Nice!)</a>:
+					Allow selecting a custom HTTP engine for Kord (niche request!)
+				</li>
+
+				<li>
+					<a href="https://github.com/Kord-Extensions/kord-extensions/issues/70">#70</a>:
+					Less verbose translation logging
+				</li>
+
+				<li>
+					<a href="https://github.com/Kord-Extensions/kord-extensions/issues/69">#71</a>:
+					Allow disabling feedback command when using sentry extension
+				</li>
+			</list>
+		</chapter>
+
+		<chapter title="v1.4.4-RC3" id="kordex-1.4.4-RC3">
+			<format style="italic">
+				Published to GitHub on August 9th, 2021.
+			</format>
+
+			<format style="bold">Changes since v1.4.4-RC2:</format>
+
+			<list type="bullet">
+				<li>Update to Kord 0.8.0-M4</li>
+
+				<li>
+					Checks are now consistent in behavior regarding events that they don't support - negating checks
+					(containing the word <code>not</code>) will always pass in this situation,
+					and all other checks will always fail in this situation.
+				</li>
+
+				<li>
+					Paginator <code>Page</code> objects are now backed by a Kord <code>EmbedBuilder</code>,
+					and should be constructed using the builder syntax.
+					For example: <code>Page(bundle) { description = "This is a page." }</code>
+				</li>
+
+				<li>
+					The <code>ExtensionEvent</code> class now extends Kord's <code>Event</code> type, with a shard
+					number of <code>-1</code>
+				</li>
+
+				<li>
+					The <code>guildFor()</code> function for <code>InteractionCreateEvent</code> was changed to
+					manually get the guild from the interaction data, as it can otherwise be missing in some situations
+				</li>
+			</list>
+
+			<p>
+				Documentation work is still ongoing, and KordEx will see more changes as things are documented -
+				the documentation process makes it really easy to see (and change) things that don't make intuitive
+				sense.
+			</p>
+
+			<p>
+				The following issues were solved in this release:
+			</p>
+
+			<list type="bullet">
+				<li>
+					<a href="https://github.com/Kord-Extensions/kord-extensions/issues/65">#65</a>:
+					Make ActionableComponentBuilder's ID customizable
+				</li>
+
+				<li>
+					<a href="https://github.com/Kord-Extensions/kord-extensions/issues/66">#66</a>:
+					Add the addition emoji helpers from ButtonBuilder to SelectOptionBuilder
+				</li>
+
+				<li>
+					<a href="https://github.com/Kord-Extensions/kord-extensions/issues/67">#67</a>:
+					Paginators, pages do no support embed fields
+				</li>
+			</list>
+		</chapter>
+
+		<chapter title="v1.4.4-RC2" id="kordex-1.4.4-RC2">
+			<format style="italic">
+				Published to GitHub on August 5th, 2021.
+			</format>
+
+			<format style="bold">Changes since v1.4.4-RC1:</format>
+
+			<list type="bullet">
+				<li>Update to Kord 0.8.0-M3</li>
+			</list>
+
+			<p>
+				This is a release to match Kord's hotfix, which fixes a regression that broke interaction
+				acknowledgements.
+			</p>
+		</chapter>
+
+		<chapter title="v1.4.4-RC1" id="kordex-1.4.4-RC1">
+			<format style="italic">
+				Published to GitHub on August 4th, 2021.
+			</format>
+
+			<note>
+				<format style="bold">Note:</format> This release contains breaking changes for the checks system.
+				<format style="bold">All custom checks must be rewritten!</format>
+				If you need help figuring this out, please let us know on Discord.
+			</note>
+
+			<format style="bold">Changes since v1.4.2:</format>
+
+			<list type="bullet">
+				<li>Update to Kord 0.8.0-M1</li>
+				<li>Default to rest-aware caching and allow configuration of caching strategy</li>
+				<li>Add kotlinx.datetime converters and utils</li>
+				<li>Add support for select menus in the <code>Components</code> builder</li>
+				<li>Add support for Discord's slash command perms, including enforcing them at the framework level</li>
+
+				<li>
+					Add support for threads, including extra checks that only operate on threads or flatten them to
+					top channels
+				</li>
+
+				<li>Trim slash command arguments to workaround inconsistent data from Discord</li>
+
+				<li>
+					<p>
+						Redo the checks system, requiring calls to one of the <code>fail</code> functions to fail a
+						check
+					</p>
+
+					<list type="bullet">
+						<li><format style="bold">This is breaking, checks must be redone</format></li>
+						<li>Checks may now also return a failure message for commands</li>
+					</list>
+				</li>
+			</list>
+
+			<p>
+				This release includes commits that address the following issues:
+			</p>
+
+			<list type="bullet">
+				<li>
+					<a href="https://github.com/Kord-Extensions/kord-extensions/issues/58">#58</a> — Checks overhaul
+				</li>
+
+				<li>
+					<a href="https://github.com/Kord-Extensions/kord-extensions/issues/62">#62</a> — Make automatic
+					acknowledge type naming more consistent
+				</li>
+			</list>
+
+			<p>
+				The following PRs were merged:
+			</p>
+
+			<list type="bullet">
+				<li>
+					<a href="https://github.com/Kord-Extensions/kord-extensions/pull/61">#61</a> — Use epochSeconds for
+					toDiscord timestamp extension function
+				</li>
+
+				<li>
+					<a href="https://github.com/Kord-Extensions/kord-extensions/pull/64">#64</a> — insert semicolon in
+					Lclass;method for mixin target
+				</li>
+			</list>
+		</chapter>
+
+		<chapter title="v1.4.1" id="kordex-1.4.1">
+			<format style="italic">
+				Published to GitHub on July 2nd, 2021.
+			</format>
+
+			<p>
+				This is a huge release, and a massive milestone for KordEx.
+				There have been far too many changes to detail in this changelog — nearly 210 commits in total.
+				Some highlights include:
+			</p>
+
+			<list type="bullet">
+				<li>
+					Support for slash commands
+				</li>
+
+				<li>
+					A completely rewritten argument parser
+
+				</li>
+
+				<li>
+					Support for button components and new paginators that use them
+				</li>
+
+				<li>
+					Decoupling of KordEx classes using Koin
+				</li>
+
+				<li>
+					An annotation processor for generating converter functions
+				</li>
+
+				<li>
+					Full support for i18n, including translations
+				</li>
+			</list>
+
+			<p>
+				... and much, much more!
+			</p>
+
+			<p>
+				If you're migrating from the previous stable version,
+				there's a slightly more in-depth overview of the changes in the docs.
+				Otherwise, we suggest treating this release version as an entirely new iteration of the KordEx
+				concept — most things have been changed,
+				and almost everything will need at least a minor tweak to get things to work.
+			</p>
+
+			<p>
+				As always, if you need help, contact us on Discord!
+			</p>
+		</chapter>
+
+		<chapter title="v1.4.0-RC7" id="kordex-1.4.0-RC7">
+			<format style="italic">
+				Published to GitHub on March 2nd, 2021.
+			</format>
+
+			<p>
+				Chances since KordEx 1.4.0-RC6:
+			</p>
+
+			<list type="bullet">
+				<li>
+					Slash command support!
+					As we now have two types of command, the old <code>Command</code> class has been renamed to
+					<code>MessageCommand</code>.
+					Additionally, <code>CommandContext</code> is now <code>MessageCommandContext</code>.
+					You'll find similar classes that relate to slash commands as well.
+				</li>
+
+				<li>
+					All arguments specified in <code>Arguments</code> objects now require a description.
+				</li>
+
+				<li>
+					Command arguments classes (and just classes in general really) are now nicer to pass around,
+					as they're treated like builders and received in more logical places.
+				</li>
+
+				<li>
+					The help extension and sentry functionality have both been updated
+					to support command argument descriptions and slash commands for feedback.
+				</li>
+
+				<li>
+					The paginator has been completely rewritten (and documented), with support for switchable page sets!
+				</li>
+
+				<li>
+					Far, far, far too many other changes to simply list here.
+				</li>
+			</list>
+
+			<p>
+				This release has tons of improvements, deprecations, new features and breaking changes.
+				Some of them are listed above,
+				but you should read the migration guide instead of simply relying on this release description.
+			</p>
+
+			<p>
+				<format style="bold">Note:</format> This release targets Kord's latest snapshots as of the time of this
+				release.
+				As they are not formal releases, there's no way to link to release notes.
+				This release mostly exists to provide an anchor point for users that wish to stick to stable versions
+				while still existing within the middle of Kord's extensive snapshot cycle.
+				Hopefully, Discord starts making their API more stable soon!
+			</p>
+		</chapter>
+
+		<chapter title="v1.4.0-RC6" id="kordex-1.4.0-RC6">
+			<format style="italic">
+				Published to GitHub on January 3rd, 2021.
+			</format>
+
+			<p>
+				Chances since KordEx 1.4.0-RC5:
+			</p>
+
+			<list type="bullet">
+				<li>
+					<format style="bold">BREAKING:</format> Rewrote the <code>bot.start()</code> function.
+					If you wish to supply an intent builder or presence builder, this function now takes a single
+					builder lambda (and is thus a DSL function) instead of taking two separate lambdas.
+					It was not possible to deprecate the old version of this function due to conflicting parameter
+					lists, so you'll have to update your bots.
+					For more information, please see the bot object documentation.
+				</li>
+
+				<li>
+					<format style="bold">DEPRECATION:</format> Rewrote the <code>bot.addExtension()</code> function.
+					The old function is still there and has been deprecated,
+					while the new function takes a builder function instead of a reflection-based class object.
+					Functionally, this just means changing <code>bot.addExtension(ExtensionClass::class)</code> to
+					<code>bot.addExtension(::ExtensionClass)</code> in most cases.
+				</li>
+
+				<li>
+					Added extra checks regarding member permissions on guilds — although, please note that these only
+					look at guild permissions and ignore channel overwrites.
+					For more information, please see the checks documentation.
+				</li>
+			</list>
+
+			<p>
+				This release targets Kord 0.7.0-RC.
+			</p>
+		</chapter>
+
+		<chapter title="v1.4.0-RC5" id="kordex-1.4.0-RC5">
+			<format style="italic">
+				Published to GitHub on December 29th, 2020.
+			</format>
+
+			<p>
+				Chances since KordEx 1.4.0-RC4:
+			</p>
+
+			<list type="bullet">
+				<li>
+					Added Koin integration for those that need it. For more information, please read the docs!
+				</li>
+			</list>
+
+			<p>
+				This release targets Kord 0.7.0-RC.
+			</p>
+		</chapter>
+
+		<chapter title="v1.4.0-RC4" id="kordex-1.4.0-RC4">
+			<format style="italic">
+				Published to GitHub on December 23rd, 2020.
+			</format>
+
+			<p>
+				Chances since KordEx 1.4.0-RC3:
+			</p>
+
+			<list type="bullet">
+				<li>
+					Completely rewrote the paginator,
+					allowing for switchable page groups and full customization of page embeds, among other things.
+					There's a lot to this, so I recommend you read over the docs and the integration test
+					and take it out for a spin.
+				</li>
+			</list>
+
+			<p>
+				This release targets Kord 0.7.0-RC.
+			</p>
+		</chapter>
+
+		<chapter title="v1.4.0-RC3" id="kordex-1.4.0-RC3">
+			<format style="italic">
+				Published to GitHub on December 19th, 2020.
+			</format>
+
+			<p>
+				Chances since KordEx 1.4.0-RC2:
+			</p>
+
+			<list type="bullet">
+				<li>
+					<p>
+						Add <code>outputError</code> property to <code>OptionalConverter</code>
+						(but not coalescing variants — that wouldn't make sense) and expose it in <code>Arguments</code>
+						extension functions.
+					</p>
+
+					<p>
+						This will make optional converters still output parse errors and fail command parsing if
+						<code>true</code> is provided (<code>false</code> is the default), if that's something you end
+						up needing in your command parsing logic.
+					</p>
+				</li>
+			</list>
+
+			<p>
+				This release targets Kord 0.7.0-RC.
+			</p>
+		</chapter>
+
+		<chapter title="v1.4.0-RC2" id="kordex-1.4.0-RC2">
+			<format style="italic">
+				Published to GitHub on December 16th, 2020.
+			</format>
+
+			<p>
+				Chances since KordEx 1.4.0-RC1:
+			</p>
+
+			<list type="bullet">
+				<li>
+					Add <code>commandName</code> to <code>CommandContext</code> objects, allowing you to get the
+					(lowered) name the user gave for invocation
+				</li>
+
+				<li>
+					Fix <code>breadcrumb()</code> not actually adding the breadcrumb to the <code>MutableList</code>
+					in both <code>CommandContext</code> and <code>EventContext</code>
+				</li>
+			</list>
+
+			<p>
+				This release targets Kord 0.7.0-RC.
+			</p>
+		</chapter>
+
+		<chapter title="v1.4.0-RC1" id="kordex-1.4.0-RC1">
+			<format style="italic">
+				Published to GitHub on December 12th, 2020.
+			</format>
+
+			<p>
+				This is our very first properly versioned release!
+			</p>
+
+			<p>
+				KordEx 1.4.0 brings Kord 0.7.x support
+				(but we'll only release RCs until Kord releases a stable version).
+				Some changes:
+			</p>
+
+			<list type="bullet">
+				<li>
+					Completely reworked command argument parsing system, with a fully documented argument conversion
+					system
+				</li>
+
+				<li>
+					First-class integration with Sentry
+				</li>
+
+				<li>
+					Actual documentation, finally
+				</li>
+			</list>
+
+			<p>
+				As this is our first real release, this changelog will be a little lacking —
+				it does encompass <format style="bold">174 commits</format>, after all.
+				Future releases will be more detailed!
+			</p>
+
+			<p>
+				This release targets Kord 0.7.0-RC.
+			</p>
+		</chapter>
+
+		<chapter title="v1.0" id="kordex-1.0">
+			<format style="italic">
+				Published to GitHub on June 22nd, 2020.
+			</format>
+
+			<p>
+				This is the final version of Kord Extensions for Kord 0.4.x.
+			</p>
+		</chapter>
+	</chapter>
+
+	<chapter title="Gradle Plugins" id="gradle-plugins">
+		<chapter title="v1.4.2" id="gradle-plugins-1.4.2">
+			<format style="italic">
+				Published to GitHub on August 20th, 2024
+			</format>
+
+			<p>
+				This version is a quick update to bump the Kotlin version used for compilation to 2.0.20,
+				so we're no longer depending on release candidates.
+				Thanks to daksh7011 for his timely PR!
+			</p>
+		</chapter>
+
+		<chapter title="v1.4.1" id="gradle-plugins-1.4.1">
+			<format style="italic">
+				Published to GitHub on August 20th, 2024
+			</format>
+
+			<p>
+				This version includes some small changes to the KordEx plugin.
+			</p>
+
+			<chapter title="KordEx Plugin" id="gradle-plugins-1.4.1-kordex">
+				<list type="bullet">
+					<li>
+						Fixed a problem where specifying a specific snapshot (rather than a moving snapshot version)
+						would throw an error.
+					</li>
+
+					<li>
+						The plugin now applies KSP source-sets automatically again.
+					</li>
+				</list>
+
+				<p>
+					This version should fix the KSP issues we've noticed recently.
+					Let us know how you get on!
+				</p>
+			</chapter>
+		</chapter>
+
+		<chapter title="v1.4.0" id="gradle-plugins-1.4.0">
+			<format style="italic">
+				Published to GitHub on August 20th, 2024
+			</format>
+
+			<p>
+				This version involves a significant rewrite of the KordEx plugin, and some small changes to the Docker
+				plugin.
+			</p>
+
+			<chapter title="KordEx Plugin" id="gradle-plugins-1.4.0-kordex">
+				<p>
+					I've rewritten most of the plugin, making it more lazy and moving a lot of code out of
+					<code>afterEvaluate</code>.
+				</p>
+
+				<p>
+					This, along with the other edits, introduces the following changes:
+				</p>
+
+				<list type="bullet">
+					<li>
+						Fix an issue where the Gradle metadata may fail to parse due to unknown keys being present.
+					</li>
+
+					<li>
+						Fix an issue where the bot metadata was out of date when you changed the settings, preventing
+						regeneration.
+					</li>
+
+					<li>
+						Fix an oversight that caused an error when you didn't manually configure a data collection
+						level.
+					</li>
+				</list>
+
+				<p>
+					This release doesn't fix the KSP plugin issue — we're still working on that!
+				</p>
+			</chapter>
+
+			<chapter title="Docker Plugin" id="gradle-plugins-1.4.0-docker">
+				<p>
+					This version includes the following changes:
+				</p>
+
+				<list type="bullet">
+					<li>
+						The plugin will now always regenerate the Dockerfile.
+						This fixes a problem where the Dockerfile would always be out of date when you update your
+						configuration.
+					</li>
+				</list>
+			</chapter>
+		</chapter>
+
+		<chapter title="v1.3.3" id="gradle-plugins-1.3.3">
+			<format style="italic">
+				Published to GitHub on August 18th, 2024
+			</format>
+
+			<p>
+				This version includes a small change to the KordEx plugin.
+			</p>
+
+			<chapter title="KordEx Plugin" id="gradle-plugins-1.3.3-kordex">
+				<p>
+					As the mappings (<code>func-mappings</code>) module is now back,
+					the KordEx plugin no longer throws an error when trying to use it.
+				</p>
+			</chapter>
+		</chapter>
+
+		<chapter title="v1.3.2" id="gradle-plugins-1.3.2">
+			<format style="italic">
+				Published to GitHub on August 17th, 2024
+			</format>
+
+			<p>
+				This version includes a small change to the KordEx plugin.
+			</p>
+
+			<chapter title="KordEx Plugin" id="gradle-plugins-1.3.2-kordex">
+				<p>
+					When you have the KSP plugin applied,
+					the KordEx plugin automatically configures the annotation processor.
+					Now, the plugin will also configure the relevant source-sets,
+					so your IDE will be aware of KSP-generated files.
+				</p>
+			</chapter>
+		</chapter>
+
+		<chapter title="v1.3.1" id="gradle-plugins-1.3.1">
+			<format style="italic">
+				Published to GitHub on August 10th, 2024
+			</format>
+
+			<p>
+				This version makes some changes to the KordEx plugin.
+			</p>
+
+			<chapter title="KordEx Plugin" id="gradle-plugins-1.3.1-kordex">
+				<p>
+					This release improves support for running bots in development
+					and provides a more sensible way to resolve the latest Kord version
+					(when <code>"latest"</code> is specified).
+				</p>
+
+				<list type="bullet">
+					<li>
+						<p>
+							Add a new <code>dev</code> task, which runs your bot in development mode and can
+							recursively parse <code>.env</code> files in your project:
+						</p>
+
+						<list type="bullet">
+							<li>
+								First, the <code>.env</code> file in your project's root directory is parsed.
+							</li>
+
+							<li>
+								Then, if your bot is in a submodule,
+								the KordEx plugin will traverse the directory tree down to it,
+								parsing any <code>.env</code> files it finds on the way,
+								overriding previously set variables if it finds any duplicates.
+							</li>
+
+							<li>
+								Example: <code>/root/.env</code> -> <code>/root/folder/.env</code>
+								-> <code>/root/folder/current-submodule/.env</code>
+							</li>
+
+							<li>
+								The plugin adds these variables to your in-development bot's runtime environment
+								variables.
+							</li>
+
+							<li>
+								You can disable this by setting <code>processDotEnv</code> in your <code>bot { }</code>
+								builder to <code>false</code>.
+							</li>
+						</list>
+					</li>
+
+					<li>
+						When you supply <code>"latest"</code> for the <code>kordVersion</code> property,
+						the plugin will now ignore Kord feature branch snapshots,
+						which should make things more consistent and predictable.
+						You can still supply feature branch snapshots manually if you need to use them.
+					</li>
+
+					<li>
+						The plugin now uses reflection to figure out which version of the Kotlin plugin you've applied,
+						rather than inspecting the buildscript's classpath.
+						This fixes a problem where the classpath is empty in some project configurations.
+					</li>
+
+					<li>
+						When writing KordEx plugins using the <code>plugin { }</code> builder,
+						the plugin now disables all <code>Tar</code> tasks,
+						as building a <code>.tar</code> distribution is nonsensical given Kord Extensions can't load them.
+					</li>
+				</list>
+			</chapter>
+		</chapter>
+
+		<chapter title="v1.3.0" id="gradle-plugins-1.3.0">
+			<format style="italic">
+				Published to GitHub on August 10th, 2024
+			</format>
+
+			<p>
+				This version makes some changes to the KordEx plugin.
+			</p>
+
+			<chapter title="KordEx Plugin" id="gradle-plugins-1.3.0-kordex">
+				<p>
+					The KordEx plugin is now ready for Kord Extensions 2 and is more resilient to metadata resolution
+					problems.
+				</p>
+
+				<list type="bullet">
+					<li>
+						Add support for Kord Extensions 2 dependencies.
+					</li>
+
+					<li>
+						<p>
+							When using Kord Extensions 2, warn about v1 module names and rename them to match the v2
+							names.
+						</p>
+
+						<list type="bullet">
+							<li>
+								When using Kord Extensions 1, this will also happen in reverse for v2 module names.
+							</li>
+
+							<li>
+								<format style="bold">
+									This will become an error in later versions of the plugin.
+								</format>
+							</li>
+						</list>
+					</li>
+
+					<li>
+						Resolvers can now handle missing repository metadata gracefully and provide a more explicit
+						error when they can't resolve a version.
+					</li>
+				</list>
+			</chapter>
+		</chapter>
+
+		<chapter title="v1.2.1" id="gradle-plugins-1.2.1">
+			<format style="italic">
+				Published to GitHub on August 10th, 2024
+			</format>
+
+			<p>
+				This version makes a small change to the KordEx plugin.
+			</p>
+
+			<chapter title="KordEx Plugin" id="gradle-plugins-1.2.1-kordex">
+				<p>
+					For developers working on complex Gradle projects,
+					the plugin now supports an <code>addDependencies</code> configuration option,
+					which you can use to prevent the plugin from configuring any dependencies.
+				</p>
+
+				<p>
+					This may be useful in multi-module projects where you want to define a "common"
+					module that depends on Kord Extensions and configure bots in other modules depending on that one.
+				</p>
+			</chapter>
+		</chapter>
+
+		<chapter title="v1.2.0" id="gradle-plugins-1.2.0">
+			<format style="italic">
+				Published to GitHub on August 10th, 2024
+			</format>
+
+			<p>
+				This version adds a new plugin — the Docker plugin from the template repo.
+			</p>
+
+			<chapter title="Docker Plugin" id="gradle-plugins-1.2.0-docker">
+				<p>
+					This (relatively simple) plugin allows you to generate a Dockerfile based on a Kotlin DSL,
+					centralizing your project's configuration and allowing Docker to adapt to changes,
+					such as renaming a Gradle project.
+				</p>
+
+				<p>
+					For more information, <a href="Docker-Plugin.topic">see the documentation</a>. It is pretty long!
+				</p>
+			</chapter>
+		</chapter>
+
+		<chapter title="v1.1.3" id="gradle-plugins-1.1.3">
+			<format style="italic">
+				Published to GitHub on August 2nd, 2024
+			</format>
+
+			<p>
+				This version targets the KordEx plugin.
+			</p>
+
+			<chapter title="KordEx Plugin" id="gradle-plugins-1.1.3-kordex">
+				<p>
+					This release includes the following changes:
+				</p>
+
+				<list type="bullet">
+					<li>
+						Fail safely when we can't find the Kotlin JVM plugin JAR,
+						and thus can't check for compatibility.
+					</li>
+				</list>
+			</chapter>
+		</chapter>
+
+		<chapter title="v1.1.2" id="gradle-plugins-1.1.2">
+			<format style="italic">
+				Published to GitHub on August 2nd, 2024
+			</format>
+
+			<p>
+				This version targets the KordEx plugin.
+			</p>
+
+			<chapter title="KordEx Plugin" id="gradle-plugins-1.1.2-kordex">
+				<p>
+					This release includes the following changes:
+				</p>
+
+				<list type="bullet">
+					<li>
+						Add a <code>jvmTarget</code> option to the <code>kordEx { }</code> builder,
+						which overrides the JVM compilation target.
+						This would usually come from Kord Extensions,
+						but some projects may need to supply their own version when dealing with some dependencies.
+					</li>
+				</list>
+			</chapter>
+		</chapter>
+
+		<chapter title="v1.1.1" id="gradle-plugins-1.1.1">
+			<format style="italic">
+				Published to GitHub on August 2nd, 2024
+			</format>
+
+			<p>
+				This version targets the KordEx plugin.
+			</p>
+
+			<chapter title="KordEx Plugin" id="gradle-plugins-1.1.1-kordex">
+				<p>
+					This release includes the following changes:
+				</p>
+
+				<list type="bullet">
+					<li>
+						Automatically adds the KordEx annotation processor when you apply the KSP plugin to the project.
+					</li>
+
+					<li>
+						Fix a typo that prevented the Fabric repo from being added to your project's repositories when
+						using the <code>extra-mappings</code> module.
+					</li>
+
+					<li>
+						Support for optionally supplying custom configurations to apply dependencies to.
+					</li>
+
+					<li>
+						Support for projects that aren't bots or plugins, such as standalone modules.
+						This means you can go back to omitting the <code>kordEx { }</code> block,
+						or omit the <code>bot { }</code> and <code>plugin { }</code> blocks,
+						and the plugin will work as expected.
+					</li>
+
+					<li>
+						Non-bot or -plugin projects will automatically avoid depending on Kord's voice module.
+					</li>
+				</list>
+			</chapter>
+		</chapter>
+
+		<chapter title="v1.1.0" id="gradle-plugins-1.1.0">
+			<format style="italic">
+				Published to GitHub on July 31st, 2024.
+			</format>
+
+			<p>
+				This version targets the KordEx plugin.
+				I've made significant changes in this version, so please pay attention!
+			</p>
+
+			<chapter title="KordEx Plugin" id="gradle-plugins-1.1.0-kordex">
+				<p>
+					This release includes the following changes:
+				</p>
+
+				<list type="bullet">
+					<li>
+						<p>
+							Support for building KordEx plugins via the new <code>plugin</code> builder,
+							present in the <code>kordEx</code> builder.
+						</p>
+
+						<list type="bullet">
+							<li>
+								<format style="bold">Required:</format> Plugin class, ID, version
+							</li>
+
+							<li>
+								<format style="bold">Optional:</format> Author, dependencies, description, KordEx
+								version constraint, license
+							</li>
+						</list>
+					</li>
+
+					<li>
+						<p>
+							Support for building KordEx bots moved to a new <code>bot</code> builder, present in the
+							<code>kordEx</code> builder.
+						</p>
+
+						<list type="bullet">
+							<li>
+								<format style="bold">Required:</format> Bot main class
+							</li>
+
+							<li>
+								<format style="bold">Optional:</format> Data collection setting, Kord voice dependency
+								toggle
+							</li>
+						</list>
+					</li>
+
+					<li>
+						<p>
+							The remaining settings haven't moved:
+						</p>
+
+						<list type="bullet">
+							<li>
+								Add repositories toggle, ignore Kotlin version toggle, kord version, kordEx version,
+								kordEx module dependencies
+							</li>
+						</list>
+					</li>
+				</list>
+			</chapter>
+		</chapter>
+
+		<chapter title="v1.0.5" id="gradle-plugins-1.0.5">
+			<format style="italic">
+				Published to GitHub on July 29th, 2024.
+			</format>
+
+			<p>
+				This version targets the KordEx plugin.
+			</p>
+
+			<chapter title="KordEx Plugin" id="gradle-plugins-1.0.5-kordex">
+				<p>
+					This release includes the following changes:
+				</p>
+
+				<list type="bullet">
+					<li>
+						Switch from shadowing FlexVer to sticking it into the project directly.
+						It is a CC0 library intended to be used this way, so may as well take the easy route.
+					</li>
+				</list>
+			</chapter>
+		</chapter>
+
+		<chapter title="v1.0.4" id="gradle-plugins-1.0.4">
+			<format style="italic">
+				Published to GitHub on July 28th, 2024.
+			</format>
+
+			<p>
+				This version targets the KordEx plugin.
+			</p>
+
+			<chapter title="KordEx Plugin" id="gradle-plugins-1.0.4-kordex">
+				<p>
+					This release includes the following changes:
+				</p>
+
+				<list type="bullet">
+					<li>
+						Start linting with Detekt, add an editorconfig, and reformat source files.
+					</li>
+
+					<li>
+						<p>
+							Merged PR #3 by DRSchlaubi - thanks!
+						</p>
+
+						<list type="bullet">
+							<li>
+								Update Gradle to 8.9 and Kotlin to 1.9.23.
+							</li>
+
+							<li>
+								Omit Gradle API/Groovy from the built plugin JAR.
+							</li>
+
+							<li>
+								Switch to Gradle <code>Property</code> objects for plugin configuration.
+							</li>
+						</list>
+					</li>
+
+					<li>
+						<p>
+							Switch to KordEx Maven repo subdomains, which don't execute S3 commands.
+							These domains provide direct access to the R2 buckets storing the Maven artifacts,
+							and you won't be able to browse them directly.
+							The domains are:
+						</p>
+
+						<list type="bullet">
+							<li>
+								<format style="bold">Releases:</format> <code>https://releases-repo.kordex.dev/</code>
+							</li>
+
+							<li>
+								<format style="bold">Snapshots:</format> <code>https://snapshots-repo.kordex.dev/</code>
+							</li>
+						</list>
+					</li>
+				</list>
+			</chapter>
+		</chapter>
+
+		<chapter title="v1.0.3" id="gradle-plugins-1.0.3">
+			<format style="italic">
+				Published to GitHub on July 26th, 2024.
+			</format>
+
+			<p>
+				This version targets the KordEx plugin.
+			</p>
+
+			<chapter title="KordEx Plugin" id="gradle-plugins-1.0.3-kordex">
+				<p>
+					This release includes the following fixes:
+				</p>
+
+				<list type="bullet">
+					<li>
+						The plugin now uses the KordEx Maven repo instead of OSSRH to resolve and depend on KordEx
+						versions.
+						The plugin now adds this repo before OSSRH.
+					</li>
+
+					<li>
+						Previously, the plugin would figure out the latest version of a Kord or KordEx release
+						by comparing the latest version indicated by the Maven metadata.
+						As this tends to be somewhat unreliable,
+						it now uses <a href="https://github.com/unascribed/FlexVer">FlexVer</a>
+						to compare all the available version numbers.
+					</li>
+
+					<li>
+						Because of FlexVer, the plugin is now a fat jar, with all dependencies included.
+					</li>
+				</list>
+			</chapter>
+		</chapter>
+
+		<chapter title="v1.0.2" id="gradle-plugins-1.0.2">
+			<format style="italic">
+				Published to GitHub on July 24th, 2024.
+			</format>
+
+			<p>
+				This version targets the recently released KordEx plugin with a bug fix.
+			</p>
+
+			<chapter title="KordEx Plugin" id="gradle-plugins-1.0.2-kordex">
+				<p>
+					This release includes the following fixes:
+				</p>
+
+				<list type="bullet">
+					<li>
+						Previously, the plugin would error on Linux due to a failure to create a directory for the
+						plugin-generated resource files.
+						This was due to Gradle's layout API unexpectedly treating subfiles starting with <code>/</code>
+						as if they were within the filesystem root.
+					</li>
+				</list>
+			</chapter>
+		</chapter>
+
+		<chapter title="v1.0.1" id="gradle-plugins-1.0.1">
+			<format style="italic">
+				Published to GitHub on July 24th, 2024.
+			</format>
+
+			<p>
+				This version targets the recently released KordEx plugin with some improvements.
+				We'll update the KordEx template project to use the plugin once we publish this version,
+				and the Gradle plugin portal approves it.
+			</p>
+
+			<chapter title="KordEx Plugin" id="gradle-plugins-1.0.1-kordex">
+				<p>
+					This release introduced several new features, specifically:
+				</p>
+
+				<list type="bullet">
+					<li>
+						A <code>mainClass</code> configuration option,
+						which you should set to your bot's main class,
+						similarly to the <code>application</code> plugin or the <code>Main-Class</code> JAR manifest.
+						This will automatically configure both the <code>application</code> plugin and the
+						<code>jar</code> task.
+					</li>
+
+					<li>
+						The plugin now automatically adds the <code>google()</code> Maven repository.
+					</li>
+
+					<li>
+						The plugin now automatically configures the Kotlin plugin,
+						setting required compiler arguments and matching Kord Extensions' JVM target.
+					</li>
+
+					<li>
+						The plugin now automatically configures the Java plugin,
+						matching Kord Extensions' source and target compatibility.
+					</li>
+				</list>
+
+				<p>
+					It also includes the following fixes:
+				</p>
+
+				<list type="bullet">
+					<li>
+						Previously, the plugin hard-coded the expected Kotlin version.
+						It will now retrieve the Kotlin version used to build the configured KordEx version
+						(or the latest version if you don't provide one).
+					</li>
+				</list>
+			</chapter>
+		</chapter>
+
+		<chapter title="v1.0.0" id="gradle-plugins-1.0.0">
+			<format style="italic">
+				Published to GitHub on July 21st, 2024.
+			</format>
+
+			<p>
+				This is the first tagged release for our Gradle plugins,
+				and it represents the first major milestone for this repository.
+			</p>
+
+			<chapter title="KordEx Plugin" id="gradle-plugins-1.0.0-kordex">
+				<p>
+					This release introduces the new KordEx plugin,
+					designed to make it easier to set up and configure a project using it.
+					This will be the canonical way to set up a KordEx project from now on.
+				</p>
+
+				<p>
+					The plugin supports the following options, exposed via the <code>kordEx</code> builder:
+				</p>
+
+				<list type="bullet">
+					<li>
+						<code>addRepositories = true</code> - Whether to add the repos you'll need to grab KordEx
+						and its dependencies at build time.
+					</li>
+
+					<li>
+						<code>ignoreIncompatibleKotlinVersion = false</code> - Whether to warn about incompatible
+						Kotlin versions instead of error.
+					</li>
+
+					<li>
+						<code>kordVersion = null</code> - A specific Kord version to pin,
+						instead of the one KordEx was built against.
+					</li>
+
+					<li>
+						<code>kordExVersion = null</code> - A specific KordEx version to pin, instead of the latest
+						version.
+					</li>
+
+					<li>
+						<code>voice = true</code> - Whether to use a version of Kord that supports voice, which will
+						result in a larger dependency.
+					</li>
+				</list>
+
+				<p>
+					It also exposes the following functions:
+				</p>
+
+				<list type="bullet">
+					<li>
+						<code>dataCollection(level)</code> - Set your bot's data collection settings.
+						<format style="bold">Note:</format> We haven't implemented data collection yet.
+					</li>
+
+					<li>
+						<code>module(name)</code> - Add a dependency on a KordEx module by name.
+					</li>
+				</list>
+
+				<p>
+					<format style="bold">Note:</format> We only support using this plugin with Kotlin Gradle build
+					scripts.
+				</p>
+
+				<p>
+					You may add this to your project as follows, once the Gradle Plugin Portal approves it:
+				</p>
+
+				<code-block lang="kotlin">
+					plugins {
+						id("dev.kordex.gradle.kordex") version "1.0.0"
+					}
+				</code-block>
+
+				<p>
+					When switching to this plugin,
+					<format style="bold">you should remove all dependencies you may have on Kord and KordEx!</format>
+				</p>
+			</chapter>
+		</chapter>
+	</chapter>
+
+	<chapter title="I18n Tools" id="i18n-tools">
+		<chapter title="v1.0.2" id="i18n-tools-1.0.2">
+			<format style="italic">
+				Published to GitHub on September 23rd, 2024
+			</format>
+
+			<p>
+				This is what I get for developing on a work night!
+			</p>
+
+			<chapter title="Translations Class Generator" id="i18n-tools-1.0.2-generator">
+				<p>
+					<format style="bold">CLI:</format> Fix the main class in the manifest, which IntelliJ messed up
+					somehow.
+					It works now, I promise!
+				</p>
+			</chapter>
+		</chapter>
+
+		<chapter title="v1.0.1" id="i18n-tools-1.0.1">
+			<format style="italic">
+				Published to GitHub on September 23rd, 2024
+			</format>
+
+			<p>
+				Well, this is embarrassing.
+			</p>
+
+			<chapter title="Translations Class Generator" id="i18n-tools-1.0.1-generator">
+				<p>
+					<format style="bold">CLI:</format> Add the main class to the manifest, so now you can actually run
+					this.
+					Whoops!
+				</p>
+			</chapter>
+		</chapter>
+
+		<chapter title="v1.0.0" id="i18n-tools-1.0.0">
+			<format style="italic">
+				Published to GitHub on September 21st, 2024
+			</format>
+
+			<p>
+				This is the first tagged release for our i18n tools, and it represents the first major milestone for this repository.
+			</p>
+
+			<chapter title="Translations Class Generator" id="i18n-tools-1.0.0-generator">
+				<p>
+					This is the first release for our translation class generator tool.
+					This is a self-contained API and CLI tool,
+					which generates a KordEx translations class based on a translation properties file and a few other
+					pieces of information.
+				</p>
+
+				<p>
+					To learn more about what this is and how to use it,
+					please check <a href="https://github.com/Kord-Extensions/i18n#readme">the README file</a>.
+				</p>
+			</chapter>
+		</chapter>
+	</chapter>
 </topic>
