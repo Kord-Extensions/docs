@@ -563,9 +563,53 @@
 			</p>
 
 			<p>
+				To create a copy with an additional post-processor (which you can use to manipulate the result of a
+				translation), use the <code>wthPostProcessor</code> DSL function.
+				To add multiple, you can use <code>withPostProcessors</code>.
+				It's also possible to remove post-processors using the <code>filterPostProcessors</code> function.
+			</p>
+
+			<p>
 				To create a copy with updated settings, use the <code>withPresetPlaceholderPosition</code> or
 				<code>withTranslateNestedKeys</code> functions.
 			</p>
+		</chapter>
+
+		<chapter title="Key Utilities" id="using-translations-key-utilities">
+			<p>
+				Kord Extensions provides a number of additional utility functions.
+			</p>
+
+			<list type="bullet">
+				<li>
+					<code>capitalize</code> - Creates a clone of the current Key, with an additional post-processor
+					which capitalizes the first character of the translated string.
+					It uses the Key's <code>locale</code>, or your bot's configured default locale if one isn't present.
+				</li>
+
+				<li>
+					<code>capitalizeWords</code> - Creates a clone of the current Key, with an additional post-processor
+					which capitalizes each word in the translated string.
+					It uses the Key's <code>locale</code>, or your bot's configured default locale if one isn't present.
+				</li>
+
+				<li>
+					<code>lowercase</code> - Creates a clone of the current Key, with an additional post-processor which
+					lower-cases each character in the translated string.
+					It uses the Key's <code>locale</code>, or your bot's configured default locale if one isn't present.
+				</li>
+
+				<li>
+					<code>uppercase</code> - Creates a clone of the current Key, with an additional post-processor which
+					upper-cases each character in the translated string.
+					It uses the Key's <code>locale</code>, or your bot's configured default locale if one isn't present.
+				</li>
+
+				<li>
+					<code>withContext</code> - Creates a clone of the current Key, updating its stored
+					<code>locale</code> to match the one corresponding with the given <code>CommandContext</code>.
+				</li>
+			</list>
 		</chapter>
 
 		<chapter title="Translating Keys" id="using-translations-translating-keys">
