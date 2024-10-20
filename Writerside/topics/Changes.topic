@@ -17,6 +17,180 @@
 	</p>
 
     <chapter title="Kord Extensions" id="kordex">
+		<chapter title="v2.3.0-SNAPSHOT" id="kordex-2.3.0-SNAPSHOT">
+			<format style="italic">
+				Published to Discord on October 20th, 2024.
+			</format>
+
+			<p>
+				It's here, y'all!
+				This version brings a huge number of internal and external changes.
+			</p>
+
+			<p>
+				I apologize in advance for the upcoming work,
+				but Kotlin's type system prevents me from implementing a deprecation process.
+				<format style="bold">
+					This version will require a large one-time refactor of much of your bots' code,
+				</format> replacing translatable strings with <code>Key</code> objects.
+			</p>
+
+			<p>
+				Before getting started,
+				I recommend reading <a href="Internationalization.topic">the new i18n documentation page</a>,
+				which will introduce you to the new translation system and explain how everything works.
+			</p>
+
+			<p>
+				<format style="bold">
+					If you absolutely need to be on the bleeding edge but don't have time to translate your project,
+				</format> feel free to use the <code>String.toKey(bundle)</code> extension function temporarily.
+			</p>
+
+			<chapter title="Gradle Plugin Users" id="kordex-2.3.0-SNAPSHOT-gradle">
+				<p>
+					If you're using the KordEx Gradle plugin, start by
+					<format style="bold">updating to version 1.5.0,</format> which will be released shortly.
+				</p>
+
+				<list type="bullet">
+					<li>
+						If you haven't created a translation bundle,
+						you'll want to create one
+						<a href="Internationalization.topic" anchor="basic-concepts-bundles">as described here</a>.
+					</li>
+
+					<li>
+						After that, configure the new <code>i18n</code> builder in the Gradle plugin,
+						providing values for at least the <code>classPackage</code> and <code>translationBundle</code>
+						properties.
+					</li>
+
+					<li>
+						Next, run the <code>generateTranslationsClass</code> Gradle task,
+						which will generate a new <code>Translations</code> object containing references to the keys
+						in your translation bundle.
+					</li>
+
+					<li>
+						Finally, replace references to translatable strings with the <code>Key</code> objects in your
+						generated <code>Translations</code> object.
+					</li>
+				</list>
+			</chapter>
+
+			<chapter title="Other Users" id="kordex-2.3.0-SNAPSHOT-manual">
+				<p>
+					If you can't (or don't want to) use the KordEx Gradle plugin,
+					you'll need to create the <code>Key</code> objects yourself.
+					This can be done in one of the following ways:
+				</p>
+
+				<list type="bullet">
+					<li>
+						<format style="bold">Recommended:</format>
+						Take a look at <a href="https://github.com/Kord-Extensions/i18n">the i18n tools repo</a>
+						and use the API or CLI tool to integrate the generator,
+						then follow the other steps as if you were using the Gradle plugin.
+					</li>
+
+					<li>
+						Alternatively, create <code>Key</code> objects yourself,
+						storing them in a central location and being sure to provide them with the <code>bundle</code>
+						constructor parameter.
+					</li>
+				</list>
+			</chapter>
+
+			<chapter title="Changes" id="kordex-2.3.0-SNAPSHOT-changes">
+				<p>
+					Here's an overview of what's changed:
+				</p>
+
+				<list type="bullet">
+					<li>
+						<p>
+							All translatable strings now take <code>Key</code> objects instead.
+						</p>
+
+						<list type="bullet">
+							<li>
+								This allows us to provide a much more human-friendly API
+								and covers many advanced use-cases that simply aren't possible when you can only pass a
+								string.
+							</li>
+						</list>
+					</li>
+
+					<li>
+						<p>
+							All <code>bundle</code> properties have been removed.
+						</p>
+
+						<list type="bullet">
+							<li>
+								Instead, the required translation bundle should be stored in your <code>Key</code>
+								objects.
+								This is the default behavior when using the generator, as explained above.
+							</li>
+						</list>
+					</li>
+
+					<li>
+						<p>
+							All <code>translate</code> convenience functions have been removed.
+						</p>
+
+						<list type="bullet">
+							<li>
+								Instead, use the <code>with</code> functions on <code>Key</code> objects to create a
+								newly configured object, and then use the corresponding <code>translate</code> functions
+								to translate that <code>Key</code> in place.
+							</li>
+						</list>
+					</li>
+
+					<li>
+						The translation provider API has been updated to support translating <code>Key</code> objects
+						instead of strings.
+						String-based functions have been deprecated.
+					</li>
+
+					<li>
+						Component labels, placeholders, and initial values may now be translated as required.
+					</li>
+
+					<li>
+						All modules have been translated
+						and <a href="https://hosted.weblate.org/engage/kord-extensions">added to Weblate</a>.
+					</li>
+				</list>
+			</chapter>
+
+			<p>
+				This is a <format style="bold">huge</format> update, and a lot of work has gone into it.
+				While it's true that this may be a painful update for those of you maintaining large bots,
+				the use of a custom type means that no such refactors should be required going forward.
+			</p>
+
+			<p>
+				I truly believe that this update will be a huge benefit to most of you,
+				and I hope you enjoy working with the new tools.
+				<format style="bold">
+					As this is such a huge update, it's possible I may have missed something in my testing,
+				</format> so please let me know how you get on!
+			</p>
+
+			<p>
+				If you're curious about my mindset while designing this system,
+				<a href="https://blog.gareth-coles.dev/a-better-i18n-api">I wrote a blog post about it!</a>
+			</p>
+
+			<p>
+				As always, thanks for sticking with Kord Extensions, and I hope you're all having a good spooky season!
+			</p>
+		</chapter>
+
 		<chapter title="v2.2.1-SNAPSHOT" id="kordex-2.2.1-SNAPSHOT">
 			<format style="italic">
 				Published to Discord on August 31st, 2024.
