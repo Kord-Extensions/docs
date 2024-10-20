@@ -468,13 +468,17 @@
             <code-block lang="kotlin" collapsed-title="Example" collapsible="true">
                 kordEx {
                     bot {
-                        // https://kordex.dev/blog/2024-07-23/kordex-2#levels
+                        // https://docs.kordex.dev/data-collection.html#levels
                         dataCollection(DataCollection.Standard)
 
                         mainClass = "my.package.MyMainClass"
                     }
                 }
             </code-block>
+
+			<p>
+				All below properties are optional.
+			</p>
 
             <table style="both">
                 <tr>
@@ -483,28 +487,16 @@
                     <td>Description</td>
                 </tr>
 
-                <tr id="settings-bot-required:header:text:center">
-                    <td colspan="3">
-                        Required Properties
-                    </td>
-                </tr>
+				<tr>
+					<td><code>mainClass</code></td>
+					<td> </td>
 
-                <tr>
-                    <td><code>mainClass</code></td>
-                    <td> </td>
-
-                    <td>
-                        Your bot's main class, which will usually refer to a top-level <code>main</code> function.
-                        Providing this will automatically apply and configure the <code>application</code> plugin,
-                        and add the main class reference to your bot's JAR manifest, making the built JAR executable.
-                    </td>
-                </tr>
-
-                <tr id="settings-bot-optional:header:text:center">
-                    <td colspan="3">
-                        Optional Properties
-                    </td>
-                </tr>
+					<td>
+						Your bot's main class, which will usually refer to a top-level <code>main</code> function.
+						Providing this will automatically apply and configure the <code>application</code> plugin,
+						and add the main class reference to your bot's JAR manifest, making the built JAR executable.
+					</td>
+				</tr>
 
                 <tr id="process-dot-env">
                     <td><code>processDotEnv</code></td>
