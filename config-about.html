@@ -1,0 +1,81 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#5865F2" data-link-color="#5865F2"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="built-on" content="2024-10-20T16:22:46.902806751"><title>About | Kord Extensions</title><script type="application/json" id="virtual-toc-data">[{"id":"configuration","level":0,"title":"Configuration","anchor":"#configuration"},{"id":"sections","level":0,"title":"Sections","anchor":"#sections"},{"id":"copyright","level":0,"title":"Copyright","anchor":"#copyright"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="frontend/app.css" rel="stylesheet"><link href="static/custom.css" rel="stylesheet"><link rel="icon" type="image/png" sizes="16x16" href="images/logo.png"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="About | Kord Extensions"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="Kord Extensions Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation/config-about.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="About | Kord Extensions"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation/config-about.html#webpage",
+    "url": "writerside-documentation/config-about.html",
+    "name": "About | Kord Extensions",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "Kord Extensions Help"
+}</script><!-- End Schema.org --></head><body data-id="Config-About" data-main-title="About" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs="Core-Documentation.topic|Core Documentation ✏️///Configuration.topic|Configuration"><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>Kord Extensions  Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="Config-About" data-label-id="v2" id="Config-About.topic">About</h1><aside class="prompt" data-type="note" data-title="" id="z8bnng4_12"><p>This page describes one aspect of bot configuration. For more information on how to create and set up a bot, see <a href="the-bot.html" id="z8bnng4_91" data-tooltip="At the core of your bot is the ExtensibleBot class. This class is the most important part of Kord Extensions, as the jumping-off point for your bot. Among other things, it dispatches commands and event handlers, and keeps track of extensions. It also contains several useful APIs.">the relevant documentation</a>.</p></aside><p id="z8bnng4_4">The <code class="code" id="z8bnng4_13">about</code> builder allows you to configure your bot's <code class="code" id="z8bnng4_14">about</code> command.</p><aside class="prompt" data-type="warning" data-title="" id="z8bnng4_5"><p id="z8bnng4_15">The <code class="code" id="z8bnng4_18">about</code> command includes a mandatory copyright section, mentioning Kord Extensions and the libraries it uses.</p><p id="z8bnng4_16">Because of how Kord Extensions is licensed, this ensures that your bot contains the required notice and way to get the Kord Extensions source code. <span id="z8bnng4_19"><b>You must not work around this, regardless of how easy or difficult it may be.</b></span></p><p id="z8bnng4_17">If this is a big problem for you or your company, please get in touch via <a href="https://discord.gg/nYzQWcjAmK" id="z8bnng4_20" data-external="true" rel="noopener noreferrer">the Discord server</a>, and we'll try to figure out an alternative license for you.</p></aside><p id="z8bnng4_6">By default, Kord Extensions will create an <code class="code" id="z8bnng4_21">about</code> chat and slash command, with a <code class="code" id="z8bnng4_22">copyright</code> subcommand. You can configure this command using the <code class="code" id="z8bnng4_23">about { }</code> builder, adding your own sections and copyright notices as appropriate.</p><div class="code-collapse" data-lang="kotlin" data-is-expanded="false" data-synopsis="Example Usage">
+        about {
+            ephemeral = false
+
+            general {
+                message { locale -&gt;
+                    content = &quot;General message content goes here!&quot;
+                }
+            }
+
+            section(&quot;another&quot;) {
+                description = &quot;Command description goes here!&quot;
+
+                message { locale -&gt;
+                    content = &quot;More content here!&quot;
+
+                    embed {
+                        description = &quot;Maybe even an embed?&quot;
+                    }
+                }
+            }
+        }
+    </div><section class="chapter"><h2 id="configuration" data-toc="configuration">Configuration</h2><p id="z8bnng4_24">The <code class="code" id="z8bnng4_26">about { }</code> builder provides the following properties.</p><div class="table-wrapper"><table class="wide" id="z8bnng4_25"><thead><tr class="ijRowHead" id="z8bnng4_27"><th id="z8bnng4_29"><p>Property</p></th><th id="z8bnng4_30"><p>Type</p></th><th id="z8bnng4_31"><p>Description</p></th></tr></thead><tbody><tr id="z8bnng4_28"><td id="z8bnng4_32"><p><code class="code" id="z8bnng4_35">ephemeral</code></p></td><td id="z8bnng4_33"><p><code class="code" id="z8bnng4_36">Boolean</code></p></td><td id="z8bnng4_34"><p>Whether commands (including the copyright command) should respond to slash commands ephemerally. Defaults to <code class="code" id="z8bnng4_37">true</code>.</p></td></tr></tbody></table></div></section><section class="chapter"><h2 id="sections" data-toc="sections">Sections</h2><p id="z8bnng4_38">While Kord Extensions provides the <code class="code" id="z8bnng4_44">copyright</code> subcommand by default, you're free to add any other informational commands you wish. These commands are referred to as &quot;sections,&quot; and each section is represented by a subcommand on the <code class="code" id="z8bnng4_45">about</code> command.</p><p id="z8bnng4_39">To configure a section, use the <code class="code" id="z8bnng4_46">section</code> function. This function takes the section name and description as arguments, and provides a builder you can use to configure the section's options and provide a message.</p><div class="code-collapse" data-lang="kotlin" data-is-expanded="false" data-synopsis="Example Usage">
+            section(&quot;name&quot;, &quot;description&quot;) {
+                description = &quot;section description&quot;
+
+                message {
+                    embed {
+                        title = &quot;Embed Title&quot;
+                        description = translate(&quot;a.translation.key&quot;)
+                    }
+                }
+            }
+        </div><p id="z8bnng4_41">The <code class="code" id="z8bnng4_47">about { }</code> builder also provides a <code class="code" id="z8bnng4_48">general</code> builder, providing a standard &quot;general&quot; section with a translated command name and description.</p><section class="chapter"><h3 id="section-builders" data-toc="section-builders">Builders</h3><div class="table-wrapper"><table class="wide" id="z8bnng4_49"><thead><tr class="ijRowHead" id="z8bnng4_50"><th id="z8bnng4_52"><p>Builder</p></th><th id="z8bnng4_53"><p>Description</p></th></tr></thead><tbody><tr id="z8bnng4_51"><td id="z8bnng4_54"><p><code class="code" id="z8bnng4_56">message</code></p></td><td id="z8bnng4_55"><p id="z8bnng4_57">Call this DSL function to provide a message builder, used to construct the message returned to the user when they access the current section.</p><p id="z8bnng4_58">This builder is a receiver against the <code class="code" id="z8bnng4_59">MessageBuilder</code> type, and takes the current event context's <code class="code" id="z8bnng4_60">Locale</code> as the first argument. This <code class="code" id="z8bnng4_61">Locale</code> object can be used to translate <a href="internationalization.html#using-translations-translating-keys" id="z8bnng4_62" data-tooltip="When you find a property or function expecting a Key object, it's enough to configure the key as explained above and use it directly. For situations where you need to translate a Key yourself, you'll need to use one of the provided translation functions.">Key objects</a> if you need to use <a href="internationalization.html" id="z8bnng4_63" data-tooltip="While some smaller bots are only designed with one language in mind, many larger bots will need to support guilds and users using a variety of languages and locales.">the i18n system</a>.</p></td></tr></tbody></table></div></section><section class="chapter"><h3 id="section-properties" data-toc="section-properties">Properties</h3><div class="table-wrapper"><table class="wide" id="z8bnng4_64"><thead><tr class="ijRowHead" id="z8bnng4_65"><th id="z8bnng4_67"><p>Property</p></th><th id="z8bnng4_68"><p>Type</p></th><th id="z8bnng4_69"><p>Description</p></th></tr></thead><tbody><tr id="z8bnng4_66"><td id="z8bnng4_70"><p><code class="code" id="z8bnng4_73">ephemeral</code></p></td><td id="z8bnng4_71"><p><code class="code" id="z8bnng4_74">Boolean</code></p></td><td id="z8bnng4_72"><p>Whether this section should respond to slash commands ephemerally. If not provided, defaults to the setting provided in the <code class="code" id="z8bnng4_75">about { }</code> builder.</p></td></tr></tbody></table></div></section></section><section class="chapter"><h2 id="copyright" data-toc="copyright">Copyright</h2><p id="z8bnng4_76">The contents of the <code class="code" id="z8bnng4_82">copyright</code> section are generated based on a list of copyright entries, provided via the <code class="code" id="z8bnng4_83">copyright</code> function.</p><p id="z8bnng4_77">Kord Extensions will automatically populate this list with the following data:</p><ul class="list _bullet" id="z8bnng4_78"><li class="list__item" id="z8bnng4_84"><p>The dependencies it uses, along with those used by any first-party modules included with your bot.</p></li><li class="list__item" id="z8bnng4_85"><p>A list of currently loaded plugins, without versioning information.</p></li></ul><p id="z8bnng4_79">Copyright items may be added by calling the <code class="code" id="z8bnng4_86">copyright</code> function with a name, <a href="https://spdx.org/licenses/" id="z8bnng4_87" data-external="true" rel="noopener noreferrer">SPDX license identifier</a>, item type (Framework, Library, Plugin/Module, or Tool), and optionally a URL.</p><div class="code-collapse" data-lang="kotlin" data-is-expanded="false" data-synopsis="Example">
+            about {
+                copyright(
+                    &quot;Time4J&quot;,
+                    &quot;LGPL-2.1&quot;,
+                    CopyrightType.Library,
+                    &quot;http://time4j.net/&quot;
+                )
+            }
+        </div><section class="chapter"><h3 id="copyright-modules" data-toc="copyright-modules">Modules</h3><p id="z8bnng4_88">If you're writing a module, library, or meta-framework, feel free to include whatever information you feel is relevant by default.</p><p id="z8bnng4_89">A simple way to do this is by creating an extension function, checking a top-level boolean value, and calling this function in a setup function or class initializer. For example:</p><div class="code-collapse" data-lang="kotlin" data-is-expanded="false" data-synopsis="Example">
+                private var copyrightAdded = false
+
+                internal fun AboutBuilder.addCopyright() {
+                    if (!copyrightAdded) {
+                        copyright(
+                            &quot;Time4J&quot;,
+                            &quot;LGPL-2.1&quot;,
+                            CopyrightType.Library,
+                            &quot;http://time4j.net/&quot;
+                        )
+                    }
+
+                    copyrightAdded = true
+                }
+
+                // ...
+
+                class MyExtension : Extension() {
+                    override fun setup() {
+                        bot.settings.aboutBuilder.addCopyright()
+                    }
+                }
+            </div></section></section><div class="last-modified">Last modified: 20 October 2024</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="configuration.html" class="navigation-links__prev">Configuration</a><a href="config-basic.html" class="navigation-links__next">Basic</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="frontend/app.js"></script></body></html>

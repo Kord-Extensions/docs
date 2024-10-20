@@ -1,0 +1,31 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#5865F2" data-link-color="#5865F2"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="built-on" content="2024-10-20T16:22:45.358741252"><title>Error Responses | Kord Extensions</title><script type="application/json" id="virtual-toc-data">[]</script><script type="application/json" id="topic-shortcuts"></script><link href="frontend/app.css" rel="stylesheet"><link href="static/custom.css" rel="stylesheet"><link rel="icon" type="image/png" sizes="16x16" href="images/logo.png"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Error Responses | Kord Extensions"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="Kord Extensions Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation/config-error-responses.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Error Responses | Kord Extensions"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation/config-error-responses.html#webpage",
+    "url": "writerside-documentation/config-error-responses.html",
+    "name": "Error Responses | Kord Extensions",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "Kord Extensions Help"
+}</script><!-- End Schema.org --></head><body data-id="Config-Error-Responses" data-main-title="Error Responses" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs="Core-Documentation.topic|Core Documentation ✏️///Configuration.topic|Configuration"><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>Kord Extensions  Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="Config-Error-Responses" id="Config-Error-Responses.topic">Error Responses</h1><aside class="prompt" data-type="note" data-title="" id="gok1lg_8"><p>This page describes one aspect of bot configuration. For more information on how to create and set up a bot, see <a href="the-bot.html" id="gok1lg_17" data-tooltip="At the core of your bot is the ExtensibleBot class. This class is the most important part of Kord Extensions, as the jumping-off point for your bot. Among other things, it dispatches commands and event handlers, and keeps track of extensions. It also contains several useful APIs.">the relevant documentation</a>.</p></aside><p id="gok1lg_3">The <code class="code" id="gok1lg_9">errorResponse</code> function allows you to register a custom failure response callback. This callback takes the form of a receiver function against a <a href="https://dokka.kord.dev/rest/dev.kord.rest.builder.message.create/-message-create-builder/index.html" id="gok1lg_10" data-external="true" rel="noopener noreferrer">MessageCreateBuilder</a>, and it takes several parameters:</p><ul class="list _bullet" id="gok1lg_4"><li class="list__item" id="gok1lg_11"><p><code class="code" id="gok1lg_13">message</code>: A <a href="internationalization.html#using-translations-translating-keys" id="gok1lg_14" data-tooltip="When you find a property or function expecting a Key object, it's enough to configure the key as explained above and use it directly. For situations where you need to translate a Key yourself, you'll need to use one of the provided translation functions.">Key object</a> representing the error message text.</p></li><li class="list__item" id="gok1lg_12"><p><code class="code" id="gok1lg_15">type</code>: A <code class="code" id="gok1lg_16">FailureReason</code> representing the type of error, and containing the relevant exception.</p></li></ul><p id="gok1lg_5">By default, Kord Extensions will relay the message text to Discord without editing it, preventing anyone from being pinged by any mentions in the message text. If you'd like, you can customize this by treating it as if you were sending any other message.</p><div class="code-collapse" data-lang="kotlin" data-is-expanded="false" data-synopsis="Example Usage">
+        ExtensibleBot(TOKEN) {
+            // ...
+
+            errorResponse {
+                allowedMentions { }
+
+                embed {
+                    title = &quot;Oopsie Woopsie!&quot;
+                    color = DISCORD_MAGENTA
+
+                    description = message
+                }
+            }
+        }
+    </div><div class="last-modified">Last modified: 20 October 2024</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="config-data-adapter.html" class="navigation-links__prev">Data Adapter</a><a href="config-extensions.html" class="navigation-links__next">Extensions</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="frontend/app.js"></script></body></html>

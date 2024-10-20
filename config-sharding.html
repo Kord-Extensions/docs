@@ -1,0 +1,24 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#5865F2" data-link-color="#5865F2"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="built-on" content="2024-10-20T16:22:46.049271051"><title>Sharding | Kord Extensions</title><script type="application/json" id="virtual-toc-data">[]</script><script type="application/json" id="topic-shortcuts"></script><link href="frontend/app.css" rel="stylesheet"><link href="static/custom.css" rel="stylesheet"><link rel="icon" type="image/png" sizes="16x16" href="images/logo.png"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Sharding | Kord Extensions"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="Kord Extensions Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation/config-sharding.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Sharding | Kord Extensions"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation/config-sharding.html#webpage",
+    "url": "writerside-documentation/config-sharding.html",
+    "name": "Sharding | Kord Extensions",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "Kord Extensions Help"
+}</script><!-- End Schema.org --></head><body data-id="Config-Sharding" data-main-title="Sharding" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs="Core-Documentation.topic|Core Documentation ✏️///Configuration.topic|Configuration"><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>Kord Extensions  Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="Config-Sharding" id="Config-Sharding.topic">Sharding</h1><aside class="prompt" data-type="note" data-title="" id="-gwa8ip_7"><p>This page describes one aspect of bot configuration. For more information on how to create and set up a bot, see <a href="the-bot.html" id="-gwa8ip_11" data-tooltip="At the core of your bot is the ExtensibleBot class. This class is the most important part of Kord Extensions, as the jumping-off point for your bot. Among other things, it dispatches commands and event handlers, and keeps track of extensions. It also contains several useful APIs.">the relevant documentation</a>.</p></aside><p id="-gwa8ip_3">The <code class="code" id="-gwa8ip_8">sharding</code> builder allows you to configure Kord's sharding settings, which by default will automatically shard your bot across multiple gateways in a single process.</p><p id="-gwa8ip_4">This corresponds with Kord's <a href="https://dokka.kord.dev/core/dev.kord.core.builder.kord/-base-kord-builder/sharding.html" id="-gwa8ip_9" data-external="true" rel="noopener noreferrer"><code class="code" id="-gwa8ip_10">sharding</code></a> function. However, the default settings should be sufficient for most bots.</p><div class="code-collapse" data-lang="kotlin" data-is-expanded="false" data-synopsis="Example Usage">
+        ExtensibleBot(TOKEN) {
+            // ...
+
+            sharding { recommended -&gt;
+                Shards(recommended)
+            }
+        }
+    </div><div class="last-modified">Last modified: 20 October 2024</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="config-presence.html" class="navigation-links__prev">Presence</a><a href="extensions.html" class="navigation-links__next">Extensions</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="frontend/app.js"></script></body></html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#5865F2" data-link-color="#5865F2"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="built-on" content="2024-10-20T16:22:46.640060761"><title>Manual Setup | Kord Extensions</title><script type="application/json" id="virtual-toc-data">[{"id":"build-scripts","level":0,"title":"Build System","anchor":"#build-scripts"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="frontend/app.css" rel="stylesheet"><link href="static/custom.css" rel="stylesheet"><link rel="icon" type="image/png" sizes="16x16" href="images/logo.png"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Manual Setup | Kord Extensions"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="Kord Extensions Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation/manual-setup.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Manual Setup | Kord Extensions"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation/manual-setup.html#webpage",
+    "url": "writerside-documentation/manual-setup.html",
+    "name": "Manual Setup | Kord Extensions",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "Kord Extensions Help"
+}</script><!-- End Schema.org --></head><body data-id="Manual-Setup" data-main-title="Manual Setup" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs="Core-Documentation.topic|Core Documentation ✏️///Getting-Started.topic|Getting Started"><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>Kord Extensions  Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="Manual-Setup" id="Manual-Setup.topic">Manual Setup</h1><div class="micro-format" data-content="{&quot;microFormat&quot;:[&quot;\u003cp id\u003d\&quot;-ot9b14_8\&quot;\u003e\u003cspan id\u003d\&quot;-ot9b14_12\&quot;\u003e\u003cb\u003eLatest Version:\u003c/b\u003e\u003c/span\u003e 2.3.0-SNAPSHOT\u003c/p\u003e&quot;,&quot;\u003cp id\u003d\&quot;-ot9b14_9\&quot;\u003e\u003cspan id\u003d\&quot;-ot9b14_13\&quot;\u003e\u003cb\u003eMinimum JDK:\u003c/b\u003e\u003c/span\u003e 13\u003c/p\u003e&quot;,&quot;\u003cp id\u003d\&quot;-ot9b14_10\&quot;\u003e\u003cspan id\u003d\&quot;-ot9b14_14\&quot;\u003e\u003cb\u003eRepo:\u003c/b\u003e\u003c/span\u003e \u003ccode class\u003d\&quot;code\&quot; id\u003d\&quot;-ot9b14_15\&quot;\u003ehttps://snapshots-repo.kordex.dev\u003c/code\u003e\u003c/p\u003e&quot;,&quot;\u003cp id\u003d\&quot;-ot9b14_11\&quot;\u003e\u003cspan id\u003d\&quot;-ot9b14_16\&quot;\u003e\u003cb\u003eCoordinate:\u003c/b\u003e\u003c/span\u003e \u003ccode class\u003d\&quot;code\&quot; id\u003d\&quot;-ot9b14_17\&quot;\u003edev.kordex:kord-extensions\u003c/code\u003e\u003c/p\u003e&quot;]}"></div><aside class="prompt" data-type="tip" data-title="" id="-ot9b14_4"><p>This page is about manually setting up Kord Extensions in your Gradle projects. If you're using a Kotlin Gradle build script, we recommend <a href="getting-started.html#existing-projects" id="-ot9b14_18" data-tooltip="We recommend you use the KordEx Gradle plugin, as briefly covered below. However, we only support using this plugin in Kotlin Gradle build scripts.">using the Gradle plugin instead</a> if possible.</p></aside><p id="-ot9b14_5">Before getting started, please ensure you have the following installed:</p><ul class="list _bullet" id="-ot9b14_6"><li class="list__item" id="-ot9b14_19"><p><a href="https://git-scm.com" id="-ot9b14_21" data-external="true" rel="noopener noreferrer">Git</a></p></li><li class="list__item" id="-ot9b14_20"><p id="-ot9b14_22"><a href="https://adoptium.net" id="-ot9b14_24" data-external="true" rel="noopener noreferrer">Java Development Kit</a> (version 13 or later)</p><aside class="prompt" data-type="warning" data-title="" id="-ot9b14_23"><p>Ensure that the version of Java you install is <a href="https://docs.gradle.org/current/userguide/compatibility.html" id="-ot9b14_25" data-external="true" rel="noopener noreferrer">compatible with Gradle</a>. It can take a while for Gradle to add support for the latest versions of Java, so this is important!</p></aside></li></ul><section class="chapter"><h2 id="build-scripts" data-toc="build-scripts">Build System</h2><aside class="prompt" data-type="tip" data-title="" id="-ot9b14_65"><p id="-ot9b14_66">When using Gradle, please note that it will automatically pull in the following transitive dependencies, as they're also used by Kord Extensions. In most situations, it is best to remove these dependencies from your build script and let Gradle handle it, to avoid depending on an incompatible version.</p><ul class="list _bullet" id="-ot9b14_67"><li class="list__item" id="-ot9b14_68"><p>The Kord Extensions <code class="code" id="-ot9b14_79">annotations</code> and <code class="code" id="-ot9b14_80">token-parser</code> modules</p></li><li class="list__item" id="-ot9b14_69"><p><a href="https://unicode-org.github.io/icu/userguide/icu4j/" id="-ot9b14_81" data-external="true" rel="noopener noreferrer">ICU4J</a></p></li><li class="list__item" id="-ot9b14_70"><p><a href="https://github.com/felldo/JEmoji" id="-ot9b14_82" data-external="true" rel="noopener noreferrer">JEmoji</a></p></li><li class="list__item" id="-ot9b14_71"><p><a href="https://insert-koin.io/" id="-ot9b14_83" data-external="true" rel="noopener noreferrer">Koin</a> (Core and Logging)</p></li><li class="list__item" id="-ot9b14_72"><p><a href="https://kord.dev" id="-ot9b14_84" data-external="true" rel="noopener noreferrer">Kord</a></p></li><li class="list__item" id="-ot9b14_73"><p><a href="https://github.com/oshai/kotlin-logging" id="-ot9b14_85" data-external="true" rel="noopener noreferrer">Kotlin Logging</a></p></li><li class="list__item" id="-ot9b14_74"><p><a href="https://kotlinlang.org/docs/serialization.html" id="-ot9b14_86" data-external="true" rel="noopener noreferrer">kotlinx.serialization</a>; you'll still need to configure the Gradle plugin yourself if you're using this.</p></li><li class="list__item" id="-ot9b14_75"><p><a href="https://www.oshi.ooo/" id="-ot9b14_87" data-external="true" rel="noopener noreferrer">OSHI (Operating System and Hardware Information)</a></p></li><li class="list__item" id="-ot9b14_76"><p><a href="https://pf4j.org/" id="-ot9b14_88" data-external="true" rel="noopener noreferrer">PF4J</a></p></li><li class="list__item" id="-ot9b14_77"><p><a href="https://docs.sentry.io/platforms/java/" id="-ot9b14_89" data-external="true" rel="noopener noreferrer">Sentry for Java</a></p></li><li class="list__item" id="-ot9b14_78"><p><a href="https://github.com/Peanuuutz/tomlkt" id="-ot9b14_90" data-external="true" rel="noopener noreferrer">tomlkt</a></p></li></ul></aside><div class="tabs" id="-ot9b14_27" data-group="build-system" data-anchors="[gradle-groovy,gradle-kotlin,maven,sbt]"><div class="tabs__content" data-gtm="tab" id="gradle-kotlin" data-sync-tabs="gradle-kotlin" data-title="Gradle (Kotlin)"><p id="-ot9b14_32">First, add a dependency to your <code class="code" id="-ot9b14_38">gradle/libs.versions.toml</code>.</p><br><div class="code-block" data-lang="ini" data-title="Ini">
+                    [versions]
+                    kord-extensions = &quot;2.3.0-SNAPSHOT&quot;
+
+                    [libraries]
+                    kord-extensions = { module = &quot;dev.kordex:kord-extensions&quot;, version.ref = &quot;kord-extensions&quot; }
+                </div><p id="-ot9b14_35">Then, update your <code class="code" id="-ot9b14_39">build.gradle.kts</code>.</p><br><div class="code-block" data-lang="kotlin" data-title="Kotlin">
+                    repositories {
+                        // ...
+
+                        mavenCentral()
+
+                        maven {
+                            name = &quot;KordEx (Releases)&quot;
+                            url = uri(&quot;https://repo.kordex.dev/releases&quot;)
+                        }
+
+                        maven {
+                            name = &quot;KordEx (Snapshots)&quot;
+                            url = uri(&quot;https://repo.kordex.dev/snapshots&quot;)
+                        }
+
+                        maven {
+                            name = &quot;Sonatype Snapshots (Legacy)&quot;
+                            url = uri(&quot;https://oss.sonatype.org/content/repositories/snapshots&quot;)
+                        }
+                    }
+
+                    dependencies {
+                        // ...
+
+                        implementation(libs.kord.extensions)
+                    }
+                </div></div><div class="tabs__content" data-gtm="tab" id="gradle-groovy" data-sync-tabs="gradle-groovy" data-title="Gradle (Groovy)"><p id="-ot9b14_40">First, add a dependency to your <code class="code" id="-ot9b14_46">gradle/libs.versions.toml</code>.</p><br><div class="code-block" data-lang="ini" data-title="Ini">
+                    [versions]
+                    kord-extensions = &quot;2.3.0-SNAPSHOT&quot;
+
+                    [libraries]
+                    kord-extensions = { module = &quot;dev.kordex:kord-extensions&quot;, version.ref = &quot;kord-extensions&quot; }
+                </div><p id="-ot9b14_43">Then, update your <code class="code" id="-ot9b14_47">build.gradle</code>.</p><br><div class="code-block" data-lang="groovy" data-title="Groovy">
+                    repositories {
+                        // ...
+
+                        mavenCentral()
+
+                        maven {
+                            name &quot;KordEx (Releases)&quot;
+                            url &quot;https://repo.kordex.dev/releases&quot;
+                        }
+
+                        maven {
+                            name &quot;KordEx (Snapshots)&quot;
+                            url &quot;https://repo.kordex.dev/snapshots&quot;
+                        }
+
+                        maven {
+                            name &quot;Sonatype Snapshots (Legacy)&quot;
+                            url &quot;https://oss.sonatype.org/content/repositories/snapshots&quot;
+                        }
+                    }
+
+                    dependencies {
+                        // ...
+
+                        implementation(libs.kord.extensions)
+                    }
+                </div></div><div class="tabs__content" data-gtm="tab" id="maven" data-sync-tabs="maven" data-title="Maven"><aside class="prompt" data-type="warning" data-title="" id="-ot9b14_48"><p id="-ot9b14_52">Kord Extensions is developed using Gradle, and none of the developers are familiar with Maven.</p><p id="-ot9b14_53">While Gradle is highly recommended, if you do decide to use Maven, we'd appreciate feedback on the below instructions &mdash; especially if corrections or more detail is required.</p></aside><p id="-ot9b14_49">Add the following to your <code class="code" id="-ot9b14_54">pom.xml</code>. For more information, see <a href="https://kotlinlang.org/docs/maven.html" id="-ot9b14_55" data-external="true" rel="noopener noreferrer">the official Maven guide for Kotlin</a>.</p><br><div class="code-block" data-lang="markup" data-title="XML">
+                    &lt;repositories&gt;
+                        &lt;!-- ... --&gt;
+
+                        &lt;repository&gt;
+                            &lt;id&gt;kordex-snapshots&lt;/id&gt;
+                            &lt;name&gt;KordEx (Snapshots)&lt;/name&gt;
+                            &lt;url&gt;https://repo.kordex.dev/snapshots&lt;/url&gt;
+                        &lt;/repository&gt;
+
+                        &lt;repository&gt;
+                            &lt;id&gt;kordex-releases&lt;/id&gt;
+                            &lt;name&gt;KordEx (Releases)&lt;/name&gt;
+                            &lt;url&gt;https://repo.kordex.dev/releases&lt;/url&gt;
+                        &lt;/repository&gt;
+
+                        &lt;repository&gt;
+                            &lt;id&gt;sonatype-snapshots-legacy&lt;/id&gt;
+                            &lt;name&gt;Sonatype Snapshots (Legacy)&lt;/name&gt;
+                            &lt;url&gt;https://oss.sonatype.org/content/repositories/snapshots&lt;/url&gt;
+                        &lt;/repository&gt;
+                    &lt;/repositories&gt;
+
+                    &lt;dependencies&gt;
+                    &lt;!-- ... --&gt;
+
+						&lt;dependency&gt;
+							&lt;groupId&gt;dev.kordex&lt;/groupId&gt;
+							&lt;artifactId&gt;kord-extensions&lt;/artifactId&gt;
+							&lt;version&gt;2.3.0-SNAPSHOT&lt;/version&gt;
+						&lt;/dependency&gt;
+                    &lt;/dependencies&gt;
+                </div></div><div class="tabs__content" data-gtm="tab" id="sbt" data-sync-tabs="sbt" data-title="SBT"><aside class="prompt" data-type="warning" data-title="" id="-ot9b14_56"><p id="-ot9b14_60">Kord Extensions is developed using Gradle, and none of the developers are familiar with SBT.</p><p id="-ot9b14_61">While Gradle is highly recommended, if you do decide to use SBT, we'd appreciate feedback on the below instructions &mdash; especially if corrections or more detail is required.</p></aside><p id="-ot9b14_57">Add the following to your <code class="code" id="-ot9b14_62">build.sbt</code>. For more information, see <a href="https://github.com/pfn/kotlin-plugin" id="-ot9b14_63" data-external="true" rel="noopener noreferrer">the Kotlin SBT plugin</a>.</p><br><div class="code-block" data-lang="scala" data-title="Scala">
+                    resolvers += &quot;KordEx (Releases)&quot; at &quot;https://repo.kordex.dev/releases&quot;
+                    resolvers += &quot;KordEx (Snapshots)&quot; at &quot;https://repo.kordex.dev/snapshots&quot;
+                    resolvers += Resolver.sonatypeOssRepos(&quot;snapshots&quot;)
+
+                    libraryDependencies ++= Seq(
+                        &quot;dev.kordex&quot; % &quot;kord-extensions&quot; % &quot;2.3.0-SNAPSHOT&quot;
+                    )
+                </div></div></div></section><div class="last-modified">Last modified: 20 October 2024</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="getting-started.html" class="navigation-links__prev">Getting Started</a><a href="beginner-tutorial.html" class="navigation-links__next">Beginner Tutorial</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="frontend/app.js"></script></body></html>
