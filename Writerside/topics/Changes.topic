@@ -1995,6 +1995,93 @@
 	</chapter>
 
 	<chapter title="Gradle Plugins" id="gradle-plugins">
+		<chapter title="v1.5.2" id="gradle-plugins-1.5.2">
+			<format style="italic">
+				Published to GitHub on October 20th, 2024
+			</format>
+
+			<p>
+				This version includes a small change for the KordEx plugin.
+			</p>
+
+			<chapter title="KordEx Plugin" id="gradle-plugins-1.5.2-kordex">
+				<list type="bullet">
+					<li>
+						Made <code>mainClass</code> in the <code>bot</code> builder optional.
+						Omit this setting when your bot doesn't have a main class,
+						and the Gradle plugin won't configure the application plugin.
+					</li>
+				</list>
+			</chapter>
+		</chapter>
+
+		<chapter title="v1.5.1" id="gradle-plugins-1.5.1">
+			<format style="italic">
+				Published to GitHub on October 20th, 2024
+			</format>
+
+			<p>
+				This version includes a small fix for the KordEx plugin.
+			</p>
+
+			<chapter title="KordEx Plugin" id="gradle-plugins-1.5.1-kordex">
+				<list type="bullet">
+					<li>
+						Fix a problem where the generated <code>Key</code> objects were being generated too late for
+						<code>compileKotlin</code> to pick them up.
+					</li>
+				</list>
+			</chapter>
+		</chapter>
+
+		<chapter title="v1.5.0" id="gradle-plugins-1.5.0">
+			<format style="italic">
+				Published to GitHub on October 20th, 2024
+			</format>
+
+			<p>
+				This version includes some small changes to the KordEx plugin.
+			</p>
+
+			<chapter title="KordEx Plugin" id="gradle-plugins-1.5.0-kordex">
+				<list type="bullet">
+					<li>
+						<p>
+							This version adds a new <code>i18n { }</code> builder,
+							allowing you to generate Kord Extensions Key objects based on your project's translation
+							bundle.
+						</p>
+
+						<list type="bullet">
+							<li>
+								To use it, provide the <code>classPackage</code> and <code>translationBundle</code>
+								properties, and run the generateTranslationsClass task.
+							</li>
+
+							<li>
+								The plugin will add any generated objects to your project's source-set automatically.
+							</li>
+
+							<li>
+								Other options are available: <code>className</code>, <code>configureSourceSet</code>,
+								and <code>outputDirectory</code>.
+							</li>
+						</list>
+					</li>
+				</list>
+
+				<p>
+					For more information on the <code>i18n { }</code> builder, please
+					<a href="KordEx-Plugin.topic" anchor="settings-i18n">read the documentation</a>.
+				</p>
+
+				<p>
+					For more information on doing i18n work with Kord Extensions in general, please
+					<a href="Internationalization.topic">read the new documentation page</a>.
+				</p>
+			</chapter>
+		</chapter>
+
 		<chapter title="v1.4.2" id="gradle-plugins-1.4.2">
 			<format style="italic">
 				Published to GitHub on August 20th, 2024
