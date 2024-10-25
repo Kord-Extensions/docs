@@ -888,6 +888,21 @@
 						</p>
                     </td>
                 </tr>
+
+                <tr>
+                    <td><code>publicVisibility</code></td>
+
+                    <td>
+                        <p>
+                            Whether to use the <code>public</code> visibility modifier for generated objects.
+							Set this to <code>false</code> to use <code>internal</code> instead.
+                        </p>
+
+						<p>
+							Defaults to <path>true</path>.
+						</p>
+                    </td>
+                </tr>
             </table>
         </chapter>
     </chapter>

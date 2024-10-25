@@ -1995,6 +1995,26 @@
 	</chapter>
 
 	<chapter title="Gradle Plugins" id="gradle-plugins">
+		<chapter title="v1.5.3" id="gradle-plugins-1.5.3">
+			<format style="italic">
+				Published to GitHub on October 25th, 2024
+			</format>
+
+			<p>
+				This version includes a small change for the KordEx plugin.
+			</p>
+
+			<chapter title="KordEx Plugin" id="gradle-plugins-1.5.3-kordex">
+				<list type="bullet">
+					<li>
+						The <code>i18n</code> builder now exposes a publicVisibility property.
+						This defaults to <code>true</code>, but set it to <code>false</code> to produce generated
+						objects using the internal visibility modifier.
+					</li>
+				</list>
+			</chapter>
+		</chapter>
+
 		<chapter title="v1.5.2" id="gradle-plugins-1.5.2">
 			<format style="italic">
 				Published to GitHub on October 20th, 2024
@@ -2824,6 +2844,31 @@
 	</chapter>
 
 	<chapter title="I18n Tools" id="i18n-tools">
+		<chapter title="v1.0.3" id="i18n-tools-1.0.3">
+			<format style="italic">
+				Published to GitHub on October 25th, 2024
+			</format>
+
+			<p>
+				Adds a small feature that may make things easier for some developers working with the binary API
+				compatibility checker plugin.
+			</p>
+
+			<chapter title="Translations Class Generator" id="i18n-tools-1.0.3-generator">
+				<list type="bullet">
+					<li>
+						<format style="bold">API:</format> Add <code>publicVisibility</code> constructor parameter,
+						set this to <code>false</code> to use the <code>internal</code> visibility modifier for generated objects.
+					</li>
+
+					<li>
+						<format style="bold">CLI:</format> Add <code>-in</code> / <code>--internal</code> switch to
+						use the <code>internal</code> visibility modifier for generated objects.
+					</li>
+				</list>
+			</chapter>
+		</chapter>
+
 		<chapter title="v1.0.2" id="i18n-tools-1.0.2">
 			<format style="italic">
 				Published to GitHub on September 23rd, 2024
