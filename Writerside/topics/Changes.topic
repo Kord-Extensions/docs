@@ -1995,6 +1995,25 @@
 	</chapter>
 
 	<chapter title="Gradle Plugins" id="gradle-plugins">
+		<chapter title="v1.5.3" id="gradle-plugins-1.5.4">
+			<format style="italic">
+				Published to GitHub on October 27th, 2024
+			</format>
+
+			<p>
+				This version includes a small change for the KordEx plugin.
+			</p>
+
+			<chapter title="KordEx Plugin" id="gradle-plugins-1.5.4-kordex">
+				<list type="bullet">
+					<li>
+						For the <code>i18n</code> builder, attempt to throw a more useful error when the source
+						translation bundle isn't using the UTF-8 encoding.
+					</li>
+				</list>
+			</chapter>
+		</chapter>
+
 		<chapter title="v1.5.3" id="gradle-plugins-1.5.3">
 			<format style="italic">
 				Published to GitHub on October 25th, 2024
