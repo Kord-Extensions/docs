@@ -2863,6 +2863,24 @@
 	</chapter>
 
 	<chapter title="I18n Tools" id="i18n-tools">
+		<chapter title="v1.0.3" id="i18n-tools-1.0.4">
+			<format style="italic">
+				Published to GitHub on October 27th, 2024
+			</format>
+
+			<p>
+				Just updating some KDocs.
+			</p>
+
+			<chapter title="Translations Class Generator" id="i18n-tools-1.0.4-generator">
+				<list type="bullet">
+					<li>
+						<format style="bold">API:</format> Add KDoc comments to the translation object generator.
+					</li>
+				</list>
+			</chapter>
+		</chapter>
+
 		<chapter title="v1.0.3" id="i18n-tools-1.0.3">
 			<format style="italic">
 				Published to GitHub on October 25th, 2024
