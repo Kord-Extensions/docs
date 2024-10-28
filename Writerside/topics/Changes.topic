@@ -17,6 +17,34 @@
 	</p>
 
     <chapter title="Kord Extensions" id="kordex">
+		<chapter title="v2.3.1-SNAPSHOT" id="kordex-2.3.1-SNAPSHOT">
+			<format style="italic">
+				Published to Discord on October 28th, 2024.
+			</format>
+
+			<p>
+				I've gone ahead and pushed a new KordEx version in line with several dependency updates, including Kord:
+			</p>
+
+			<list type="bullet">
+				<li><format style="bold">Gradle:</format> 8.8 -> 8.10.2</li>
+			</list>
+
+			<list type="bullet">
+				<li><format style="bold">ICU4J:</format> 75.1 -> 76.1</li>
+				<li><format style="bold">JUnit:</format> 5.11.2 -> 5.11.3</li>
+				<li><format style="bold">Kord:</format> 0.15.0-SNAPSHOT -> 0.16.0-SNAPSHOT</li>
+				<li><format style="bold">KSP:</format> 2.0.20-1.0.25 -> 2.0.21-1.0.26</li>
+				<li><format style="bold">Logback:</format> 1.5.9 -> 1.5.12</li>
+				<li><format style="bold">PF4J:</format> 3.12.0 -> 3.12.1</li>
+				<li><format style="bold">Sentry:</format> 7.15.0 -> 7.16.0</li>
+			</list>
+
+			<p>
+				As always, if you directly depend on anything KordEx needs, remember to update your dependencies!
+			</p>
+		</chapter>
+
 		<chapter title="v2.3.0-SNAPSHOT" id="kordex-2.3.0-SNAPSHOT">
 			<format style="italic">
 				Published to Discord on October 20th, 2024.
