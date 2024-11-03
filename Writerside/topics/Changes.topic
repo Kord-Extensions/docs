@@ -2023,7 +2023,22 @@
 	</chapter>
 
 	<chapter title="Gradle Plugins" id="gradle-plugins">
-		<chapter title="v1.5.3" id="gradle-plugins-1.5.4">
+		<chapter title="v1.5.5" id="gradle-plugins-1.5.5">
+			<format style="italic">
+				Published to GitHub on November 3rd, 2024
+			</format>
+
+			<p>
+				This version includes a small internal API change in the KordEx plugin.
+			</p>
+
+			<p>
+				You shouldn't use internal APIs unless you need to, so I don't document them.
+				This version adds an opt-in annotation to explicitly tag internal APIs.
+			</p>
+		</chapter>
+
+		<chapter title="v1.5.4" id="gradle-plugins-1.5.4">
 			<format style="italic">
 				Published to GitHub on October 27th, 2024
 			</format>
