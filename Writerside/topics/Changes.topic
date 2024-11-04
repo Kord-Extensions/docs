@@ -2906,7 +2906,34 @@
 	</chapter>
 
 	<chapter title="I18n Tools" id="i18n-tools">
-		<chapter title="v1.0.3" id="i18n-tools-1.0.4">
+		<chapter title="v1.0.5" id="i18n-tools-1.0.5">
+			<format style="italic">
+				Published to GitHub on November 4th, 2024
+			</format>
+
+			<p>
+				Updated the class generator to remove common delimiters from names and camel-case them instead of
+				replacing the delimiters with underscores.
+			</p>
+
+			<chapter title="Translations Class Generator" id="i18n-tools-1.0.5-generator">
+				<list type="bullet">
+					<li>
+						<format style="bold">API:</format> Add a (default on) option to remove common delimiters in
+						names.
+						You can disable this for compatibility with old code, but I'll remove the option in a future version.
+					</li>
+
+					<li>
+						<format style="bold">CLI:</format> Expose the above option via the
+						<code>-ncc</code> and <code>--no-camel-case</code> switches.
+						I'll remove these when I remove the API option.
+					</li>
+				</list>
+			</chapter>
+		</chapter>
+
+		<chapter title="v1.0.4" id="i18n-tools-1.0.4">
 			<format style="italic">
 				Published to GitHub on October 27th, 2024
 			</format>
