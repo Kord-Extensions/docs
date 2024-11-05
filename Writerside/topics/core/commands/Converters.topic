@@ -1301,6 +1301,40 @@
                 </td>
             </tr>
 
+			<tr>
+				<td>Serialized</td>
+
+				<td>
+					<p>
+						Serialized argument, converting values to the given type using
+						<code>kotlinx.serialization</code>.
+					</p>
+
+					<warning>
+						This isn't strictly how <code>kotlinx.serialization</code> is meant to be used.
+						This is a best-effort attempt that allows you to support new argument types without writing a
+						converter,
+						and you should thoroughly test your bot before you deploy any code using this.
+					</warning>
+
+					<deflist collapsible="true">
+						<def title="Converter Properties" id="serialized-properties">
+							<list>
+								<li>
+									<format style="bold">Required</format>: <code>typeName</code>
+									(<code>Key</code>) —
+									<a href="Internationalization.topic" anchor="using-translations-translating-keys">
+										Key object
+									</a> representing a human-readable short name for whatever the given type
+									represents.
+									Should be no more than two or three words.
+								</li>
+							</list>
+						</def>
+					</deflist>
+				</td>
+			</tr>
+
             <tr>
                 <td>String</td>
 
