@@ -47,6 +47,26 @@
         as interesting statistical information that will be made available to everyone.
     </p>
 
+	<note>
+		<p>
+			<format style="bold">Maintaining a fork?</format>
+		</p>
+
+		<p>
+			If you're maintaining a fork of Kord Extensions, we'd appreciate it if you could update your fork to
+			identify itself in our collected statistics.
+			To learn how to do this, please
+			<a href="https://github.com/Kord-Extensions/kord-extensions/blob/root/kord-extensions/src/main/kotlin/dev/kordex/core/datacollection/DataCollector.kt#L281">
+				look at the data collector.
+			</a>
+		</p>
+
+		<p>
+			If the above link doesn't bring you to the correct line, search for <code>fork-name</code> in
+			<code>DataCollector.kt</code>.
+		</p>
+	</note>
+
     <chapter title="General Info" id="general">
         <p>
             Data collected is stored on a server located in Germany, owned by
@@ -136,6 +156,11 @@
                 <li>The date of submission and the last updated date.</li>
                 <li>Whether your bot is running in development mode.</li>
                 <li>The versions of Kord and Kord Extensions your bot uses.</li>
+
+                <li>
+					The name of the fork you're using, if you're using a fork, and it has modified the data collector
+					to add its name.
+				</li>
             </list>
 
             <p>
