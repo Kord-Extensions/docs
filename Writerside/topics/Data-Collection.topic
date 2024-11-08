@@ -56,7 +56,7 @@
 			If you're maintaining a fork of Kord Extensions, we'd appreciate it if you could update your fork to
 			identify itself in our collected statistics.
 			To learn how to do this, please
-			<a href="https://github.com/Kord-Extensions/kord-extensions/blob/root/kord-extensions/src/main/kotlin/dev/kordex/core/datacollection/DataCollector.kt#L281">
+			<a href="https://github.com/Kord-Extensions/kord-extensions/blob/root/kord-extensions/src/main/kotlin/dev/kordex/core/datacollection/DataCollector.kt#L99">
 				look at the data collector.
 			</a>
 		</p>
