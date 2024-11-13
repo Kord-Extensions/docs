@@ -76,8 +76,9 @@
         </p>
 
         <p>
-            The data collected is not sold or shared with any third-parties, and direct access is limited to
-            <a href="https://github.com/gdude2002">the Kord Extensions lead maintainer</a>.
+            The data collected is not sold and is only shared with the Kord developers.
+			Direct access is limited to <a href="https://github.com/gdude2002">the Kord Extensions lead maintainer</a>
+			and <a href="https://github.com/DRSchlaubi">one of Kord's core developers</a>.
             However, graphs and summaries based on that data, without bot/team information, are made available to
             the public.
         </p>
