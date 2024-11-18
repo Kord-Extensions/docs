@@ -178,14 +178,14 @@
             While the EUPL applies specifically to Kord Extensions above, we felt it was worth explaining the specifics
             of what it means for your projects.
         </p>
-        
+
         <chapter title="Linking" id="your-work-linking">
             <p>
                 While the legal definition for linking hasn't been tested in Europe, we understand it to mean
-                the copying of names and API definitions from another project yours is compiled against, without 
+                the copying of names and API definitions from another project yours is compiled against, without
                 actually distributing the project you're linking to.
             </p>
-            
+
             <p>
                 Under European law, this doesn't require rights-holder permission, and it doesn't impact how your
                 project must be distributed or licensed.
