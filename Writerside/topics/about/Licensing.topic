@@ -178,14 +178,14 @@
             While the EUPL applies specifically to Kord Extensions above, we felt it was worth explaining the specifics
             of what it means for your projects.
         </p>
-        
+
         <chapter title="Linking" id="your-work-linking">
             <p>
                 While the legal definition for linking hasn't been tested in Europe, we understand it to mean
-                the copying of names and API definitions from another project yours is compiled against, without 
+                the copying of names and API definitions from another project yours is compiled against, without
                 actually distributing the project you're linking to.
             </p>
-            
+
             <p>
                 Under European law, this doesn't require rights-holder permission, and it doesn't impact how your
                 project must be distributed or licensed.
@@ -208,7 +208,7 @@
 
                 Additionally,
                 <format style="bold">you are not allowed to remove the references to Kord Extensions</format> in
-                <a href="Config-About.topic">tne about command</a> (including removing the command or extension),
+                <a href="Config-About.topic">the about command</a> (including removing the command or extension),
                 unless you reproduce those references in another public command with equal visibility.
             </p>
 
