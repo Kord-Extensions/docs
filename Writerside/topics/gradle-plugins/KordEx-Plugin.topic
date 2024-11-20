@@ -42,7 +42,7 @@
                 </p>
 
                 <list type="bullet">
-                    <li>KordEx, Google, Maven Central and OSSRH.</li>
+                    <li>KordEx, Google, Kord Snapshots, and Maven Central.</li>
 
                     <li>
                         When using <a href="Mappings.topic">the Mappings module</a>: FabricMC, QuiltMC, Shedaniel and
@@ -869,6 +869,28 @@
 
 						<p>
 							Defaults to <code>true</code>.
+						</p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><code>messageFormatVersion</code></td>
+
+                    <td>
+                        <p>
+                            Which ICU Message Format version your bundle uses.
+							Set this to <code>2</code> for
+							<a href="https://unicode-org.github.io/icu/userguide/format_parse/messages/mf2.html">
+								the new experimental format</a>, if you'd like to test it.
+                        </p>
+
+                        <p>
+                            A value of <code>2</code> will result in a compilation error on Kord Extensions versions
+							older than <code>2.3.1-SNAPSHOT</code>.
+                        </p>
+
+						<p>
+							Defaults to <code>1</code>.
 						</p>
                     </td>
                 </tr>
