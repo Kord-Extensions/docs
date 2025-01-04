@@ -91,8 +91,8 @@
                         }
 
                         maven {
-                            name = "Sonatype Snapshots (Legacy)"
-                            url = uri("https://oss.sonatype.org/content/repositories/snapshots")
+                            name = "Kord (Snapshots)"
+                            url = uri("https://repo.kord.dev/snapshots/")
                         }
                     }
 
@@ -140,8 +140,8 @@
                         }
 
                         maven {
-                            name "Sonatype Snapshots (Legacy)"
-                            url "https://oss.sonatype.org/content/repositories/snapshots"
+                            name = "Kord (Snapshots)"
+                            url = uri("https://repo.kord.dev/snapshots/")
                         }
                     }
 
@@ -191,8 +191,8 @@
 
                         &lt;repository&gt;
                             &lt;id&gt;sonatype-snapshots-legacy&lt;/id&gt;
-                            &lt;name&gt;Sonatype Snapshots (Legacy)&lt;/name&gt;
-                            &lt;url&gt;https://oss.sonatype.org/content/repositories/snapshots&lt;/url&gt;
+                            &lt;name&gt;Kord (Snapshots)&lt;/name&gt;
+                            &lt;url&gt;https://repo.kord.dev/snapshots/&lt;/url&gt;
                         &lt;/repository&gt;
                     &lt;/repositories&gt;
 
