@@ -620,7 +620,7 @@
                 </p>
 
                 <list type="bullet">
-                    <li><code>escape</code> is set to <code>/</code></li>
+                    <li><code>escape</code> is set to <code>\</code></li>
                     <li><code>syntax</code> is set to <code>docker/dockerfile:1</code></li>
                 </list>
             </warning>
