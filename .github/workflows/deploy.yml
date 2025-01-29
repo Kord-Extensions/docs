@@ -112,8 +112,8 @@ jobs:
 
           cp -r docs/* .
 
-          sudo rm -rf docs Writerside .github .idea .editorconfig .gitignore README.md
           sudo kotlin .github/algolia.main.kts
+          sudo rm -rf docs Writerside .github .idea .editorconfig .gitignore README.md
 
           git add .
           git commit -am "Automatic deployment"
