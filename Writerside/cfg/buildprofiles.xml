@@ -4,10 +4,6 @@
 
     <build-profile instance="kordex">
 		<variables>
-			<algolia-api-key>77906f3f11b79df631efbdc8d382ffc5</algolia-api-key>
-			<algolia-id>00TQKB9RBW</algolia-id>
-			<algolia-index>KordEx Docs</algolia-index>
-
 			<color-preset>contrast</color-preset>
 			<custom-css>custom.css</custom-css>
 			<custom-favicons>logo.png</custom-favicons>

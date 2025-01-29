@@ -10,7 +10,6 @@ on:
   merge_group:
 
 env:
-  ALGOLIA_ARTIFACT: "algolia-indexes-KORDEX.zip"
   ARTIFACT: "webHelpKORDEX2-all.zip"
   DOCKER_VERSION: "241.18775"
   INSTANCE: "Writerside/kordex"
@@ -40,13 +39,5 @@ jobs:
         with:
           name: artifact
           path: artifacts/${{ env.ARTIFACT }}
-
-          retention-days: 7
-
-      - uses: actions/upload-artifact@v4
-
-        with:
-          name: algolia-indexes
-          path: artifacts/${{ env.ALGOLIA_ARTIFACT }}
 
           retention-days: 7
