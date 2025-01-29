@@ -10,11 +10,19 @@ val SCRIPT_TAG = """
 <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
 
 <script async type="text/javascript">
+	let iterations = 0;
+
 	function check() {
 		let headerElements = document.getElementsByClassName(".wh-header");
 
 		if (headerElements.length < 1) {
-			setTimeout(check, 100);
+			iterations += 1;
+
+			if (iterations < 50){
+				setTimeout(check, 100)
+			} else {
+				console.warn("Algolia: Unable to find header container (.wh-header) in 50 iterations.")
+			}
 		} else {
 			let e = document.createElement("span");
 
@@ -31,21 +39,9 @@ val SCRIPT_TAG = """
 
 			headerElements.item(0).appendChild(e);
 		}
-
-		check();
 	}
 
-	let elements = [];
-
-	while (elements.length < 1) {
-		elements = document.getElementsByClassName(".wh-header")
-	}
-	setTimeout(
-		() => {
-
-		},
-		"2000"
-	);
+	check();
 </script>
 """
 
