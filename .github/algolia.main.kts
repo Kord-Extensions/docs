@@ -9,7 +9,7 @@ val LINK_TAG = "<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/@do
 val SCRIPT_TAG = """
 <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
 
-<script type="text/javascript">
+<script async type="text/javascript">
 	function check() {
 		let headerElements = document.getElementsByClassName(".wh-header");
 
