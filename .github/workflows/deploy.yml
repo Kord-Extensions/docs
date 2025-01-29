@@ -90,8 +90,6 @@ jobs:
         with:
           args: unzip -qq ${{ env.ARTIFACT }} -d docs
 
-
-
       - name: Calculate latest KordEx version
         run: kotlin .github/set-version.main.kts
 
