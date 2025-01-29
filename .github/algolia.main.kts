@@ -14,7 +14,7 @@ val SCRIPT_TAG = """
 		appId: "M02COLVI8J",
 		apiKey: "588814eabdec644a7039452755b4b621",
 		indexName: "kordex",
-		container: ".layout--overflow-guard",
+		container: ".wrapper",
 		debug: false
 	});
 </script>
