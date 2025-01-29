@@ -14,7 +14,7 @@ val SCRIPT_TAG = """
 	let iterations = 0;
 
 	function check() {
-		let headerElements = document.getElementsByClassName(".wh-header");
+		let headerElements = document.getElementsByClassName("wh-header");
 
 		if (headerElements.length < 1) {
 			iterations += 1;
