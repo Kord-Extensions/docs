@@ -1,3 +1,4 @@
+import java.io.File
 import java.nio.file.Files
 import kotlin.io.path.Path
 import kotlin.io.path.absolutePathString
@@ -67,7 +68,8 @@ paths.forEach { path ->
 		file.writeText(
 			content
 				.replace("</head>", "\t$LINK_TAG\n</head>")
-				.replace("</body>", "$SCRIPT_TAG\n</body>")
+				.replace("</body>", "$SCRIPT_TAG\n</body>"),
+			Charsets.UTF_8
 		)
 
 		print( "Done")
@@ -75,6 +77,17 @@ paths.forEach { path ->
 		print(" Failed: (${e.javaClass.simpleName}) ${e.message}\n")
 	}
 }
+
+println()
+println("Fixing sitemap...")
+
+val file: File = Path("sitemap.xml").toFile()
+val content = file.readText(Charsets.UTF_8)
+
+file.writeText(
+	content.replace("writerside-documentation/", ""),
+	Charsets.UTF_8
+)
 
 println()
 println("Done!")
