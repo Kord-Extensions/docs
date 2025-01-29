@@ -10,13 +10,18 @@ val SCRIPT_TAG = """
 <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
 
 <script type="text/javascript">
-	docsearch({
-		appId: "M02COLVI8J",
-		apiKey: "588814eabdec644a7039452755b4b621",
-		indexName: "kordex",
-		container: "body",
-		debug: false
-	});
+	setTimeout(
+		() => {
+			docsearch({
+				appId: "M02COLVI8J",
+				apiKey: "588814eabdec644a7039452755b4b621",
+				indexName: "kordex",
+				container: ".wh-header",
+				debug: false
+			});
+		},
+		"2000"
+	);
 </script>
 """
 
