@@ -15,8 +15,9 @@ val SCRIPT_TAG = """
 
 	function check() {
 		let headerElements = document.getElementsByClassName("wh-header");
+		let downloadElements = document.getElementsByTagName("wh-header__download");
 
-		if (headerElements.length < 1) {
+		if (headerElements.length < 1 || downloadElements < 1) {
 			iterations += 1;
 
 			if (iterations < 50){
@@ -27,7 +28,7 @@ val SCRIPT_TAG = """
 		} else {
 			let e = document.createElement("span");
 
-			e.classList.add("_main_joawza_17", "_sizeM_joawza_99", "_dark_joawza_62", "wh-header__download");
+			e.classList.add("_main_joawza_17", "_sizeM_joawza_99", "_dark_joawza_62");
 			e.id = "algolia-container";
 
 			docsearch({
