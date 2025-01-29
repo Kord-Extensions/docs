@@ -10,15 +10,39 @@ val SCRIPT_TAG = """
 <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
 
 <script type="text/javascript">
-	setTimeout(
-		() => {
+	function check() {
+		let headerElements = document.getElementsByClassName(".wh-header");
+
+		if (headerElements.length < 1) {
+			setTimeout(check, 100);
+		} else {
+			let e = document.createElement("span");
+
+			e.classList.add("_main_joawza_17", "_sizeM_joawza_99", "_dark_joawza_62", "wh-header__download");
+			e.id = "algolia-container";
+
 			docsearch({
 				appId: "M02COLVI8J",
 				apiKey: "588814eabdec644a7039452755b4b621",
 				indexName: "kordex",
-				container: ".wh-header",
+				container: e,
 				debug: false
 			});
+
+			headerElements.item(0).appendChild(e);
+		}
+
+		check();
+	}
+
+	let elements = [];
+
+	while (elements.length < 1) {
+		elements = document.getElementsByClassName(".wh-header")
+	}
+	setTimeout(
+		() => {
+
 		},
 		"2000"
 	);
