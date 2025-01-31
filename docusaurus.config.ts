@@ -63,6 +63,12 @@ const config: Config = {
 	themeConfig: {
 		image: "img/social-card.png",
 
+		algolia: {
+			appId: "M02COLVI8J",
+			apiKey: "588814eabdec644a7039452755b4b621",
+			indexName: "kordex",
+		},
+
 		navbar: {
 			title: "Kord Extensions",
 

@@ -12,6 +12,8 @@ import javax.xml.xpath.XPathConstants
 import javax.xml.xpath.XPathFactory
 import kotlin.io.path.Path
 
+// TODO: Switch this to something Docusaurus can handle, or do it client-side?
+
 val client = OkHttpClient()
 val gson = Gson()
 
@@ -73,9 +75,9 @@ if (latestSnapshot == null && latestRelease == null) {
 val latest = if (latestSnapshot == null) {
 	latestRelease!!
 } else if (latestRelease == null) {
-	latestSnapshot!!
+	latestSnapshot
 } else {
-	maxOf(latestSnapshot!!, latestRelease!!)
+	maxOf(latestSnapshot, latestRelease)
 }
 
 val latestPlugin = getLatest(PLUGIN_URL)?.let { Version.parse(it) }
