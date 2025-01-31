@@ -1,0 +1,140 @@
+import {themes as prismThemes} from "prism-react-renderer";
+import type {Config} from "@docusaurus/types";
+import type * as Preset from "@docusaurus/preset-classic";
+
+const config: Config = {
+	title: "Kord Extensions Docs",
+	tagline: "Everything you need to know about our projects.",
+	favicon: "img/logo.png",
+
+	url: "https://docs.kordex.dev",
+	baseUrl: "/",
+
+	organizationName: "Kord-Extensions",
+	projectName: "docs",
+
+	onBrokenLinks: "throw",
+	onBrokenMarkdownLinks: "warn",
+
+	i18n: {
+		defaultLocale: "en",
+		locales: ["en"],
+	},
+
+	presets: [
+		[
+			"classic",
+			{
+				docs: {
+					id: "bots",
+					path: "bots",
+					routeBasePath: "bots",
+					sidebarPath: "./bots-sidebars.ts",
+				},
+
+				theme: {
+					customCss: "./src/css/custom.css",
+				},
+			} satisfies Preset.Options,
+		],
+	],
+
+	plugins: [
+		[
+			"@docusaurus/plugin-content-docs",
+			{
+				id: "i18n",
+				path: "i18n",
+				routeBasePath: "i18n",
+				sidebarPath: "./i18n-sidebars.ts",
+			}
+		],
+		[
+			"@docusaurus/plugin-content-docs",
+			{
+				id: "about",
+				path: "about",
+				routeBasePath: "about",
+				sidebarPath: "./about-sidebars.ts",
+			}
+		]
+	],
+
+	themeConfig: {
+		image: "img/social-card.png",
+
+		navbar: {
+			title: "Kord Extensions",
+
+			logo: {
+				alt: "Kord Extensions Logo",
+				src: "img/logo.svg",
+			},
+
+			items: [
+				{
+					to: "/about",
+					position: "left",
+					label: "About",
+				},
+
+				{
+					to: "/bots",
+					position: "left",
+					label: "Bots",
+				},
+
+				{
+					to: "/i18n",
+					position: "left",
+					label: "i18n",
+				},
+			],
+		},
+
+		footer: {
+			style: "dark",
+
+			links: [
+				{
+					title: "Community",
+
+					items: [
+						{
+							label: "Discord",
+							href: "https://discord.gg/nYzQWcjAmK",
+						},
+						{
+							label: "GitHub",
+							href: "https://github.com/orgs/Kord-Extensions/discussions",
+						},
+					],
+				},
+
+				{
+					title: "Links",
+
+					items: [
+						{
+							label: "Website",
+							href: "https://kordex.dev",
+						},
+						{
+							label: "Donate",
+							href: "https://donate.stripe.com/3csg29aPp95Rgxi7ss?client_reference_id=docs",
+						},
+					],
+				},
+			],
+
+			copyright: `⚖️ Creative Commons Zero License`,
+		},
+
+		prism: {
+			theme: prismThemes.github,
+			darkTheme: prismThemes.dracula,
+		},
+	} satisfies Preset.ThemeConfig,
+};
+
+export default config;

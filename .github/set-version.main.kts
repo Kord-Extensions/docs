@@ -16,6 +16,7 @@ val client = OkHttpClient()
 val gson = Gson()
 
 val PLUGIN_URL = "https://plugins.gradle.org/m2/dev/kordex/gradle/plugins/kordex/maven-metadata.xml"
+val I18N_URL = "https://plugins.gradle.org/m2/dev/kordex/gradle/plugins/i18n/maven-metadata.xml"
 val RELEASES_URL = "https://releases-repo.kordex.dev/dev/kordex/kord-extensions/maven-metadata.xml"
 val SNAPSHOTS_URL = "https://snapshots-repo.kordex.dev/dev/kordex/kord-extensions/maven-metadata.xml"
 
@@ -78,6 +79,7 @@ val latest = if (latestSnapshot == null) {
 }
 
 val latestPlugin = getLatest(PLUGIN_URL)?.let { Version.parse(it) }
+val latesti18n = getLatest(I18N_URL)?.let { Version.parse(it) }
 
 println("Latest snapshot version: $latestSnapshot")
 println("Latest release version: $latestRelease")
@@ -105,6 +107,7 @@ if ("-SNAPSHOT" in latest.toString()) {
 }
 
 println("Updating Gradle plugins version in Writerside/v.list to $latestPlugin")
+println("Updating i18n version in Writerside/v.list to $latesti18n")
 println("Updating KordEx version in Writerside/v.list to $latest")
 println("Updating Java version in Writerside/v.list to $javaVersion")
 
@@ -117,6 +120,7 @@ val fileContents = file.readText()
 file.writeText(
 	fileContents.replace("{VERSION}", latest.toString())
 		.replace("{JAVA_VERSION}", javaVersion)
+		.replace("{I18N_VERSION}", latesti18n.toString())
 		.replace("{PLUGIN_VERSION}", latestPlugin.toString())
 )
 
