@@ -7,11 +7,6 @@ on:
 
   workflow_dispatch:
 
-env:
-  ARTIFACT: "webHelpKORDEX2-all.zip"
-  DOCKER_VERSION: "241.18775"
-  INSTANCE: "Writerside/kordex"
-
 permissions:
   contents: write
   id-token: write
@@ -23,48 +18,41 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Kotlin
-        uses: fwilhe2/setup-kotlin@main
+# TODO: Figure out what to do here
+#      - name: Set up Kotlin
+#        uses: fwilhe2/setup-kotlin@main
+#
+#      - name: Calculate latest KordEx version
+#        run: kotlin .github/set-version.main.kts
 
-      - name: Calculate latest KordEx version
-        run: kotlin .github/set-version.main.kts
-
-      - uses: JetBrains/writerside-github-action@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
 
         with:
-          instance: ${{ env.INSTANCE }}
-          artifact: ${{ env.ARTIFACT }}
-          docker-version:  ${{ env.DOCKER_VERSION }}
+          node-version-file: "package.json"
+          cache: "pnpm"
+          cache-dependency-path: "pnpm-lock.yaml"
 
-      - uses: actions/upload-artifact@v4
+      - name: Install Dependencies
+        run: pnpm i
+
+      - name: Build Site
+        run: pnpm run build
+
+      - name: Upload Build Site
+        uses: actions/upload-artifact@v4
 
         with:
           name: docs
 
           path: |
-            artifacts/${{ env.ARTIFACT }}
-            artifacts/report.json
+            build/
 
           retention-days: 7
-  test:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/download-artifact@v4
-
-        with:
-          name: docs
-          path: artifacts
-
-      - uses: JetBrains/writerside-checker-action@v1
-
-        with:
-          instance: ${{ env.INSTANCE }}
 
   deploy:
     # Requires the build job results
-    needs: test
+    needs: build
     runs-on: ubuntu-latest
 
     steps:
@@ -95,14 +83,16 @@ jobs:
 
       - name: Copy files, commit and push
 
+# TODO: Cloudflare like the site repo
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions-user@users.noreply.github.com"
 
+          sudo rm -rf .docusaurus .github .idea about bots build i18n node_modules src static .editorconfig .gitignore ./*.*
+
           cp -r docs/* .
 
-          sudo kotlin .github/algolia.main.kts
-          sudo rm -rf docs Writerside .github .idea .editorconfig .gitignore README.md
+          sudo rm -rf docs/
 
           git add .
           git commit -am "Automatic deployment"

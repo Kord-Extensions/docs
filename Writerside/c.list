@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE categories
-        SYSTEM "https://resources.jetbrains.com/writerside/1.0/categories.dtd">
-<categories>
-    <category id="components" name="Components" order="1"/>
-    <category id="abandoned-projects" name="Abandoned Projects" order="2"/>
-    <category id="relevant-links" name="Relevant Links" order="3"/>
-</categories>

@@ -9,11 +9,6 @@ on:
   pull_request:
   merge_group:
 
-env:
-  ARTIFACT: "webHelpKORDEX2-all.zip"
-  DOCKER_VERSION: "241.18775"
-  INSTANCE: "Writerside/kordex"
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -21,23 +16,35 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Kotlin
-        uses: fwilhe2/setup-kotlin@main
+# TODO: Figure out what to do here
+#      - name: Set up Kotlin
+#        uses: fwilhe2/setup-kotlin@main
+#
+#      - name: Calculate latest KordEx version
+#        run: kotlin .github/set-version.main.kts
 
-      - name: Calculate latest KordEx version
-        run: kotlin .github/set-version.main.kts
-
-      - uses: JetBrains/writerside-github-action@v4
-
-        with:
-          instance: ${{ env.INSTANCE }}
-          artifact: ${{ env.ARTIFACT }}
-          docker-version:  ${{ env.DOCKER_VERSION }}
-
-      - uses: actions/upload-artifact@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
 
         with:
-          name: artifact
-          path: artifacts/${{ env.ARTIFACT }}
+          node-version-file: "package.json"
+          cache: "pnpm"
+          cache-dependency-path: "pnpm-lock.yaml"
+
+      - name: Install Dependencies
+        run: pnpm i
+
+      - name: Build Site
+        run: pnpm run build
+
+# TODO: Cloudflare like the site repo
+      - name: Upload Build Site
+        uses: actions/upload-artifact@v4
+
+        with:
+          name: docs
+
+          path: |
+            build/
 
           retention-days: 7
