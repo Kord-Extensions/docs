@@ -7,6 +7,11 @@ indent_style = tab
 trim_trailing_whitespace = true
 max_line_length = 120
 
+quote_type = double
+ij_html_quote_style = double
+ij_javascript_force_quote_style = true
+ij_typescript_force_quote_style = true
+
 [{*.yml,*.yaml}]
 indent_style = space
 indent_size = 2
