@@ -9,3 +9,13 @@
 	height: 200px;
 	width: 200px;
 }
+
+.matchedColHeight {
+	height: 20rem;
+}
+
+@media screen and (max-width: 996px) {
+	.matchedColHeight {
+		height: auto;
+	}
+}

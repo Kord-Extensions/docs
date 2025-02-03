@@ -45,12 +45,22 @@ const FeatureList: FeatureItem[] = [
 			</>
 		),
 	},
+	{
+		title: "Other Docs",
+		to: "misc",
+
+		description: (
+			<>
+				Documentation for projects and modules that don't fit in any of the other sections.
+			</>
+		),
+	},
 ];
 
 function Feature({title, href, to, description}: FeatureItem) {
 	return (
-		<div className={clsx("col col--4 margin-bottom--md")}>
-			<div className="text--center card shadow--lw">
+		<div className={clsx("col col--3 margin-bottom--md")}>
+			<div className={clsx("text--center card shadow--lw", styles.matchedColHeight)}>
 				<div className="card__header">
 					<Heading as="h3">{title}</Heading>
 				</div>
