@@ -25,6 +25,12 @@ jobs:
 #      - name: Calculate latest KordEx version
 #        run: kotlin .github/set-version.main.kts
 
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+
+        with:
+          run_install: false
+
       - name: Set up Node
         uses: actions/setup-node@v4
 
