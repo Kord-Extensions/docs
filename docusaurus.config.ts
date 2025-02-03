@@ -57,7 +57,16 @@ const config: Config = {
 				routeBasePath: "about",
 				sidebarPath: "./about-sidebars.ts",
 			}
-		]
+		],
+		[
+			"@docusaurus/plugin-content-docs",
+			{
+				id: "misc",
+				path: "misc",
+				routeBasePath: "misc",
+				sidebarPath: "./misc-sidebars.ts",
+			}
+		],
 	],
 
 	themeConfig: {
@@ -94,6 +103,12 @@ const config: Config = {
 					to: "/i18n",
 					position: "left",
 					label: "i18n",
+				},
+
+				{
+					to: "/misc",
+					position: "left",
+					label: "Misc.",
 				},
 			],
 		},
