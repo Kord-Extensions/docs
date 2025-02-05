@@ -30,6 +30,9 @@ const config: Config = {
 					path: "bots",
 					routeBasePath: "bots",
 					sidebarPath: "./bots-sidebars.ts",
+
+					tags: "../src/tags.yml",
+					onInlineTags: "throw",
 				},
 
 				theme: {
@@ -47,6 +50,9 @@ const config: Config = {
 				path: "i18n",
 				routeBasePath: "i18n",
 				sidebarPath: "./i18n-sidebars.ts",
+
+				tags: "../src/tags.yml",
+				onInlineTags: "throw",
 			}
 		],
 		[
@@ -56,6 +62,9 @@ const config: Config = {
 				path: "about",
 				routeBasePath: "about",
 				sidebarPath: "./about-sidebars.ts",
+
+				tags: "../src/tags.yml",
+				onInlineTags: "throw",
 			}
 		],
 		[
@@ -65,6 +74,9 @@ const config: Config = {
 				path: "misc",
 				routeBasePath: "misc",
 				sidebarPath: "./misc-sidebars.ts",
+
+				tags: "../src/tags.yml",
+				onInlineTags: "throw",
 			}
 		],
 	],
@@ -148,7 +160,7 @@ const config: Config = {
 				},
 			],
 
-			copyright: `⚖️ Creative Commons Zero License`,
+			copyright: `⚖️ Creative Commons Zero Licence`,
 		},
 
 		prism: {

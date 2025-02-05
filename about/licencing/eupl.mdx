@@ -1,6 +1,277 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
+tags: [kordex-v2]
 ---
 
-# European Public License
+import Link from "@docusaurus/Link";
 
+# European Public Licence
+
+As of version 2.x, we use the European Public Licence (The EUPL) for our primary project,
+<Link to="/bots">our Discord bot framework</Link>.
+
+Previous versions were licenced under
+<Link to="/about/licencing/mpl">the Mozilla Public Licence</Link>.
+You can find the source code for the last version of that project we licenced under the MPL
+[in the v1 branch on GitHub](https://github.com/Kord-Extensions/kord-extensions/tree/v1).
+
+We understand that software licencing can be confusing at the best of times.
+This is especially true when dealing with an uncommon or poorly-documented software licence — such as the EUPL.
+
+:::danger
+
+While we've tried to provide as much information as we can under our understanding of the EUPL,
+**we aren't lawyers and this document doesn't constitute legal advice.**
+
+[The EUPL text](https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12) always takes priority over anyone's
+opinions, but we hope to clarify a few things by explaining how we interpret it.
+
+:::
+
+## About the Licence
+
+[According to the European Commission](https://joinup.ec.europa.eu/collection/eupl/introduction-eupl-licence),
+the EUPL is a copyleft licence,
+designed to be compatible with other copyleft licences when combined downstream into a larger work —
+and to be interoperable, according to European copyright law.
+It includes multiple translated versions (which hold equal legal value),
+covers distribution through a network (such as Discord), and includes a Developer Certificate of Origin.
+
+What this ultimately means is that the EUPL functions like a more compatible and interoperable AGPL,
+including a network use clause, but also a linking exception.
+Instead of containing its own definition for what a derivative work is,
+it defers to European copyright law — specifically,
+[Directive 91/250/EEC](https://eur-lex.europa.eu/legal-content/EN/ALL/?uri=celex:31991L0250),
+re-codified [2009/24/EC](https://eur-lex.europa.eu/legal-content/EN/ALL/?uri=CELEX:32009L0024).
+
+It additionally defers to the copyright law of the EU member state where the project owner resides,
+or the one defined within the files' licence headers, if provided.
+In our case, this means that the applicable law applies to the Republic of Ireland,
+specifically within Dublin's jurisdiction for legal challenges.
+
+## Our Mindset
+
+:::tip
+
+This section encompasses our own opinions.
+We're sure some people will disagree with us, but we're firm in our beliefs —
+so find something else to spend your energy on other rather than trying to change our minds!
+
+:::
+
+It is no secret that politics in open source software has deeply altered today's technological landscape.
+While we feel that many of these changes have been positive, some of them have definitely been negative.
+
+The GNU Project has, for a long time, steered the discussion on what it means to write open-source software and what
+it means for software to be "free" — trying to move the needle in whatever direction Richard Stallman
+desires.
+Given that [free software is inherently political](https://steemit.com/programming/@crell/free-software-is-political),
+and the self-crowned leader of that political movement
+[can't meet even basic moral standards](https://stallman-report.org/), we wonder whether we could do better.
+
+Additionally, the modern open-source movement has largely diverged from the original ideals of the so-called free
+software movement.
+This means we must deal with things as they are, not how Stallman claims they are or should be.
+
+Unfortunately, we're not in a great place right now.
+The rise of generative AI (AKA theft-as-a-service) has laid bare companies' intentions to strip-mine our community and
+industry until there's nothing left of it.
+The [open-source sustainability crisis](https://openpath.quest/2024/the-open-source-sustainability-crisis/) shows
+that large companies take advantage of open-source projects and provide nothing in return —
+no code contributions, no donations, no marketing, nothing.
+
+The open-source movement (maybe intentionally, we think) enables this, along with many of the licences that have the
+privilege of the "open-source licence" label.
+
+**We are no longer willing to be the corporate world's source of free labour.**
+
+The normal response to these concerns is to simply tell us to use the GPL or AGPL.
+However, these are "viral" licences, requiring any public downstream dependent project to use the same licence, or a
+similar one.
+
+To maintain downstream developer freedom, we decided against picking any viral licences.
+The only remaining GNU licence was the LGPL, which we felt didn't provide adequate protection for our projects.
+
+Ultimately, the only suitable licence we could find was the EUPL.
+It guarantees that any downstream project or product must provide an attribution notice at minimum, assuming it is
+available to the public in some way.
+If anyone modifies one of our EUPL-licenced projects, and they make that modification available to the public in some
+way, the EUPL guarantees that they must make those modifications publicly accessible as well.
+
+We hope that this will help to direct a handful of new users to our projects and allow us to incorporate any changes
+that would be helpful to our users, but the developer didn't contribute back.
+
+## Our Interpretation
+
+While our interpretation **cannot be treated as legal advice**,
+we feel it may be helpful to explain what we expect from our users.
+
+- The EUPL is a copyleft licence.
+  This means you can freely copy and distribute Kord Extensions, as long as you follow the conditions in the licence
+  text.
+
+- European law allows for the reproduction of "interfaces" without the permission of the rights-holders.
+  This means that the copying of names from an API (such as what happens with linking)
+  doesn't require that your project be licenced under the EUPL, or indeed any specific licence.
+
+  This was particularly important to us,
+  as we didn't want to force any specific licence onto bots,
+  modules, plugins, or other related projects using Kord Extensions,
+  and we wanted to allow for use by proprietary and commercial projects.
+
+- The EUPL includes a "network use" clause — it treats distribution and communication as equal,
+  and communications of functionality over a network (such as Discord)
+  require you to follow all the distribution requirements.
+
+  Due to the linking exception described above, this doesn't apply to your bots' code,
+  but it does apply to Kord Extensions itself, as explained below.
+
+- The EUPL states that all distributions or communications of a work must include all copyright,
+  patent or trademark notices that refer to the licence and to the disclaimer of warranties.
+  In our case, we simply ask for a mention of Kord Extensions, and a link back to our site,
+  which the bundled `/about` command provides by default.
+
+  The GitHub Discussion used to collect contributors' permission to re-licence under the EUPL also asked for permission
+  to provide alternative licences pending an application process.
+  We haven't created a process for this yet (as nobody has asked for an alternative licence),
+  but the option remains open if this arrangement doesn't work for your project.
+
+### Combining
+
+When creating a combined work (such as a fat JAR containing your bot along with Kord Extensions) for public
+distribution or use, the EUPL version 1.2 defines several compatible downstream licences you may use.
+
+:::danger
+
+It is worth pointing out that **this doesn't mean that you can re-licence Kord Extensions.**
+
+Instead, this means that you can provide a larger combined work including Kord Extensions under one of the
+compatible licences, as long as you follow the terms set out by the licence applied to Kord Extensions.
+
+**Failure to follow the Kord Extensions licence means you lose the right to distribute it!**
+
+:::
+
+- GNU licences:
+  - AGPL version 3
+  - GPL version 2 or 3
+  - LGPL version 2.1 or 3.0
+
+- Other Software licences:
+  - Cea Cnrs Inria Logiciel Libre licence (CeCILL) version 2.0 or 2.1
+  - Eclipse Public licence (EPL) version 1.0
+  - European Union Public Licence (EUPL) version 1.1 or 1.2
+  - Mozilla Public Licence (MPL) version 2
+  - Open Software licence (OSL) version 2.1 or 3.0
+  - Québec Free and Open-Source Licence (LiLiQ-R or LiLiQ-R+)
+
+## Your Work
+
+While the EUPL applies specifically to Kord Extensions above,
+we felt it was worth explaining the specifics of what it means for your projects.
+
+### Linking
+
+While no European court has tested the legal definition for linking,
+we understand it to mean the copying of names and API definitions from another project yours is compiled against,
+without actually distributing the project you're linking to.
+
+Under European law, this doesn't require rights-holder permission,
+and it doesn't impact how you must distribute or licence your project.
+
+Ultimately, this means that you're welcome to keep your bots and plugins closed-source or open-source them under any
+licence you wish, **as long as they don't include a distribution of Kord Extensions.**
+
+### Modifying
+
+If you modify Kord Extensions and use it in a bot or other distribution or communication,
+**you must provide access to the source code of your modified version and state what changes you've made to it.
+Additionally, you are not allowed to remove the references to Kord Extensions** in the `/about` command
+(including removing the command or extension),
+unless you reproduce those references in another public command with equal visibility.
+
+The simplest way to do provide your source code and list of changes is to
+[fork the project on GitHub](https://github.com/Kord-Extensions/kord-extensions/fork), and this is what we'd prefer.
+However, you may also provide a link and state your changes in your bot's `/about` command.
+
+We believe that Kord Extensions is at its best when it accounts for as many project types as possible,
+and we always prefer contributions that make Kord Extensions more suitable, rather than multiple diverging forks.
+
+As all developers maintaining Kord Extensions forks must licence them under the EUPL version 1.2,
+we may inspect forks and integrate their changes with Kord Extensions or make our own changes inspired by the forks,
+without notice.
+However, we will do our best to credit you by listing you as an additional author in each relevant commit.
+
+### Combining
+
+While we don't see any realistic reason to create a public combined work,
+we want to ensure that we also account for that project type.
+
+We understand a combined work to be a larger work (such as a bot)
+that itself includes a distribution of Kord Extensions — regardless of whether that distribution is modified —
+in either source code, compiled or binary format.
+Examples of combined works include:
+
+- Distributions such as those created by the Gradle distribution plugin or the Gradle Shadow plugin.
+- Containers, including Docker containers, regardless of how a developer may intend to deploy them.
+- A distribution of your project's source code that contains the Kord Extensions source code in-tree.
+
+Where you make a combined work available to the public,
+you must distribute it under one of the EUPL's compatible downstream licences.
+If you aren't distributing Kord Extensions' source code along with your project's,
+then this doesn't mean you must licence your project's code this way, or that your project must be open-source.
+However, you must distribute your project in a way that follows the terms of the collective licence you're using.
+
+:::danger
+
+It is worth pointing out that **this doesn't mean that you can re-licence Kord Extensions.**
+
+**Failure to follow the Kord Extensions licence means you lose the right to distribute it!**
+
+:::
+
+We recommend against distributing Kord Extensions in source code format,
+and you should dynamically link to it whenever possible, ideally using the KordEx Gradle plugin.
+
+### Running
+
+Under the terms of the EUPL, a "distribution" or "communication" are treated as equal,
+and the same terms apply to both.
+To quote the EUPL directly:
+
+> ‘Distribution’ or ‘Communication’: any act of selling, giving, lending, renting, distributing, communicating,
+> transmitting, or otherwise making available, online or offline, copies of the Work or providing access to its
+> essential functionalities at the disposal of any other natural or legal person.
+
+This means that running a Discord bot using Kord Extensions counts as a "distribution" or "communication",
+as you are exposing its functionality to users on Discord.
+As a result, you will need to follow the terms of the EUPL,
+even if your project's source code is not publicly available,
+and you're not using a modified version of Kord Extensions.
+**This is true even if it is a small bot for a private server,**
+as Discord ultimately decides who has access to your bot, rather than you having direct control over it.
+
+To make this easier, Kord Extensions provides the `/about` command,
+which includes a small footer mentioning Kord Extensions, linking to its website, and mentioning its licence.
+You should configure this command with your bot's information, otherwise it'll look strange and a little barren.
+
+:::danger
+
+To remain compliant with the terms of the EUPL, your bot must have an easily accessible notice including the following:
+
+- A link to the Kord Extensions website or GitHub repository.
+- A note that your bot uses Kord Extensions and that it is licenced under the EUPL version 1.2.
+
+For this reason, **we strongly recommend that you don't attempt to remove the `/about` command from your bots or any
+modified version of Kord Extensions in any way.**
+
+:::
+
+## Questions and Concerns
+
+If you have any questions regarding Kord Extensions and its licencing, please feel free to contact us
+<Link to="/about/community">via any of our community spaces</Link>.
+
+If you have any questions about the EUPL's wording or how to use it, the European Commission
+[provides a contact form you can use
+to ask legal questions](https://joinup.ec.europa.eu/collection/eupl/joinup-legal-support-questions-will-be-answered).

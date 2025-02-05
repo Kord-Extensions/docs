@@ -18,7 +18,7 @@ const FeatureList: FeatureItem[] = [
 
 		description: (
 			<>
-				Learn about the Kord Extensions project itself, including information on our licensing decisions and
+				Learn about the Kord Extensions project itself, including information on our licencing decisions and
 				community spaces.
 			</>
 		),
