@@ -2,5 +2,82 @@
 sidebar_position: 4
 ---
 
-# Mozilla Public Licence
+import Link from "@docusaurus/Link";
 
+# Mozilla Public License
+
+:::warning
+
+Several versions of the Mozilla Public License exist.
+Our projects only use version 2.0, and this documentation likewise only talks about that version.
+
+We don't use version 1.1, or any other past (or future) version of the MPL.
+
+:::
+
+We use the Mozilla Public License (the MPL) for projects we feel are less important, less likely to be stolen from,
+good learning resources, or where a more permissive licence than <Link to="/about/licencing/eupl">the EUPL</Link>
+makes sense.
+
+This includes our Gradle plugins, and <Link to="/i18n">our internationalisation toolkit</Link>.
+
+## About the Licence
+
+[According to Mozilla](https://www.mozilla.org/en-US/MPL/), the MPL is a simple copyleft licence, intended to be applied
+to individual files rather than sitting at the root of a project.
+This makes it easier for users and contributors to modify project code, while still allowing them to combine it with
+code under other licences with minimal restrictions.
+
+It sits in-between the Apache licence and the GNU family of licences, providing a middle ground for projects that wish
+to use it.
+
+## Our Mindset
+
+:::tip
+
+This section encompasses our own opinions.
+We're sure some people will disagree with us, but we're firm in our beliefs —
+so find something else to spend your energy on other rather than trying to change our minds!
+
+:::
+
+In many ways, we treat the MPL as a lighter version of <Link to="/about/licencing/eupl">the EUPL</Link>.
+While we feel strongly about the culture of exploitation that is a necessary part of the open source movement, we
+recognise that a restrictive licence with strong protections isn't suitable for every project or situation.
+We apply the MPL to projects in those situations.
+
+We feel that it is important to maintain developer freedom in many situations.
+Using a stronger licence for a library (or some other project types) would significantly impact developers'
+ability to maintain their own projects as they see fit.
+
+Despite this, we feel that the MPL provides strong enough protections to stop malicious developers from taking
+advantage of us in most of the situations we care about.
+
+## Our Interpretation
+
+Despite being a relatively permissive copyleft licence, the MPL does provide one important distribution requirement:
+all public distributions must include a link to the source code.
+If the distribution includes a modified version, the source code for that modified version must also be available and
+linked to.
+
+Notably, the licence considers methods of distribution that add cost and complexity without a specific,
+necessary purpose as unreasonable, and these methods of distribution don't meet the licence terms.
+For example, you can't meet the licence terms by only distributing source code via a courier or other physical
+mechanisms, when you could more easily upload the source code to a website and provide a link.
+
+Unlike <Link to="/about/licencing/eupl">the EUPL</Link>, "distribution" only covers situations where you deliver
+a copy of the software in question to another person or entity.
+It doesn't include a "network use" clause, so making the functionality available over a network doesn't trigger the
+distribution requirements.
+
+Otherwise, this is a fairly standard copyleft licence,
+and we recommend [reading the licence text](https://www.mozilla.org/en-US/MPL/2.0/) yourself.
+
+## Questions and Concerns
+
+If you have any questions regarding Kord Extensions and its licencing, please feel free to contact us
+<Link to="/about/community">via any of our community spaces</Link>.
+
+If you have any questions about the MPL's wording or how to use it, Mozilla provides
+[an in-depth FAQ](https://www.mozilla.org/en-US/MPL/2.0/FAQ/), as well as a contact email address
+[on the overview page](https://www.mozilla.org/en-US/MPL/).

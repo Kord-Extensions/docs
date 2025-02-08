@@ -18,8 +18,8 @@ const FeatureList: FeatureItem[] = [
 
 		description: (
 			<>
-				Learn about the Kord Extensions project itself, including information on our licencing decisions and
-				community spaces.
+				Learn about the Kord Extensions project itself, including information on licencing and contributing,
+				and our community spaces.
 			</>
 		),
 	},
