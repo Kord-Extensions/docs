@@ -1,5 +1,346 @@
 ---
-sidebar_position: 1
+sidebar_position: 3
 ---
 
+import Link from "@docusaurus/Link";
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Kotlin
+
+This document provides in-depth information about what we expect from you when working on projects written in Kotlin,
+or Kotlin code in mixed-language projects.
+
+We've written this document because we've seen a lot of confusion from contributors when we review their projects.
+If you don't understand something in this document (or you think we missed something),
+please <Link to="/about/community/rules-and-reporting#giving-feedback">let us know</Link>!
+
+## Indentation
+
+All Kord Extensions projects use **single tabs** for indentation, except in some situations:
+
+- Markdown (`.md`, `.mdx`) files use **two spaces** for list item and wrapping indentation.
+  We feel this makes these files more readable, as wrapped list items line up.
+- YAML (`.yml`) files use **two spaces** for indentation, as YAML doesn't support tab-based indents,
+  and these files tend to be deeply nested.
+
+The main reason we decided to primarily use tabs is for better code accessibility.
+Specifically, all good editors allow you to configure how they look, and they tend to be better for visually impaired
+or blind folks, who may need to use large fonts or braille screen readers.
+
+## Blank Lines
+
+While some style conventions try to minimise blank lines in code files (such as
+[the one used by `kotlinx.coroutines`](https://github.com/Kotlin/kotlinx.coroutines/blob/master/CONTRIBUTING.md)),
+we think this makes code difficult to read, and thus is bad practice.
+
+Instead, you should separate your code into logically defined blocks, split with singular blank lines.
+We've provided some examples below, but please note that we use a somewhat vibes-based approach for this, and we'll
+need to update this document over time.
+
+### Data vs Logic
+
+**Split field definitions and functional expressions where possible and when logic allows.**
+For example:
+
+<Tabs groupId="comparitive-example" block={true}>
+	<TabItem value="incorrect" label="Incorrect" default>
+
+		```kt
+		val hello = "hello"
+		val world = "world"
+		println("$hello, $world!")
+		val question = "What's up?"
+		println(question)
+		```
+
+	</TabItem>
+
+	<TabItem value="correct" label="Correct">
+
+		```kt
+		val hello = "hello"
+		val world = "world"
+		val question = "What's up?"
+
+		println("$hello, $world!")
+		println(question)
+		```
+
+	</TabItem>
+</Tabs>
+
+### Functions vs Fields
+
+**Split function calls and field access where possible and when logic allows.**
+For example:
+
+<Tabs groupId="comparitive-example" block={true}>
+	<TabItem value="incorrect" label="Incorrect" default>
+
+		```kt
+		val x: SomeObj
+		x.doThing()
+		x.variable = 42
+		val something: x.getThing()
+		x.doOtherThing(something)
+		x.takeMap(
+			mapOf("a" to "b"),
+			"c"
+		)
+		```
+
+	</TabItem>
+
+	<TabItem value="correct" label="Correct">
+
+		```kt
+		val x: SomeObj
+		val something: x.getThing()
+
+		x.doThing()
+		x.doOtherThing(something)
+
+		x.variable = 42
+
+		x.takeMap(
+			mapOf("a" to "b"),
+
+			"c"
+		)
+		```
+
+	</TabItem>
+</Tabs>
+
+### Lines vs Blocks
+
+**Split single-line expressions and blocks, and split separate blocks.**
+For example:
+
+<Tabs groupId="comparitive-example" block={true}>
+	<TabItem value="incorrect" label="Incorrect" default>
+
+		```kt
+		val x: Something
+		x.doSomething {
+			// ...
+		}
+		x.doThing()
+		x.doSomethingElse{
+			// ...
+		}
+		```
+
+	</TabItem>
+
+	<TabItem value="correct" label="Correct">
+
+		```kt
+		val x: Something
+
+		x.doSomething {
+			// ...
+		}
+
+		x.doThing()
+
+		x.doSomethingElse{
+			// ...
+		}
+		```
+
+	</TabItem>
+</Tabs>
+
+### Long Wrapped Statements
+
+**When dealing with statements wrapped within symbol characters (such as parentheses), don't let them get too long.**
+Additionally, add commas to the end of lists, and follow the other rules.
+For example:
+
+<Tabs groupId="comparitive-example" block={true}>
+	<TabItem value="incorrect" label="Incorrect" default>
+
+		```kt
+		private fun addGeneratedFiles(target: Project, extension: KordExExtension, kordVersion: Version?, kordExVersion: Version) {
+			// ...
+
+			doSomething(1, 2, "a", "b", listOf(null), true, null, false)
+		}
+		```
+
+	</TabItem>
+
+	<TabItem value="correct" label="Correct">
+
+		```kt
+		private fun addGeneratedFiles(
+			target: Project,
+			extension: KordExExtension,
+			kordVersion: Version?,
+			kordExVersion: Version,
+		) {
+			// ...
+
+			doSomething(
+				1, 2,
+				"a", "b",
+
+				listOf(null),
+
+				true, false,
+			)
+		}
+		```
+
+	</TabItem>
+</Tabs>
+
+### Grouped Calls
+
+**When using the same function/property multiple times, split them from other function/property uses.**
+For example:
+
+<Tabs groupId="comparitive-example" block={true}>
+	<TabItem value="incorrect" label="Incorrect" default>
+
+		```kt
+		val properties = Properties()
+		properties.setProperty("settings.dataCollection", extension.dataCollection.readable)
+		properties.setProperty("modules", extension.modules.joinToString())
+		properties.setProperty("versions.kordEx", kordExVersion.version)
+		properties.setProperty("versions.kord", kordVersion?.version)
+		properties.store(outputFile.get().asFile.writer(), null)
+		```
+
+	</TabItem>
+
+	<TabItem value="correct" label="Correct">
+
+		```kt
+		val properties = Properties()
+
+		properties.setProperty("settings.dataCollection", extension.dataCollection.readable)
+		properties.setProperty("modules", extension.modules.joinToString())
+		properties.setProperty("versions.kordEx", kordExVersion.version)
+		properties.setProperty("versions.kord", kordVersion?.version)
+
+		properties.store(outputFile.get().asFile.writer(), null)
+		```
+
+	</TabItem>
+</Tabs>
+
+### Chained Access and Complex Parameters
+
+**When chaining multiple function/field uses in one statement, split them onto separate lines.**
+Also, if you're chaining a lot of functions in the same statement, split them into groupings as explained earlier.
+This also applies when you're passing complex arguments to functions.
+
+For example:
+
+<Tabs groupId="comparitive-example" block={true}>
+	<TabItem value="incorrect" label="Incorrect" default>
+
+		```kt
+		val sourceSet = target.extensions.getByType(SourceSetContainer::class.java).first { it.name == "main" }
+		sourceSet.output.dir(mapOf("builtBy" to task), outputDir)
+		```
+
+	</TabItem>
+
+	<TabItem value="correct" label="Correct">
+
+		```kt
+		val sourceSet = target
+			.extensions
+			.getByType(SourceSetContainer::class.java)
+			.first { it.name == "main" }
+
+		sourceSet.output.dir(
+			mapOf("builtBy" to task),
+
+			outputDir
+		)
+		```
+
+	</TabItem>
+</Tabs>
+
+## Complete Example
+
+<Tabs groupId="comparitive-example" block={true}>
+	<TabItem value="incorrect" label="Incorrect" default>
+
+		```kt
+		private fun addGeneratedFiles(target: Project, extension: KordExExtension, kordVersion: Version?, kordExVersion: Version) {
+			val outputDir = target.layout.buildDirectory.dir("generated")
+			val outputFile = target.layout.buildDirectory.file("generated/kordex.properties")
+			val task = target.tasks.create("generateMetadata") {
+				group = "generation"
+				description = "Generate KordEx metadata."
+				outputs.file(outputFile)
+				doLast {
+					val properties = Properties()
+					properties.setProperty("settings.dataCollection", extension.dataCollection.readable)
+					properties.setProperty("modules", extension.modules.joinToString())
+					properties.setProperty("versions.kordEx", kordExVersion.version)
+					properties.setProperty("versions.kord", kordVersion?.version)
+					properties.store(outputFile.get().asFile.writer(), null)
+				}
+			}
+
+			val sourceSet = target.extensions.getByType(SourceSetContainer::class.java).first { it.name == "main" }
+			sourceSet.output.dir(mapOf("builtBy" to task), outputDir)
+		}
+		```
+
+	</TabItem>
+
+	<TabItem value="correct" label="Correct">
+
+		```kt
+		private fun addGeneratedFiles(
+			target: Project,
+			extension: KordExExtension,
+			kordVersion: Version?,
+			kordExVersion: Version
+		) {
+			val outputDir = target.layout.buildDirectory.dir("generated")
+			val outputFile = target.layout.buildDirectory.file("generated/kordex.properties")
+
+			val task = target.tasks.create("generateMetadata") {
+				group = "generation"
+				description = "Generate KordEx metadata."
+
+				outputs.file(outputFile)
+
+				doLast {
+					val properties = Properties()
+
+					properties.setProperty("settings.dataCollection", extension.dataCollection.readable)
+					properties.setProperty("modules", extension.modules.joinToString())
+					properties.setProperty("versions.kordEx", kordExVersion.version)
+					properties.setProperty("versions.kord", kordVersion?.version)
+
+					properties.store(outputFile.get().asFile.writer(), null)
+				}
+			}
+
+			val sourceSet = target
+				.extensions
+				.getByType(SourceSetContainer::class.java)
+				.first { it.name == "main" }
+
+			sourceSet.output.dir(
+				mapOf("builtBy" to task),
+
+				outputDir
+			)
+		}
+		```
+
+	</TabItem>
+</Tabs>
