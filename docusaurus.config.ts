@@ -152,9 +152,15 @@ const config: Config = {
 							label: "Website",
 							href: "https://kordex.dev",
 						},
+
 						{
 							label: "Donate",
 							href: "https://donate.stripe.com/3csg29aPp95Rgxi7ss?client_reference_id=docs",
+						},
+
+						{
+							label: "Translate",
+							href: "https://hosted.weblate.org/engage/kord-extensions/",
 						},
 					],
 				},
