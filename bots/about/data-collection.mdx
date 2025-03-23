@@ -1,5 +1,167 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
+sidebar_custom_props:
+  tags:
+    - v-2
 ---
 
+import Link from "@docusaurus/Link";
+
 # Data Collection
+
+:::info
+
+If you'd like to keep track of changes to the data collection system,
+please look at [this GitHub Discussion](https://github.com/orgs/Kord-Extensions/discussions/5).
+Feel free to subscribe to the thread if you'd like to receive notifications.
+
+If you're curious about our statistics, feel
+free to look at [the public dashboard](https://stats.kordex.dev/public/dashboard/4b0a4faa-45fb-45af-ab96-43cfbec11779).
+
+:::
+
+:::danger
+
+If you intend your bot to be run by other people,
+**you are responsible for informing them about the data collection system!**
+
+The easiest way to do this is to link to this page, but the way you handle this is up to you.
+
+:::
+
+As of version 2, Kord Extensions includes a data collection feature.
+Every 30 minutes, this feature collects some statistical data from your bots,
+submitting it to an open-source server run and controlled by the Kord Extensions team.
+
+We intend this feature to provide the developers with guidance on where to focus their efforts,
+as well as interesting statistical information, which
+[we make available to everyone](https://stats.kordex.dev/public/dashboard/4b0a4faa-45fb-45af-ab96-43cfbec11779).
+
+:::tip Maintaining a fork?
+
+If you're maintaining a fork of Kord Extensions,
+we'd appreciate it if you could update your fork to identify itself in our collected statistics.
+To learn how to do this,
+please [look at the data collector](https://github.com/Kord-Extensions/kord-extensions/blob/root/kord-extensions/src/main/kotlin/dev/kordex/core/datacollection/DataCollector.kt#L99).
+
+If the above link doesn't bring you to the correct line, search for `fork-name` in `DataCollector.kt`.
+
+:::
+
+## General Info
+
+We store collected data on a server located in Germany, owned by [Hetzner](https://www.hetzner.com/).
+We keep this data secure through containerisation, network isolation, backup encryption, and other standard security
+practices.
+
+We don't sell any collected data, and we only share it with the Kord developers.
+The following people have direct access to the data via Metabase:
+
+- The Kord Extensions lead maintainer, [@gdude2002](https://github.com/gdude2002).
+- One of Kord's core developers, [@DRSchlaubi](https://github.com/DRSchlaubi).
+
+We make graphs and summaries based on that data, without bot/team information,
+[available to the public](https://stats.kordex.dev/public/dashboard/4b0a4faa-45fb-45af-ab96-43cfbec11779).
+
+We assign a UUID to all data submissions, which your KordEx bot will store via a storage unit.
+While we don't believe the GDPR considers the data collected to be personal information,
+we provide several mechanisms that allow you to use this UUID for data retrieval and removal:
+
+- By changing your data collection level to None (as explained below), your Kord Extensions bot will stop collecting
+  data and will use the UUID to delete any stored data from the data collection server.
+- You can use the UUID may to directly access the data collection API.
+  We may decide to create a simple UI for this later.
+  - HTTP GET: `https://data.kordex.dev/data/:uuid` - retrieve the stored data for the given UUID.
+  - HTTP DELETE: `https://data.kordex.dev/data/:uuid` - delete the stored data for the given UUID.
+- If all else fails or you have any questions, contact us [via Discord](https://discord.gg/nYzQWcjAmK),
+  or email our GDPR officer at `gdpr` **(at)** `kordex.dev`.
+
+The default data collection level is **Standard**.
+
+## Collection Levels
+
+KordEx provides several data collection levels.
+
+### None
+
+Setting this level will disable data collection.
+
+If you had a different level set previously, Kord Extensions will delete your data from the data collection server.
+
+### Minimal
+
+This level collects the following data:
+
+- The date of submission and the last updated date.
+- Whether your bot is running in development mode.
+- The versions of Kord and Kord Extensions your bot uses.
+- The name of the fork you're using, if you're using a fork, and it has modified the data collector to add its name.
+
+This level also collects the following data if the bot was built using the KordEx Gradle plugin:
+
+- A list of first-party modules the bot is using.
+
+### Standard
+
+This level collects the data collected by the **Minimal** level, as well as the following:
+
+- The Discord ID and the name of your bot.
+- The number of extensions and plugins your bot has loaded.
+- The number of guilds your bot can see.
+- A list of intents enabled by your bot.
+- Total number of top-level chat commands registered.
+- Total number of global application commands registered, split into message, slash, and user commands.
+- Data about your bot's runtime environment:
+  - Current JVM and Kotlin versions.
+
+### Extra
+
+This level collects the data collected by the **Minimal** and **Standard** levels, as well as the following:
+
+- A list of event types your bot is handling.
+- The names of the extensions and plugins your bot has loaded.
+- Bot ownership information:
+  - **If the bot is owned by a team:** The ID and name of that team.
+  - **If the bot is owned by a single person:** No ownership data.
+- Data about your bot's runtime environment:
+  - Total available memory.
+  - Physical CPU count, thread count, and processor speed.
+
+## Configuration
+
+### Storage
+
+:::tip Immutable environment?
+
+If you're working in a containerised environment,
+or you otherwise absolutely can't store the required state, you can still participate:
+
+1. Generate a version 4 UUID, either directly using Java/Kotlin or via
+   [a website like this one](https://fusionauth.io/dev-tools/uuid-generator).
+2. Set the `dataCollectionUUID` system property or the `DATA_COLLECTION_UUID` environmental variable to the UUID at
+   runtime.
+
+**Please ensure that each instance of your bot has a unique UUID!**
+
+:::
+
+Your bot needs to store some information about the data collection for it to function properly:
+
+- A UUID representing the bot's data on the data collection server.
+
+KordEx uses a storage unit to store this data, via the data adapter system.
+By default, this means it'll store data in files within `./data/`,
+but you can change that by supplying another data adapter,
+such as [the first-party MongoDB data adapter](https://github.com/Kord-Extensions/kord-extensions/tree/root/modules/data/data-mongodb).
+
+### Level
+
+We provide several ways to configure your bot's data collection level.
+We've listed them below in order, with earlier options overridden by later ones:
+
+- The preferred approach:
+  Set it via [the KordEx Gradle plugin](#TODO).
+- Set the `DATA_COLLECTION` environmental variable to `extra`, `standard`, `minimal`, or `none`.
+- Set the `dataCollection` system property to `extra`, `standard`, `minimal`, or `none`.
+- Set the `dataCollectionMode` property in your bot's builder, as explained in
+  [the configuration section](#TODO).
