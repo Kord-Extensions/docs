@@ -2,4 +2,113 @@
 sidebar_position: 2
 ---
 
+import HeaderWithTag from "/src/components/HeaderWithTag";
+import Link from "@docusaurus/Link";
+
 # About the Framework
+
+The Kord Extensions Discord Bot framework (KordEx) is a relatively mature framework for writing Discord bots in Kotlin.
+It builds upon [the excellent Kord protocol and caching library](https://kord.dev/), taking a bells-and-whistles
+approach to supporting your bots.
+
+KordEx takes a somewhat different approach when compared to other Kotlin-based Discord bot frameworks, focusing on
+modular and encapsulated bot functionality rather than relying entirely on a set of lightweight DSLs.
+This approach means that KordEx can provide many deeply integrated features and utilities while still providing an
+idiomatic API that takes advantage of Kotlin's niceties.
+
+:::info
+
+While we prioritise the developer experience and believe KordEx is a great match for most projects, no framework
+can perfectly meet the needs of every potential project.
+For that reason,
+<Link to="/bots/about/comparison">we've created a framework comparison page</Link>.
+Feel free to take a look if you're curious what other options you have!
+
+:::
+
+## Version History
+
+KordEx has gone through multiple iterations and development cycles.
+We like to bump version numbers when we break an API or swap to a new development focus, reserving major version numbers
+for serious changes and refactors.
+
+<HeaderWithTag style="success" text="Current">
+
+### Version 2
+
+</HeaderWithTag>
+
+Version 2 is the latest version of Kord Extensions, and it includes many changes, some of which we've detailed below.
+
+- The root package for all projects is no longer `com.kotlindiscord.kord.extensions`.
+  We changed it to `dev.kordex` to match our domain name.
+  - **Core package:** `dev.kordex.core`
+  - **Modules package:** `dev.kordex.modules`
+  - **Tokenizing parser package:** `dev.kordex.parser`
+
+- We re-licensed Kord Extensions under
+  [the EUPL, version 1.2](https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12),
+  with the specific provision (EUPL articles 14 & 15) that the applicable law is the (Republic of) Irish law and the
+  Jurisdiction is Dublin.
+
+  For more information on this licence, how we interpret it,
+  and what it means for your project, see
+  <Link to="/about/licencing/eupl">the licence information page</Link>.
+
+- Due to [upcoming changes that are part of the new Maven Central platform](https://central.sonatype.org/faq/snapshot-releases/#question),
+  we no longer publish Kord Extensions to Maven Central or OSSRH.
+  Instead, you should add the following repository URLs:
+  - **Releases:** `https://releases-repo.kordex.dev`
+  - **Snapshots:** `https://snapshots-repo.kordex.dev`
+
+- Version 2 includes a new <Link to="/bots/about/data-collection">data collection system</Link>,
+  intended to guide development focus and provide interesting statistics for the community.
+
+  If you worry about (or dislike) data collection in general,
+  you can configure this system may in multiple ways and easily disable it.
+
+  Our [public statistics dashboard](https://stats.kordex.dev/public/dashboard/4b0a4faa-45fb-45af-ab96-43cfbec11779)
+  contains aggregated statistics from the data collected.
+
+- We reorganised and renamed the first-party Kord Extensions modules to make it easier to figure out their coordinates
+  and generally keep the Git repository cleaner.
+  For more information,
+  see [the README in the modules folder](https://github.com/Kord-Extensions/kord-extensions/blob/root/modules/README.md).
+
+- We moved translations [to their own repository](https://github.com/Kord-Extensions/translations), still licenced
+  under the MPL 2.0.
+
+- The <Link to="/about/contributing">contribution guidelines</Link> have been rewritten and updated.
+  We'll continue to update the guidelines when other questions arise.
+
+- Kord Extensions 2 has a greater emphasis on the plugin system, which we'll work on and document more over the coming
+  days.
+
+- Lots of plans are in motion around this system, so keep an eye out for announcements!
+
+- We updated [the Unsafe Module](#TODO) to support [Components](#TODO) and [Modals](#TODO).
+
+- We now include [a default about command](#TODO) — to help you meet the EUPL's licensing requirements
+  and provide a standard way for your bots to provide information about themselves.
+
+- We've redesigned and rewritten [the i18n system](#TODO) with a cleaner, more type-safe, and feature-packed API.
+
+- We now ship [a Web module](#TODO) and [corresponding health-check APIs](#TODO).
+
+As this is the current Kord Extensions development cycle, we're adding new features all the time.
+If we forget to add something to this list, please let us know!
+
+### Version 1
+
+The releases from Kord Extensions' first development cycle are unsupported and likely don't work with Discord any more.
+However, if you need to use it for any reason, you can find it in the same Maven repository as version 2.
+
+You may also continue to use [the Gradle plugin](#TODO) — just be sure to specify the Kord Extensions version you need.
+
+- **Coordinate:** `com.kotlindiscord.kord.extensions:kord-extensions`
+- **Last Version:** `1.9.0-SNAPSHOT`
+- **Kord Version:** `0.15.0-SNAPSHOT`
+
+We licenced version 1 under the MPL, version 2.0.
+The code will always be available
+[under the v1 branch on GitHub](https://github.com/Kord-Extensions/kord-extensions/tree/v1).

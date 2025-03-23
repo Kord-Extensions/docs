@@ -169,3 +169,45 @@ ul.menu__list li a .sidebar-tags-container {
 		color: black;
 	}
 }
+
+.header-tags-container {
+	display: flex;
+
+	h1, h2, h3, h4, h5, h6 {
+		margin-bottom: 0;
+		margin-top: 0;
+		margin-left: 0.5em;
+	}
+
+	.header-tag {
+		padding: 0 7px;
+		border-radius: 5px;
+	}
+
+	.primary {
+		background-color: var(--ifm-color-primary);
+		color: white;
+	}
+
+	.danger {
+		background-color: var(--ifm-color-danger);
+		color: white;
+	}
+
+	.info {
+		background-color: var(--ifm-color-info);
+		color: black;
+	}
+
+	.success {
+		background-color: var(--ifm-color-success);
+		color: white;
+	}
+
+	.warning {
+		background-color: var(--ifm-color-warning);
+		color: black;
+	}
+
+	margin-bottom: 1rem;
+}
