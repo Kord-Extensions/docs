@@ -15,3 +15,7 @@ ij_typescript_force_quote_style = true
 [{*.yml,*.yaml}]
 indent_style = space
 indent_size = 2
+
+[{*.md,*.mdx}]
+indent_style = space
+indent_size = 2
