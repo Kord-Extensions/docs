@@ -90,6 +90,14 @@ const config: Config = {
 			indexName: "kordex",
 		},
 
+		prism: {
+			// Note: Must add "java" for "scala" to work.
+			additionalLanguages: ["bash", "toml", "groovy", "java", "scala", "markup"],
+
+			theme: prismThemes.github,
+			darkTheme: prismThemes.dracula,
+		},
+
 		navbar: {
 			title: "Kord Extensions",
 
@@ -167,11 +175,6 @@ const config: Config = {
 			],
 
 			copyright: `⚖️ Creative Commons Zero Licence`,
-		},
-
-		prism: {
-			theme: prismThemes.github,
-			darkTheme: prismThemes.dracula,
 		},
 	} satisfies Preset.ThemeConfig,
 };

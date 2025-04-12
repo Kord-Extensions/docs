@@ -2,4 +2,157 @@
 sidebar_position: 3
 ---
 
-# Setting Up
+import Link from "@docusaurus/Link";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+import { CardWithTitle } from "/src/components/Card";
+
+# Manual Setup
+
+
+
+[//]: # (TODO: Figure out how to dynamically get the correct version information.)
+
+:::note
+
+This tutorial aims to provide a guide to creating a standard project setup without using
+<Link to="/bots/tutorials/quick">our template projects</Link>.
+If you prefer to start with a template, please see
+<Link to="/bots/tutorials/quick">the quickstart guide</Link>
+instead.
+
+:::
+
+<hr />
+
+<CardWithTitle title="Plugin Information">
+  - **Coordinate:** `dev.kordex.gradle.kordex`
+  - **Version:** 1.7.0
+  - **Requires Gradle:** 8.13
+  - **Minimum JDK:** 13
+</CardWithTitle>
+
+## Requirements
+
+Before getting started, please ensure you have the following:
+
+- A new or existing project, configured with a basic Gradle module and using Gradle 8.13 via the Gradle wrapper.
+- A Java Development Kit version [compatible with Gradle](https://docs.gradle.org/current/userguide/compatibility.html)
+  and Kord Extensions.
+
+## Build Configuration
+
+:::warning
+
+Kord Extensions provides its token parser library, as well as ICU4J, JEmoji, Koin, Kord, KotlinLogging,
+kotlinx.serialization, OSHI, PF4J, Sentry, and TomlKt.
+If you need these in your project, don't add them to your dependencies — Kord Extensions will add them
+automatically.
+
+:::
+
+<Tabs groupId="build-systems">
+  <TabItem value="gradle-kotlin" label="Gradle (Kotlin)" default>
+
+    Add the required plugins to your `settings.gradle.kts` file, creating it if it doesn't exist.
+
+    ```kotlin
+    plugins {
+      kotlin("jvm") version "2.1.20"
+      kotlin("plugin.serialization") version "2.1.20"
+
+      id("com.google.devtools.ksp") version "2.1.20-1.0.32"
+      id("dev.kordex.gradle.kordex") version "1.7.0"
+    }
+    ```
+
+    Then, add the required Gradle plugins to your `build.gradle.kts` file.
+
+    ```kotlin
+    plugins {
+      kotlin("jvm")
+      kotlin("plugin.serialization")
+
+      id("com.google.devtools.ksp")
+      id("dev.kordex.gradle.kordex")
+    }
+    ```
+
+    Finally, finish configuring your `build.gradle.kts` file.
+
+    ```kotlin
+    // ...
+
+    kordEx {
+      kordExVersion = "2.3.1-SNAPSHOT"
+
+      bot {
+        // Data collection level, change this if desired.
+        dataCollection(DataCollection.Standard)
+
+        // Replace this with the coordinates to your bot's actual main class.
+        mainClass = "my.package.MyBotKt"
+      }
+    }
+    ```
+
+  </TabItem>
+
+  <TabItem value="gradle-groovy" label="Gradle (Groovy)">
+
+    Add the required plugins to your `settings.gradle` file, creating it if it doesn't exist.
+
+    ```groovy
+    plugins {
+      id "org.jetbrains.kotlin.jvm" version "2.1.20"
+      id "org.jetbrains.kotlin.plugin.serialization" version "2.1.20"
+
+      id "com.google.devtools.ksp" version "2.1.20-1.0.32"
+      id "dev.kordex.gradle.kordex" version "1.7.0"
+    }
+    ```
+
+    Then, add the required Gradle plugins to your `build.gradle` file.
+
+    ```groovy
+    plugins {
+      id "org.jetbrains.kotlin.jvm"
+      id "org.jetbrains.kotlin.plugin.serialization"
+
+      id "com.google.devtools.ksp"
+      id "dev.kordex.gradle.kordex"
+    }
+    ```
+
+    Finally, finish configuring your `build.gradle` file.
+
+    ```groovy
+    // ...
+
+    kordEx {
+      kordExVersion = "2.3.1-SNAPSHOT"
+
+      bot {
+        // Data collection level, change this if desired.
+        dataCollection(DataCollection.Standard)
+
+        // Replace this with the coordinates to your bot's actual main class.
+        mainClass = "my.package.MyBotKt"
+      }
+    }
+    ```
+
+  </TabItem>
+</Tabs>
+
+## Further Configuration
+
+The above guide provides a standard configuration that should get you started.
+However, we recommend exploring the following options for more ideas:
+
+- We can't recommend using the Shadow plugin to build a runnable JAR with your bot's dependencies, as a group of
+  vibe coders has taken over the project.
+  Instead, we recommend
+  [the Gradle distribution plugin](https://docs.gradle.org/current/userguide/distribution_plugin.html).
+- The KordEx Gradle plugin has many configuration options, which you can explore [here](#TODO).

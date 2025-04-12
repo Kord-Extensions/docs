@@ -1,0 +1,317 @@
+---
+sidebar_position: 4
+
+sidebar_custom_props:
+  divider_below: true
+---
+
+import Link from "@docusaurus/Link";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+import { CardWithTitle } from "/src/components/Card";
+
+# Manual Setup (No Plugin)
+
+[//]: # (TODO: Figure out how to dynamically get the correct version information.)
+
+:::warning
+
+This tutorial aims to provide a guide to creating a standard project setup without using
+<Link to="/bots/tutorials/quick">our template projects</Link>
+or the KordEx Gradle plugin.
+
+We strongly recommend using the Gradle plugin if possible, and most of this documentation will assume that you are.
+For more information on setting up a project with the plugin,
+<Link to="/bots/tutorials/setting-up">see this guide instead</Link>.
+
+:::
+
+<hr />
+
+<CardWithTitle title="Dependency Information">
+  - **Kord Extensions Version:** 2.3.1-SNAPSHOT
+  - **Minimum JDK:** 13
+  - **Repo:** `https://snapshots-repo.kordex.dev`
+  - **Coordinate:** `dev.kordex:kord-extensions`
+</CardWithTitle>
+
+## Requirements
+
+Before getting started, please ensure you have the following:
+
+- A new or existing project, configured with your build system of choice.
+- A Java Development Kit version compatible with Kord Extensions and your build system.
+
+## Dependencies
+
+Kord Extensions provides multiple dependencies, depending on what your project needs:
+
+- **Annotation Processor:** `dev.kordex:annotation-processor` (KSP annotation processor required for a few things)
+- **Core:** `dev.kordex:kord-extensions` (Required core module containing everything you need to write a Discord bot)
+  - Includes the token parser, as well as ICU4J, JEmoji, Koin, Kord, KotlinLogging, kotlinx.serialization, OSHI, PF4J,
+    Sentry, and TomlKt.
+    If you need these in your project, don't add them to your dependencies — Kord Extensions will add them
+    automatically.
+- **Token Parser:** `dev.kordex:token-parser` (Library for parsing chat command strings into usable token streams)
+
+[//]: # (TODO: Provide a list/category page/docs for all modules.)
+
+It also provides many extra modules, split into categories.
+For more information, see
+[the corresponding directory on GitHub](https://github.com/Kord-Extensions/kord-extensions/tree/root/modules).
+
+## Build Configuration
+
+<Tabs groupId="build-systems">
+  <TabItem value="gradle-kotlin" label="Gradle (Kotlin)" default>
+    Add the core dependency to your `gradle/libs.versions.toml` file.
+
+    ```toml
+    [versions]
+    kord-extensions = "2.3.1-SNAPSHOT"
+
+    [libraries]
+    kord-extensions-core = { module = "dev.kordex:kord-extensions", version.ref = "kord-extensions" }
+    kord-extensions-ap = { module = "dev.kordex:annotation-processor", version.ref = "kord-extensions" }
+    ```
+
+    Then, add the required Gradle plugins to your `build.gradle.kts` file.
+
+    ```kotlin
+    plugins {
+      kotlin("jvm") version "2.1.20"
+      kotlin("plugin.serialization") version "2.1.20"
+
+      id("com.google.devtools.ksp") version "2.1.20-1.0.32"
+    }
+    ```
+
+    Finally, add the required repositories and dependency to your `build.gradle.kts` file.
+
+    ```kotlin
+    repositories {
+      // ...
+
+      mavenCentral()
+
+      maven {
+        name = "KordEx (Snapshots)"
+        url = uri("https://snapshots-repo.kordex.dev")
+      }
+
+      maven {
+        name = "KordEx (Releases)"
+        url = uri("https://releases-repo.kordex.dev")
+      }
+
+      maven {
+        name = "Kord (Snapshots)"
+        url = uri("https://repo.kord.dev/snapshots/")
+      }
+    }
+
+    dependencies {
+      // ...
+
+      implementation(libs.kord.extensions.core)
+      ksp(libs.kord.extensions.ap)
+    }
+    ```
+
+  </TabItem>
+
+  <TabItem value="gradle-groovy" label="Gradle (Groovy)">
+    Add the core dependency to your `gradle/libs.versions.toml` file.
+
+    ```toml
+    [versions]
+    kord-extensions = "2.3.1-SNAPSHOT"
+
+    [libraries]
+    kord-extensions-core = { module = "dev.kordex:kord-extensions", version.ref = "kord-extensions" }
+    kord-extensions-ap = { module = "dev.kordex:annotation-processor", version.ref = "kord-extensions" }
+    ```
+
+    Then, add the required Gradle plugins to your `build.gradle` file.
+
+    ```groovy
+    plugins {
+      id "org.jetbrains.kotlin.jvm" version "2.1.20"
+      id "org.jetbrains.kotlin.plugin.serialization" version "2.1.20"
+
+      id "com.google.devtools.ksp" version "2.1.20-1.0.32"
+    }
+    ```
+
+    Finally, add the required repositories and dependency to your `build.gradle` file.
+
+    ```groovy
+    repositories {
+      // ...
+
+      mavenCentral()
+
+      maven {
+        name "KordEx (Snapshots)"
+        url "https://snapshots-repo.kordex.dev"
+      }
+
+      maven {
+        name "KordEx (Releases)"
+        url "https://releases-repo.kordex.dev"
+      }
+
+      maven {
+        name "Kord (Snapshots)"
+        url "https://repo.kord.dev/snapshots/"
+      }
+    }
+
+    dependencies {
+      // ...
+
+      implementation(libs.kord.extensions.core)
+      ksp(libs.kord.extensions.ap)
+    }
+    ```
+
+  </TabItem>
+
+  <TabItem value="maven" label="Maven">
+    :::danger
+
+    Kord Extensions is developed using Gradle, and none of the developers are familiar with Maven.
+
+    While Gradle is highly recommended, if you do decide to use Maven, we'd appreciate feedback on the below
+    instructions — especially if corrections or more detail is required.
+
+    The following instructions don't configure
+    [the KSP plugin](https://github.com/Dyescape/kotlin-maven-symbol-processing) or
+    [kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization#maven).
+    For more information, please see the linked pages.
+
+    :::
+
+    Add the following to your `pom.xml` file.
+    For more information, see [the official Maven guide for Kotlin](https://kotlinlang.org/docs/maven.html).
+
+    ```xml
+    <repositories>
+      <!-- ... -->
+
+      <repository>
+        <id>kordex-snapshots</id>
+        <name>KordEx (Snapshots)</name>
+        <url>https://snapshots-repo.kordex.dev</url>
+      </repository>
+
+      <repository>
+        <id>kordex-releases</id>
+        <name>KordEx (Releases)</name>
+        <url>https://releases-repo.kordex.dev</url>
+      </repository>
+
+      <repository>
+        <id>sonatype-snapshots-legacy</id>
+        <name>Kord (Snapshots)</name>
+        <url>https://repo.kord.dev/snapshots/</url>
+      </repository>
+    </repositories>
+
+    <dependencies>
+      <!-- ... -->
+
+      <dependency>
+        <groupId>dev.kordex</groupId>
+        <artifactId>kord-extensions</artifactId>
+        <version>2.3.1-SNAPSHOT</version>
+      </dependency>
+    </dependencies>
+    ```
+  </TabItem>
+
+  <TabItem value="sbt" label="SBT">
+    :::danger
+
+    Kord Extensions is developed using Gradle, and none of the developers are familiar with SBT.
+
+    While Gradle is highly recommended, if you do decide to use SBT, we'd appreciate feedback on the below
+    instructions — especially if corrections or more detail is required.
+
+    The following instructions don't configure the KSP plugin.
+    As of this writing, it seems to be impossible to reasonably configure KSP using SBT.
+
+    :::
+
+    Add the following to your `project/plugins.sbt` file.
+
+    ```scala
+    addSbtPlugin("org.jetbrains.scala" % "sbt-kotlin-plugin" % "3.1.4")
+    ```
+
+    Then, add the following to your build.sbt file.
+
+    ```scala
+    enablePlugins(KotlinPlugin)
+
+    kotlinLib("stdlib")
+    kotlinPlugin("serialization")
+
+    resolvers += "KordEx (Snapshots)" at "https://snapshots-repo.kordex.dev"
+    resolvers += "KordEx (Releases)" at "https://releases-repo.kordex.dev"
+    resolvers += "Kord (Snapshots)" at "https://repo.kord.dev/snapshots/"
+
+    libraryDependencies ++= Seq(
+        "dev.kordex" % "kord-extensions" % "2.3.1-SNAPSHOT"
+    )
+    ```
+
+    For more information, see [the official Kotlin SBT plugin](https://github.com/JetBrains/sbt-kotlin-plugin).
+  </TabItem>
+</Tabs>
+
+## Resource Files
+
+The KordEx Gradle plugin normally generates some `.properties` files to be included with your bot.
+These files provide some additional configuration options, as well as bundling some version information with your bot.
+
+### Build Properties
+
+You can add some properties to `src/main/resources/kordex-build.properties`.
+
+**You must provide the following properties** — failing to do so will break the plugin system:
+
+- `versions.kordex` - The version of Kord Extensions used to build your bot.
+  - Used by the plugin system to figure out plugin compatibility, as well as logging and data collection.
+  - If you're using Gradle, we strongly recommend generating this file and getting the version from
+    `libs.versions.kord.extensions.core`.
+  - May instead be provided in `kordex.properties` if you prefer.
+
+The following properties are optional, and failing to provide them won't break anything other than a log message:
+
+- `git.branch` - The Git branch used to build the version of Kord Extensions your bot uses.
+  - Used exclusively for logging.
+- `git.hash` - The Git commit used to build the version of Kord Extensions your bot uses.
+  - Used exclusively for logging.
+- `versions.kord` - The version of Kord used to build your bot.
+  - Used exclusively for logging and data collection.
+
+### Bot Settings
+
+You can add some properties to `src/main/resources/kordex.properties`.
+
+The following properties are optional, and failing to provide them won't break anything:
+
+- `modules` - List of first-party Kord Extensions modules used by your bot.
+  - Used exclusively for data collection.
+- `settings.dataCollection` - Data collection level, one of `none`, `minimal`, `standard` or `extra`.
+  - May also be provided using the `dataCollection` system property or `DATA_COLLECTION` environmental variable.
+  - Defaults to `standard` if not provided.
+- `versions.bot` - Your bot's version.
+  - Used exclusively to provide a default value for `botVersion` in your bot's configuration builder.
+- `versions.kordEx` - Alternative to the same key in `kordex-build.properties`.
+  - Used by the plugin system to figure out plugin compatibility, as well as logging and data collection.
+- `versions.kord` - Alternative to the same key in `kordex-build.properties`.
+  - Used exclusively for logging and data collection.
+  - Was previously `kordVersion`, a property still supported as an alternative for legacy reasons.
