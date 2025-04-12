@@ -55,7 +55,7 @@ export default function DocSidebarItemLink({
 				className,
 			)}
 
-			key={label}
+			key={`${level} ${label}`}
 		>
 			<Link
 				className={clsx(

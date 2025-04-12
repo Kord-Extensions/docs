@@ -1,7 +1,5 @@
 import {createElement, PropsWithChildren, ReactNode} from "react";
 
-type levels = 1 | 2 | 3 | 4 | 5 | 6
-
 type props = {
 	style: string,
 	text: string,
