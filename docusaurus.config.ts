@@ -2,6 +2,13 @@ import {themes as prismThemes} from "prism-react-renderer";
 import type {Config} from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
 
+import { rehypeExtendedTable } from "rehype-extended-table";
+
+const rmkPlugins = []
+const rhpPlugins = [
+	[rehypeExtendedTable, {}]
+]
+
 const config: Config = {
 	title: "Kord Extensions Docs",
 	tagline: "Everything you need to know about our projects.",
@@ -31,6 +38,9 @@ const config: Config = {
 					routeBasePath: "bots",
 					sidebarPath: "./bots-sidebars.ts",
 
+					rehypePlugins: rhpPlugins,
+					remarkPlugins: rmkPlugins,
+
 					tags: "../src/tags.yml",
 					onInlineTags: "throw",
 				},
@@ -51,6 +61,9 @@ const config: Config = {
 				routeBasePath: "i18n",
 				sidebarPath: "./i18n-sidebars.ts",
 
+				rehypePlugins: rhpPlugins,
+				remarkPlugins: rmkPlugins,
+
 				tags: "../src/tags.yml",
 				onInlineTags: "throw",
 			}
@@ -63,6 +76,9 @@ const config: Config = {
 				routeBasePath: "about",
 				sidebarPath: "./about-sidebars.ts",
 
+				rehypePlugins: rhpPlugins,
+				remarkPlugins: rmkPlugins,
+
 				tags: "../src/tags.yml",
 				onInlineTags: "throw",
 			}
@@ -74,6 +90,9 @@ const config: Config = {
 				path: "misc",
 				routeBasePath: "misc",
 				sidebarPath: "./misc-sidebars.ts",
+
+				rehypePlugins: rhpPlugins,
+				remarkPlugins: rmkPlugins,
 
 				tags: "../src/tags.yml",
 				onInlineTags: "throw",

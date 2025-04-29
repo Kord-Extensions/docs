@@ -2,7 +2,213 @@
 sidebar_position: 3
 
 sidebar_custom_props:
-  card_group: "Customisation"
+card_group: "Customisation"
+tags:
+  - v-2
 ---
 
 # About Extension
+
+The `about { }` builder allows you to configure your bot's `about` command.
+
+:::warning Don't remove this command
+
+The `about` command includes a mandatory copyright section, mentioning Kord Extensions, and the libraries it uses.
+
+This section ensures that your bot contains the notice and source code link required by the EUPL, Kord Extensions'
+licence.
+**You must not work around this, regardless of how easy or difficult it may be.**
+
+If this is a big problem for you or your company, please contact us via
+[the Discord server](https://discord.gg/nYzQWcjAmK), and we'll help you figure something out.
+
+:::
+
+By default, Kord Extensions will create an `about` chat and slash command, with a `copyright` subcommand.
+You can configure this command using the `about { }` builder, adding your own sections and copyright notices as
+appropriate.
+
+```kotlin
+about {
+    ephemeral = true  // Global default setting
+
+    general {  // Standard "general" section
+        ephemeral = false  // Only applies to this section
+
+        message { locale ->
+            content = "General message content goes here!"
+        }
+    }
+
+    section(
+        Translations.About.Sections.Secondary.name,
+        Translations.About.Sections.Secondary.description
+    ) {
+        message { locale ->
+            content = "More content here!"
+
+            embed {
+                description = "Maybe even an embed?"
+            }
+        }
+    }
+}
+```
+
+## Configuration
+
+The `about { }` builder provides the following properties.
+
+| Property    | Type      | Description                                                                                                          |
+|-------------|-----------|----------------------------------------------------------------------------------------------------------------------|
+| `ephemeral` | `Boolean` | Whether commands (including the copyright command) should respond to slash commands ephemerally. Defaults to `true`. |
+
+
+## Copyright
+
+The contents of the `copyright` section are generated based on a list of copyright entries,
+provided via the `copyright` function.
+
+Kord Extensions will automatically populate this list with the following data:
+- The dependencies it uses, along with those used by any first-party modules included with your bot.
+- A list of loaded plugins, without versioning information.
+
+You can add copyright items by calling the copyright function with a name,
+[SPDX licence identifier](https://spdx.org/licenses/),
+item type (Framework, Library, Module, Plugin, or Tool),
+and optionally a URL.
+
+```kotlin
+copyright(
+    "Time4J",
+    "LGPL-2.1",
+    CopyrightType.Library,
+    "http://time4j.net/"  // Doesn't support HTTPS?
+)
+```
+
+### Modules
+
+If you're writing a module, library, or meta-framework,
+feel free to include whatever information you feel is relevant by default.
+
+A simple way to do this is by creating an extension function, checking a top-level boolean value,
+and calling this function in a setup function or class initialiser.
+For example:
+
+```kotlin
+private var copyrightAdded = false
+
+internal fun AboutBuilder.addCopyright() {
+    if (!copyrightAdded) {
+        copyright(
+            "Time4J",
+            "LGPL-2.1",
+            CopyrightType.Library,
+            "http://time4j.net/"
+        )
+    }
+
+    copyrightAdded = true
+}
+
+// ...
+
+class MyExtension : Extension() {
+    override fun setup() {
+        bot.settings.aboutBuilder.addCopyright()
+    }
+}
+```
+
+## Sections
+
+While Kord Extensions provides the `copyright` subcommand by default,
+you're free to add any other informational commands you wish.
+We refer to these commands as "sections", each represented by a subcommand on the `about` command.
+
+To configure a section, use the `section` function.
+This function takes the section name and description as arguments
+and provides a builder you can use to configure the section's options and provide a message.
+
+We also provide a `general { }` builder,
+which configures a standard "general" section with a translated name and description.
+
+```kotlin
+section(  // Plain strings work if you don't want translations
+    Translations.About.Sections.Main.name,
+    Translations.About.Sections.Main.description
+) {
+    ephemeral = false
+
+    message { locale ->
+        embed {
+            title = "Embed Title"
+            description = translate("a.translation.key")
+        }
+    }
+}
+
+general {
+    ephemeral = false
+
+    message { locale ->
+        content = "..."
+    }
+}
+```
+
+[//]:  # (TODO: Link to other docs)
+
+### Builders
+
+{
+<table>
+  <thead>
+  <tr>
+    <th>Builder</th>
+    <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td><code>message</code></td>
+    <td>
+      <p>
+        Call this DSL function to provide a message builder, used to construct the message returned to the user when
+        they access the current section.
+      </p>
+
+      This builder is a receiver against the <code>MessageBuilder</code> type, and takes the current event context's
+      <code>Locale</code> as the first argument.
+      This <code>Locale</code> object can be used to translate <code>Key</code> objects via the i18n system.
+    </td>
+  </tr>
+  </tbody>
+</table>
+}
+
+### Properties
+
+{
+<table>
+  <thead>
+  <tr>
+    <th>Property</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td><code>ephemeral</code></td>
+    <td><code>Boolean</code></td>
+
+    <td>
+      Whether this section should respond to slash commands ephemerally.
+      If not provided, defaults to the setting provided in the <code>about {}</code> builder.
+    </td>
+  </tr>
+  </tbody>
+</table>
+}
