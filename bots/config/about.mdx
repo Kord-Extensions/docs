@@ -2,10 +2,12 @@
 sidebar_position: 3
 
 sidebar_custom_props:
-card_group: "Customisation"
-tags:
-  - v-2
+  card_group: "Customisation"
+  tags:
+    - v-2
 ---
+
+import * as Doc from "/src/components/Doc";
 
 # About Extension
 
@@ -59,10 +61,11 @@ about {
 
 The `about { }` builder provides the following properties.
 
-| Property    | Type      | Description                                                                                                          |
-|-------------|-----------|----------------------------------------------------------------------------------------------------------------------|
-| `ephemeral` | `Boolean` | Whether commands (including the copyright command) should respond to slash commands ephemerally. Defaults to `true`. |
-
+<Doc.Container>
+  <Doc.Property name="ephemeral" type="boolean" default="true">
+    Whether commands (including the copyright command) should respond to slash commands ephemerally.
+  </Doc.Property>
+</Doc.Container>
 
 ## Copyright
 
@@ -162,53 +165,24 @@ general {
 
 ### Builders
 
-{
-<table>
-  <thead>
-  <tr>
-    <th>Builder</th>
-    <th>Description</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr>
-    <td><code>message</code></td>
-    <td>
-      <p>
-        Call this DSL function to provide a message builder, used to construct the message returned to the user when
-        they access the current section.
-      </p>
+<Doc.Container>
+  <Doc.Builder name="message" receiver="MessageBuilder">
+    Call this DSL function to provide a message builder, used to construct the message returned to the user when
+    they access the current section.
 
-      This builder is a receiver against the <code>MessageBuilder</code> type, and takes the current event context's
-      <code>Locale</code> as the first argument.
-      This <code>Locale</code> object can be used to translate <code>Key</code> objects via the i18n system.
-    </td>
-  </tr>
-  </tbody>
-</table>
-}
+    <Doc.Arguments>
+      <Doc.Arg name="locale" type="Locale">
+        Can be used to translate `key` objects via the i18n system.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+</Doc.Container>
 
 ### Properties
 
-{
-<table>
-  <thead>
-  <tr>
-    <th>Property</th>
-    <th>Type</th>
-    <th>Description</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr>
-    <td><code>ephemeral</code></td>
-    <td><code>Boolean</code></td>
-
-    <td>
-      Whether this section should respond to slash commands ephemerally.
-      If not provided, defaults to the setting provided in the <code>about {}</code> builder.
-    </td>
-  </tr>
-  </tbody>
-</table>
-}
+<Doc.Container>
+  <Doc.Property name="ephemeral" type="boolean" default="true">
+    Whether this section should respond to slash commands ephemerally.
+    If not provided, defaults to the setting provided in the `about {}` builder.
+  </Doc.Property>
+</Doc.Container>
