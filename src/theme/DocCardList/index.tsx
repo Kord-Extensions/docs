@@ -5,7 +5,7 @@ import DocCard from "@theme/DocCard";
 import type {Props} from "@theme/DocCardList";
 import {PropSidebarItem} from "@docusaurus/plugin-content-docs/lib/sidebars/types";
 
-interface CustomProps extends Props {
+type CustomProps = Props & {
 	readonly items?: PropSidebarItem[];
 	readonly className?: string;
 	readonly descriptions?: { [key: string]: string } | undefined;
@@ -28,7 +28,7 @@ export default function DocCardList(props: CustomProps): ReactNode {
 
 	let descriptions: { [key: string]: string }
 
-	if ("descriptions" in props) {
+	if ("descriptions" in props && props.descriptions !== undefined) {
 		descriptions = props.descriptions
 	} else {
 		descriptions = {}

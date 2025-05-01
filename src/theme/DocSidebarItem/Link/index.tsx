@@ -18,17 +18,17 @@ function processTags({item}: Props): ReactNode {
 
 	item.customProps.tags.forEach((tag: string) => {
 		if (tag === "wip") {
-			tags.push(<span title={"Work in progress!"} className={"sidebar-tag danger"}>WIP</span>);
+			tags.push(<span title={"Work in progress!"} className={"tag danger"}>WIP</span>);
 		} else if (tag.startsWith("v-")) {
 			const version = tag.split("-", 2)[1];
 
-			tags.push(<span title={`New in version ${version}`} className={"sidebar-tag info"}>v{version}</span>);
+			tags.push(<span title={`New in version ${version}`} className={"tag info"}>v{version}</span>);
 		} else {
 			throw new Error(`Unknown tag: ${tag}`);
 		}
 	})
 
-	return <span className={"sidebar-tags-container"}>
+	return <span className={"tags grow inline right"}>
 		<span style={{flexGrow: 1}}/>
 
 		{tags.map(tag => tag)}

@@ -1,16 +1,17 @@
-import {createElement, PropsWithChildren, ReactNode} from "react";
+import {PropsWithChildren, ReactNode} from "react";
+import clsx from "clsx";
 
 type props = {
-	style: string,
+	style?: "primary" | "danger" | "info" | "success" | "warning",
 	text: string,
 }
 
-export default function Header({children, style, text} : PropsWithChildren<props>): ReactNode {
+export default function Header(props : PropsWithChildren<props>): ReactNode {
 	return (
-		<div className={"header-tags-container markdown"}>
-			<span className={`header-tag ${style}`}>{text}</span>
+		<div className={"tags with-headers no-gap mb-1 markdown"}>
+			<span className={clsx("tag", props.style)}>{props.text}</span>
 
-			{children}
+			{props.children}
 		</div>
 	)
 }
