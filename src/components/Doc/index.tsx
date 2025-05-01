@@ -49,7 +49,7 @@ type ArgProps = {
 export function Arg(props : PropsWithChildren<ArgProps>): ReactNode {
 	return (
 		<div className={clsx(props.className)}>
-			<div className={clsx(styles.row)}>
+			<div className={clsx(styles.row)} style={{marginBottom: "0.25em"}}>
 				<code className={styles.headMed}>{props.name}</code>
 
 				<Tags>
