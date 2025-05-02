@@ -47,3 +47,13 @@
 	margin-left: 1em;
 	margin-right: 1em;
 }
+
+.args {
+	.arg {
+		padding-bottom: 0.5em;
+
+		&:last-child {
+			padding-bottom: 0;
+		}
+	}
+}

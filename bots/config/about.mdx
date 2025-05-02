@@ -5,6 +5,8 @@ sidebar_custom_props:
   card_group: "Customisation"
   tags:
     - v-2
+
+# TODO: Link to other docs
 ---
 
 import * as Doc from "/src/components/Doc";
@@ -86,7 +88,7 @@ copyright(
     "Time4J",
     "LGPL-2.1",
     CopyrightType.Library,
-    "http://time4j.net/"  // Doesn't support HTTPS?
+    "http://time4j.net/"
 )
 ```
 
@@ -130,40 +132,33 @@ While Kord Extensions provides the `copyright` subcommand by default,
 you're free to add any other informational commands you wish.
 We refer to these commands as "sections", each represented by a subcommand on the `about` command.
 
-To configure a section, use the `section` function.
-This function takes the section name and description as arguments
-and provides a builder you can use to configure the section's options and provide a message.
+To create a section, use one of the builders.
 
-We also provide a `general { }` builder,
-which configures a standard "general" section with a translated name and description.
+<Doc.Container>
+  <Doc.Builder name="general" receiver="Section">
+    Call this DSL function to create a "general" section, including an automatically translated name and description.
+  </Doc.Builder>
 
-```kotlin
-section(  // Plain strings work if you don't want translations
-    Translations.About.Sections.Main.name,
-    Translations.About.Sections.Main.description
-) {
-    ephemeral = false
+  <Doc.Builder name="section" receiver="Section" hasArgs>
+    Call this DSL function to create a section, represented by a subcommand.
 
-    message { locale ->
-        embed {
-            title = "Embed Title"
-            description = translate("a.translation.key")
-        }
-    }
-}
+    <Doc.Arguments type="function">
+      <Doc.Arg name="name" type="Key">
+        Translatable command name.
+      </Doc.Arg>
 
-general {
-    ephemeral = false
+      <Doc.Arg name="description" type="Key">
+        Translatable command description.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+</Doc.Container>
 
-    message { locale ->
-        content = "..."
-    }
-}
-```
+### Section Configuration
 
-[//]:  # (TODO: Link to other docs)
+Configure your section via the APIs described below.
 
-### Builders
+#### Builders
 
 <Doc.Container>
   <Doc.Builder name="message" receiver="MessageBuilder">
@@ -178,11 +173,48 @@ general {
   </Doc.Builder>
 </Doc.Container>
 
-### Properties
+#### Properties
 
 <Doc.Container>
-  <Doc.Property name="ephemeral" type="Boolean" default="true">
+  <Doc.Property name="ephemeral" type="Boolean?" default="null">
     Whether this section should respond to slash commands ephemerally.
     If not provided, defaults to the setting provided in the `about { }` builder.
   </Doc.Property>
 </Doc.Container>
+
+## Full Example
+
+```kotlin
+about {
+    ephemeral = true
+
+    copyright(
+        "Time4J",
+        "LGPL-2.1",
+        CopyrightType.Library,
+        "http://time4j.net/"
+    )
+
+    section(  // Plain strings work if you don't want translations
+        Translations.About.Sections.Main.name,
+        Translations.About.Sections.Main.description
+    ) {
+        ephemeral = false
+
+        message { locale ->
+            embed {
+                title = "Embed Title"
+                description = translate("a.translation.key")
+            }
+        }
+    }
+
+    general {
+        ephemeral = false
+
+        message { locale ->
+            content = "..."
+        }
+    }
+}
+```
