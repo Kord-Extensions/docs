@@ -17,14 +17,14 @@
 	--ifm-color-danger: #fa383e;
 	--ifm-color-danger-text: #FFF;
 
-	--ifm-color-info: #54c7ec;
-	--ifm-color-info-text: #000;
+	--ifm-color-info: #439FBC;
+	--ifm-color-info-text: #FFF;
 
 	--ifm-color-success: #00a400;
 	--ifm-color-success-text: #FFF;
 
-	--ifm-color-warning: #ffba00;
-	--ifm-color-warning-text: #000;
+	--ifm-color-warning: #C48F00;
+	--ifm-color-warning-text: #FFF;
 
 	--docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
 
@@ -166,8 +166,14 @@ ul.menu__list li.menu__list-item-divider-above_3 {
 	margin-right: 3.2rem;
 }
 
+.menu .tag {
+	padding: 0.1em 0.5em !important;
+}
+
 .tags {
 	display: flex;
+	flex-wrap: wrap;
+	align-items: stretch;
 	gap: 0.5em;
 
 	&.with-headers {
@@ -196,22 +202,39 @@ ul.menu__list li.menu__list-item-divider-above_3 {
 		flex-grow: 1;
 	}
 
-	.tag {
+	code, .code {
+		display: flex;
+		color: var(--ifm-color-secondary-text);
 		padding: 0.15em 0.5em;
 		border-radius: 5px;
+		align-items: center;
+	}
 
-		vertical-align: middle;
-		align-content: center;
+	.tag {
+		display: flex;
+		align-items: center;
 
-		background-color: var(--ifm-color-secondary);
+		gap: 0.5em;
+		padding: 0.3em 0.5em;
+		border-radius: 5px;
+		height: auto;
+
+		> * {
+			align-self: center;
+		}
 
 		code, .code {
-			vertical-align: revert;
+			align-items: baseline;
 		}
 
 		&.primary {
 			background-color: var(--ifm-color-primary);
 			color: var(--ifm-color-primary-text);
+		}
+
+		&.secondary {
+			background-color: var(--ifm-color-secondary);
+			color: var(--ifm-color-secondary-text);
 		}
 
 		&.danger {
@@ -235,6 +258,56 @@ ul.menu__list li.menu__list-item-divider-above_3 {
 		}
 	}
 }
+
+.card {
+	border: 1px solid var(--ifm-toc-border-color);
+	padding: 1.25rem;
+
+	> p, > ul, > ol {
+		margin: 0;
+	}
+
+	&.primary {
+		background-color: var(--ifm-color-primary);
+		color: var(--ifm-color-primary-text);
+	}
+
+	&.secondary {
+		background-color: var(--ifm-color-secondary);
+		color: var(--ifm-color-secondary-text);
+	}
+
+	&.danger {
+		background-color: var(--ifm-color-danger);
+		color: var(--ifm-color-danger-text);
+	}
+
+	&.info {
+		background-color: var(--ifm-color-info);
+		color: var(--ifm-color-info-text);
+	}
+
+	&.success {
+		background-color: var(--ifm-color-success);
+		color: var(--ifm-color-success-text);
+	}
+
+	&.warning {
+		background-color: var(--ifm-color-warning);
+		color: var(--ifm-color-warning-text);
+	}
+}
+
+.cardRow {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 0.5em;
+
+	margin-left: 0.75rem;
+	margin-right: 0.75rem;
+}
+
 
 .mb-0\.5 {
 	margin-bottom: 0.5em;

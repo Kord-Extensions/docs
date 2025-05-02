@@ -10,7 +10,7 @@ type ContainerProps = {
 }
 
 type TagProps = {
-	style?: "primary" | "danger" | "info" | "success" | "warning",
+	style?: "primary" | "secondary" | "danger" | "info" | "success" | "warning",
 }
 
 function propsToClasses(props: ContainerProps): string {
@@ -25,7 +25,7 @@ function propsToClasses(props: ContainerProps): string {
 }
 
 export function Tag(props: PropsWithChildren<TagProps>): ReactNode {
-	return <span className={clsx("tag", props.style)}>
+	return <span className={clsx("tag", "shadow--lw", props.style)}>
 		{props.children}
 	</span>
 }

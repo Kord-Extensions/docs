@@ -4,6 +4,8 @@ import Heading from "@theme/Heading";
 import Link from "@docusaurus/Link";
 import styles from "./styles.module.css";
 
+import { Card, CardRow } from "../Card"
+
 type FeatureItem = {
 	title: string;
 	href?: string;
@@ -59,19 +61,17 @@ const FeatureList: FeatureItem[] = [
 
 function Feature({title, href, to, description}: FeatureItem) {
 	return (
-		<div className={clsx("col col--3 margin-bottom--md")}>
-			<div className={clsx("text--center card shadow--lw", styles.matchedColHeight)}>
-				<div className="card__header">
-					<Heading as="h3">{title}</Heading>
-				</div>
-
-				<div className="card__body">
-					<p>{description}</p>
-				</div>
-
-				<CardButton href={href} to={to} />
+		<Card style="info" className="text--center col col--4">
+			<div className="card__header">
+				<Heading as="h3">{title}</Heading>
 			</div>
-		</div>
+
+			<div className="card__body">
+				<p>{description}</p>
+			</div>
+
+			<CardButton href={href} to={to} />
+		</Card>
 	);
 }
 
@@ -90,13 +90,11 @@ function CardButton({href, to}) {
 export default function HomepageFeatures(): ReactNode {
 	return (
 		<section className={styles.features}>
-		<div className="container">
-				<div className="row">
-					{FeatureList.map((props, idx) => (
-						<Feature key={idx} {...props} />
-					))}
-				</div>
-			</div>
+			<CardRow>
+				{FeatureList.map((props, idx) => (
+					<Feature key={idx} {...props} />
+				))}
+			</CardRow>
 		</section>
 	);
 }
