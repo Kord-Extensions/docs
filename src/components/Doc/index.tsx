@@ -11,16 +11,31 @@ type CommonProps = {
 }
 
 // endregion
+
 // region: Containers
 
-type ContainerProps = {
-
+type ArgumentsProps = {
+	type?: "function" | "lambda"
 } & CommonProps
 
-export function Arguments(props : PropsWithChildren<CommonProps>): ReactNode {
+function toTitleCase(str: string): string {
+	return str.replace(
+		/\w\S*/g,
+		function (txt: string) {
+			return txt.charAt(0).toUpperCase() +
+				txt.substring(1).toLowerCase();
+		}
+	);
+}
+
+export function Arguments(props: PropsWithChildren<ArgumentsProps>): ReactNode {
 	return (
 		<div className={clsx(props.className)}>
-			<div className={clsx(styles.headMed, "mb-0.5")}>Arguments</div>
+			<div className={clsx(styles.headMed, "mb-0.5")}>
+				{
+					props.type === undefined ? "" : `${toTitleCase(props.type)}`
+				} Arguments
+			</div>
 
 			<div className={styles.col}>
 				{props.children}
@@ -29,7 +44,9 @@ export function Arguments(props : PropsWithChildren<CommonProps>): ReactNode {
 	);
 }
 
-export function Container(props : PropsWithChildren<ContainerProps>): ReactNode {
+type ContainerProps = {} & CommonProps
+
+export function Container(props: PropsWithChildren<ContainerProps>): ReactNode {
 	return (
 		<div className={clsx(props.className, styles.container)}>
 			{props.children}
@@ -38,6 +55,7 @@ export function Container(props : PropsWithChildren<ContainerProps>): ReactNode 
 }
 
 // endregion
+
 // region: Items
 
 type ArgProps = {
@@ -46,16 +64,23 @@ type ArgProps = {
 	default?: string,
 } & CommonProps
 
-export function Arg(props : PropsWithChildren<ArgProps>): ReactNode {
+export function Arg(props: PropsWithChildren<ArgProps>): ReactNode {
 	return (
 		<div className={clsx(props.className)}>
 			<div className={clsx(styles.row)} style={{marginBottom: "0.25em"}}>
-				<code className={styles.headMed}>{props.name}</code>
-
 				<Tags>
-					<Tag>
-						Type: <code>{props.type}</code>
+					<code className={clsx(styles.headMed, "shadow--lw")}>{props.name}</code>
+
+					<Tag style="primary">
+						<span>Type:</span> <code className="shadow--lw">{props.type}</code>
 					</Tag>
+
+					{
+						props.default === undefined ? <></> :
+							<Tag style="success">
+								<span>Default:</span> <code className="shadow--lw">{props.default}</code>
+							</Tag>
+					}
 				</Tags>
 			</div>
 
@@ -71,17 +96,17 @@ type BuilderProps = {
 	receiver?: string,
 } & CommonProps
 
-export function Builder(props : PropsWithChildren<BuilderProps>): ReactNode {
+export function Builder(props: PropsWithChildren<BuilderProps>): ReactNode {
 	return (
 		<div className={clsx(props.className, styles.col)}>
 			<div className={clsx(styles.row)}>
-				<code className={styles.head}>{props.name}</code>
-
 				<Tags>
+					<code className={clsx(styles.head, "shadow--lw")}>{props.name} {"{ }"}</code>
+
 					{
 						props.receiver == undefined ? <></> :
-							<Tag>
-								Receiver: <code>{props.receiver}</code>
+							<Tag style="warning">
+								Receiver: <code className="shadow--lw">{props.receiver}</code>
 							</Tag>
 					}
 				</Tags>
@@ -99,10 +124,25 @@ type FunctionProps = {
 	receiver?: string,
 } & CommonProps
 
-export function Function(props : PropsWithChildren<FunctionProps>): ReactNode {
+export function Function(props: PropsWithChildren<FunctionProps>): ReactNode {
 	return (
-		<div className={clsx(props.className)}>
-			{props.children}
+		<div className={clsx(props.className, styles.col)}>
+			<div className={clsx(styles.row)}>
+				<Tags>
+					<code className={clsx(styles.head, "shadow--lw")}>{props.name}</code>
+
+					{
+						props.receiver == undefined ? <></> :
+							<Tag style="warning">
+								Receiver: <code className="shadow--lw">{props.receiver}</code>
+							</Tag>
+					}
+				</Tags>
+			</div>
+
+			<div className={clsx(styles.indent)}>
+				{props.children}
+			</div>
 		</div>
 	);
 }
@@ -113,21 +153,21 @@ type PropertyProps = {
 	default?: string,
 } & CommonProps
 
-export function Property(props : PropsWithChildren<PropertyProps>): ReactNode {
+export function Property(props: PropsWithChildren<PropertyProps>): ReactNode {
 	return (
 		<div className={clsx(props.className, styles.col)}>
 			<div className={clsx(styles.row)}>
-				<code className={styles.head}>{props.name}</code>
-
 				<Tags>
-					<Tag>
-						Type: <code>{props.type}</code>
+					<code className={clsx(styles.head, "shadow--lw")}>{props.name}</code>
+
+					<Tag style="primary">
+						Type: <code className="shadow--lw">{props.type}</code>
 					</Tag>
 
 					{
 						props.default == undefined ? <></> :
-							<Tag>
-								Default: <code>{props.default}</code>
+							<Tag style="success">
+								Default: <code className="shadow--lw">{props.default}</code>
 							</Tag>
 					}
 				</Tags>

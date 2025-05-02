@@ -170,9 +170,9 @@ general {
     Call this DSL function to provide a message builder, used to construct the message returned to the user when
     they access the current section.
 
-    <Doc.Arguments>
+    <Doc.Arguments type="lambda">
       <Doc.Arg name="locale" type="Locale">
-        Can be used to translate `key` objects via the i18n system.
+        Can be used to translate `Key` objects via the i18n system.
       </Doc.Arg>
     </Doc.Arguments>
   </Doc.Builder>
@@ -181,8 +181,8 @@ general {
 ### Properties
 
 <Doc.Container>
-  <Doc.Property name="ephemeral" type="boolean" default="true">
+  <Doc.Property name="ephemeral" type="Boolean" default="true">
     Whether this section should respond to slash commands ephemerally.
-    If not provided, defaults to the setting provided in the `about {}` builder.
+    If not provided, defaults to the setting provided in the `about { }` builder.
   </Doc.Property>
 </Doc.Container>
