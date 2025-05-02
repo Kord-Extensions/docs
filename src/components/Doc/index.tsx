@@ -30,14 +30,14 @@ function toTitleCase(str: string): string {
 
 export function Arguments(props: PropsWithChildren<ArgumentsProps>): ReactNode {
 	return (
-		<div className={clsx(props.className)}>
+		<div className={clsx(props.className, styles.args, "doc-arguments")}>
 			<div className={clsx(styles.headMed, "mb-0.5")}>
 				{
 					props.type === undefined ? "" : `${toTitleCase(props.type)}`
 				} Arguments
 			</div>
 
-			<div className={styles.col}>
+			<div className={clsx(styles.indent, styles.col)}>
 				{props.children}
 			</div>
 		</div>
@@ -48,7 +48,7 @@ type ContainerProps = {} & CommonProps
 
 export function Container(props: PropsWithChildren<ContainerProps>): ReactNode {
 	return (
-		<div className={clsx(props.className, styles.container)}>
+		<div className={clsx(props.className, styles.container, "doc-container")}>
 			{props.children}
 		</div>
 	);
@@ -66,7 +66,7 @@ type ArgProps = {
 
 export function Arg(props: PropsWithChildren<ArgProps>): ReactNode {
 	return (
-		<div className={clsx(props.className)}>
+		<div className={clsx(props.className, styles.arg, "doc-argument")}>
 			<div className={clsx(styles.row)} style={{marginBottom: "0.25em"}}>
 				<Tags>
 					<code className={clsx(styles.headMed, "shadow--lw")}>{props.name}</code>
@@ -93,15 +93,18 @@ export function Arg(props: PropsWithChildren<ArgProps>): ReactNode {
 
 type BuilderProps = {
 	name: string,
+	hasArgs?: boolean,
 	receiver?: string,
 } & CommonProps
 
 export function Builder(props: PropsWithChildren<BuilderProps>): ReactNode {
 	return (
-		<div className={clsx(props.className, styles.col)}>
+		<div className={clsx(props.className, styles.col, "doc-builder")}>
 			<div className={clsx(styles.row)}>
 				<Tags>
-					<code className={clsx(styles.head, "shadow--lw")}>{props.name} {"{ }"}</code>
+					<code className={
+						clsx(styles.head, "shadow--lw")}>{props.name}{props.hasArgs ? "(...)" : ""} {"{ ... }"
+					}</code>
 
 					{
 						props.receiver == undefined ? <></> :
@@ -126,10 +129,10 @@ type FunctionProps = {
 
 export function Function(props: PropsWithChildren<FunctionProps>): ReactNode {
 	return (
-		<div className={clsx(props.className, styles.col)}>
+		<div className={clsx(props.className, styles.col, "doc-function")}>
 			<div className={clsx(styles.row)}>
 				<Tags>
-					<code className={clsx(styles.head, "shadow--lw")}>{props.name}</code>
+					<code className={clsx(styles.head, "shadow--lw")}>{props.name}(...)</code>
 
 					{
 						props.receiver == undefined ? <></> :
@@ -155,7 +158,7 @@ type PropertyProps = {
 
 export function Property(props: PropsWithChildren<PropertyProps>): ReactNode {
 	return (
-		<div className={clsx(props.className, styles.col)}>
+		<div className={clsx(props.className, styles.col, "doc-property")}>
 			<div className={clsx(styles.row)}>
 				<Tags>
 					<code className={clsx(styles.head, "shadow--lw")}>{props.name}</code>
