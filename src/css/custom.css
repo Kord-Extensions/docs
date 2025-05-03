@@ -31,6 +31,8 @@
 	--docusaurus-tab-container-bg: rgba(0, 0, 0, 0.05);
 	--docusaurus-active-tab-bg: rgba(88, 101, 242, 0.1);
 	--docusaurus-hover-tab-bg: rgba(0, 0, 0, 0.2);
+
+	--tag-code-bg: rgba(255, 255, 255, 0.7)
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
@@ -65,6 +67,8 @@
 	--docusaurus-tab-container-bg: rgba(255, 255, 255, 0.05);
 	--docusaurus-active-tab-bg: rgba(138, 147, 242, 0.1);
 	--docusaurus-hover-tab-bg: rgba(255, 255, 255, 0.2);
+
+	--tag-code-bg: rgba(0, 0, 0, 0.3)
 }
 
 .tabs-container > ul > li {
@@ -225,36 +229,40 @@ ul.menu__list li.menu__list-item-divider-above_3 {
 
 		code, .code {
 			align-items: baseline;
+			background-color: var(--tag-code-bg);
 		}
 
+		background-color: var(--tag-bg);
+		color: var(--tag-fg);
+
 		&.primary {
-			background-color: var(--ifm-color-primary);
-			color: var(--ifm-color-primary-text);
+			--tag-bg: var(--ifm-color-primary);
+			--tag-fg: var(--ifm-color-primary-text);
 		}
 
 		&.secondary {
-			background-color: var(--ifm-color-secondary);
-			color: var(--ifm-color-secondary-text);
+			--tag-bg: var(--ifm-color-secondary);
+			--tag-fg: var(--ifm-color-secondary-text);
 		}
 
 		&.danger {
-			background-color: var(--ifm-color-danger);
-			color: var(--ifm-color-danger-text);
+			--tag-bg: var(--ifm-color-danger);
+			--tag-fg: var(--ifm-color-danger-text);
 		}
 
 		&.info {
-			background-color: var(--ifm-color-info);
-			color: var(--ifm-color-info-text);
+			--tag-bg: var(--ifm-color-info);
+			--tag-fg: var(--ifm-color-info-text);
 		}
 
 		&.success {
-			background-color: var(--ifm-color-success);
-			color: var(--ifm-color-success-text);
+			--tag-bg: var(--ifm-color-success);
+			--tag-fg: var(--ifm-color-success-text);
 		}
 
 		&.warning {
-			background-color: var(--ifm-color-warning);
-			color: var(--ifm-color-warning-text);
+			--tag-bg: var(--ifm-color-warning);
+			--tag-fg: var(--ifm-color-warning-text);
 		}
 	}
 }

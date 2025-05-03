@@ -94,6 +94,7 @@ export function Arg(props: PropsWithChildren<ArgProps>): ReactNode {
 type BuilderProps = {
 	name: string,
 	hasArgs?: boolean,
+	returns?: string,
 	receiver?: string,
 } & CommonProps
 
@@ -112,6 +113,13 @@ export function Builder(props: PropsWithChildren<BuilderProps>): ReactNode {
 								Receiver: <code className="shadow--lw">{props.receiver}</code>
 							</Tag>
 					}
+
+					{
+						props.returns == undefined ? <></> :
+							<Tag style="info">
+								Returns: <code className="shadow--lw">{props.returns}</code>
+							</Tag>
+					}
 				</Tags>
 			</div>
 
@@ -125,6 +133,7 @@ export function Builder(props: PropsWithChildren<BuilderProps>): ReactNode {
 type FunctionProps = {
 	name: string,
 	receiver?: string,
+	returns?: string,
 } & CommonProps
 
 export function Function(props: PropsWithChildren<FunctionProps>): ReactNode {
@@ -138,6 +147,13 @@ export function Function(props: PropsWithChildren<FunctionProps>): ReactNode {
 						props.receiver == undefined ? <></> :
 							<Tag style="warning">
 								Receiver: <code className="shadow--lw">{props.receiver}</code>
+							</Tag>
+					}
+
+					{
+						props.returns == undefined ? <></> :
+							<Tag style="info">
+								Returns: <code className="shadow--lw">{props.returns}</code>
 							</Tag>
 					}
 				</Tags>
@@ -176,7 +192,7 @@ export function Property(props: PropsWithChildren<PropertyProps>): ReactNode {
 				</Tags>
 			</div>
 
-			<div className={clsx(styles.row, styles.indent)}>
+			<div className={clsx(styles.indent)}>
 				{props.children}
 			</div>
 		</div>
