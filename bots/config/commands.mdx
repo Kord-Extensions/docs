@@ -1,8 +1,121 @@
 ---
+description: "Configure how your bot handles commands."
 sidebar_position: 5
 
 sidebar_custom_props:
   card_group: "Functionality"
+
+# TODO: Link to other docs
 ---
 
+import * as Doc from "/src/components/Doc";
+
 # Commands
+
+The command builders allow you to configure Kord Extensions' command frameworks.
+Kord Extensions supports two primary command types:
+
+- Application commands, which include message, slash, and user commands
+- Chat commands, which are commands via messages in Discord channels
+
+:::danger
+
+With the introduction of slash commands, Kord Extensions has elected to de-prioritise chat commands.
+This means that **we disable them by default,** and you'll need to enable them if you want to use them.
+
+We intend to support chat commands indefinitely.
+However, please note that most bots don't use them,
+and this means that there may be subtle or unknown bugs present within the chat commands framework.
+If you notice anything unusual or broken, please don't hesitate to submit a Pull Request,
+open an issue, or [contact us on Discord](https://discord.gg/nYzQWcjAmK).
+
+:::
+
+For more information on commands and how to write them, see [this page] and [that page].
+
+## Application Commands
+
+The `applicationCommands { }` builder allows you to configure the application commands framework,
+which includes context (user and message) commands and slash commands.
+
+```kt
+ExtensibleBot(TOKEN) {
+    // ...
+
+    applicationCommands {
+        defaultGuild(TEST_GUILD_ID)
+    }
+}
+```
+
+### Builders
+
+<Doc.Container>
+  <Doc.Builder name="applicationCommandRegistry">
+    Register a callback that constructs and returns an alternative implementation of the `ApplicationCommandRegistry`
+    type, if needed.
+  </Doc.Builder>
+
+  <Doc.Builder name="messageCommandCheck" receiver="CheckContext<MessageCommandInteractionCreateEvent>">
+    Register a check that will apply to all of your bot's message commands.
+  </Doc.Builder>
+
+  <Doc.Builder name="slashCommandCheck" receiver="CheckContext<ChatInputCommandInteractionCreateEvent>">
+    Register a check that will apply to all of your bot's slash commands.
+  </Doc.Builder>
+
+  <Doc.Builder name="userCommandCheck" receiver="CheckContext<UserCommandInteractionCreateEvent>">
+    Register a check that will apply to all of your bot's user commands.
+  </Doc.Builder>
+</Doc.Container>
+
+### Functions
+
+<Doc.Container>
+  <Doc.Function name="defaultGuild">
+    Specify a guild to register all global application commands to.
+    This will apply to all application commands that don't have a default guild specified.
+
+    This function sets the `defaultGuild` property, which you can set manually instead if you prefer.
+
+    <Doc.Arguments>
+      <Doc.Arg name="id" type={["Snowflake?", "String?", "ULong?"]}>
+        ID representing the required default guild.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+</Doc.Container>
+
+### Properties
+
+<Doc.Container>
+  <Doc.Property name="enabled" type="Boolean" default="true">
+    Whether application commands should be enabled.
+
+    Setting this to `false` disables the entire feature, including registration and event processing.
+  </Doc.Property>
+
+  <Doc.Property name="register" type="Boolean" default="true">
+    Whether to automatically register commands with Discord, both during and after startup.
+
+    Setting this to `false` only prevents command registration --- users can still run commands.
+    This may be useful for multi-process bots, or bots with commands you register externally.
+  </Doc.Property>
+</Doc.Container>
+
+## Chat Commands
+
+The `chatCommands { }` builder allows you to configure the chat commands framework,
+which handles the parsing and processing of chat commands.
+
+```kt
+ExtensibleBot(TOKEN) {
+    // ...
+
+    chatCommands  {
+        defaultPrefix = "!"
+        enabled = true
+        invokeOnMention = true
+    }
+}
+```
