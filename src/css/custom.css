@@ -32,7 +32,12 @@
 	--docusaurus-active-tab-bg: rgba(88, 101, 242, 0.1);
 	--docusaurus-hover-tab-bg: rgba(0, 0, 0, 0.2);
 
-	--tag-code-bg: rgba(255, 255, 255, 0.7)
+	--tag-code-bg: rgba(255, 255, 255, 0.7);
+
+	.footer--dark {
+		--ifm-footer-color: #FFF;
+		--ifm-footer-link-color: var(--ifm-color-primary);
+	}
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
@@ -68,7 +73,7 @@
 	--docusaurus-active-tab-bg: rgba(138, 147, 242, 0.1);
 	--docusaurus-hover-tab-bg: rgba(255, 255, 255, 0.2);
 
-	--tag-code-bg: rgba(0, 0, 0, 0.3)
+	--tag-code-bg: rgba(0, 0, 0, 0.3);
 }
 
 .tabs-container > ul > li {

@@ -1,8 +1,93 @@
 ---
+description: "Configure Kord's caching settings."
 sidebar_position: 4
 
 sidebar_custom_props:
   card_group: "Technical Settings"
 ---
 
+import * as Doc from "/src/components/Doc";
+
 # Caching
+
+The `cache { }` builder allows you to change Kord's caching settings.
+Kord Extensions provides some additional default settings over Kord's own:
+
+- Creates a `lruCache`, for caching up to 10,000 recent messages.
+- Changes the default caching strategy to `cacheWithCachingRestFallback`, which means that Kord will cache all entities
+  retrieved via REST calls, as well as those provided by the gateway.
+
+```kt
+ExtensibleBot(TOKEN) {
+    // ...
+
+    cache {
+        cachedMessages = 10_000
+        defaultStrategy = EntitySupplyStrategy.cacheWithCachingRestFallback
+    }
+}
+```
+
+:::warning
+
+Kord doesn't automatically cache all types of data.
+For situations where this doesn't happen, `cacheWithCachingRestFallback` may result in incomplete data.
+
+For example, if a staff member bans a user from a guild, and you don't yet have all the guild's bans in the cache,
+Kord will only keep track of bans that the bot has seen happen.
+
+If this is a problem for you, then you have a few options:
+
+1. Fill the cache yourself.
+   For example, for guild members, you could configure the `members { }` builder to request all guild members from the
+   gateway and set up the required intents.
+2. Change the default strategy to `cacheWithRestFallback`, which won't cache anything retrieved via REST calls.
+3. Temporarily use another supply strategy when retrieving these types of data.
+   For example, you could use something like `guild.withStrategy(EntitySupplyStrategy.cachingRest).bans`.
+4. Use one of the equivalent `fetch` functions to skip the cache entirely.
+
+For most purposes, the first approach will likely be the most sensible,
+but the correct approach will heavily depend on your bot and how you need the cache to function.
+
+:::
+
+## Builders
+
+<Doc.Container>
+  <Doc.Builder name="kord" receiver="KordCacheBuilder" hasArgs>
+    Register a callback to directly configure Kord's cache, and prevent automatic configuration of the message cache.
+    If you call this and you need message caching, be sure to configure it yourself.
+
+    <Doc.Arguments type="lambda">
+      <Doc.Arg name="resources" type="ClientResources">
+        Kord object representing its configuration, including your bot's token and application ID.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <Doc.Builder name="transformCache" receiver="Kord" hasArgs>
+    Register a callback to modify Kord's data cache settings, allowing you to work with Kord's `DataCache` before it
+    connects to Discord.
+
+    <Doc.Arguments type="lambda">
+      <Doc.Arg name="cache" type="DataCache">
+        Kord object representing its cache.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+</Doc.Container>
+
+## Properties
+
+<Doc.Container>
+  <Doc.Property name="cachedMessages" type="Int?" default="10_000">
+    Number of recent messages Kord's cache should store by default.
+
+    You can disable automatic configuration of the message cache by setting this to `0` or `null`, or by manually
+    configuring the cache using the `kord` builder.
+  </Doc.Property>
+
+  <Doc.Property name="defaultStrategy" type="EntitySupplyStrategy" default="cacheWithCachingRestFallback">
+    The caching strategy used by Kord by default.
+  </Doc.Property>
+</Doc.Container>
