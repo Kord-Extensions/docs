@@ -54,7 +54,7 @@ but the correct approach will heavily depend on your bot and how you need the ca
 ## Builders
 
 <Doc.Container>
-  <Doc.Builder name="kord" receiver="KordCacheBuilder" hasArgs>
+  <Doc.Builder name="kord" receiver="KordCacheBuilder">
     Register a callback to directly configure Kord's cache, and prevent automatic configuration of the message cache.
     If you call this and you need message caching, be sure to configure it yourself.
 
@@ -65,7 +65,7 @@ but the correct approach will heavily depend on your bot and how you need the ca
     </Doc.Arguments>
   </Doc.Builder>
 
-  <Doc.Builder name="transformCache" receiver="Kord" hasArgs>
+  <Doc.Builder name="transformCache" receiver="Kord">
     Register a callback to modify Kord's data cache settings, allowing you to work with Kord's `DataCache` before it
     connects to Discord.
 

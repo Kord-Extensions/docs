@@ -60,7 +60,7 @@ export function Container(props: PropsWithChildren<ContainerProps>): ReactNode {
 
 type ArgProps = {
 	name: string,
-	type: string,
+	type: string | string[],
 	default?: string,
 } & CommonProps
 
@@ -72,7 +72,20 @@ export function Arg(props: PropsWithChildren<ArgProps>): ReactNode {
 					<code className={clsx(styles.headMed, "shadow--lw")}>{props.name}</code>
 
 					<Tag style="primary">
-						<span>Type:</span> <code className="shadow--lw">{props.type}</code>
+						{typeof (props.type) === "string" ?
+							<>
+								<span>Type:</span> <code className="shadow--lw">{props.type}</code>
+							</> :
+							<>
+								<span>Types:</span>
+
+								{props.type.map((overload) => (
+									<code className="shadow--lw">
+										{overload}
+									</code>
+								))}
+							</>
+						}
 					</Tag>
 
 					{
