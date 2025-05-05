@@ -92,7 +92,7 @@ ExtensibleBot(TOKEN) {
   <Doc.Property name="enabled" type="Boolean" default="true">
     Whether application commands should be enabled.
 
-    Setting this to `false` disables the entire feature, including registration and event processing.
+    Setting this to `false` disables the entire feature.
   </Doc.Property>
 
   <Doc.Property name="register" type="Boolean" default="true">
@@ -119,3 +119,53 @@ ExtensibleBot(TOKEN) {
     }
 }
 ```
+
+### Builders
+
+<Doc.Container>
+  <Doc.Builder name="check" receiver="CheckContext<MessageCreateEvent>">
+    Register a check that will apply to all of your bot's chat commands.
+  </Doc.Builder>
+
+  <Doc.Builder name="prefix" receiver="MessageCreateEvent">
+    Set the prefix callback, which allows you to provide different command prefixes for different contexts.
+
+    <Doc.Arguments type="lambda">
+      <Doc.Arg name="defaultPrefix" type="String">
+        The configured default prefix.
+        Your lambda should return this if no custom prefix is required.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <Doc.Builder name="registry">
+    Register a callback that constructs and returns an alternative implementation of the `ChatCommandRegistry`
+    type, if needed.
+  </Doc.Builder>
+</Doc.Container>
+
+### Properties
+
+<Doc.Container>
+  <Doc.Property name="defaultPrefix" type="String" default={`"!"`}>
+    The default command prefix, required before the name of a chat command at the start of a message.
+    Use the `prefix { }` builder to supply a dynamic command prefix.
+  </Doc.Property>
+
+  <Doc.Property name="enabled" type="Boolean" default="false">
+    Whether chat commands should be enabled.
+    Leaving this set to `false` disables the entire feature.
+
+    As it's disabled by default, you'll need to set this to `true` if you need your bot to support chat commands.
+  </Doc.Property>
+
+  <Doc.Property name="ignoreSelf" type="Boolean" default="true">
+    Whether to ignore messages sent by this bot.
+    Setting this to `false` means that the bot will execute commands based on the content of its own messages.
+  </Doc.Property>
+
+  <Doc.Property name="invokeOnMention" type="Boolean" default="true">
+    Whether users should be able to execute commands by mentioning/pinging the bot at the start of the message,
+    instead of using a command prefix.
+  </Doc.Property>
+</Doc.Container>
