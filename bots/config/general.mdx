@@ -18,7 +18,7 @@ This is Kord Extensions' entry point, and you should provide all of your bot's s
 the settings explained by <Link to="/bots/config">the other pages in this section</Link>.
 
 <Doc.Container>
-  <Doc.Builder hasArgs name="ExtensibleBot" receiver="ExtensibleBotBuilder" returns="ExtensibleBot">
+  <Doc.Builder hasArgs name="ExtensibleBot" receiver="ExtensibleBotBuilder" functionReturns="ExtensibleBot">
     Create and set up your bot, represented by the object returned by this function.
     **Note:** The bot won't start until you call the `.start()` or `.startAsync()` function.
 
@@ -61,7 +61,7 @@ the settings explained by <Link to="/bots/config">the other pages in this sectio
 ## Kord
 
 <Doc.Container>
-  <Doc.Builder name="customKordBuilder" receiver="KordBuilder">
+  <Doc.Builder name="customKordBuilder" receiver="KordBuilder" lambdaReturns="Kord">
     Replace Kord Extensions' default Kord object factory function.
 
     This can be useful if you need to provide a customised Kord instance, but this won't be necessary for most bots.
@@ -98,7 +98,7 @@ the settings explained by <Link to="/bots/config">the other pages in this sectio
     Size of the thread-pool used to dispatch all `InteractionCreateEvent`s to their corresponding registries.
   </Doc.Property>
 
-  <Doc.Builder name="kordEventFilter" receiver="Event">
+  <Doc.Builder name="kordEventFilter" receiver="Event" lambdaReturns="Boolean">
     Set your bot's event-filtering predicate for events created by Kord.
     Returning `false` from your predicate will prevent Kord Extensions from processing that event, which may help with
     performance in some situations.
@@ -108,7 +108,7 @@ the settings explained by <Link to="/bots/config">the other pages in this sectio
     previously registered predicate, if one was set.
   </Doc.Builder>
 
-  <Doc.Builder name="kordExEventFilter" receiver="Event">
+  <Doc.Builder name="kordExEventFilter" receiver="Event" lambdaReturns="Boolean">
     Set your bot's event-filtering predicate for events created by Kord Extensions.
     Returning `false` from your predicate will prevent Kord Extensions from processing that event, which may help with
     performance in some situations.

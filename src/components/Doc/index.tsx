@@ -37,9 +37,12 @@ export function Arguments(props: PropsWithChildren<ArgumentsProps>): ReactNode {
 				} Arguments
 			</div>
 
-			<div className={clsx(styles.indent, styles.col)}>
-				{props.children}
-			</div>
+			{ props.children === undefined ?
+				<></> :
+				<div className={clsx(styles.indent, styles.col)}>
+					{props.children}
+				</div>
+			}
 		</div>
 	);
 }
@@ -97,9 +100,12 @@ export function Arg(props: PropsWithChildren<ArgProps>): ReactNode {
 				</Tags>
 			</div>
 
-			<div className={clsx(styles.indent)}>
-				{props.children}
-			</div>
+			{ props.children === undefined ?
+				<></> :
+				<div className={clsx(styles.indent)}>
+					{props.children}
+				</div>
+			}
 		</div>
 	);
 }
@@ -107,7 +113,8 @@ export function Arg(props: PropsWithChildren<ArgProps>): ReactNode {
 type BuilderProps = {
 	name: string,
 	hasArgs?: boolean,
-	returns?: string,
+	functionReturns?: string,
+	lambdaReturns?: string,
 	receiver?: string,
 } & CommonProps
 
@@ -128,17 +135,27 @@ export function Builder(props: PropsWithChildren<BuilderProps>): ReactNode {
 					}
 
 					{
-						props.returns == undefined ? <></> :
+						props.functionReturns == undefined ? <></> :
 							<Tag style="info">
-								Returns: <code className="shadow--lw">{props.returns}</code>
+								Function Returns: <code className="shadow--lw">{props.functionReturns}</code>
+							</Tag>
+					}
+
+					{
+						props.lambdaReturns == undefined ? <></> :
+							<Tag style="info">
+								Lambda Returns: <code className="shadow--lw">{props.lambdaReturns}</code>
 							</Tag>
 					}
 				</Tags>
 			</div>
 
-			<div className={clsx(styles.indent)}>
-				{props.children}
-			</div>
+			{ props.children === undefined ?
+				<></> :
+				<div className={clsx(styles.indent)}>
+					{props.children}
+				</div>
+			}
 		</div>
 	);
 }
@@ -172,9 +189,12 @@ export function Function(props: PropsWithChildren<FunctionProps>): ReactNode {
 				</Tags>
 			</div>
 
-			<div className={clsx(styles.indent)}>
-				{props.children}
-			</div>
+			{ props.children === undefined ?
+				<></> :
+				<div className={clsx(styles.indent)}>
+					{props.children}
+				</div>
+			}
 		</div>
 	);
 }
@@ -205,9 +225,12 @@ export function Property(props: PropsWithChildren<PropertyProps>): ReactNode {
 				</Tags>
 			</div>
 
-			<div className={clsx(styles.indent)}>
-				{props.children}
-			</div>
+			{ props.children === undefined ?
+				<></> :
+				<div className={clsx(styles.indent)}>
+					{props.children}
+				</div>
+			}
 		</div>
 	);
 }

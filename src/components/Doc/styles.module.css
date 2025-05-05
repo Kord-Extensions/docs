@@ -3,6 +3,8 @@
 	flex-direction: column;
 	gap: 0.5em;
 
+	margin-bottom: var(--ifm-paragraph-margin-bottom);
+
 	> * {
 		border-radius: 0.5em;
 		padding: 0.5em;
@@ -14,6 +16,17 @@
 		&:nth-child(odd) {
 			background-color: color-mix(in srgb, var(--ifm-color-primary) 10%, transparent);
 		}
+	}
+
+	> p {
+		background-color: color-mix(in srgb, var(--ifm-color-secondary) 10%, transparent) !important;
+		margin: 0;
+	}
+
+	> hr {
+		margin: 0 0.5em;
+		padding: 0;
+		height: 2px;
 	}
 
 	p:last-child {
@@ -46,6 +59,12 @@
 .indent {
 	margin-left: 1em;
 	margin-right: 1em;
+
+	p {
+		&:not(:last-child) {
+			margin: 0 0 0.5em;
+		}
+	}
 }
 
 .args {
