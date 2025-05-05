@@ -51,7 +51,7 @@ ExtensibleBot(TOKEN) {
 ### Builders
 
 <Doc.Container>
-  <Doc.Builder name="applicationCommandRegistry">
+  <Doc.Builder name="applicationCommandRegistry" lambdaReturns="ApplicationCommandRegistry">
     Register a callback that constructs and returns an alternative implementation of the `ApplicationCommandRegistry`
     type, if needed.
   </Doc.Builder>
@@ -127,7 +127,7 @@ ExtensibleBot(TOKEN) {
     Register a check that will apply to all of your bot's chat commands.
   </Doc.Builder>
 
-  <Doc.Builder name="prefix" receiver="MessageCreateEvent">
+  <Doc.Builder name="prefix" receiver="MessageCreateEvent" lambdaReturns="String">
     Set the prefix callback, which allows you to provide different command prefixes for different contexts.
 
     <Doc.Arguments type="lambda">
@@ -138,7 +138,7 @@ ExtensibleBot(TOKEN) {
     </Doc.Arguments>
   </Doc.Builder>
 
-  <Doc.Builder name="registry">
+  <Doc.Builder name="registry" lambdaReturns="ChatCommandRegistry">
     Register a callback that constructs and returns an alternative implementation of the `ChatCommandRegistry`
     type, if needed.
   </Doc.Builder>

@@ -1,8 +1,33 @@
 ---
+description: "Register a data adapter."
 sidebar_position: 7
 
 sidebar_custom_props:
   card_group: "Functionality"
+
+# TODO: Link to other docs
 ---
 
+import * as Doc from "/src/components/Doc";
+
 # Data Adapter
+
+The `dataAdapter { }` builder allows you to register a data adapter, responsible for storing the data handled by
+storage units.
+
+```kt
+ExtensibleBot(TOKEN) {
+    // ...
+
+    dataAdapter(::TomlDataAdapter)
+}
+```
+
+## Builders
+
+<Doc.Container>
+  <Doc.Builder name="dataAdapter" lambdaReturns="DataAdapter">
+    Register a callback that constructs and returns an alternative implementation of the `DataAdapter`
+    type, if needed.
+  </Doc.Builder>
+</Doc.Container>
