@@ -1,9 +1,121 @@
 ---
-sidebar_position: 11
+description: "Make your bot multilingual."
+sidebar_position: 12
 
 sidebar_custom_props:
   divider_below: true
   card_group: "Basics"
+
+# TODO: Link to other docs
 ---
 
+import Link from "@docusaurus/Link";
+import * as Doc from "/src/components/Doc";
+
 # Internationalisation (i18n)
+
+The `i18n { }` builder allows you to configure how your bot handles translations and retrieves locales for
+internationalisation and localisation.
+
+Kord Extensions provides built-in translations for several locales, listed in the `SupportedLocales` object.
+You can contribute your own translations (or check in on our progress)
+[on Weblate](https://hosted.weblate.org/projects/kord-extensions/).
+
+```kt
+ExtensibleBot(TOKEN) {
+    // ...
+
+    i18n {
+        defaultLocale = SupportedLocales.SPANISH
+
+        applicationCommandLocale(SupportedLocales.ALL_LOCALES_SET)
+
+        interactionUserLocaleResolver()
+        interactionGuildLocaleResolver()
+    }
+}
+```
+
+## Builders
+
+<Doc.Container>
+  <Doc.Builder name="localeResolver" lambdaReturns="Locale?">
+    Register a custom locale resolver.
+
+    Locale resolvers return a `Locale` or `null` based on the parameters passed in, defining which locale should be
+    used for translations in that context.
+    This also allows you to write configuration commands so users can pick their preferred locale, if you wish.
+
+    You can register multiple locale resolvers, and they'll be tried (in registration order) until one of them
+    returns something other than `null`.
+
+    For more information, see [[the i18n documentation]].
+
+    <Doc.Arguments type="lambda">
+      <Doc.Arg name="guild" type="GuildBehavior?">
+        A [[Behavior]] representing the current guild, if any.
+      </Doc.Arg>
+
+      <Doc.Arg name="channel" type="ChannelBehavior?">
+        A [[Behavior]] representing the current channel, if any.
+      </Doc.Arg>
+
+      <Doc.Arg name="user" type="UserBehavior?">
+        A [[Behavior]] representing the current user, if any.
+      </Doc.Arg>
+
+      <Doc.Arg name="interaction" type="Interaction?">
+        A [[Behavior]] representing the current interaction, if any.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <Doc.Builder name="translationsProvider" lambdaReturns="TranslationsProvider">
+    Register a callback that constructs and returns an alternative implementation of the `TranslationsProvider`
+    type, if needed.
+
+    <Doc.Arguments type="lambda">
+      <Doc.Arg name="defaultLocaleBuilder" type="() -> Locale">
+        A callable object that returns the configured default locale.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+</Doc.Container>
+
+## Functions
+
+<Doc.Container>
+  <Doc.Function name="applicationCommandLocale">
+    Registers the given locales as application command locales.
+    Your bot uses these locales to translate application commands when they're registered with Discord.
+
+    Supply `SupportedLocales.ALL_LOCALES_SET` to support all locales that Kord Extensions provides translations for.
+
+    <Doc.Arguments>
+      <Doc.Arg name="locales" type={["Locale"]} supportsCollections>
+        Locales you want your bot to support.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+
+  <Doc.Function name="interactionGuildLocaleResolver">
+    Registers a default locale resolver which attempts to resolve locales using the language set in the current guild's
+    server settings.
+  </Doc.Function>
+
+  <Doc.Function name="interactionUserLocaleResolver">
+    Registers a default locale resolver which attempts to resolve locales using the current user's Discord language
+    setting.
+  </Doc.Function>
+</Doc.Container>
+
+## Properties
+
+<Doc.Container>
+  <Doc.Property name="defaultLocale" type="Locale" default="SupportedLocales.ENGLISH">
+    Your bot's default locale.
+
+    This is the locale used as the default locale when registering application commands, and when the locale resolvers
+    don't return one.
+  </Doc.Property>
+</Doc.Container>

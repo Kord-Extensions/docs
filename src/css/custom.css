@@ -179,9 +179,18 @@ ul.menu__list li.menu__list-item-divider-above_3 {
 	padding: 0.1em 0.5em !important;
 }
 
+.doc-container > .alert {
+	margin-bottom: 0;
+}
+
+hr.clear {
+	background: none !important;
+}
+
 .tags {
 	display: flex;
 	flex-wrap: wrap;
+	max-width: 100%;
 	align-items: stretch;
 	gap: 0.5em;
 
@@ -222,6 +231,9 @@ ul.menu__list li.menu__list-item-divider-above_3 {
 	.tag {
 		display: flex;
 		align-items: center;
+		overflow-x: auto;
+		scroll-behavior: smooth;
+		scroll-padding-bottom: 0.9em;
 
 		gap: 0.5em;
 		padding: 0.3em 0.5em;
