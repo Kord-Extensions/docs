@@ -5,7 +5,7 @@
 
 	margin-bottom: var(--ifm-paragraph-margin-bottom);
 
-	> * {
+	> .docBg, > hr {
 		border-radius: 0.5em;
 		padding: 0.5em;
 

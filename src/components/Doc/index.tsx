@@ -64,10 +64,23 @@ export function Container(props: PropsWithChildren<ContainerProps>): ReactNode {
 type ArgProps = {
 	name: string,
 	type: string | string[],
+	supportsCollections?: boolean,
 	default?: string,
 } & CommonProps
 
 export function Arg(props: PropsWithChildren<ArgProps>): ReactNode {
+	let firstType: string | String = "unknown";
+
+	const hasMultipleTypes = !(
+		typeof(props.type) === "string" || props.type instanceof String || props.type.length === 1
+	)
+
+	if (typeof(props.type) === "string" || props.type instanceof String) {
+		firstType = props.type;
+	} else {
+		firstType = props.type[0]
+	}
+
 	return (
 		<div className={clsx(props.className, styles.arg, "doc-argument")}>
 			<div className={clsx(styles.row)} style={{marginBottom: "0.25em"}}>
@@ -87,6 +100,23 @@ export function Arg(props: PropsWithChildren<ArgProps>): ReactNode {
 										{overload}
 									</code>
 								))}
+
+								{props.supportsCollections === true ?
+									<>
+										{hasMultipleTypes ?
+											<>
+												&amp;
+												<code className="shadow--lw">
+													Collection&lt;T&gt;
+												</code>
+											</> :
+											<code className="shadow--lw">
+												Collection&lt;{firstType}&gt;
+											</code>
+										}
+									</>:
+									<></>
+								}
 							</>
 						}
 					</Tag>
@@ -120,7 +150,7 @@ type BuilderProps = {
 
 export function Builder(props: PropsWithChildren<BuilderProps>): ReactNode {
 	return (
-		<div className={clsx(props.className, styles.col, "doc-builder")}>
+		<div className={clsx(props.className, styles.col, styles.docBg, "doc-builder")}>
 			<div className={clsx(styles.row)}>
 				<Tags>
 					<code className={
@@ -164,14 +194,22 @@ type FunctionProps = {
 	name: string,
 	receiver?: string,
 	returns?: string,
+	default?: boolean,
 } & CommonProps
 
 export function Function(props: PropsWithChildren<FunctionProps>): ReactNode {
 	return (
-		<div className={clsx(props.className, styles.col, "doc-function")}>
+		<div className={clsx(props.className, styles.col, styles.docBg, "doc-function")}>
 			<div className={clsx(styles.row)}>
 				<Tags>
 					<code className={clsx(styles.head, "shadow--lw")}>{props.name}(...)</code>
+
+					{
+						props.default !== true ? <></> :
+							<Tag style="secondary">
+								Default
+							</Tag>
+					}
 
 					{
 						props.receiver == undefined ? <></> :
@@ -207,7 +245,7 @@ type PropertyProps = {
 
 export function Property(props: PropsWithChildren<PropertyProps>): ReactNode {
 	return (
-		<div className={clsx(props.className, styles.col, "doc-property")}>
+		<div className={clsx(props.className, styles.col, styles.docBg, "doc-property")}>
 			<div className={clsx(styles.row)}>
 				<Tags>
 					<code className={clsx(styles.head, "shadow--lw")}>{props.name}</code>

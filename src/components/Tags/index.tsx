@@ -25,12 +25,14 @@ function propsToClasses(props: ContainerProps): string {
 }
 
 export function Tag(props: PropsWithChildren<TagProps>): ReactNode {
-	return <span className={clsx("tag", "shadow--lw", props.style)}>
+	return <span
+		className={clsx("tag", "shadow--lw", props.style)}
+	>
 		{props.children}
 	</span>
 }
 
-export function Tags(props : PropsWithChildren<ContainerProps>): ReactNode {
+export function Tags(props: PropsWithChildren<ContainerProps>): ReactNode {
 	return (
 		<div className={propsToClasses(props satisfies ContainerProps)}>
 			{props.children}
