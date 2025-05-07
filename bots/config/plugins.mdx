@@ -1,8 +1,92 @@
 ---
+description: "Configure the plugins system."
 sidebar_position: 14
 
 sidebar_custom_props:
   card_group: "Functionality"
+
+# TODO: Link to other docs
 ---
 
+import Link from "@docusaurus/Link";
+import * as Doc from "/src/components/Doc";
+
 # Plugins
+
+The `plugins { }` builder allows you to configure various aspects of the plugin system.
+
+For more information on creating and using plugin, see [the plugins page].
+
+## Builders
+
+<Doc.Container>
+  <Doc.Builder name="manager" lambdaReturns="PluginManager">
+    Register a callback that constructs and returns an alternative implementation of the `PluginManager`
+    type, if needed.
+
+    <Doc.Arguments type="lambda">
+      <Doc.Arg name="paths" type="List<Path>">
+        Configured list of plugin paths, to be passed into the plugin manager's constructor.
+      </Doc.Arg>
+
+      <Doc.Arg name="enabled" type="Boolean">
+        Whether the plugin system is enabled, to be passed into the plugin manager's constructor.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+</Doc.Container>
+
+## Functions
+
+<Doc.Container>
+  <Doc.Function name="disable">
+    Prevent a plugin from loading on startup.
+
+    This won't prevent an extension from re-enabling the plugin later.
+
+    <Doc.Arguments>
+      <Doc.Arg name="id" type="String">
+        Plugin ID to disable.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+
+  <Doc.Function name="pluginPath">
+    Add a path that should be searched for plugins.
+
+    By default, `./plugins` will be searched.
+
+    <Doc.Arguments>
+      <Doc.Arg name="path" type={["Path", "String"]}>
+        Path to search for plugins.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+</Doc.Container>
+
+## Properties
+
+<Doc.Container>
+  <Doc.Property name="enabled" type="Boolean" default="true">
+    Whether the plugin system should be enabled.
+
+    Setting this to `false` will still create a plugin manager, to avoid breaking anything that depends on it.
+    It won't load any plugins on startup, but extensions can still do so via its API.
+  </Doc.Property>
+
+  <hr className="clear" />
+
+  The following properties are usually set using the functions and builders above.
+  However, for advanced use-cases, you can mutate them yourself.
+
+  <Doc.Property name="disabledPlugins" type="MutableList<String>" default="mutableListOf()">
+    List containing disabled plugin IDs. Normally mutated via the `disable(id)` function.
+
+    Plugins with these IDs won't be loaded on startup, but this won't prevent an extension from re-enabling the plugin
+    later.
+  </Doc.Property>
+
+  <Doc.Property name="pluginPaths" type="MutableList<Path>" default={`mutableListOf(Path("./plugins"))`}>
+    List of paths to search for plugins. Usually mutated via the `pluginPath(path)` function.
+  </Doc.Property>
+</Doc.Container>

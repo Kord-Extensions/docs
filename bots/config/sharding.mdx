@@ -1,8 +1,43 @@
 ---
+description: "Configure how your bot scales."
 sidebar_position: 16
 
 sidebar_custom_props:
   card_group: "Technical Settings"
+
+# TODO: Link to other docs
 ---
 
+import Link from "@docusaurus/Link";
+import * as Doc from "/src/components/Doc";
+
 # Sharding
+
+The `sharding { }` builder allows you to configure Kord's sharding settings — which, by default, will automatically
+shard your bot across multiple `Gateway` objects in a single process.
+
+```kt
+ExtensibleBot(TOKEN) {
+    // ...
+
+    sharding { recommended ->
+        Shards(recommended)
+    }
+}
+```
+
+This corresponds with
+[Kord's `sharding` function](https://dokka.kord.dev/core/dev.kord.core.builder.kord/-base-kord-builder/sharding.html).
+The default settings should be fine for most bots.
+
+<Doc.Container>
+  <Doc.Builder name="sharding" lambdaReturns="Shards">
+    Configure how your bot handles sharding.
+
+    <Doc.Arguments type="lambda">
+      <Doc.Arg name="recommended" type="Int">
+        The number of shards recommended by Discord.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+</Doc.Container>
