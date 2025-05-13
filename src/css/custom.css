@@ -323,6 +323,38 @@ hr.clear {
 	}
 }
 
+.text-default {
+	color: var(--ifm-font-color-base);
+}
+
+.text-primary {
+	color: var(--ifm-color-primary);
+}
+
+.text-secondary {
+	color: var(--ifm-color-secondary);
+}
+
+.text-danger {
+	color: var(--ifm-color-danger);
+}
+
+.text-info {
+	color: var(--ifm-color-info);
+}
+
+.text-success {
+	color: var(--ifm-color-success);
+}
+
+.text-warning {
+	color: var(--ifm-color-warning);
+}
+
+.code .text-secondary, code .text-secondary {
+	color: color-mix(in srgb, var(--ifm-font-color-base) 25%, transparent) !important;
+}
+
 .cardRow {
 	display: flex;
 	flex-wrap: wrap;

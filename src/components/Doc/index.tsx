@@ -154,8 +154,12 @@ export function Builder(props: PropsWithChildren<BuilderProps>): ReactNode {
 			<div className={clsx(styles.row)}>
 				<Tags>
 					<code className={
-						clsx(styles.head, "shadow--lw")}>{props.name}{props.hasArgs ? "(...)" : ""} {"{ ... }"
-					}</code>
+						clsx(styles.head, "shadow--lw")}>{props.name}
+						<span className="text-secondary">
+							{props.hasArgs ? "(...)" : ""}
+							{props.hasArgs ? " { ... }" : <>&nbsp;{"{ ... }"}</>}
+						</span>
+					</code>
 
 					{
 						props.receiver == undefined ? <></> :
@@ -195,6 +199,9 @@ type FunctionProps = {
 	receiver?: string,
 	returns?: string,
 	default?: boolean,
+	suspend?: boolean,
+	open?: boolean,
+	abstract?: boolean,
 } & CommonProps
 
 export function Function(props: PropsWithChildren<FunctionProps>): ReactNode {
@@ -202,7 +209,24 @@ export function Function(props: PropsWithChildren<FunctionProps>): ReactNode {
 		<div className={clsx(props.className, styles.col, styles.docBg, "doc-function")}>
 			<div className={clsx(styles.row)}>
 				<Tags>
-					<code className={clsx(styles.head, "shadow--lw")}>{props.name}(...)</code>
+					<code className={clsx(styles.head, "shadow--lw")}>
+						{
+							props.abstract !== true ? <></> :
+								<span className="text-info">abstract&nbsp;</span>
+						}
+
+						{
+							props.open !== true ? <></> :
+								<span className="text-info">open&nbsp;</span>
+						}
+
+						{
+							props.suspend !== true ? <></> :
+								<span className="text-info">suspend&nbsp;</span>
+						}
+
+						{props.name}<span className="text-secondary">(...)</span>
+					</code>
 
 					{
 						props.default !== true ? <></> :
@@ -240,6 +264,8 @@ export function Function(props: PropsWithChildren<FunctionProps>): ReactNode {
 type PropertyProps = {
 	name: string,
 	type: string,
+	abstract?: boolean,
+	open?: boolean,
 	default?: string,
 } & CommonProps
 
@@ -248,7 +274,19 @@ export function Property(props: PropsWithChildren<PropertyProps>): ReactNode {
 		<div className={clsx(props.className, styles.col, styles.docBg, "doc-property")}>
 			<div className={clsx(styles.row)}>
 				<Tags>
-					<code className={clsx(styles.head, "shadow--lw")}>{props.name}</code>
+					<code className={clsx(styles.head, "shadow--lw")}>
+						{
+							props.abstract !== true ? <></> :
+								<span className="text-info">abstract&nbsp;</span>
+						}
+
+						{
+							props.open !== true ? <></> :
+								<span className="text-info">open&nbsp;</span>
+						}
+
+						{props.name}
+					</code>
 
 					<Tag style="primary">
 						Type: <code className="shadow--lw">{props.type}</code>
