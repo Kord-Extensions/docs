@@ -1,0 +1,205 @@
+---
+sidebar_position: 6
+
+# TODO: Link to other docs
+# TODO: Move some properties/functions to other pages
+---
+
+import Link from "@docusaurus/Link";
+import * as Doc from "/src/components/Doc";
+
+# Extensions
+
+Extensions are your bot's building blocks, and Kord Extensions requires that you use them.
+Extensions represent specific units of functionality, grouping related commands and event handlers together.
+Your bot can load or unload extensions at runtime, they can provide APIs for other extensions to use,
+and plugins can bundle them together.
+
+Some examples of these extensions include:
+
+- A [help extension](#) implementing `HelpProvider`, containing all help-related commands and event handlers.
+- A [PluralKit extension](#) providing a PluralKit API wrapper, along with custom events and configuration commands.
+- An [anti-phishing extension](#) downloading and maintaining a database of known phishing domains and providing commands and event handlers that help with automatic moderation.
+
+## Structure
+
+All extensions must extend the `Extension` type.
+This type provides most of the backing logic for your extensions, and it also implements Kord Extensions' custom
+`KoinComponent`, giving you access to Koin's injection API.
+
+Your extensions must implement the following:
+
+<Doc.Container>
+  <Doc.Property name="name" type="string" abstract>
+    Short, unique, `lowered-kebab-case` extension name.
+    Kord Extensions uses this for logging and indexing.
+  </Doc.Property>
+
+  <Doc.Function name="setup" abstract suspend>
+    Called when Kord Extension creates and sets up your extension.
+    Use this to register your extension's [commands](#), [event handlers](#), and other functionality.
+
+    **Note:** Kord Extensions calls this before your bot connects to Discord, and its `Kord` instance won't be
+    available until after that.
+    If you need to access the Discord API to set up your extension, consider creating an event handler for
+    [Kord's `ReadyEvent`](https://dokka.kord.dev/core/dev.kord.core.event.gateway/-ready-event/index.html).
+  </Doc.Function>
+</Doc.Container>
+
+## Conventions
+
+While you can organise your extensions how you wish, we recommend you follow these conventions:
+
+- Place your extensions within a package named `extensions`, using a subpackage for extensions requiring multiple
+  files.
+- Create descriptive your extension class names and suffix them with `Extension` — for example,
+  `HelpExtension`, `PluralKitExtension`, etc.
+- Extension names should be obvious, written in `lowered-kebab-case`, and prefixed with your bot's or
+  organisation's name — for example, if you're working in an organisation named "Botson", name your log
+  rotation extension `botson-log-rotation`.
+- Extensions should encompass a single set of related functionality, providing APIs for other extensions where
+  needed.
+  Unless you're writing a very basic bot, don't create a single extension that does everything you need — split
+  it into distinct units.
+- We suggest laying out the contents of your extension class in this order:
+  1. Simple variables and constants.
+  2. Variables and constants with custom getters and setters.
+  3. Your `setup` function followed by any other functions your extension needs.
+     - We also recommend splitting public API and private functions into separate groups.
+  4. Your command argument classes, marked `inner`.
+     Alternatively, factor these out into separate files as appropriate.
+  5. Your modal form classes, marked `inner`.
+     Alternatively, factor these out into separate files as appropriate.
+
+A sample extension following these conventions might look like this:
+
+```kt
+package org.botson.extensions
+
+class LogRotationExtension : Extension() {
+    // Simple variables and constants
+    override val name: String = "botson-log-rotation"
+
+    val chatCommands: ChatCommandRegistry by inject()
+
+    // Setup function
+    override suspend fun setup() {
+        // ...
+    }
+
+    // Public API
+    suspend fun myAction() {
+        // ...
+    }
+
+    // Private functions
+    private suspend fun doAction() {
+        // ...
+    }
+
+    // Command argument classes
+    inner class CommandArgs : Arguments() {
+        // ...
+    }
+
+    // Modal form classes
+    inner class MyForm : ModalForm() {
+        // ...
+    }
+}
+```
+
+## Extension API
+
+The `Extension` type provides a fairly comprehensive API, which you'll find useful when building out your
+bot's functionality.
+
+For the sake of brevity, the lists below don't include any APIs documented on other pages.
+For more information, see the following:
+
+- [Checks](#)
+- [Commands](#)
+- [Events](#)
+- [Health Checks](#)
+- [Internationalisation (i18n)](#)
+- [Utilities](#)
+
+### Builders
+
+### Functions
+
+<Doc.Container>
+  <Doc.Function name="setup" open suspend>
+    Override this function to register commands, event handlers, and other functionality.
+  </Doc.Function>
+
+  <Doc.Function name="unload" open suspend>
+    Kord Extensions calls this whenever your extension is unloaded.
+
+    Override it to provide any cleanup or tear-down steps your extension requires.
+  </Doc.Function>
+</Doc.Container>
+
+### Properties
+
+<Doc.Container>
+  These properties are `open`, and you can modify them if needed.
+
+  <Doc.Property name="allowApplicationCommandInDMs" type="Boolean" default="true" open>
+    Whether this extension's application commands should be allowed in DMs by default.
+
+    May be overridden individually by each command.
+  </Doc.Property>
+
+  <Doc.Property name="intents" type="MutableSet<Intent>" default="emptySet()" open>
+    Intents this extension requires, according to the event handlers it registers.
+
+    You can override or modify this if your extension requires other intents that Kord Extensions can't detect
+    automatically.
+  </Doc.Property>
+
+  <hr className="clear" />
+
+  You shouldn't need to modify the following properties.
+  They're exposed as part of the Extension API.
+
+  <Doc.Property name="loaded" type="Boolean" open>
+    Whether this extension is loaded.
+  </Doc.Property>
+
+  <Doc.Property name="state" type="ExtensionState" open>
+    This extension's current loading state.
+    May be one of:
+
+    - `FAILED_LOADING`
+    - `FAILED_UNLOADING`
+    - `LOADED`
+    - `LOADING`
+    - `UNLOADED`
+    - `UNLOADING`
+  </Doc.Property>
+
+  <hr className="clear" />
+
+  The following properties provide quick access to other parts of your bot.
+
+  <Doc.Property name="applicationCommandRegistry" type="ApplicationCommandRegistry"></Doc.Property>
+  <Doc.Property name="bot" type="ExtensibleBot"></Doc.Property>
+  <Doc.Property name="chatCommandRegistry" type="ChatCommandRegistry"></Doc.Property>
+  <Doc.Property name="kord" type="Kord"></Doc.Property>
+
+  <hr className="clear" />
+
+  The following properties are meant for use by projects that extend the Extension system, and you won't need to touch
+  them in your bots.
+
+  <Doc.Property name="extraData" type="MutableMap<String, Any>" default="mutableMapOf()">
+    Extra data stored against the Extension object.
+  </Doc.Property>
+
+  <Doc.Property name="unloadCallbacks" type="MutableList<() -> Unit>" default="mutableListOf()">
+    Extra callbacks run when the extension is unloaded.
+
+    Can be used to clean up any data stored by libraries that extend the Extension system.
+  </Doc.Property>
+</Doc.Container>
