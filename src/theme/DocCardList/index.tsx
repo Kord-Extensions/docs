@@ -101,7 +101,9 @@ export default function DocCardList(props: CustomProps): ReactNode {
 		// Only create the "Others" section if the default group has items.
 		defaultGroup.length === 0 ? <></> :
 			<>
-				<h2 style={{marginTop: "1rem"}}>Others</h2>
+				<h2 style={{marginTop: "1rem"}}>
+					{groupedItems.size > 0 ? "Others" : "Pages"}
+				</h2>
 
 				<section className={clsx("row", className)}>
 					{defaultGroup.sort(alphaSortItem).map((item, index) => (
