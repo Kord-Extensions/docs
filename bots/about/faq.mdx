@@ -1,0 +1,150 @@
+---
+sidebar_position: 2
+sidebar_custom_props:
+  tags:
+  - wip
+
+# TODO: Link to other docs
+---
+
+# Frequently Asked Questions
+
+If you have a question, we might have answered it below — so do take a look!
+
+## Why don't message components work after my bot restarts?
+
+We designed the convenience functions available for working with components for short-lived interactions,
+and they aren't appropriate for long-lived components. Some examples of long-lived components include:
+
+- A role picker in a welcome channel.
+- Management buttons provided by a bot at the start of a new thread.
+- Moderation action pickers/buttons on logged infractions.
+
+You need to manually define these components and write your own event handlers to respond to their interactions.
+For more information, please check [the page on handling components yourself].
+
+## Why can't I respond to command/component interactions with a modal?
+
+Because Discord requires that your bot responds to all interactions within 15 seconds, Kord Extensions will respond to
+all expected interactions immediately, with an acknowledgement or deferred acknowledgement as appropriate.
+You must send a modal as the first response to an interaction and you can't send it later, meaning we have limitations
+on how you can define commands and components.
+
+### Potential Strategies
+
+You can pick from multiple implementation strategies, depending on what you need:
+
+- [The automatic approach] suitable for immediately responding with a modal without any conditional logic.
+- [The semi-automatic approach], suitable for conditionally responding to [manually defined components] or commands
+  from the Unsafe module.
+- [The manual approach], suitable for the rare situations requiring greater control.
+- [Without forms], which may be helpful in a few situations where Kord Extensions' abstractions may get in the way.
+
+### Notes
+
+When working with modals, it is important to keep a few things in mind:
+
+- Discord does not tell your bot when a user closes a modal without submitting it,
+  and it may take **up to 15 minutes** before your bot stops waiting for it.
+- Due to Discord limitations, a modal open for 15 minutes **may not be submitted**,
+  and your bot won't receive an event for this.
+- The Unsafe module is undocumented, though I intend to fix this eventually.
+- The Unsafe module doesn't include alternative component types,
+  as handling component interaction events manually isn't overly complex.
+
+## Should I worry about the GDPR when using the Sentry integration?
+
+Before answering this question, please note that **nobody working on Kord Extensions is a lawyer,
+this is not legal advice, and you should review any code you have any doubts about.**
+
+You need to consider several things when it comes to the GDPR:
+
+1. Read [Sentry's official guide to GDPR compliance](<https://sentry.io/trust/privacy/gdpr-best-practices/>).
+2. Use the `channel`, `guild`, `role` and `user` properties when adding data to breadcrumbs, exception and scope
+   captures, where possible.
+3. If you can't use the above properties, prefix the keys you're adding to the `data`, `hints` and `tags` maps with
+   the relevant type followed by `::` or `.` - for example, `user::target.name` or `channel.name`.
+   - The supported types are `argument`, `channel`, `guild`, `role` and `user`.
+   - Keys prefixed like `type::` will have the type and `::` removed when submitted to Sentry, but keys prefixed like
+     `type.` will retain the type and `.`.
+4. Configure your bot's Sentry extension appropriately, via the `defaultDataTypes {}` builder function.
+   This will allow you to prevent the previously mentioned types from being submitted to Sentry once provided as explained above.
+5. Optionally add any relevant transformers via the `dataTypeTransformer {}` builder function in your bot's Sentry
+   extension configuration.
+   This allows you to conditionally filter data-types based on the contents of the given Sentry capture object.
+
+Ultimately, it is important to be aware of the data you're handling, storing,and submitting to third-party services.
+While we've done our best to provide a useful and comprehensive API and configuration,
+**it is critical to review all third-party extensions.
+No Kord Extensions contributor can be held responsible for third-party code that provides data incorrectly or
+otherwise results in data being submitted to Sentry unexpectedly.**
+
+For more information on how to configure the Sentry integration, [please see the documentation].
+
+## Why does the KordEx Gradle plugin break dependency resolution?
+**(Or, how do I specify a JVM target newer than 13?)**
+
+As explained [in the documentation], the KordEx Gradle plugin will, by default,
+configure your project's JVM compatibility to match the JVM version KordEx is compatible with.
+If you need your project to be compatible with a later JVM version, you'll need to configure the plugin to match.
+
+For example, if your project is compatible with JVM version 21, you'd do this:
+
+```kt
+kordEx {
+    jvmTarget = 21
+}
+```
+
+## Why can't Gradle resolve the dependencies required by the KordEx plugin?
+
+Because the Gradle plugin requires a dependency present on the KordEx Maven repositories,
+simply adding the plugin to your build script isn't enough.
+You'll also need to set up a `pluginManagement` block in your `settings.gradle.kts` as follows:
+
+```kt
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+
+        maven("https://snapshots-repo.kordex.dev")
+        maven("https://releases-repo.kordex.dev")
+    }
+}
+```
+
+## How do I get rid of the /about command, or the copyright subcommand?
+
+The short answer is: **you don't**.
+
+Kord Extensions uses
+[the EUPL (European Union Public License)](<https://interoperable-europe.ec.europa.eu/collection/eupl>).
+We decided on this licence as it allows for the appropriate amount of freedom, while adequately protecting the project
+from exploitation — at least in the ways we feel are relevant.
+
+The EUPL requires that all distributions include an attribution block that provides a link to the project's source code.
+To quote:
+> The Licensee shall keep intact all copyright, patent or trademarks notices and all notices that refer to the Licence
+> and to the disclaimer of warranties. The Licensee must include a copy of such notices and a copy of the Licence
+> with every copy of the Work he/she distributes or communicates.
+> ...
+> When distributing or communicating copies of the Work, the Licensee will provide a machine-readable copy of the
+> Source Code or indicate a repository where this Source will be easily and freely available for as long as the
+> Licensee continues to distribute or communicate the Work.
+
+This is the main reason the `/about copyright` command exists — to make it easy for your projects to follow the terms
+of the EUPL.
+While it is true you can follow the licence in your own way by meeting its terms with some other implementation,
+we prefer that you avoid breaking the licence — accidentally or otherwise.
+Because of this, we don't provide any built-in way to disable the command.
+
+We've tried to take the least invasive approach possible, and many options are available that allow you to customise
+the command or add your own subcommands.
+For more information, [see this page](</bots/config/about>).
+
+Kord Extensions won't attempt to stop you from tampering with the relevant command or extension objects,
+but this may change if we notice users committing licence violations through any such attempt.
+
+For more information on our understanding of the EUPL and what we believe you should be doing, please
+[see this page](</about/licencing/eupl>).
