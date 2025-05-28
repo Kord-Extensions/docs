@@ -15,7 +15,7 @@ type CommonProps = {
 // region: Containers
 
 type ArgumentsProps = {
-	type?: "function" | "lambda"
+	type?: "function" | "lambda" | "type"
 } & CommonProps
 
 function toTitleCase(str: string): string {
@@ -34,10 +34,13 @@ export function Arguments(props: PropsWithChildren<ArgumentsProps>): ReactNode {
 			<div className={clsx(styles.headMed, "mb-0.5")}>
 				{
 					props.type === undefined ? "" : `${toTitleCase(props.type)}`
-				} Arguments
+				}
+				{
+					props.type === "type" ? " Parameters" : " Arguments"
+				}
 			</div>
 
-			{ props.children === undefined ?
+			{props.children === undefined ?
 				<></> :
 				<div className={clsx(styles.indent, styles.col)}>
 					{props.children}
@@ -63,21 +66,24 @@ export function Container(props: PropsWithChildren<ContainerProps>): ReactNode {
 
 type ArgProps = {
 	name: string,
-	type: string | string[],
+	type?: string | string[] | undefined,
 	supportsCollections?: boolean,
 	default?: string,
 } & CommonProps
 
 export function Arg(props: PropsWithChildren<ArgProps>): ReactNode {
-	let firstType: string | String = "unknown";
+	let firstType: string | String | undefined = undefined;
 
 	const hasMultipleTypes = !(
-		typeof(props.type) === "string" || props.type instanceof String || props.type.length === 1
+		props.type == undefined ||
+		typeof (props.type) === "string" ||
+		props.type instanceof String ||
+		props.type.length === 1
 	)
 
-	if (typeof(props.type) === "string" || props.type instanceof String) {
+	if (typeof (props.type) === "string" || props.type instanceof String) {
 		firstType = props.type;
-	} else {
+	} else if (props.type !== undefined) {
 		firstType = props.type[0]
 	}
 
@@ -87,39 +93,43 @@ export function Arg(props: PropsWithChildren<ArgProps>): ReactNode {
 				<Tags>
 					<code className={clsx(styles.headMed, "shadow--lw")}>{props.name}</code>
 
-					<Tag style="primary">
-						{typeof (props.type) === "string" ?
-							<>
-								<span>Type:</span> <code className="shadow--lw">{props.type}</code>
-							</> :
-							<>
-								<span>Types:</span>
+					{
+						props.type === undefined ? <></> :
 
-								{props.type.map((overload) => (
-									<code className="shadow--lw">
-										{overload}
-									</code>
-								))}
-
-								{props.supportsCollections === true ?
+							<Tag style="primary">
+								{typeof (props.type) === "string" ?
 									<>
-										{hasMultipleTypes ?
-											<>
-												&amp;
-												<code className="shadow--lw">
-													Collection&lt;T&gt;
-												</code>
-											</> :
+										<span>Type:</span> <code className="shadow--lw">{props.type}</code>
+									</> :
+									<>
+										<span>Types:</span>
+
+										{props.type.map((overload) => (
 											<code className="shadow--lw">
-												Collection&lt;{firstType}&gt;
+												{overload}
 											</code>
+										))}
+
+										{props.supportsCollections === true ?
+											<>
+												{hasMultipleTypes ?
+													<>
+														&amp;
+														<code className="shadow--lw">
+															Collection&lt;T&gt;
+														</code>
+													</> :
+													<code className="shadow--lw">
+														Collection&lt;{firstType}&gt;
+													</code>
+												}
+											</> :
+											<></>
 										}
-									</>:
-									<></>
+									</>
 								}
-							</>
-						}
-					</Tag>
+							</Tag>
+					}
 
 					{
 						props.default === undefined ? <></> :
@@ -130,7 +140,7 @@ export function Arg(props: PropsWithChildren<ArgProps>): ReactNode {
 				</Tags>
 			</div>
 
-			{ props.children === undefined ?
+			{props.children === undefined ?
 				<></> :
 				<div className={clsx(styles.indent)}>
 					{props.children}
@@ -184,7 +194,7 @@ export function Builder(props: PropsWithChildren<BuilderProps>): ReactNode {
 				</Tags>
 			</div>
 
-			{ props.children === undefined ?
+			{props.children === undefined ?
 				<></> :
 				<div className={clsx(styles.indent)}>
 					{props.children}
@@ -251,7 +261,7 @@ export function Function(props: PropsWithChildren<FunctionProps>): ReactNode {
 				</Tags>
 			</div>
 
-			{ props.children === undefined ?
+			{props.children === undefined ?
 				<></> :
 				<div className={clsx(styles.indent)}>
 					{props.children}
@@ -301,7 +311,54 @@ export function Property(props: PropsWithChildren<PropertyProps>): ReactNode {
 				</Tags>
 			</div>
 
-			{ props.children === undefined ?
+			{props.children === undefined ?
+				<></> :
+				<div className={clsx(styles.indent)}>
+					{props.children}
+				</div>
+			}
+		</div>
+	);
+}
+
+type TypeProps = {
+	name: string,
+	type: "abstract class" | "class" | "data class" | "enum class" | "interface" | "typealias",
+	sealed?: boolean,
+	open?: boolean,
+} & CommonProps
+
+export function Type(props: PropsWithChildren<TypeProps>): ReactNode {
+	return (
+		<div className={clsx(props.className, styles.col, styles.docBg, "doc-type")}>
+			<div className={clsx(styles.row)} style={{marginBottom: "0.25em"}}>
+				<Tags>
+					<code className={clsx(styles.headMed, "shadow--lw")}>
+						{
+							props.sealed === true ?
+								<span className="text-danger">
+									sealed&nbsp;
+								</span> :
+								<></>
+						}
+
+						{
+							props.open === true ?
+								<span className="text-success">
+									open&nbsp;
+								</span> :
+								<></>
+						}
+
+						<span className="text-info">
+							{props.type}
+						</span>
+						&nbsp;{props.name}
+					</code>
+				</Tags>
+			</div>
+
+			{props.children === undefined ?
 				<></> :
 				<div className={clsx(styles.indent)}>
 					{props.children}
