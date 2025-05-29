@@ -1,11 +1,186 @@
 ---
-description: "Learn about rich interactions."
-sidebar_position: 3
+description: "Learn about the rich interactions system."
+sidebar_position: 2
 sidebar_custom_props:
-  tags:
-  - wip
+  card_group: "Basics"
+  divider_below: true
+  icon: "fluent:sparkle-action-20-filled"
+
+# TODO: Link to other docs
+# TODO: Move some properties/functions to other pages
 ---
 
 import Link from "@docusaurus/Link";
+import * as Doc from "/src/components/Doc";
 
 # Interactions
+
+To give users richer ways to interact with your bot (when compared to sending messages), Discord provides a system
+known as [Interactions](https://discord.com/developers/docs/interactions/receiving-and-responding).
+Interactions allow for public and private responses to rich Interaction types.
+
+Interactions are an important concept to understand, as they will make up the bulk of user-triggered actions that your
+bot needs to deal with.
+
+## Interactions 101
+
+Your bot receives an Interaction in response to one of the following actions taken on Discord:
+
+- A user executes an [application command](#) belonging to your bot.
+- A user enters data into a slash [command argument](#) that supports auto-completion.
+- A user uses a [message component](#), such as an interactive button or a select menu.
+- A user submits a [modal form](#).
+
+When your bot receives an Interaction from Discord, Kord will fire an event that extends
+[`InteractionCreateEvent`](https://dokka.kord.dev/core/dev.kord.core.event.interaction/-interaction-create-event/index.html).
+These events provide an
+[`interaction`](https://dokka.kord.dev/core/dev.kord.core.entity.interaction/-interaction/index.html) property,
+letting your bot respond directly to the Interaction.
+
+:::note
+
+While it will sometimes be necessary to respond to these events directly, most bots will only need to use
+Kord Extensions' built-in abstractions.
+For more information on those abstractions, see the list above.
+
+:::
+
+When responding to an Interaction, your response may be one of the following main types:
+
+- Ephemeral, meaning only the user that triggered the Interaction can see the response.
+- Public, meaning everyone with access to the current channel can see the response, along with the user that
+triggered the Interaction and how they triggered it.
+
+## Unexpected Behaviours
+
+Internally, Discord's Interaction system is a bit of a mess.
+While it is technically possible to work with the Interaction API directly via the objects exposed by Kord Extensions
+(especially via [the Unsafe Module](#)),
+we recommend you use the core abstractions to avoid unexpected behaviour.
+
+Known instances of unexpected behaviour include:
+
+- Responding to an Interaction using the wrong response type, after you make an initial response.
+Even though the API technically allows you to respond using mixed response types,
+Discord will often ignore the type you provided if you aren't consistent.
+- Responding to an ephemeral Interaction after editing the initial response,
+which may result in a public response in some situations.
+
+Additionally, as the Interaction system internally uses Discord's webhook system,
+changes that Discord makes to how webhook messages work may also affect your Interactions.
+
+:::info Example
+
+For example, a Discord made a change in 2023 because slash command responses could mention `@everyone` when they
+otherwise shouldn't be able to.
+In this instance, Discord normalised webhook permissions to match those of the user who created the webhook.
+This fixed the problem with slash commands but limited the emoji that webhooks could send to those from guilds the
+webhook creator is present on.
+
+:::
+
+## Context Types
+
+Discord supports two main types of Interaction response — ephemeral and public.
+Ephemeral responses are only visible to the user that triggered the Interaction,
+whereas public responses are visible to everyone that has access to the current channel.
+
+Because Discord's Interactions can behave strangely if you don't use them how Discord expects,
+Kord Extensions provides specific context types that help you to avoid unexpected behaviours.
+These types expect you to work with one of the main Interaction types,
+warning you when you attempt to do something that might not do what you expect.
+
+These context types inherit the `InteractionContext` type, and are split by Interaction response types:
+
+- `EphemeralInteractionContext` for ephemeral Interaction responses.
+- `PublicInteractionContext` for public Interaction responses.
+
+These types provide an identical API surface,
+allowing you to respond to Interactions easily without accidentally specifying the wrong type of response.
+
+### Base Type
+
+<Doc.Container>
+  <Doc.Type name="InteractionContext" type="interface">
+    Interface representing an interaction context, exposing generic APIs to respond to the interaction.
+
+    <Doc.Arguments type="type">
+      <Doc.Arg name="ResponseBehavior" type="InteractionResponseBehavior">
+        Generic representing the relevant interaction response behaviour.
+      </Doc.Arg>
+
+      <Doc.Arg name="ResponseType" type="MessageInteractionResponse">
+        Generic representing the response type for the current interaction type.
+      </Doc.Arg>
+
+      <Doc.Arg name="FollowupType" type="FollowupMessage">
+        Generic representing the follow-up type for the current interaction type.
+      </Doc.Arg>
+
+      <Doc.Arg name="OppositeFollowupType" type="FollowupMessage">
+        Generic representing the opposite follow-up type for the current interaction type.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Type>
+</Doc.Container>
+
+### Builders
+
+<Doc.Container>
+  <Doc.Builder name="edit" receiver="InteractionResponseModifyBuilder" functionReturns="ResponseType">
+    Edit the first Interaction response, regardless of whether (or how many times) your bot has already responded.
+    May be called before a response has been sent, as the first Interaction response is always a "bot is thinking"
+    message until this function (or one of the response functions) is called.
+  </Doc.Builder>
+
+  <Doc.Builder name="respond" receiver="FollowupMessageCreateBuilder" functionReturns="FollowupType">
+    Respond to the Interaction with a follow-up matching the current Interaction response type.
+  </Doc.Builder>
+
+  <Doc.Builder name="respondOpposite" receiver="FollowupMessageCreateBuilder" functionReturns="OppositeFollowupType">
+    Respond to the Interaction with a follow-up **with the opposite type to the current Interaction response type**.
+    While Discord's API allows you to do this, **it will rarely do what you expect**.
+    This function is provided only for advanced use-cases that need it.
+  </Doc.Builder>
+
+  <hr className="clear" />
+
+  <Doc.Builder name="editingPaginator" receiver="PaginatorBuilder" functionReturns="BaseButtonPaginator">
+    Convenience function allowing you to easily create a button-based paginator by editing the first response to this
+    Interaction.
+
+    For more information, see [the paginator documentation](#).
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="defaultGroup" type="Key" default="EMPTY_KEY">
+        The default paginator group to use for pages.
+      </Doc.Arg>
+
+      <Doc.Arg name="locale" type="Locale?" default="null">
+        Locale to use for paginator translations.
+        Usually, this should be the locale resolved by the current interaction event.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <Doc.Builder name="respondingPaginator" receiver="PaginatorBuilder" functionReturns="BaseButtonPaginator">
+    Convenience function allowing you to easily create a **public** button-based paginator by responding with a
+    follow-up.
+
+    Discord makes it impossible to edit ephemeral follow-ups, so **this function always sends a public paginator.**
+    If you're in an ephemeral Interaction context and need an ephemeral paginator, use `editingPaginator` instead.
+
+    For more information, see [the paginator documentation](#).
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="defaultGroup" type="Key" default="EMPTY_KEY">
+        The default paginator group to use for pages.
+      </Doc.Arg>
+
+      <Doc.Arg name="locale" type="Locale?" default="null">
+        Locale to use for paginator translations.
+        Usually, this should be the locale resolved by the current interaction event.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+</Doc.Container>
