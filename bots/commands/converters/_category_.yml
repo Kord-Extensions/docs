@@ -1,0 +1,5 @@
+description: "Argument parsing, completion and validation."
+
+customProps:
+  card_group: "Converters"
+  icon: "fluent:convert-to-type-20-filled"
