@@ -14,9 +14,11 @@ import styles from './styles.module.css';
 
 function useCategoryItemsPlural() {
 	const {selectMessage} = usePluralForm();
+
 	return (count: number) =>
 		selectMessage(
 			count,
+
 			translate(
 				{
 					message: '1 item|{count} items',
@@ -24,20 +26,16 @@ function useCategoryItemsPlural() {
 					description:
 						'The default description for a category card in the generated index about how many items this category includes',
 				},
+
 				{count},
 			),
 		);
 }
 
-function CardContainer({
-	                       className,
-	                       href,
-	                       children,
-                       }: {
-	className?: string;
-	href: string;
-	children: ReactNode;
-}): ReactNode {
+function CardContainer(
+	{className, href, children,}:
+	{ className?: string; href: string; children: ReactNode; }
+): ReactNode {
 	return (
 		<Link
 			href={href}
@@ -47,19 +45,10 @@ function CardContainer({
 	);
 }
 
-function CardLayout({
-	                    className,
-	                    href,
-	                    icon,
-	                    title,
-	                    description,
-                    }: {
-	className?: string;
-	href: string;
-	icon: ReactNode;
-	title: string;
-	description?: string;
-}): ReactNode {
+function CardLayout(
+	{className, href, icon, title, description,}:
+	{ className?: string; href: string; icon: ReactNode; title: string; description?: string; }
+): ReactNode {
 	return (
 		<CardContainer href={href} className={className}>
 			<Heading
@@ -68,6 +57,7 @@ function CardLayout({
 				title={title}>
 				{icon} {title}
 			</Heading>
+
 			{description && (
 				<p
 					className={clsx('text--truncate', styles.cardDescription)}
@@ -133,8 +123,10 @@ export default function DocCard({item}: Props): ReactNode {
 	switch (item.type) {
 		case 'link':
 			return <CardLink item={item}/>;
+
 		case 'category':
 			return <CardCategory item={item}/>;
+
 		default:
 			throw new Error(`unknown item type ${JSON.stringify(item)}`);
 	}
