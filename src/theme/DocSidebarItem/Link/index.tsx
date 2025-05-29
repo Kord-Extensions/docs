@@ -35,17 +35,13 @@ function processTags({item}: Props): ReactNode {
 	</span>;
 }
 
-export default function DocSidebarItemLink({
-	                                           item,
-	                                           onItemClick,
-	                                           activePath,
-	                                           level,
-	                                           index,
-	                                           ...props
-                                           }: Props): ReactNode {
+export default function DocSidebarItemLink(
+	{item, onItemClick, activePath, level, index, ...props}: Props
+): ReactNode {
 	const {href, label, className, autoAddBaseUrl} = item;
 	const isActive = isActiveSidebarItem(item, activePath);
 	const isInternalLink = isInternalUrl(href);
+
 	return (
 		<li
 			className={clsx(
