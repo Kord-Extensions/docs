@@ -14,11 +14,7 @@ type TitleProps = {
 	title: string,
 } & CardProps
 
-type RowProps = {
-	columns?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12,
-} & CommonProps
-
-export function CardRow(props : PropsWithChildren<CommonProps>): ReactNode {
+export function CardRow(props: PropsWithChildren<CommonProps>): ReactNode {
 	return (
 		<section className={clsx("cardRow", props.className)}>
 			{props.children}
@@ -26,7 +22,7 @@ export function CardRow(props : PropsWithChildren<CommonProps>): ReactNode {
 	);
 }
 
-export function Card(props : PropsWithChildren<CardProps>): ReactNode {
+export function Card(props: PropsWithChildren<CardProps>): ReactNode {
 	return (
 		<article className={clsx("card", "margin-bottom--md", "shadow--lw", props.style, props.className)}>
 			{props.children}
@@ -34,8 +30,7 @@ export function Card(props : PropsWithChildren<CardProps>): ReactNode {
 	);
 }
 
-
-export function CardWithTitle(props : PropsWithChildren<TitleProps>): ReactNode {
+export function CardWithTitle(props: PropsWithChildren<TitleProps>): ReactNode {
 	return (
 		<Card className={props.className} style={props.style}>
 			<div className="card__header">

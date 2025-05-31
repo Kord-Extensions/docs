@@ -1,5 +1,6 @@
 :root {
 	--ifm-code-font-size: 95%;
+	--ifm-font-color-inverted: white;
 
 	--ifm-color-primary-darkest: #1121d6;
 	--ifm-color-primary-darker: #2a3bee;
@@ -42,6 +43,8 @@
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme='dark'] {
+	--ifm-font-color-inverted: black;
+
 	--ifm-color-primary-darkest: #1121d6;
 	--ifm-color-primary-darker: #2a3bee;
 	--ifm-color-primary-dark: #3949f0;
@@ -325,6 +328,10 @@ hr.clear {
 
 .text-default {
 	color: var(--ifm-font-color-base);
+}
+
+.text-inverted {
+	color: var(--ifm-font-color-inverted);
 }
 
 .text-primary {
