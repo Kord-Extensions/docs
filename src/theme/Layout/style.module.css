@@ -1,0 +1,24 @@
+.note {
+	position: fixed;
+	bottom: 1em;
+	right: 1em;
+
+	width: 20em;
+}
+
+.header {
+	font-weight: bold;
+}
+
+.grow {
+	flex-grow: 1;
+}
+
+.row {
+	display: flex;
+	flex-direction: row;
+}
+
+.bottom {
+	margin-top: 0.5em;
+}
