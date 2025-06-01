@@ -28,7 +28,10 @@ export default function LayoutWrapper(props: Props): ReactNode {
 							<span className={styles.header}>Work In Progress</span>
 							<div className={styles.grow}></div>
 
-							<a href="#" onClick={() => setIsOpen(false)}>
+							<a href="#" onClick={(e) => {
+								setIsOpen(false);
+								e.preventDefault()
+							}}>
 								<Icon icon="mdi:close-circle" height="1.5em" className="text-inverted" />
 							</a>
 						</div>
