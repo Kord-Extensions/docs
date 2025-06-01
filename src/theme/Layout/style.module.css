@@ -1,9 +1,19 @@
-.note {
+.full {
+	width: 100%;
+	pointer-events: none;
+	display: flex;
 	position: fixed;
 	bottom: 1em;
-	right: 1em;
+	z-index: 2000;
+}
 
+.note {
+	pointer-events: auto;
 	width: 20em;
+}
+
+.note * {
+	pointer-events: auto;
 }
 
 .header {

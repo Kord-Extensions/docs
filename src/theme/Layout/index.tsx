@@ -19,8 +19,11 @@ export default function LayoutWrapper(props: Props): ReactNode {
 			</Tooltip>
 
 			{
+				// TODO: Remove warning on release!
 				isOpen ?
-					<div className={clsx(styles.note, "card danger")}>
+					<div className={styles.full}>
+						<div className={styles.grow}></div>
+						<div className={clsx(styles.note, "card danger")}>
 						<div className={styles.row}>
 							<span className={styles.header}>Work In Progress</span>
 							<div className={styles.grow}></div>
@@ -40,6 +43,8 @@ export default function LayoutWrapper(props: Props): ReactNode {
 						<div className={styles.bottom}>
 							These problems will be fixed before release, but there's plenty of work left!
 						</div>
+					</div>
+						<div className={styles.grow}></div>
 					</div> :
 					<></>
 			}
