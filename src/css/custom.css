@@ -35,6 +35,18 @@
 
 	--tag-code-bg: rgba(255, 255, 255, 0.7);
 
+	/* color: color-mix(in srgb, var(--ifm-font-color-base) 25%, transparent) !important; */
+
+	--ifm-color-mix-card: #FFF;
+	--ifm-ratio-mix-card: 85%;
+
+	--ifm-color-primary-card: color-mix(in srgb, var(--ifm-color-primary) var(--ifm-ratio-mix-card), var(--ifm-color-mix-card));
+	--ifm-color-secondary-card: color-mix(in srgb, var(--ifm-color-secondary) var(--ifm-ratio-mix-card), var(--ifm-color-mix-card));
+	--ifm-color-danger-card: color-mix(in srgb, var(--ifm-color-danger) var(--ifm-ratio-mix-card), var(--ifm-color-mix-card));
+	--ifm-color-info-card: color-mix(in srgb, var(--ifm-color-info) var(--ifm-ratio-mix-card), var(--ifm-color-mix-card));
+	--ifm-color-success-card: color-mix(in srgb, var(--ifm-color-success) var(--ifm-ratio-mix-card), var(--ifm-color-mix-card));
+	--ifm-color-warning-card: color-mix(in srgb, var(--ifm-color-warning) var(--ifm-ratio-mix-card), var(--ifm-color-mix-card));
+
 	.footer--dark {
 		--ifm-footer-color: #FFF;
 		--ifm-footer-link-color: var(--ifm-color-primary);
@@ -43,6 +55,9 @@
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme='dark'] {
+	--ifm-color-mix-card: #000;
+	--ifm-ratio-mix-card: 85%;
+
 	--ifm-font-color-inverted: black;
 
 	--ifm-color-primary-darkest: #1121d6;
@@ -296,32 +311,32 @@ hr.clear {
 	}
 
 	&.primary {
-		background-color: var(--ifm-color-primary);
+		background-color: var(--ifm-color-primary-card);
 		color: var(--ifm-color-primary-text);
 	}
 
 	&.secondary {
-		background-color: var(--ifm-color-secondary);
+		background-color: var(--ifm-color-secondary-card);
 		color: var(--ifm-color-secondary-text);
 	}
 
 	&.danger {
-		background-color: var(--ifm-color-danger);
+		background-color: var(--ifm-color-danger-card);
 		color: var(--ifm-color-danger-text);
 	}
 
 	&.info {
-		background-color: var(--ifm-color-info);
+		background-color: var(--ifm-color-info-card);
 		color: var(--ifm-color-info-text);
 	}
 
 	&.success {
-		background-color: var(--ifm-color-success);
+		background-color: var(--ifm-color-success-card);
 		color: var(--ifm-color-success-text);
 	}
 
 	&.warning {
-		background-color: var(--ifm-color-warning);
+		background-color: var(--ifm-color-warning-card);
 		color: var(--ifm-color-warning-text);
 	}
 }

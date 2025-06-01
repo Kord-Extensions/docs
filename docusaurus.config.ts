@@ -103,6 +103,11 @@ const config: Config = {
 	themeConfig: {
 		image: "img/social-card.png",
 
+		colorMode: {
+			disableSwitch: false,
+			respectPrefersColorScheme: true,
+		},
+
 		algolia: {
 			appId: "M02COLVI8J",
 			apiKey: "588814eabdec644a7039452755b4b621",
