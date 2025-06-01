@@ -1,6 +1,8 @@
 import {PropsWithChildren, ReactNode} from "react";
 import clsx from "clsx";
 import styles from "./styles.module.css";
+import {Icon} from '@iconify/react';
+import { Tooltip } from 'react-tooltip'
 
 import {Tag, Tags} from "../Tags";
 
@@ -8,6 +10,14 @@ import {Tag, Tags} from "../Tags";
 
 type CommonProps = {
 	className?: string | null,
+}
+
+function Internal(): ReactNode {
+	return (
+		<div style={{display: "flex", alignItems: "center"}} data-tooltip-id="internal-api-tooltip">
+			<Icon icon="fluent:warning-20-filled" height="2.5em" className="text-warning"></Icon>
+		</div>
+	)
 }
 
 // endregion
@@ -69,6 +79,7 @@ type ArgProps = {
 	type?: string | string[] | undefined,
 	supportsCollections?: boolean,
 	default?: string,
+	internal?: boolean,
 } & CommonProps
 
 export function Arg(props: PropsWithChildren<ArgProps>): ReactNode {
@@ -91,6 +102,8 @@ export function Arg(props: PropsWithChildren<ArgProps>): ReactNode {
 		<div className={clsx(props.className, styles.arg, "doc-argument")}>
 			<div className={clsx(styles.row)} style={{marginBottom: "0.25em"}}>
 				<Tags>
+					{props.internal ? <Internal /> : <></>}
+
 					<code className={clsx(styles.headMed, "shadow--lw")}>{props.name}</code>
 
 					{
@@ -156,6 +169,7 @@ type BuilderProps = {
 	functionReturns?: string,
 	lambdaReturns?: string,
 	receiver?: string,
+	internal?: boolean,
 } & CommonProps
 
 export function Builder(props: PropsWithChildren<BuilderProps>): ReactNode {
@@ -163,6 +177,8 @@ export function Builder(props: PropsWithChildren<BuilderProps>): ReactNode {
 		<div className={clsx(props.className, styles.col, styles.docBg, "doc-builder")}>
 			<div className={clsx(styles.row)}>
 				<Tags>
+					{props.internal ? <Internal /> : <></>}
+
 					<code className={
 						clsx(styles.head, "shadow--lw")}>{props.name}
 						<span className="text-secondary">
@@ -212,6 +228,7 @@ type FunctionProps = {
 	suspend?: boolean,
 	open?: boolean,
 	abstract?: boolean,
+	internal?: boolean,
 } & CommonProps
 
 export function Function(props: PropsWithChildren<FunctionProps>): ReactNode {
@@ -219,6 +236,8 @@ export function Function(props: PropsWithChildren<FunctionProps>): ReactNode {
 		<div className={clsx(props.className, styles.col, styles.docBg, "doc-function")}>
 			<div className={clsx(styles.row)}>
 				<Tags>
+					{props.internal ? <Internal /> : <></>}
+
 					<code className={clsx(styles.head, "shadow--lw")}>
 						{
 							props.abstract !== true ? <></> :
@@ -277,6 +296,7 @@ type PropertyProps = {
 	abstract?: boolean,
 	open?: boolean,
 	default?: string,
+	internal?: boolean,
 } & CommonProps
 
 export function Property(props: PropsWithChildren<PropertyProps>): ReactNode {
@@ -284,6 +304,8 @@ export function Property(props: PropsWithChildren<PropertyProps>): ReactNode {
 		<div className={clsx(props.className, styles.col, styles.docBg, "doc-property")}>
 			<div className={clsx(styles.row)}>
 				<Tags>
+					{props.internal ? <Internal /> : <></>}
+
 					<code className={clsx(styles.head, "shadow--lw")}>
 						{
 							props.abstract !== true ? <></> :
@@ -326,6 +348,7 @@ type TypeProps = {
 	type: "abstract class" | "class" | "data class" | "enum class" | "interface" | "typealias",
 	sealed?: boolean,
 	open?: boolean,
+	internal?: boolean,
 } & CommonProps
 
 export function Type(props: PropsWithChildren<TypeProps>): ReactNode {
@@ -333,7 +356,9 @@ export function Type(props: PropsWithChildren<TypeProps>): ReactNode {
 		<div className={clsx(props.className, styles.col, styles.docBg, "doc-type")}>
 			<div className={clsx(styles.row)} style={{marginBottom: "0.25em"}}>
 				<Tags>
-					<code className={clsx(styles.headMed, "shadow--lw")}>
+					{props.internal ? <Internal /> : <></>}
+
+					<code className={clsx(styles.head, "shadow--lw")}>
 						{
 							props.sealed === true ?
 								<span className="text-danger">

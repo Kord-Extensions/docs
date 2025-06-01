@@ -5,7 +5,111 @@ sidebar_position: 1
 sidebar_custom_props:
   card_group: "Arguments"
   icon: "fluent:virtual-network-20-filled"
+
+# TODO: Link to other docs
 ---
+
+import * as Doc from "/src/components/Doc";
 
 # Arguments
 
+:::note Command Types
+
+While most command types support arguments, [Context Commands](#) don't.
+If you need to collect anything from users who run these commands, you'll need to use [Modals](#) instead.
+
+:::
+
+Arguments represent the parameters users supply to your commands.
+You can define arguments by creating a class extending the `Arguments` type, containing properties created with
+converter builder functions:
+
+```kt
+class MyArguments : Arguments() {
+    val target by user {
+        name = "target"
+        description = "Target user"
+    }
+}
+```
+
+Once you've created an arguments class, provide it to your commands' builder functions.
+This will make the parsed arguments available via the `arguments` property in your command's `action { }` block:
+
+```kt
+publicSlashCommand(arguments = ::MyArguments) {
+    name = "my-command"
+
+    action {
+        respond {
+            content = "Target user: ${arguments.user.mention}"
+        }
+    }
+}
+```
+
+## Arguments API
+
+The `Arguments` type exposes a few settings you can use to configure how Kord Extensions should parse your commands'
+arguments, among other things.
+
+<Doc.Container>
+  <Doc.Type name="Arguments" type="class" open>
+    Base class you should extend to represent a set of command arguments.
+
+    <Doc.Property name="parseForAutocomplete" type="Boolean" default="false" open>
+      Whether to attempt to parse previous arguments when handling an autocompletion event.
+
+      When working with [Slash Commands](#) and Discord's autocomplete system, setting this to `true` allows your
+      `autoComplete { }` blocks to retrieve the value for the other arguments, if the user provides them.
+
+      Some converter types provide a default `autoComplete { }` block, and you'll need to set this property to `true`
+      when using them.
+    </Doc.Property>
+  </Doc.Type>
+
+  <p>
+    The following APIs are intended for internal use, but may be helpful if you're developing your own related
+    libraries.
+  </p>
+
+  <Doc.Function name="arg" returns="Converter<R>" open internal>
+    Adds a converter to this class' list of arguments, wrapping it in an `Argument` object.
+    Used internally by the converter builder functions.
+
+    <Doc.Arguments type="type">
+      <Doc.Arg name="R" type="Any">
+        The data type the given converter returns.
+      </Doc.Arg>
+    </Doc.Arguments>
+
+    <Doc.Arguments>
+      <Doc.Arg name="displayName" type="Key">
+        Display name shown on Discord, used in help messages, and the key for keyword arguments
+        in [Chat Commands](#).
+      </Doc.Arg>
+
+      <Doc.Arg name="description" type="Key">
+        Description shown on Discord, and used in help messages.
+      </Doc.Arg>
+
+      <Doc.Arg name="converter" type="Converter<R>">
+        Converter object to add.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+
+  <Doc.Property name="args" type="MutableList<Argument>" default="mutableListOf()" internal>
+    List of wrapped converter objects representing command arguments, stored in the order they were defined.
+  </Doc.Property>
+
+  <Doc.Function name="validate" open internal>
+    Validation function called by Kord Extensions, ensuring your arguments classes make sense.
+
+    <Doc.Arguments>
+      <Doc.Arg name="locale" type="Locale">
+        Resolved locale for the current command execution.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+</Doc.Container>
