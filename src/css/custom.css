@@ -94,6 +94,16 @@
 	--tag-code-bg: rgba(0, 0, 0, 0.3);
 }
 
+.react-tooltip, .react-tooltip-arrow {
+	background: var(--ifm-font-color-base) !important;
+	color: var(--ifm-font-color-inverted) !important;
+	z-index: 1000;
+}
+
+.react-tooltip {
+	border-radius: 0.5em !important;
+}
+
 .tabs-container > ul > li {
 	background-color: var(--docusaurus-tab-container-bg);
 

@@ -5,7 +5,7 @@
 
 	margin-bottom: var(--ifm-paragraph-margin-bottom);
 
-	> .docBg, > hr, > p {
+	> .docBg, > hr, > p, p.docBg {
 		border-radius: 0.5em;
 		padding: 0.5em;
 
@@ -21,6 +21,13 @@
 	> p {
 		background-color: color-mix(in srgb, var(--ifm-color-secondary) 10%, transparent) !important;
 		margin: 0;
+	}
+
+	p.docBg {
+		background-color: color-mix(in srgb, var(--ifm-font-color-inverted) 50%, transparent) !important;
+		margin-top: 0.5em !important;
+		margin-bottom: 1em !important;
+		padding: 0.5em;
 	}
 
 	> hr {

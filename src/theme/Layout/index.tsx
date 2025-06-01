@@ -5,40 +5,19 @@ import type {WrapperProps} from "@docusaurus/types";
 import styles from "./style.module.css"
 import clsx from "clsx";
 import {Icon} from "@iconify/react"; // Import the entire Iconify library.
+import { Tooltip } from 'react-tooltip'
 
 type Props = WrapperProps<typeof LayoutType>;
-
-class Note extends React.Component<any> {
-
-	render() {
-		return (
-			<>
-				{
-					this.state.isOpen ?
-						<div className={clsx(styles.note, "card danger")}>
-							<div>
-								<span className={styles.header}>Early Version</span>
-								<a href="#" onClick={close}>
-									<Icon icon="mdi:close-circle"/>
-								</a>
-							</div>
-
-							<div>
-								Content
-							</div>
-						</div>
-						: <></>
-				}
-			</>
-		);
-	}
-}
 
 export default function LayoutWrapper(props: Props): ReactNode {
 	const [isOpen, setIsOpen] = useState(true);
 
 	return (
 		<>
+			<Tooltip id="internal-api-tooltip" place="bottom" className="react-tooltip" classNameArrow="react-tooltip-arrow" opacity="1">
+				Internal API - may change without warning!
+			</Tooltip>
+
 			{
 				isOpen ?
 					<div className={clsx(styles.note, "card danger")}>
