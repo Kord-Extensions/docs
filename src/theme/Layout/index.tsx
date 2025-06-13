@@ -23,7 +23,7 @@ export default function LayoutWrapper(props: Props): ReactNode {
 				// TODO: Remove warning on release!
 				isOpen ?
 					<div className={styles.full}>
-						<div className={clsx(styles.grow, "card info no-border", styles.note)}>
+						<div className={clsx(styles.grow, "card warning no-border", styles.note)}>
 							<div className={styles.row}>
 								<span className={styles.header}>Work In Progress</span>
 								<div className={styles.grow}></div>

@@ -8,7 +8,7 @@
 }
 
 .note {
-	background-color: color-mix(in srgb, var(--ifm-color-info-card) 85%, transparent) !important;
+	background-color: color-mix(in srgb, var(--ifm-color-warning-card) 85%, transparent) !important;
 	border-bottom-left-radius: 0;
 	border-bottom-right-radius: 0;
 	pointer-events: auto;
