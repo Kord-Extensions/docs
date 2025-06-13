@@ -3,17 +3,19 @@
 	pointer-events: none;
 	display: flex;
 	position: fixed;
-	bottom: 1em;
+	bottom: 0;
 	z-index: 2000;
 }
 
 .note {
+	background-color: color-mix(in srgb, var(--ifm-color-info-card) 85%, transparent) !important;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
 	pointer-events: auto;
-	width: 20em;
-}
 
-.note * {
-	pointer-events: auto;
+	* {
+		pointer-events: auto;
+	}
 }
 
 .header {
