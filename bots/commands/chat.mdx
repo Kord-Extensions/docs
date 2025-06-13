@@ -8,3 +8,81 @@ sidebar_custom_props:
 ---
 
 # Chat Commands
+
+## Warnings and Notes
+
+Before getting started, please make sure you read the below notices!
+
+:::warning Privileged intents required!
+
+Chat commands require the "message content" privileged intent.
+While chat commands were traditionally how users interacted with bots on Discord,
+**this is no longer what Discord recommends or encourages for your bots.**
+
+If your bot is on 75 or more guilds (or you plan to grow it to that point),
+you should consider using
+[Application Commands](#) instead of chat commands as much as possible.
+
+Your bot will need to go through a verification process (which starts at 75 guilds) before it can join over 100 guilds.
+Discord **will not verify bots** that are using the "message content" privileged intent without a good reason.
+
+The only situations that we advise you to use chat commands for are
+**those where the other types of commands provide an objectively worse user experience.**
+This largely only applies to commands that need to take a large amount of text as input (if modals do not suffice).
+
+Additionally, it is worth noting that users will expect your bots to support
+[Application Commands](#) as a default mode of interaction.
+
+:::
+
+:::info Maintenance Status
+
+Due to the situation explained in the above warning,
+**Kord Extensions' users and developers don't regularly use or test chat commands.**
+As a result, there may be small bugs or formatting problems that we haven't noticed, or had the time and energy to fix.
+
+If you run into any problems with the chat commands framework or its help extension,
+please let us know or submit a Pull Request to address the issue.
+
+:::
+
+---
+
+## Introduction
+
+Chat commands are a fairly simple concept.
+When a user sends a message starting with a command prefix (or bot mention),
+the command name and arguments, Kord Extensions can process it accordingly.
+
+Call the builder functions within your `setup` function when you're registering commands before the bot starts up.
+You can also register commands later in the bot's lifecycle by calling the same functions.
+
+Chat commands support command arguments, as explained on [the arguments page](#).
+However, unlike the other command types, they do not support [Modals](#).
+
+As Discord recommends against using chat commands, you must enable them before your bot will respond to them.
+For more information, see [the configuration documentation](#).
+
+```kt
+chatCommand(::MyArguments) {
+    name = Translations.Commands.Ping.name
+    description = Translations.Commands.Ping.description
+    aliasKey = Translations.Commands.Ping.aliases
+
+    check { hasPermission(Permission.MentionEveryone) }
+
+    action {
+        message.respond(
+            "Hey, ${arguments.user.mention}! Get pinged!"
+        )
+    }
+}
+```
+
+## Extension API
+
+## Standalone Commands
+
+## Grouped Commands
+
+## Context API

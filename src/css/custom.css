@@ -320,6 +320,10 @@ hr.clear {
 		margin: 0;
 	}
 
+	&.no-border {
+		border: none;
+	}
+
 	&.primary {
 		background-color: var(--ifm-color-primary-card);
 		color: var(--ifm-color-primary-text);

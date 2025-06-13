@@ -5,7 +5,7 @@ import type {WrapperProps} from "@docusaurus/types";
 import styles from "./style.module.css"
 import clsx from "clsx";
 import {Icon} from "@iconify/react"; // Import the entire Iconify library.
-import { Tooltip } from 'react-tooltip'
+import {Tooltip} from "react-tooltip"
 
 type Props = WrapperProps<typeof LayoutType>;
 
@@ -14,7 +14,8 @@ export default function LayoutWrapper(props: Props): ReactNode {
 
 	return (
 		<>
-			<Tooltip id="internal-api-tooltip" place="bottom" className="react-tooltip" classNameArrow="react-tooltip-arrow" opacity="1">
+			<Tooltip id="internal-api-tooltip" place="bottom" className="react-tooltip"
+			         classNameArrow="react-tooltip-arrow" opacity="1">
 				Internal API - may change without warning!
 			</Tooltip>
 
@@ -22,32 +23,25 @@ export default function LayoutWrapper(props: Props): ReactNode {
 				// TODO: Remove warning on release!
 				isOpen ?
 					<div className={styles.full}>
-						<div className={styles.grow}></div>
-						<div className={clsx(styles.note, "card danger")}>
-						<div className={styles.row}>
-							<span className={styles.header}>Work In Progress</span>
-							<div className={styles.grow}></div>
+						<div className={clsx(styles.grow, "card info no-border", styles.note)}>
+							<div className={styles.row}>
+								<span className={styles.header}>Work In Progress</span>
+								<div className={styles.grow}></div>
 
-							<a href="#" onClick={(e) => {
-								setIsOpen(false);
-								e.preventDefault()
-							}}>
-								<Icon icon="mdi:close-circle" height="1.5em" className="text-inverted" />
-							</a>
+								<a href="#" onClick={(e) => {
+									setIsOpen(false);
+									e.preventDefault()
+								}}>
+									<Icon icon="mdi:close-circle" height="1.5em" className="text-inverted"/>
+								</a>
+							</div>
+
+							<div>
+								This documentation is in beta. It's missing lots of content, search is
+								broken, and many links go nowhere.
+								These problems will be fixed before release, but there's plenty of work left!
+							</div>
 						</div>
-
-						<div>
-							This documentation is in beta. It's missing lots of content, search is
-							broken, and many links go nowhere.
-						</div>
-
-						<div></div>
-
-						<div className={styles.bottom}>
-							These problems will be fixed before release, but there's plenty of work left!
-						</div>
-					</div>
-						<div className={styles.grow}></div>
 					</div> :
 					<></>
 			}
