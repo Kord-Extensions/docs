@@ -5,7 +5,11 @@ sidebar_position: 4
 sidebar_custom_props:
   card_group: "Commands"
   icon: "fluent:chat-warning-20-filled"
+
+# TODO: Link to other docs
 ---
+
+import * as Doc from "/src/components/Doc";
 
 # Chat Commands
 
@@ -79,10 +83,356 @@ chatCommand(::MyArguments) {
 }
 ```
 
+## Argument Parsing
+
 ## Extension API
+
+The following APIs are available on the `Extension` type,
+which you can use to define your chat commands and modify their behaviour.
+
+<Doc.Container>
+  <Doc.Builder name="chatCommand" receiver="ChatCommand" functionReturns="ChatGroup" hasArgs>
+    Use this builder to register a standalone chat command, as explained in the sections below.
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="arguments" type="() -> T">
+        Optional callable returning an instance of your `Arguments` subtype, as explained on [the arguments page](#).
+        You'll usually want to pass a constructor here.
+      </Doc.Arg>
+    </Doc.Arguments>
+
+    <Doc.Arguments type="type">
+      <Doc.Arg name="T" type="Arguments">
+        Optional generic type referring to your `Arguments` subtype, as explained on [the arguments page](#).
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <Doc.Builder name="chatGroupCommand" receiver="ChatGroupCommand" functionReturns="ChatGroupCommand" hasArgs>
+    Use this builder to register a grouped chat command, as explained in the sections below.
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="arguments" type="() -> T">
+        Optional callable returning an instance of your `Arguments` subtype, as explained on [the arguments page](#).
+        You'll usually want to pass a constructor here.
+      </Doc.Arg>
+    </Doc.Arguments>
+
+    <Doc.Arguments type="type">
+      <Doc.Arg name="T" type="Arguments">
+        Optional generic type referring to your `Arguments` subtype, as explained on [the arguments page](#).
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <hr className="clear" />
+
+  <Doc.Builder name="chatCommandCheck" receiver="CheckContext<MessageCreateEvent>">
+    Register a [check](#) that must pass for any of the chat commands in this extension to run.
+  </Doc.Builder>
+</Doc.Container>
 
 ## Standalone Commands
 
+Standalone commands are the simplest type of chat command, defined using the `chatCommand` builder function.
+This builder is a receiver function against the `ChatCommand` type, providing APIs you can use to configure
+your command and its metadata.
+
+At minimum, a standalone command must have a `name` and `action` defined.
+
+The following APIs are available for use when writing a chat command,
+along with those provided by [the base `Command` type](#).
+
+### Builders
+
+<Doc.Container>
+  <Doc.Builder name="action" receiver="ChatCommandContext" open>
+    Register your command's action block, defining what it will do when executed.
+
+    See [the context API](#context-api) section for more information on what you can do here.
+  </Doc.Builder>
+
+  <Doc.Builder name="check" receiver="CheckContext<MessageCreateEvent>" open>
+    Register a [check] which mass pass for the command to execute when invoked.
+  </Doc.Builder>
+</Doc.Container>
+
+### Functions
+
+We consider all plain functions defined in the chat command API internal, but you may find some of them useful for a
+small handful of advanced use-cases.
+
+<Doc.Container internal>
+  <Doc.Function name="call" open internal>
+    Attempt to execute this command based on the provided arguments.
+    This function runs the defined checks by default, which will prevent command execution if they fail.
+
+    This function is normally called by the `ChatCommandRegistry` when someone invokes a chat command on Discord.
+
+    <Doc.Arguments>
+      <Doc.Arg name="event" type="MessageCreateEvent">
+        Message creation event triggering this command execution.
+      </Doc.Arg>
+
+      <Doc.Arg name="commandName" type="String">
+        Name used to invoke this command.
+        This is specifically the text that was sent to invoke this command by a Discord user, and not a translation key.
+      </Doc.Arg>
+
+      <Doc.Arg name="parser" type="StringParser">
+        The parser used to parse this command's arguments.
+      </Doc.Arg>
+
+      <Doc.Arg name="argString" type="String">
+        String containing this command invocation's unparsed arguments.
+      </Doc.Arg>
+
+      <Doc.Arg name="skipChecks" type="Boolean" default="false">
+        Whether to skip running the command's registered checks.
+      </Doc.Arg>
+
+      <Doc.Arg name="cache" type="MutableMap<String, Any>" default="mutableMapOf()">
+        Map representing a data cache shared with the command's registered checks, and made available in the command
+        context.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+
+  <Doc.Function name="getSignature" returns="String" open internal>
+    Retrieve the command's translated signature, which explains how users should structure the arguments this command
+    takes.
+    Usually used by the `help` command in your bot's [help extension](#).
+
+    Command signatures are usually generated by the chat command parser, but you can provide one manually when you
+    define your command.
+
+    This function's output is cached.
+
+    <Doc.Arguments>
+      <Doc.Arg name="locale" type="Locale">
+        Locale used to translate the command name for generated signatures, or the entire signature if provided.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+
+  <Doc.Function name="getTranslatedName" returns="String" open internal>
+    Retrieve the command's translated name.
+
+    This function's output is cached.
+
+    <Doc.Arguments>
+      <Doc.Arg name="locale" type="Locale">
+        Locale used to translate the command name.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+
+  <Doc.Function name="getTranslatedAliases" returns="Set<String>" open internal>
+    Get a set of the command's translated aliases.
+
+    This function's output is cached.
+
+    <Doc.Arguments>
+      <Doc.Arg name="locale" type="Locale">
+        Locale used to translate the command's aliases.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+
+  <Doc.Function name="runChecks" returns="Boolean" open internal>
+    Run this command's registered checks, returning `true` if they all pass, or `false` if any fail.
+
+    <Doc.Arguments>
+      <Doc.Arg name="event" type="MessageCreateEvent">
+        Message creation event triggering this command execution.
+      </Doc.Arg>
+
+      <Doc.Arg name="sendMessage" type="Boolean" default="true">
+        Whether to send any failure messages generated by the checks in response to the command invocation.
+      </Doc.Arg>
+
+      <Doc.Arg name="cache" type="MutableMap<String, Any>" default="mutableMapOf()">
+        Map representing a data cache passed to each check, and made available in the command context.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+
+  <Doc.Function name="validate" open internal>
+    Validation function that throws an `InvalidCommandException` if there are any problems.
+  </Doc.Function>
+</Doc.Container>
+
+### Properties
+
+<Doc.Container>
+  <Doc.Property name="aliasKey" type="Key?" default="null" open>
+    Translation key that resolves to a comma-separated list of command aliases.
+
+    If a locale shouldn't contain any aliases, you set it to the universal "empty translation string", represented
+    by three "empty set" characters (`∅∅∅`).
+  </Doc.Property>
+
+  <Doc.Property name="allowKeywordArguments" type="Boolean" default="true" open>
+    Whether to allow users to specify keyword-style arguments, as specified above.
+  </Doc.Property>
+
+  <Doc.Property name="description" type="Key" default="CoreTranslations.Commands.defaultDescription" open>
+    This command's description, used by the `help` command in your [help extension](#), and shown in argument parsing
+    errors.
+
+    Defaults to `No description provided`.
+    We strongly recommend providing your own description!
+  </Doc.Property>
+
+  <Doc.Property name="enabled" type="Boolean" default="true" open>
+    Whether this command can be executed.
+    Set this to `false` to disable this command, which will hide it from the `help` command and prevent users from
+    executing it.
+
+    You can set this property at runtime, by storing the return value of your `chatCommand(...) { }` builder invocation.
+  </Doc.Property>
+
+  <Doc.Property name="hidden" type="Boolean" default="false" open>
+    Whether to hide this command from the `help` command's output.
+
+    **Users can still run hidden commands, so remember to lock them down with permissions checks as appropriate.**
+  </Doc.Property>
+
+  <Doc.Property name="localeFallback" type="Boolean" default="false" open>
+    Whether to fall back to your bot's [configured default locale](#) when resolving command names for execution.
+
+    Enabling this allows users to execute your command by providing its name or aliases in your bot's default locale,
+    as well as those provided in the locale returned by your bot's [configured locale resolvers](#).
+  </Doc.Property>
+
+  <Doc.Property name="signature" type="Key?" default="null" open>
+    Translation key that resolves to a custom signature representing how users should supply command arguments.
+
+    By default, the `ChatCommandParser` will generate a signature suitable for most commands:
+
+    - Argument names will be translated into the user's locale as appropriate.
+    - Required arguments will be wrapped with <code>&lt;&gt;</code> - e.g. <code>&lt;name&gt;</code>
+    - Optional arguments will be wrapped with `[]` - e.g. `[name]`
+    - Converters set to show argument types will:
+      - Append the type to the name with a colon - e.g. `[name: type]`
+      - Append any default value with an equals sign - e.g. `[name: type=default]`
+    - List-based converters will append an ellipsis to show that multiple arguments are accepted - for example:
+      - `[name...]`
+      - `[name: type=default...]`
+
+    Provide this property to override the generated signature and provide your own.
+  </Doc.Property>
+
+  <Doc.Property name="registry" type="ChatCommandRegistry">
+    Easy access to the current `ChatCommandRegistry` object.
+  </Doc.Property>
+</Doc.Container>
+
+<Doc.Container internal>
+  <Doc.Property name="aliasTranslationCache" type="MutableMap<Locale, Set<String>>" default="mutableMapOf()" open internal>
+    Map representing the alias translation cache, used to store translated aliases so they don't have to be
+    re-translated all the time.
+  </Doc.Property>
+
+  <Doc.Property name="arguments" type="(() -> T)?" default="null" open internal>
+    Optional callback returning the `Arguments` subtype this command uses to parse and store arguments.
+  </Doc.Property>
+
+  <Doc.Property name="body" type="ChatCommandContext.() -> Unit" open internal>
+    Your command's body, set using the `action { }` builder.
+  </Doc.Property>
+
+  <Doc.Property name="checkList" type="MutableList<ChatCommandCheck>" default="mutableListOf()" open internal>
+    List of this command's registered checks.
+  </Doc.Property>
+
+  <Doc.Property name="signatureCache" type="MutableMap<Locale, String>" default="mutableMapOf()" open internal>
+    Map representing the signature translation cache, used to store translated signatures so they don't have to be
+    re-translated all the time.
+  </Doc.Property>
+</Doc.Container>
+
 ## Grouped Commands
+
+Grouped commands work just like standalone commands, but they let you nest other commands within them, creating a tree
+of subcommands as deep as you need.
+They're defined using the `chatGroupCommand` builder, a receiver function against the `ChatGroupCommand` type, which
+itself extends the `ChatCommand` type.
+
+At minimum, a grouped command must have a `name` defined.
+
+Grouped commands expose the same API provided by standalone commands, aside from a few additions and changes.
+
+### Behaviour
+
+When compared to standalone commands, grouped commands provide a slightly different execution flow.
+
+When executed, these commands check the first argument provided against their registered subcommands, passing the rest
+of the arguments to the matching subcommand if one exists.
+If no matching subcommand exists, the grouped command will execute its own `action` block using the full set of
+arguments.
+
+By default, grouped commands provide their own `action` block, which simply calls the `sendHelp()` function provided
+by [the context API](#context-api).
+However, you can override this behaviour by providing your own `action` block if needed.
+
+Subcommands always run the [checks] defined on their parent commands along with their own, traversing the entire tree.
+They all need to pass for the command to execute.
+
+### Builders
+
+<Doc.Container>
+  <Doc.Builder name="chatCommand" receiver="ChatCommand" functionReturns="ChatGroup" open hasArgs>
+    Use this builder to register a standalone chat subcommand.
+
+    This builder functions identically to the builder provided by [the extension API](#extension-api).
+  </Doc.Builder>
+
+  <Doc.Builder name="chatGroupCommand" receiver="ChatGroupCommand" functionReturns="ChatGroupCommand" open hasArgs>
+    Use this builder to register a nested grouped chat subcommand.
+
+    This builder functions identically to the builder provided by [the extension API](#extension-api).
+  </Doc.Builder>
+</Doc.Container>
+
+### Functions
+
+<Doc.Container internal>
+  <Doc.Function name="getCommand" returns="ChatCommand?" open internal>
+    Retrieve the subcommand matching the given name, or `null` if no matching, enabled command exists.
+
+    <Doc.Arguments>
+      <Doc.Arg name="name" type="String?">
+        Command name to match on.
+        Providing `null` makes the function always return `null`.
+      </Doc.Arg>
+
+      <Doc.Arg name="event" type="MessageCreateEvent">
+        Message creation event triggering this command execution.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+
+  <Doc.Function name="getFullTranslatedName" returns="String" open internal>
+    Retrieve the command's translated name.
+    If there are any parent commands, their names will be prepended along with a space.
+
+    <Doc.Arguments>
+      <Doc.Arg name="locale" type="Locale">
+        Locale used to translate the commands' names.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+</Doc.Container>
+
+### Properties
+
+<Doc.Container internal>
+  <Doc.Property name="commands" type="MutableList<ChatCommand>" default="mutableListOf()" open internal>
+  </Doc.Property>
+
+  <Doc.Property name="parent" type="ChatGroupCommand?" default="null" open internal>
+  </Doc.Property>
+</Doc.Container>
 
 ## Context API

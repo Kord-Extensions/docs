@@ -60,13 +60,31 @@ export function Arguments(props: PropsWithChildren<ArgumentsProps>): ReactNode {
 	);
 }
 
-type ContainerProps = {} & CommonProps
+type ContainerProps = {
+	internal?: boolean
+} & CommonProps
+
+function ContainerWrapper(props: PropsWithChildren<ContainerProps>): ReactNode {
+	if (props.internal) {
+		return <details className={styles.details}>
+			<summary className={styles.detailsSummary}>
+				Show/Hide Internal APIs
+			</summary>
+
+			{props.children}
+		</details>
+	} else {
+		return props.children
+	}
+}
 
 export function Container(props: PropsWithChildren<ContainerProps>): ReactNode {
 	return (
-		<div className={clsx(props.className, styles.container, "doc-container")}>
-			{props.children}
-		</div>
+		<ContainerWrapper {...props}>
+			<div className={clsx(props.className, styles.container, "doc-container")}>
+				{props.children}
+			</div>
+		</ContainerWrapper>
 	);
 }
 

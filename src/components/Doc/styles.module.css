@@ -1,3 +1,19 @@
+.detailsSummary {
+	background-color: color-mix(in srgb, var(--ifm-color-secondary) 25%, transparent) !important;
+	padding: 0.5em;
+	border-radius: 0.5em;
+	margin-bottom: var(--ifm-paragraph-margin-bottom);
+	cursor: pointer;
+}
+
+.details[open] > .detailsSummary {
+	margin-bottom: 0.5em;
+}
+
+.details {
+	margin-bottom: 0;
+}
+
 .container {
 	display: flex;
 	flex-direction: column;
