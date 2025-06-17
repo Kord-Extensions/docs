@@ -1,6 +1,6 @@
 ---
 description: "Prefixed commands sent in messages."
-sidebar_position: 4
+sidebar_position: 7
 
 sidebar_custom_props:
   card_group: "Commands"
@@ -84,6 +84,28 @@ chatCommand(::MyArguments) {
 ```
 
 ## Argument Parsing
+
+Like all command types, chat commands parse their arguments in the order you defined them, allowing converters that
+take lambdas to reference previous arguments.
+This follows a specific string-parsing strategy:
+
+1. Parse keyword arguments and remove them from the arguments string.
+2. Scan the string from left to right, with converters pulling tokens from it as needed.
+3. Ensure all required converters fill, and no extra arguments remain.
+
+Chat commands support keyword arguments in the following forms:
+
+- Command-line style: `--name value`
+- Properties style: `name=value`
+
+They also support the following extras:
+
+- Double-quoted values, to allow passing arguments with spaces: `"like this"`
+- Escaped double quotes, to allow passing them within a quoted argument: `"like \" this"`
+
+The parser code
+[is available here](https://github.com/Kord-Extensions/kord-extensions/blob/root/token-parser/src/main/kotlin/dev/kordex/parser/StringParser.kt).
+We're sure it has some shortcomings, so feel free to let us know if you think you can improve it.
 
 ## Extension API
 
@@ -268,8 +290,8 @@ small handful of advanced use-cases.
   <Doc.Property name="aliasKey" type="Key?" default="null" open>
     Translation key that resolves to a comma-separated list of command aliases.
 
-    If a locale shouldn't contain any aliases, you set it to the universal "empty translation string", represented
-    by three "empty set" characters (`∅∅∅`).
+    If a locale shouldn't contain any aliases, set the corresponding translation value to the universal empty
+    translation string, represented by three "empty set" characters (`∅∅∅`).
   </Doc.Property>
 
   <Doc.Property name="allowKeywordArguments" type="Boolean" default="true" open>
@@ -429,10 +451,192 @@ They all need to pass for the command to execute.
 
 <Doc.Container internal>
   <Doc.Property name="commands" type="MutableList<ChatCommand>" default="mutableListOf()" open internal>
+    List containing this command's subcommands.
   </Doc.Property>
 
   <Doc.Property name="parent" type="ChatGroupCommand?" default="null" open internal>
+    This command's parent command, if it has one.
   </Doc.Property>
 </Doc.Container>
 
 ## Context API
+
+The `action { }` builder is a receiver against the `ChatCommandContext` type.
+This type provides a set of APIs, along with those provided by [the base `CommandContext` type](#),
+which allow your bot to respond to command invocations.
+
+<Doc.Container internalText="Class Definition" internal>
+  <Doc.Type name="ChatCommandContext" type="class" open>
+    Context object containing the APIs you need to respond to a chat command.
+
+    <Doc.Arguments type="type">
+      <Doc.Arg name="T" type="Arguments">
+        Generic representing the correct Arguments subtype.
+      </Doc.Arg>
+    </Doc.Arguments>
+
+    <Doc.Arguments type="constructor">
+      <Doc.Arg name="chatCommand" type="ChatCommand<out T>">
+        Reference to the object representing the current command.
+      </Doc.Arg>
+
+      <Doc.Arg name="eventObj" type="MessageCreateEvent">
+        Reference to the event that triggered this command invocation.
+      </Doc.Arg>
+
+      <Doc.Arg name="commandName" type="Key">
+        Translation key representing the name used to invoke this command.
+
+        This key contains the name as provided on Discord, wrapped into a `Key` object along with the event's locale.
+        Use `commandName.key` to get the name used.
+      </Doc.Arg>
+
+      <Doc.Arg name="parser" type="StringParser">
+        String parser used to parse the arguments for this command invocation.
+      </Doc.Arg>
+
+      <Doc.Arg name="argString" type="String">
+        The raw, unparsed command arguments as sent by the user on Discord.
+      </Doc.Arg>
+
+      <Doc.Arg name="cache" type="MutableMap<String, Any>">
+        Data cache map shared with this command's [checks](#).
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Type>
+</Doc.Container>
+
+### Builders
+
+<Doc.Container>
+  <Doc.Builder name="paginator" functionReturns="MessageButtonPaginator" receiver="PaginatorBuilder">
+    Convenience builder for creating a paginator.
+
+    For more information, see [the paginator documentation](#).
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="defaultGroup" type="Key" default="EMPTY_KEY">
+        The default paginator group to use for pages.
+      </Doc.Arg>
+
+      <Doc.Arg name="pingInReply" type="Boolean" default="true">
+        Whether to ping the author of the `targetMessage` when sending the paginator, if you provide `targetMessage`.
+      </Doc.Arg>
+
+      <Doc.Arg name="targetChannel" type="MessageChannelBehavior?" default="null">
+        Channel to send the paginator to.
+
+        If both `targetChannel` and `targetMessage` are omitted, this will default to the channel this command
+        was invoked in.
+      </Doc.Arg>
+
+      <Doc.Arg name="targetMessage" type="Message?" default="null">
+        Message to respond to when sending the paginator.
+
+        This will override `targetChannel` with the message's channel if you provide both.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+</Doc.Container>
+
+### Functions
+
+<Doc.Container>
+  <Doc.Function name="respondTranslated" suspend>
+    Generate and send the help embed for this command, generated using [your bot's help extension](#).
+
+    Returns `true` if your bot has a proper help extension and the message was sent, `false` otherwise.
+  </Doc.Function>
+
+  <Doc.Function name="sendHelp" returns="Boolean" receiver="Message" suspend>
+    Convenience function for quickly replying to a message using a translation key.
+
+    <Doc.Arguments>
+      <Doc.Arg name="key" type="Key">
+        Translation key representing the message content.
+      </Doc.Arg>
+
+      <Doc.Arg name="placeholders" type={["Array<Any?>", "Map<String, Any?>"]} default="Empty array/map">
+        An array or map containing placeholder values to fill.
+      </Doc.Arg>
+
+      <Doc.Arg name="useReply" type="Boolean" default="true">
+        Whether to explicitly reply to the message.
+      </Doc.Arg>
+
+      <Doc.Arg name="pingInReply" type="Boolean" default="true">
+        Whether to ping the message author:
+        - When `useReply` is `true`, pings the author using the Discord reply feature.
+        - When `useReply` is `false`, pings the author by adding a mention to the start of the message content.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+</Doc.Container>
+
+<Doc.Container internal>
+  <Doc.Function name="getMessage" returns="Message" open suspend internal>
+    Retrieve the message from the `event` property.
+    Used internally to populate the `message` property.
+  </Doc.Function>
+
+  <Doc.Function name="populateArgs" internal>
+    Internal function used to set the `arguments` property.
+
+    <Doc.Arguments>
+      <Doc.Arg name="args" type="T: Arguments">
+        Arguments object to store.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+</Doc.Container>
+
+### Properties
+
+<Doc.Container>
+  <Doc.Property name="arguments" type="T: Arguments" open>
+    Object containing this command invocation's parsed arguments, matching the type of the subtype you provided to your
+    command definition, or an empty `Arguments` object if you didn't provide one.
+  </Doc.Property>
+
+  <Doc.Property name="argString" type="String">
+    The raw, unparsed command arguments as sent by the user on Discord.
+  </Doc.Property>
+
+  <Doc.Property name="chatCommand" type="ChatCommand<out T>">
+    Reference to the object representing the current command.
+  </Doc.Property>
+
+  <Doc.Property name="event" type="MessageCreateEvent">
+    Reference to the event that triggered this command invocation.
+  </Doc.Property>
+
+  <hr className="clear" />
+
+  <Doc.Property name="channel" type="MessageChannelBehavior" open>
+    The channel this command invocation happened in.
+  </Doc.Property>
+
+  <Doc.Property name="guild" type="GuildBehavior?" open>
+    The guild this command invocation happened in, or `null` if it happened in a DM.
+  </Doc.Property>
+
+  <Doc.Property name="member" type="MemberBehavior?" open>
+    The guild member that caused this command invocation, or `null` if:
+    - This command invocation happened in a DM.
+    - This command invocation was caused by a webhook.
+  </Doc.Property>
+
+  <Doc.Property name="message" type="Message" open>
+    The Discord message that caused this command invocation.
+  </Doc.Property>
+
+  <Doc.Property name="user" type="UserBehavior?" open>
+    The Discord user that caused this command invocation, or `null` if it was a webhook.
+  </Doc.Property>
+</Doc.Container>
+
+<Doc.Container internal>
+  <Doc.Property name="parser" type="StringParser" open internal>
+    String parser used to parse the arguments for this command invocation.
+  </Doc.Property>
+</Doc.Container>

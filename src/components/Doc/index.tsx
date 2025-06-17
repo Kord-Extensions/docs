@@ -1,8 +1,8 @@
 import {PropsWithChildren, ReactNode} from "react";
 import clsx from "clsx";
 import styles from "./styles.module.css";
-import {Icon} from '@iconify/react';
-import { Tooltip } from 'react-tooltip'
+import {Icon} from "@iconify/react";
+import {Tooltip} from "react-tooltip"
 
 import {Tag, Tags} from "../Tags";
 
@@ -25,7 +25,7 @@ function Internal(): ReactNode {
 // region: Containers
 
 type ArgumentsProps = {
-	type?: "function" | "lambda" | "type"
+	type?: "constructor" | "function" | "lambda" | "type"
 } & CommonProps
 
 function toTitleCase(str: string): string {
@@ -62,13 +62,19 @@ export function Arguments(props: PropsWithChildren<ArgumentsProps>): ReactNode {
 
 type ContainerProps = {
 	internal?: boolean
+	internalText?: string
 } & CommonProps
 
 function ContainerWrapper(props: PropsWithChildren<ContainerProps>): ReactNode {
 	if (props.internal) {
 		return <details className={styles.details}>
 			<summary className={styles.detailsSummary}>
-				Show/Hide Internal APIs
+				Show/Hide
+				{
+					props.internalText === null || props.internalText === undefined ?
+						" Internal APIs" :
+						" " + props.internalText
+				}
 			</summary>
 
 			{props.children}
@@ -120,7 +126,7 @@ export function Arg(props: PropsWithChildren<ArgProps>): ReactNode {
 		<div className={clsx(props.className, styles.arg, "doc-argument")}>
 			<div className={clsx(styles.row)} style={{marginBottom: "0.25em"}}>
 				<Tags>
-					{props.internal ? <Internal /> : <></>}
+					{props.internal ? <Internal/> : <></>}
 
 					<code className={clsx(styles.headMed, "shadow--lw")}>{props.name}</code>
 
@@ -195,7 +201,7 @@ export function Builder(props: PropsWithChildren<BuilderProps>): ReactNode {
 		<div className={clsx(props.className, styles.col, styles.docBg, "doc-builder")}>
 			<div className={clsx(styles.row)}>
 				<Tags>
-					{props.internal ? <Internal /> : <></>}
+					{props.internal ? <Internal/> : <></>}
 
 					<code className={
 						clsx(styles.head, "shadow--lw")}>{props.name}
@@ -254,7 +260,7 @@ export function Function(props: PropsWithChildren<FunctionProps>): ReactNode {
 		<div className={clsx(props.className, styles.col, styles.docBg, "doc-function")}>
 			<div className={clsx(styles.row)}>
 				<Tags>
-					{props.internal ? <Internal /> : <></>}
+					{props.internal ? <Internal/> : <></>}
 
 					<code className={clsx(styles.head, "shadow--lw")}>
 						{
@@ -322,7 +328,7 @@ export function Property(props: PropsWithChildren<PropertyProps>): ReactNode {
 		<div className={clsx(props.className, styles.col, styles.docBg, "doc-property")}>
 			<div className={clsx(styles.row)}>
 				<Tags>
-					{props.internal ? <Internal /> : <></>}
+					{props.internal ? <Internal/> : <></>}
 
 					<code className={clsx(styles.head, "shadow--lw")}>
 						{
@@ -374,7 +380,7 @@ export function Type(props: PropsWithChildren<TypeProps>): ReactNode {
 		<div className={clsx(props.className, styles.col, styles.docBg, "doc-type")}>
 			<div className={clsx(styles.row)} style={{marginBottom: "0.25em"}}>
 				<Tags>
-					{props.internal ? <Internal /> : <></>}
+					{props.internal ? <Internal/> : <></>}
 
 					<code className={clsx(styles.head, "shadow--lw")}>
 						{
