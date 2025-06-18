@@ -68,7 +68,7 @@ For more information on creating and using plugin, see [the plugins page].
 ## Properties
 
 <Doc.Container>
-  <Doc.Property name="enabled" type="Boolean" default="true">
+  <Doc.Property name="enabled" type="Boolean" default="true" propType="var">
     Whether the plugin system should be enabled.
 
     Setting this to `false` will still create a plugin manager, to avoid breaking anything that depends on it.
@@ -80,14 +80,14 @@ For more information on creating and using plugin, see [the plugins page].
   The following properties are usually set using the functions and builders above.
   However, for advanced use-cases, you can mutate them yourself.
 
-  <Doc.Property name="disabledPlugins" type="MutableList<String>" default="mutableListOf()">
+  <Doc.Property name="disabledPlugins" type="MutableList<String>" default="mutableListOf()" propType="var">
     List containing disabled plugin IDs. Normally mutated via the `disable(id)` function.
 
     Plugins with these IDs won't be loaded on startup, but this won't prevent an extension from re-enabling the plugin
     later.
   </Doc.Property>
 
-  <Doc.Property name="pluginPaths" type="MutableList<Path>" default={`mutableListOf(Path("./plugins"))`}>
+  <Doc.Property name="pluginPaths" type="MutableList<Path>" default={`mutableListOf(Path("./plugins"))`} propType="var">
     List of paths to search for plugins. Usually mutated via the `pluginPath(path)` function.
   </Doc.Property>
 </Doc.Container>

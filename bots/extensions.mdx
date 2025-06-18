@@ -31,7 +31,7 @@ This type provides most of the backing logic for your extensions, and it also im
 Your extensions must implement the following:
 
 <Doc.Container>
-  <Doc.Property name="name" type="string" abstract>
+  <Doc.Property name="name" type="string" propType="val" abstract>
     Short, unique, `lowered-kebab-case` extension name.
     Kord Extensions uses this for logging and indexing.
   </Doc.Property>
@@ -146,13 +146,13 @@ For more information, see the following:
 <Doc.Container>
   These properties are `open`, and you can modify them if needed.
 
-  <Doc.Property name="allowApplicationCommandInDMs" type="Boolean" default="true" open>
+  <Doc.Property name="allowApplicationCommandInDMs" type="Boolean" default="true" propType="val" open>
     Whether this extension's application commands should be allowed in DMs by default.
 
     May be overridden individually by each command.
   </Doc.Property>
 
-  <Doc.Property name="intents" type="MutableSet<Intent>" default="emptySet()" open>
+  <Doc.Property name="intents" type="MutableSet<Intent>" default="emptySet()" propType="val" open>
     Intents this extension requires, according to the event handlers it registers.
 
     You can override or modify this if your extension requires other intents that Kord Extensions can't detect
@@ -164,11 +164,11 @@ For more information, see the following:
   You shouldn't need to modify the following properties.
   They're exposed as part of the Extension API.
 
-  <Doc.Property name="loaded" type="Boolean" open>
+  <Doc.Property name="loaded" type="Boolean" propType="val" open>
     Whether this extension is loaded.
   </Doc.Property>
 
-  <Doc.Property name="state" type="ExtensionState" open>
+  <Doc.Property name="state" type="ExtensionState" propType="var" open>
     This extension's current loading state.
     May be one of:
 
@@ -184,21 +184,21 @@ For more information, see the following:
 
   The following properties provide quick access to other parts of your bot.
 
-  <Doc.Property name="applicationCommandRegistry" type="ApplicationCommandRegistry"></Doc.Property>
-  <Doc.Property name="bot" type="ExtensibleBot"></Doc.Property>
-  <Doc.Property name="chatCommandRegistry" type="ChatCommandRegistry"></Doc.Property>
-  <Doc.Property name="kord" type="Kord"></Doc.Property>
+  <Doc.Property name="applicationCommandRegistry" type="ApplicationCommandRegistry" propType="val"></Doc.Property>
+  <Doc.Property name="bot" type="ExtensibleBot" propType="val"></Doc.Property>
+  <Doc.Property name="chatCommandRegistry" type="ChatCommandRegistry" propType="val"></Doc.Property>
+  <Doc.Property name="kord" type="Kord" propType="val"></Doc.Property>
 
   <hr className="clear" />
 
   The following properties are meant for use by projects that extend the Extension system, and you won't need to touch
   them in your bots.
 
-  <Doc.Property name="extraData" type="MutableMap<String, Any>" default="mutableMapOf()">
+  <Doc.Property name="extraData" type="MutableMap<String, Any>" default="mutableMapOf()" propType="val">
     Extra data stored against the Extension object.
   </Doc.Property>
 
-  <Doc.Property name="unloadCallbacks" type="MutableList<() -> Unit>" default="mutableListOf()">
+  <Doc.Property name="unloadCallbacks" type="MutableList<() -> Unit>" default="mutableListOf()" propType="val">
     Extra callbacks run when the extension is unloaded.
 
     Can be used to clean up any data stored by libraries that extend the Extension system.

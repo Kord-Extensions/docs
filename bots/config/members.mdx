@@ -81,7 +81,7 @@ bot's shards, so be prepared for a significantly slower startup phase.
 ## Properties
 
 <Doc.Container>
-  <Doc.Property name="fillPresences" type="Boolean?" default="null">
+  <Doc.Property name="fillPresences" type="Boolean?" default="null" propType="var">
     Whether to request presence information from member entities requested from the gateway.
 
     Provide `null` to defer to Kord's recommended default behavior, which is currently equivalent to `false`.
@@ -98,7 +98,7 @@ bot's shards, so be prepared for a significantly slower startup phase.
 
   :::
 
-  <Doc.Property name="lockMemberRequests" type="Boolean" default="false">
+  <Doc.Property name="lockMemberRequests" type="Boolean" default="false" propType="var">
     Whether to force guild member requests to be sequential via a `Mutex`, preventing concurrent requests for guild
     members.
 

@@ -104,6 +104,7 @@ type ArgProps = {
 	supportsCollections?: boolean,
 	default?: string,
 	internal?: boolean,
+	propType?: "val" | "open val" | "var" | "open var",
 } & CommonProps
 
 export function Arg(props: PropsWithChildren<ArgProps>): ReactNode {
@@ -128,7 +129,14 @@ export function Arg(props: PropsWithChildren<ArgProps>): ReactNode {
 				<Tags>
 					{props.internal ? <Internal/> : <></>}
 
-					<code className={clsx(styles.headMed, "shadow--lw")}>{props.name}</code>
+					<code className={clsx(styles.headMed, "shadow--lw")}>
+						{
+							props.propType === null || props.propType === undefined ?
+								<></> :
+								<span className="text-info">{props.propType}&nbsp;</span>
+						}
+						{props.name}
+					</code>
 
 					{
 						props.type === undefined ? <></> :
@@ -321,6 +329,7 @@ type PropertyProps = {
 	open?: boolean,
 	default?: string,
 	internal?: boolean,
+	propType?: "val" | "var",
 } & CommonProps
 
 export function Property(props: PropsWithChildren<PropertyProps>): ReactNode {
@@ -341,6 +350,11 @@ export function Property(props: PropsWithChildren<PropertyProps>): ReactNode {
 								<span className="text-info">open&nbsp;</span>
 						}
 
+						{
+							props.propType === null || props.propType === undefined ?
+								<></> :
+								<span className="text-info">{props.propType}&nbsp;</span>
+						}
 						{props.name}
 					</code>
 
@@ -373,6 +387,7 @@ type TypeProps = {
 	sealed?: boolean,
 	open?: boolean,
 	internal?: boolean,
+	extends?: string[],
 } & CommonProps
 
 export function Type(props: PropsWithChildren<TypeProps>): ReactNode {
@@ -402,7 +417,11 @@ export function Type(props: PropsWithChildren<TypeProps>): ReactNode {
 						<span className="text-info">
 							{props.type}
 						</span>
-						&nbsp;{props.name}
+						&nbsp;{props.name} {
+						props.extends === null || props.extends === undefined ?
+							<></> :
+							" : " + props.extends.join(", ")
+					}
 					</code>
 				</Tags>
 			</div>
