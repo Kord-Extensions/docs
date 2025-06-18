@@ -34,13 +34,13 @@ the settings explained by <Link to="/bots/config">the other pages in this sectio
 ## General
 
 <Doc.Container>
-  <Doc.Property name="botVersion" type="String?" default="null">
+  <Doc.Property name="botVersion" type="String?" default="null" propType="var">
     Your bot's version.
 
     Usually provided by the Gradle plugin, but you can also set it manually here.
   </Doc.Property>
 
-  <Doc.Property name="devMode" type="Boolean" default="false">
+  <Doc.Property name="devMode" type="Boolean" default="false" propType="var">
     Whether your bot is currently running in development mode.
 
     Usually provided by the Gradle plugin, the `devMode` system property, the `DEV_MODE` environmental variable,
@@ -48,7 +48,7 @@ the settings explained by <Link to="/bots/config">the other pages in this sectio
     However, you can also set this manually here.
   </Doc.Property>
 
-  <Doc.Property name="dataCollectionMode" type="DataCollection" default="Standard">
+  <Doc.Property name="dataCollectionMode" type="DataCollection" default="Standard" propType="var">
     Your bot's data collection mode.
 
     Usually provided by the Gradle plugin, the `dataCollection` system property, or the `DATA_COLLECTION` environmental
@@ -78,11 +78,11 @@ the settings explained by <Link to="/bots/config">the other pages in this sectio
 ## Miscellaneous
 
 <Doc.Container>
-  <Doc.Property name="addDefaultHealthChecks" type="Boolean" default="true">
+  <Doc.Property name="addDefaultHealthChecks" type="Boolean" default="true" propType="var">
     Whether to add Kord Extensions' default health-checks to the health-check registry.
   </Doc.Property>
 
-  <Doc.Property name="koinLogLevel" type="Level" default="ERROR">
+  <Doc.Property name="koinLogLevel" type="Level" default="ERROR" propType="var">
     The logging level used by Koin.
     You shouldn't need to change this unless you need to debug Koin's internals.
   </Doc.Property>
@@ -91,11 +91,11 @@ the settings explained by <Link to="/bots/config">the other pages in this sectio
 ## Performance
 
 <Doc.Container>
-  <Doc.Property name="autoCompleteContextThreads" type="Int" default="Runtime.availableProcessors()">
+  <Doc.Property name="autoCompleteContextThreads" type="Int" default="Runtime.availableProcessors()" propType="var">
     Size of the thread-pool used to dispatch `AutoCompleteInteractionCreateEvent`s to their corresponding registries.
   </Doc.Property>
 
-  <Doc.Property name="interactionContextThreads" type="Int" default="Runtime.availableProcessors() * 2">
+  <Doc.Property name="interactionContextThreads" type="Int" default="Runtime.availableProcessors() * 2" propType="var">
     Size of the thread-pool used to dispatch all `InteractionCreateEvent`s to their corresponding registries.
   </Doc.Property>
 

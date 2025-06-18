@@ -57,7 +57,7 @@ arguments, among other things.
   <Doc.Type name="Arguments" type="class" open>
     Base class you should extend to represent a set of command arguments.
 
-    <Doc.Property name="parseForAutocomplete" type="Boolean" default="false" open>
+    <Doc.Property name="parseForAutocomplete" type="Boolean" default="false" propType="var" open>
       Whether to attempt to parse previous arguments when handling an autocompletion event.
 
       When working with [Slash Commands](#) and Discord's autocomplete system, setting this to `true` allows your
@@ -101,7 +101,7 @@ arguments, among other things.
     </Doc.Arguments>
   </Doc.Function>
 
-  <Doc.Property name="args" type="MutableList<Argument>" default="mutableListOf()" internal>
+  <Doc.Property name="args" type="MutableList<Argument>" default="mutableListOf()" propType="val" internal>
     List of wrapped converter objects representing command arguments, stored in the order they were defined.
   </Doc.Property>
 

@@ -90,13 +90,13 @@ ExtensibleBot(TOKEN) {
 ### Properties
 
 <Doc.Container>
-  <Doc.Property name="enabled" type="Boolean" default="true">
+  <Doc.Property name="enabled" type="Boolean" default="true" propType="var">
     Whether application commands should be enabled.
 
     Setting this to `false` disables the entire feature.
   </Doc.Property>
 
-  <Doc.Property name="register" type="Boolean" default="true">
+  <Doc.Property name="register" type="Boolean" default="true" propType="var">
     Whether to automatically register commands with Discord, both during and after startup.
 
     Setting this to `false` only prevents command registration --- users can still run commands.
@@ -148,24 +148,24 @@ ExtensibleBot(TOKEN) {
 ### Properties
 
 <Doc.Container>
-  <Doc.Property name="defaultPrefix" type="String" default={`"!"`}>
+  <Doc.Property name="defaultPrefix" type="String" default={`"!"`} propType="var">
     The default command prefix, required before the name of a chat command at the start of a message.
     Use the `prefix { }` builder to supply a dynamic command prefix.
   </Doc.Property>
 
-  <Doc.Property name="enabled" type="Boolean" default="false">
+  <Doc.Property name="enabled" type="Boolean" default="false" propType="var">
     Whether chat commands should be enabled.
     Leaving this set to `false` disables the entire feature.
 
     As it's disabled by default, you'll need to set this to `true` if you need your bot to support chat commands.
   </Doc.Property>
 
-  <Doc.Property name="ignoreSelf" type="Boolean" default="true">
+  <Doc.Property name="ignoreSelf" type="Boolean" default="true" propType="var">
     Whether to ignore messages sent by this bot.
     Setting this to `false` means that the bot will execute commands based on the content of its own messages.
   </Doc.Property>
 
-  <Doc.Property name="invokeOnMention" type="Boolean" default="true">
+  <Doc.Property name="invokeOnMention" type="Boolean" default="true" propType="var">
     Whether users should be able to execute commands by mentioning/pinging the bot at the start of the message,
     instead of using a command prefix.
   </Doc.Property>

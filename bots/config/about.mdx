@@ -66,7 +66,7 @@ about {
 The `about { }` builder provides the following properties.
 
 <Doc.Container>
-  <Doc.Property name="ephemeral" type="boolean" default="true">
+  <Doc.Property name="ephemeral" type="boolean" default="true" propType="var">
     Whether commands (including the copyright command) should respond to slash commands ephemerally.
   </Doc.Property>
 </Doc.Container>
@@ -178,7 +178,7 @@ Configure your section via the APIs described below.
 #### Properties
 
 <Doc.Container>
-  <Doc.Property name="ephemeral" type="Boolean?" default="null">
+  <Doc.Property name="ephemeral" type="Boolean?" default="null" propType="var">
     Whether this section should respond to slash commands ephemerally.
     If not provided, defaults to the setting provided in the `about { }` builder.
   </Doc.Property>

@@ -81,14 +81,14 @@ but the correct approach will heavily depend on your bot and how you need the ca
 ## Properties
 
 <Doc.Container>
-  <Doc.Property name="cachedMessages" type="Int?" default="10_000">
+  <Doc.Property name="cachedMessages" type="Int?" default="10_000" propType="var">
     Number of recent messages Kord's cache should store by default.
 
     You can disable automatic configuration of the message cache by setting this to `0` or `null`, or by manually
     configuring the cache using the `kord` builder.
   </Doc.Property>
 
-  <Doc.Property name="defaultStrategy" type="EntitySupplyStrategy" default="cacheWithCachingRestFallback">
+  <Doc.Property name="defaultStrategy" type="EntitySupplyStrategy" default="cacheWithCachingRestFallback" propType="var">
     The caching strategy used by Kord by default.
   </Doc.Property>
 </Doc.Container>

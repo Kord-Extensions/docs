@@ -88,24 +88,24 @@ fun ExtensionsBuilder.myHelpExtension() {
 ### Properties
 
 <Doc.Container>
-  <Doc.Property name="deleteInvocationOnPaginatorTimeout" type="Boolean" default="false">
+  <Doc.Property name="deleteInvocationOnPaginatorTimeout" type="Boolean" default="false" propType="var">
     Whether to delete the message that executed the help command when the paginator timeout expires.
   </Doc.Property>
 
-  <Doc.Property name="deletePaginatorOnTimeout" type="Boolean" default="false">
+  <Doc.Property name="deletePaginatorOnTimeout" type="Boolean" default="false" propType="var">
     Whether to delete the help command's output message when the paginator timeout expires.
   </Doc.Property>
 
-  <Doc.Property name="enableBundledExtension" type="Boolean" default="true">
+  <Doc.Property name="enableBundledExtension" type="Boolean" default="true" propType="var">
     Whether to enable the bundled help extension
   </Doc.Property>
 
-  <Doc.Property name="paginatorTimeout" type="Long" default="60">
+  <Doc.Property name="paginatorTimeout" type="Long" default="60" propType="var">
     How long since the user's last button press (or the command invocation) to wait before the help command's paginator
     times out and stops working, in seconds.
   </Doc.Property>
 
-  <Doc.Property name="pingInReply" type="Boolean" default="true">
+  <Doc.Property name="pingInReply" type="Boolean" default="true" propType="var">
     Whether to mention/ping the user that ran the help command when responding.
   </Doc.Property>
 </Doc.Container>
@@ -193,22 +193,22 @@ For more information, see the [Sentry Integration page].
 Kord Extensions uses the following properties to configure its Sentry intgration, rather than the Sentry API.
 
 <Doc.Container>
-  <Doc.Property name="enable" type="Boolean" default="false">
+  <Doc.Property name="enable" type="Boolean" default="false" propType="var">
     Whether to enable the Sentry integration.
   </Doc.Property>
 
-  <Doc.Property name="feedbackExtension" type="Boolean" default="false">
+  <Doc.Property name="feedbackExtension" type="Boolean" default="false" propType="var">
     Whether to enable the Sentry feedback extension, which adds a `feedback` chat and slash command, and displays error
     IDs when your bot submits errors to Sentry.
 
     Users can use the `feedback` command with these IDs to explain what they were doing.
   </Doc.Property>
 
-  <Doc.Property name="pingInReply" type="Boolean" default="true">
+  <Doc.Property name="pingInReply" type="Boolean" default="true" propType="var">
     Whether to ping users in response to their `feedback` chat command uses.
   </Doc.Property>
 
-  <Doc.Property name="sampleRate" type="Double" default="1.0">
+  <Doc.Property name="sampleRate" type="Double" default="1.0" propType="var">
     Portion of Sentry captures to submit to Sentry, as a percentage represented by a portion of one.
 
     For example, `1.0` means everything, `0.1` means 10%, and so on.
@@ -220,31 +220,31 @@ We only expose the most common options here, but you can use the `setup` builder
 For more information, [see Sentry's documentation](https://docs.sentry.io/platforms/java/configuration/options/).
 
 <Doc.Container>
-  <Doc.Property name="debug" type="Boolean" default="devMode">
+  <Doc.Property name="debug" type="Boolean" default="devMode" propType="var">
     Whether to enable [Sentry's debug mode](https://docs.sentry.io/platforms/java/configuration/options/#debug).
 
     Defaults to your bot's `devMode` setting, as defined in
     <Link to="/bots/config/general#general">the general settings</Link>.
   </Doc.Property>
 
-  <Doc.Property name="dsn" type="String?" default="null">
+  <Doc.Property name="dsn" type="String?" default="null" propType="var">
     Your [Sentry DSN](https://docs.sentry.io/platforms/java/configuration/options/#dsn),
     required to enable the integration.
   </Doc.Property>
 
-  <Doc.Property name="distribution" type="String?" default="null">
+  <Doc.Property name="distribution" type="String?" default="null" propType="var">
     Sentry's [Distribution](https://docs.sentry.io/platforms/java/configuration/options/#dist) option.
   </Doc.Property>
 
-  <Doc.Property name="environment" type="String?" default="null">
+  <Doc.Property name="environment" type="String?" default="null" propType="var">
     Sentry's [Environment](https://docs.sentry.io/platforms/java/configuration/options/#environment) option.
   </Doc.Property>
 
-  <Doc.Property name="release" type="String?" default="null">
+  <Doc.Property name="release" type="String?" default="null" propType="var">
     Sentry's [Release](https://docs.sentry.io/platforms/java/configuration/options/#release) option.
   </Doc.Property>
 
-  <Doc.Property name="serverName" type="String?" default="null">
+  <Doc.Property name="serverName" type="String?" default="null" propType="var">
     Sentry's [Server Name](https://docs.sentry.io/platforms/java/configuration/options/#server-name) option.
   </Doc.Property>
 
