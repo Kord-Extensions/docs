@@ -8,3 +8,72 @@ sidebar_custom_props:
 ---
 
 # Converter Basics
+
+Converters are responsible for converting command arguments from their basic (usually String) representations into rich
+types.
+They're a core part of Kord Extensions' command system, allowing you to focus on getting your bot working without
+worrying about parsing logic.
+
+Each converter is a class extending the `Converter` type, and annotated with the `@Converter` annotation.
+You can read [the custom converters page](#) for more information on converter anatomy, but for now you should
+understand that converters can:
+
+- Parse String-based values.
+- Transform entities and Snowflakes received from Discord.
+- Wrap other converters to change their behaviour.
+
+## Usage
+
+You can create a converter using the corresponding builder functions, available in your `Arguments` subtype,
+[which you'll need to create to handle command arguments](#).
+Builder functions have descriptive names based on the corresponding converter's name, and the behaviour you should
+expect from them.
+
+### Default Behaviour
+
+The default behaviour type is **single**, which represents a single, mandatory argument.
+Builder functions don't have anything special in their names to denote this, as it is the default.
+
+You can modify argument expectations and behaviour using builder functions that reference other argument types.
+
+### Optional Types
+
+You can make arguments optional by specifying their **defaulting** or **optional** variants.
+Optional arguments default to `null` when not provided, while defaulting arguments let you provide your own default
+value.
+
+### Multiple Inputs
+
+:::warning Chat commands only!
+
+As of this writing, while you can use these argument types with [slash commands](#), they can only process and return
+a single value.
+This is because Discord lacks any real way to provide an argument with multiple values.
+
+If you do use these argument types with slash commands, please note that they will only ever resolve a single value.
+For list converters, this value is a `List<T>` with one element.
+
+:::
+
+You can make arguments consume or output multiple inputs by specifying their **coalescing** or **list** variants.
+
+**Coalescing** arguments are meant for use with [chat commands](#), allowing your bot to combine multiple arguments
+into a single value.
+This is helpful when you want to make it easier to provide arguments containing spaces without requiring quoting,
+but remember that **coalescing arguments consume as many arguments as possible** until the next value would make
+argument data invalid.
+
+**List** arguments are also meant for use with [chat commands](#), but instead of combining arguments into a single
+value, they place them into a list.
+However, like coalescing arguments, **list arguments consume as many arguments as possible** until the next value would
+be an invalid argument.
+
+### Limited Inputs
+
+You can limit the values accepted by an argument by specifying the **choice** variant.
+
+Choice arguments include a limited set of pre-set possible values, and they respond with an error when users provide
+other values.
+
+When used with [slash commands](#), Discord shows the first 25 acceptable values to the user.
+
