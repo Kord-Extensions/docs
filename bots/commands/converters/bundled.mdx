@@ -5,6 +5,83 @@ sidebar_position: 2
 sidebar_custom_props:
   card_group: "Converters"
   icon: "fluent:collections-empty-20-filled"
+
+# TODO: Link to other docs
 ---
 
+import * as Doc from "/src/components/Doc";
+
 # Bundled Converters
+
+<Doc.Container>
+  <Doc.Converter name="Duration" codeName="duration" valueType="kotlinx.datetime.DateTimePeriod" types={["single", "defaulting", "optional", "coalescing"]}>
+    Duration converter, using a complex parsing strategy to parse arguments into
+    [DateTimePeriod objects](https://kotlinlang.org/api/kotlinx-datetime/kotlinx-datetime/kotlinx.datetime/-date-time-period/).
+
+    These objects are timezone-agnostic, and you may need to normalise them against a specific timezone, depending on
+    your use-case.
+
+    This converter supports some extra settings:
+
+    <Doc.Property name="longHelp" type="Boolean" default="true" propType="var">
+      Whether to respond with a long help message on parsing failures, explaining exactly how to specify durations
+      and what time units are supported.
+
+      Set this to `false` if you only want to tell the user that they provided an invalid time unit.
+    </Doc.Property>
+
+    <Doc.Property name="positiveOnly" type="Boolean" default="true" propType="var">
+      Whether the converter should only accept a positive duration.
+
+      Set this to `false` if you also want to accept negative durations.
+    </Doc.Property>
+
+    Along with [Discord-formatted timestamps](https://discord.com/developers/docs/reference#message-formatting), this
+    converter supports specifying durations as a series of units and durations.
+
+    <Doc.DetailsContainer>
+      <Doc.Details header="Parsing Specification">
+        Users can specify durations as pairs containing both a unit and a numeric value,
+        including prefixing numbers with a minus sign (`-`) to make them negative..
+        The parser removes commas, spaces, and the plus character (`+`) before parsing.
+
+        Pairs work when specified in any order, and duplicates are added/subtracted.
+        The parser supports both ordered forms to allow for natural input in right-to-left languages:
+
+        - Value first: `12 days`
+        - Unit first: `d12`
+
+        Users can prefix numbers with a minus sign (`-`) to make them negative.
+        The parser only supports base-10 ASCII integers.
+      </Doc.Details>
+
+      <Doc.Details header="Supported Units">
+        The parser supports the following units, which are listed below with their English names.
+        You can also use names in your own language, provided Kord Extensions has translations for it.
+
+        -   Seconds: `s`, `sec`, `secs`, `second`, `seconds`
+        -   Minutes: `m`, `mi`, `min`, `mins`, `minute`, `minutes`
+        -   Hours: `h`, `hr`, `hour`, `hours`
+        -   Days: `d`, `day`, `days`
+        -   Weeks: `w`, `wk`, `week`, `weeks`
+        -   Months: `mo`, `mth`, `month`, `months`
+        -   Years: `y`, `yr`, `year`, `years`
+      </Doc.Details>
+
+      <Doc.Details header="Examples">
+        The following examples are valid duration strings:
+
+        - `12d 4h 30m` - 12 days, 4 hours and 30 minutes.
+        - `12d 4h 30m -1 w` - 5 days (12 - 7), 4 hours and 30 minutes.
+        - `-2d 1w 6h -2h` - 5 days (7 - 2) and 4 hours (6 - 2).
+        - `周3 日2 分30` - in Simplified Chinese, 23 days (3 \* 7 + 2) and 30 minutes.
+
+        The following examples are invalid:
+
+        - `12` - bare numbers are not supported, a unit is required.
+        - `12m d w` - all units require a numerical value.
+        - `-5 days` with `positiveOnly = true` - the current converter only accepts positive durations.
+      </Doc.Details>
+    </Doc.DetailsContainer>
+  </Doc.Converter>
+</Doc.Container>

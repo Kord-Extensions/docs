@@ -94,6 +94,25 @@ export function Container(props: PropsWithChildren<ContainerProps>): ReactNode {
 	);
 }
 
+export function DetailsContainer (props: PropsWithChildren<CommonProps>): ReactNode {
+	return <div className={clsx(styles.detailsContainer)}>
+		{props.children}
+	</div>
+}
+type DetailsProps = {
+	header: string | ReactNode
+} & CommonProps
+
+export function Details(props: PropsWithChildren<DetailsProps>): ReactNode {
+	return <details className={clsx(props.className)}>
+		<summary>{props.header}</summary>
+
+		<div className={clsx(styles.detailsInner)}>
+			{props.children}
+		</div>
+	</details>
+}
+
 // endregion
 
 // region: Items
@@ -239,6 +258,79 @@ export function Builder(props: PropsWithChildren<BuilderProps>): ReactNode {
 								Lambda Returns: <code className="shadow--lw">{props.lambdaReturns}</code>
 							</Tag>
 					}
+				</Tags>
+			</div>
+
+			{props.children === undefined ?
+				<></> :
+				<div className={clsx(styles.indent)}>
+					{props.children}
+				</div>
+			}
+		</div>
+	);
+}
+
+type ConverterProps = {
+	name: string,
+	codeName: string,
+	valueType: string,
+	types: ("single" | "defaulting" | "optional" | "coalescing" | "list" | "choice")[],
+	internal?: boolean,
+} & CommonProps
+
+export function Converter(props: PropsWithChildren<ConverterProps>): ReactNode {
+	props.types.sort()
+
+	return (
+		<div className={clsx(props.className, styles.col, styles.docBg, "doc-converter")}>
+			<div className={clsx(styles.row)}>
+				<Tags>
+					{props.internal ? <Internal/> : <></>}
+
+					<div className={clsx(styles.headMed, "text-capitalize")}>
+						{props.name} Converter
+					</div>
+
+					<Tag style="warning">
+						Types: {
+							props.types
+								.sort()
+								.map((it) => {
+									return <div className={clsx(styles.likeCode, "shadow--lw", "code", "text-capitalize")}>
+										{it}
+									</div>
+								})
+						}
+					</Tag>
+				</Tags>
+			</div>
+
+			<div className={clsx(styles.row)}>
+				<Tags>
+					<Tag style="success">
+						Name: <code>{props.codeName}</code>
+					</Tag>
+
+					<Tag style="info">
+						Value:
+						<code className="shadow--lw">
+							{
+								props.valueType.includes(".") ?
+									<>
+										<span className="text-translucent">
+											{splitLast(props.valueType, ".")[0]}
+											.
+										</span>
+
+										<span className="text-bold">
+											{splitLast(props.valueType, ".")[1]}
+										</span>
+									</> :
+									<>{props.valueType}</>
+							}
+						</code>
+					</Tag>
 				</Tags>
 			</div>
 
@@ -434,6 +526,21 @@ export function Type(props: PropsWithChildren<TypeProps>): ReactNode {
 			}
 		</div>
 	);
+}
+
+// endregion
+
+// region: Misc utils
+
+function splitLast(str: string, delimiter: string): string[] {
+	if (!str.includes(delimiter)) {
+		return [str]
+	}
+
+	const parts = str.split(delimiter)
+	const last = parts.pop()
+
+	return [parts.join(delimiter), last]
 }
 
 // endregion
