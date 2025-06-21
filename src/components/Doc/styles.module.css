@@ -180,6 +180,10 @@ div.head, div.headMed, div.likeCode {
 	}
 }
 
+.docBg > .indent > *:last-child {
+	margin-bottom: calc(var(--ifm-paragraph-margin-bottom) / 2);
+}
+
 .args {
 	.arg {
 		padding-bottom: 0.5em;
