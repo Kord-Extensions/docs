@@ -1,13 +1,89 @@
-.detailsSummary {
-	background-color: color-mix(in srgb, var(--ifm-color-secondary) 25%, transparent) !important;
+.detailsContainer:not(:first-child) {
+	margin-top: var(--ifm-paragraph-margin-bottom);
+}
+
+.detailsContainer {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75em;
+
+	margin-bottom: var(--ifm-paragraph-margin-bottom);
+
+	details {
+		margin: 0;
+		padding: 0;
+
+		background-color: color-mix(in srgb, var(--ifm-color-secondary) 35%, transparent) !important;
+
+		border-radius: 0.5em;
+	}
+
+	summary {
+		background-color: color-mix(in srgb, var(--ifm-color-secondary) 35%, transparent) !important;
+		padding: 0.5em;
+		border-radius: 0.5em;
+		margin: 0;
+		cursor: pointer;
+
+		font-size: 1.125em;
+		font-weight: bold;
+	}
+
+	details[open] summary {
+		border-bottom: 0.1em solid var(--ifm-color-secondary);
+		margin-bottom: var(--ifm-paragraph-margin-bottom);
+		border-radius: 0.5em 0.5em 0 0;
+	}
+
+	details > .detailsInner {
+		padding-left: var(--ifm-paragraph-margin-bottom);
+		padding-right: var(--ifm-paragraph-margin-bottom);
+		padding-bottom: var(--ifm-paragraph-margin-bottom);
+	}
+
+	> .docBg, > hr, > p, p.docBg {
+		padding: 0.5em;
+	}
+
+	> p {
+		margin: 0;
+	}
+
+	p.docBg {
+		margin-top: 0.5em !important;
+		margin-bottom: 1em !important;
+		padding: 0.5em;
+	}
+
+	> hr {
+		margin: 0 0.5em;
+		padding: 0;
+		height: 2px;
+	}
+
+	p:last-child {
+		margin-bottom: 0;
+	}
+}
+
+.detailsSummary, .detailsBg {
+	background-color: color-mix(in srgb, var(--ifm-color-secondary) 35%, transparent) !important;
 	padding: 0.5em;
 	border-radius: 0.5em;
 	margin-bottom: var(--ifm-paragraph-margin-bottom);
 	cursor: pointer;
 }
 
+.detailsBg .detailsSummary {
+	background: none !important;
+	padding: revert;
+	border-radius: 0;
+	margin-bottom: 0;
+}
+
+.detailsBg[open] > .detailsSummary,
 .details[open] > .detailsSummary {
-	margin-bottom: 0.5em;
+	margin-bottom: 0.75em;
 }
 
 .details {
@@ -81,6 +157,16 @@
 .headMed {
 	font-size: 1.125em;
 	font-weight: bold;
+}
+
+div.head, div.headMed, div.likeCode {
+	display: flex;
+	padding: 0.15em 0.5em;
+	color: var(--ifm-color-secondary-text);
+	background-color: var(--ifm-code-background);
+	border: 0.1rem solid rgba(0, 0, 0, 0.1);
+	border-radius: 5px;
+	align-items: center;
 }
 
 .indent {
