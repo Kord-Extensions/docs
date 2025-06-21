@@ -94,11 +94,12 @@ export function Container(props: PropsWithChildren<ContainerProps>): ReactNode {
 	);
 }
 
-export function DetailsContainer (props: PropsWithChildren<CommonProps>): ReactNode {
+export function DetailsContainer(props: PropsWithChildren<CommonProps>): ReactNode {
 	return <div className={clsx(styles.detailsContainer)}>
 		{props.children}
 	</div>
 }
+
 type DetailsProps = {
 	header: string | ReactNode
 } & CommonProps
@@ -273,13 +274,30 @@ export function Builder(props: PropsWithChildren<BuilderProps>): ReactNode {
 
 type ConverterProps = {
 	name: string,
-	codeName: string,
+	codeName: string | string[],
 	valueType: string,
 	types: ("single" | "defaulting" | "optional" | "coalescing" | "list" | "choice")[],
 	internal?: boolean,
+	intents?: string | string[],
 } & CommonProps
 
 export function Converter(props: PropsWithChildren<ConverterProps>): ReactNode {
+	let names: string[] = []
+	let intents: string[] = []
+
+	if (typeof (props.codeName) === "string") {
+		names = [props.codeName]
+	} else {
+		names = props.codeName
+	}
+
+	if (typeof (props.intents) === "string") {
+		intents = [props.intents]
+	} else if (props.intents !== undefined && props.intents !== null) {
+		intents = props.intents
+	}
+
+	names.sort()
 	props.types.sort()
 
 	return (
@@ -292,24 +310,43 @@ export function Converter(props: PropsWithChildren<ConverterProps>): ReactNode {
 						{props.name} Converter
 					</div>
 
-					<Tag style="warning">
-						Types: {
-							props.types
-								.sort()
-								.map((it) => {
-									return <div className={clsx(styles.likeCode, "shadow--lw", "code", "text-capitalize")}>
-										{it}
-									</div>
+					<Tag style="success">
+						Name{names.length == 1 ? "" : "s"}:
+						{
+							names.length == 1 ?
+								<code>{names[0]}</code> :
+								names.map((it) => {
+									return <code>{it as string}</code>;
 								})
 						}
 					</Tag>
-				</Tags>
-			</div>
 
-			<div className={clsx(styles.row)}>
-				<Tags>
-					<Tag style="success">
-						Name: <code>{props.codeName}</code>
+					{
+						intents.length < 1 ?
+							<></> :
+							<Tag style="danger">
+								Intent{intents.length == 1 ? "" : "s"}:
+								{intents
+									.sort()
+									.map((it) => {
+										return <div
+											className={clsx(styles.likeCode, "shadow--lw", "code", "text-capitalize")}>
+											{it}
+										</div>
+									})}
+							</Tag>
+					}
+
+					<Tag style="warning">
+						Type{props.types.length == 1 ? "" : "s"}: {
+						props.types
+							.sort()
+							.map((it) => {
+								return <div className={clsx(styles.likeCode, "shadow--lw", "code", "text-capitalize")}>
+									{it}
+								</div>
+							})
+					}
 					</Tag>
 
 					<Tag style="info">
@@ -334,14 +371,16 @@ export function Converter(props: PropsWithChildren<ConverterProps>): ReactNode {
 				</Tags>
 			</div>
 
-			{props.children === undefined ?
-				<></> :
-				<div className={clsx(styles.indent)}>
-					{props.children}
-				</div>
+			{
+				props.children === undefined ?
+					<></> :
+					<div className={clsx(styles.indent)}>
+						{props.children}
+					</div>
 			}
 		</div>
-	);
+	)
+		;
 }
 
 type FunctionProps = {

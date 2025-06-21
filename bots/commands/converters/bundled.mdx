@@ -13,13 +13,80 @@ import * as Doc from "/src/components/Doc";
 
 # Bundled Converters
 
+Kord Extensions includes many built-in converters.
+They cover the most common use-cases (and some uncommon ones), but you can always [make your own](#) if needed.
+
+## General
+
 <Doc.Container>
-  <Doc.Converter name="Duration" codeName="duration" valueType="kotlinx.datetime.DateTimePeriod" types={["single", "defaulting", "optional", "coalescing"]}>
+  <Doc.Converter name="Boolean" codeName="boolean" valueType="Boolean"
+                 types={["single", "defaulting", "list", "optional"]}
+  >
+    Boolean converter, with support for translated values.
+
+    <Doc.DetailsContainer>
+      <Doc.Details header="Supported Values">
+        This converter supports the following values, specified below in English.
+        You can also use names in your own language, provided Kord Extensions has translations for it.
+
+        - True: `1`, `y`, `yes`, `t`, `true`
+        - False: `0`, `n`, `no`, `f` `false`
+      </Doc.Details>
+    </Doc.DetailsContainer>
+  </Doc.Converter>
+
+  <Doc.Converter name="Colour" codeName={["colour", "color"]}
+                 valueType="dev.kord.common.Color"
+                 types={["single", "defaulting", "list", "optional"]}
+  >
+    Colour converter, supporting hex codes prefixed with `#` or `0x`, plain RGB integers, or colour names matching
+    Discord's historical branding colours.
+
+    This converter returns [Kord Color objects](https://dokka.kord.dev/common/dev.kord.common/-color/index.html).
+
+    <Doc.DetailsContainer>
+      <Doc.Details header="Discord Colours">
+        This converter supports the following values, specified below in English.
+        You can also use names in your own language, provided Kord Extensions has translations for it.
+
+        - Black: `black`, `blck`, `blk`
+        - Blurple: `blurple`, `purple`, `purp`, `prpl`, `prp`
+        - Fuchsia: `fuchsia`, `pink`, `pnk`
+        - Green: `green`, `grn`
+        - Light Blurple: `light blurple`, `lblurple`, `light blurp`, `lblurp`, `light purple`, `lpurple`, `light purp`,
+          `lpurp`, `light prpl`, `lprpl`, `light prp`, `lprp`
+        - Red: `red`, `rd`
+        - White: `white`, `wht`
+        - Yellow: `yellow`, `ylw`
+      </Doc.Details>
+    </Doc.DetailsContainer>
+  </Doc.Converter>
+
+  <Doc.Converter name="Decimal" codeName="decimal" valueType="Double"
+                 types={["single", "defaulting", "list", "optional"]}
+  >
+    Decimal converter, parsing the provided value into a `Double`.
+
+    This converter supports some extra settings:
+
+    <Doc.Property name="maxValue" type="Double?" default="null" propType="var">
+      The maximum allowed input value.
+    </Doc.Property>
+
+    <Doc.Property name="minValue" type="Double?" default="null" propType="var">
+      The minimum allowed input value.
+    </Doc.Property>
+  </Doc.Converter>
+
+  <Doc.Converter name="Duration" codeName="duration"
+                 valueType="kotlinx.datetime.DateTimePeriod"
+                 types={["single", "defaulting", "optional", "coalescing"]}>
     Duration converter, using a complex parsing strategy to parse arguments into
     [DateTimePeriod objects](https://kotlinlang.org/api/kotlinx-datetime/kotlinx-datetime/kotlinx.datetime/-date-time-period/).
+    These objects are timezone-agnostic, and you may need to normalise them against a specific timezone.
 
-    These objects are timezone-agnostic, and you may need to normalise them against a specific timezone, depending on
-    your use-case.
+    If you're writing a [chat command](#), consider using the coalescing variant for this converter, allowing
+    users to supply spaces in their input.
 
     This converter supports some extra settings:
 
@@ -37,7 +104,7 @@ import * as Doc from "/src/components/Doc";
     </Doc.Property>
 
     Along with [Discord-formatted timestamps](https://discord.com/developers/docs/reference#message-formatting), this
-    converter supports specifying durations as a series of units and durations.
+    converter supports specifying durations as a series of units and numbers.
 
     <Doc.DetailsContainer>
       <Doc.Details header="Parsing Specification">
@@ -83,5 +150,237 @@ import * as Doc from "/src/components/Doc";
         - `-5 days` with `positiveOnly = true` - the current converter only accepts positive durations.
       </Doc.Details>
     </Doc.DetailsContainer>
+  </Doc.Converter
+  >
+
+  <Doc.Converter name="Email" codeName="email" valueType="String"
+                 types={["single", "defaulting", "list", "optional"]}
+  >
+    Email converter, validating that the provided input is a well-formatted email address, according to
+    [Apache Commons' email validator](https://commons.apache.org/proper/commons-validator/apidocs/org/apache/commons/validator/routines/EmailValidator.html).
+  </Doc.Converter>
+
+  <Doc.Converter name="Enumeration" codeName="enum" valueType="ChoiceEnum<T>" types={[]}>
+    Arbitrary `enum` converter, converting arguments based on a defined getter.
+
+    Your enum must extend `ChoiceEnum` and implement the `readableName` property, which is a translation key
+    representing a human-readable name to show on Discord for each enum entry.
+
+    This converter has some **required extra settings**:
+
+    <Doc.Property name="typeName" type="Key" propType="var">
+      Translation key representing a short (one or two word) lower-case name for whatever the enum represents to the
+      user.
+
+      For example, if your enum is named `IssueStatuses` and contains `open`, `closed` and `invalid` entries, your
+      translation key should, in English, resolve to `status` or `issue status`.
+    </Doc.Property>
+
+    It also supports some extra settings:
+
+    <Doc.Property name="getter" type="suspend (String, Locale) -> E?" default="::getEnum" propType="var">
+      Getter used to resolve the correct enum entry.
+      The default strategy (named `getEnum`) searches through the possible enum entries, returning the first one that
+      matches one of the following, case-insensitively:
+
+      - The translated string referred to by `readableName`.
+      - The string translation key referred to by `readableName`.
+      - The literal name of the enum entry as written in code.
+    </Doc.Property>
+  </Doc.Converter>
+
+  <Doc.Converter name="Integer" codeName="int" valueType="Int"
+                 types={["single", "defaulting", "list", "optional"]}
+  >
+    Integer converter, parsing the provided value into an `Int`.
+
+    This converter supports some extra settings:
+
+    <Doc.Property name="maxValue" type="Double?" default="null" propType="var">
+      The maximum allowed input value.
+    </Doc.Property>
+
+    <Doc.Property name="minValue" type="Double?" default="null" propType="var">
+      The minimum allowed input value.
+    </Doc.Property>
+
+    <Doc.Property name="radix " type="Int" default="10" propType="var">
+      The radix (base) used when parsing.
+    </Doc.Property>
+  </Doc.Converter>
+
+  <Doc.Converter name="Long" codeName="long" valueType="Long"
+                 types={["single", "defaulting", "list", "optional"]}
+  >
+    Long converter, parsing the provided value into a `Long`.
+
+    This converter supports some extra settings:
+
+    <Doc.Property name="maxValue" type="Int?" default="null" propType="var">
+      The maximum allowed input value.
+    </Doc.Property>
+
+    <Doc.Property name="minValue" type="Int?" default="null" propType="var">
+      The minimum allowed input value.
+    </Doc.Property>
+
+    <Doc.Property name="radix " type="Int" default="10" propType="var">
+      The radix (base) used when parsing.
+    </Doc.Property>
+  </Doc.Converter>
+
+  <Doc.Converter name="String" codeName="string" valueType="String"
+                 types={["single", "defaulting", "list", "optional", "coalescing"]}
+  >
+    String converter, returning the argument's value verbatim.
+
+    This converter supports some extra settings:
+
+    <Doc.Property name="maxLength " type="Int?" default="null" propType="var">
+      The maximum allowable input length.
+    </Doc.Property>
+
+    <Doc.Property name="minLength " type="Int?" default="null" propType="var">
+      The minimum allowable input length.
+    </Doc.Property>
+  </Doc.Converter>
+
+  <Doc.Converter name="Supported Locale" codeName="supportedLocale" valueType="Locale"
+                 types={["single", "defaulting", "list", "optional"]}
+  >
+    Supported locale converter, converting arguments into `Locale` objects representing the locales Kord Extensions
+    supports.
+
+    Supported locales are defined
+    [here](https://github.com/Kord-Extensions/kord-extensions/blob/root/kord-extensions/src/main/kotlin/dev/kordex/core/i18n/SupportedLocales.kt).
+    If a locale you need isn't supported, please feel free to
+    [contribute translations for it](https://hosted.weblate.org/projects/kord-extensions/).
+  </Doc.Converter>
+</Doc.Container>
+
+## Discord Entities
+
+<Doc.Container>
+  <Doc.Converter name="Channel" codeName="channel" valueType="dev.kord.core.entity.channel.Channel"
+                 types={["single", "optional", "list"]}
+  >
+    Discord channel converter, converting the input to a resolved [Kord Channel object](#).
+    This converter behaves differently depending on command type:
+
+    - [Chat commands]: Supports mentions, IDs, names, and `this` to refer to the current channel.
+    - [Slash commands]: Uses the resolved object Discord provides, and can't do its own parsing or resolution.
+
+    This converter supports some extra settings:
+
+    <Doc.Function name="requireChannelType">
+      Add a channel type to the set of acceptable types.
+
+      By default, this converter doesn't limit the acceptable channel types.
+      Providing at least one turns on this requirement.
+
+      <Doc.Arguments>
+        <Doc.Arg name="type" type="ChannelType">
+        </Doc.Arg>
+      </Doc.Arguments>
+    </Doc.Function>
+
+    <Doc.Property name="requiredChannelTypes" type="MutableSet<ChannelType>" default="mutableSetOf()" propType="var">
+      The set of acceptable channel types, usually mutated by `requireChannelType(type)`, but you can set it yourself if
+      you prefer.
+
+      By default, this converter doesn't limit the acceptable channel types.
+      Providing at least one turns on this requirement.
+    </Doc.Property>
+
+    <Doc.Property name="requiredGuild" type="(suspend () -> Snowflake)?" default="null" propType="var">
+      **For chat commands:** Callback that returns a `Snowflake` representing a predefined guild the supplied channel
+      must exist on.
+
+      Channels passed to slash commands are already limited to the same guild the command was executed on, so this
+      setting does nothing in that case.
+    </Doc.Property>
+
+    <Doc.Property name="requireSameGuild" type="Boolean" default="true" propType="var">
+      **For chat commands:** Whether the provided channel must exist on the same guild used to execute the command.
+      If the command was executed in DMs, the argument will always be considered invalid.
+
+      Channels passed to slash commands are already limited to the same guild the command was executed on, so this
+      setting does nothing in that case.
+    </Doc.Property>
+  </Doc.Converter>
+
+  <Doc.Converter name="Emoji" codeName="emoji" intents={["GuildEmojis"]}
+                 valueType="dev.kord.core.entity.Emoji"
+                 types={["single", "list", "optional"]}
+  >
+    Emoji converter, parsing the input into a
+    [Kord Emoji object](https://dokka.kord.dev/core/dev.kord.core.entity/-emoji/index.html).
+
+    **Note:** Your bot must have the `GuildEmojis` intent for custom/guild emojis.
+
+    This converter supports the following input styles:
+
+    - Unicode emojis.
+    - Discord custom emojis.
+    - Custom emoji IDs, with or without surrounding colons (`:`).
+    - Custom emoji names, with or without surrounding colons (`:`), resolved using the first matching emoji your bot can
+    find on any of its guilds.
+    - Unicode emoji names, as used in Discord's emoji picker.
+  </Doc.Converter>
+</Doc.Container>
+
+## Slash Commands
+
+
+
+## Unsafe
+
+:::danger These converters are dangerous!
+
+We included these converters because they are useful in limited situations, but they can be dangerous if not used
+correctly, with their access limited to trusted users.
+
+These converters may slow down or crash your bot, or result in data exposure problems when used incorrectly.
+Use them at your own risk!
+
+:::
+
+<Doc.Container>
+  <Doc.Converter name="Regular Expression" codeName="regex" valueType="Regex"
+                 types={["single", "defaulting", "list", "optional", "coalescing"]}
+  >
+    Regular expression converter, allowing users to supply a regular expression.
+
+    **Remember that untrusted regular expressions are dangerous, and executing them carries risks (such as
+    [catastrophic backtracking](https://www.regular-expressions.info/catastrophic.html)) that this converter isn't
+    designed to prevent.**
+    If you need to execute untrusted regular expressions, consider writing [a custom converter](#) using
+    [Google's RE2/J library](https://github.com/google/re2j).
+
+    This converter supports some extra settings:
+
+    <Doc.Property name="options " type="MutableSet<RegexOption>" default="setOf()" propType="var">
+      Regular expression options used to create the `Regex` object.
+    </Doc.Property>
+  </Doc.Converter>
+
+  <Doc.Converter name="Serialized" codeName="serialized" valueType="T"
+                 types={["single", "defaulting", "list", "optional",]}
+  >
+    Serialized value converter, converting argument values to the given type using `kotlinx.serialization`.
+
+    **This isn't how `kotlinx.serialization` is supposed to be used.**
+    **This converter is a best-effort attempt to support new argument types without writing a [custom converter](#),
+    and it's important to thoroughly test any code using this before deploying it.**
+
+    This converter has some **required extra settings**:
+
+    <Doc.Property name="typeName" type="Key" propType="var">
+      Translation key representing a short (one or two word) lower-case name for whatever the value type represents to
+      the user.
+
+      For example, if your type is named `IssueStatus` and contains `OpenStatus`, `ClosedStatus` and `InvalidStatus`
+      values, your translation key should, in English, resolve to `status` or `issue status`.
+    </Doc.Property>
   </Doc.Converter>
 </Doc.Container>
