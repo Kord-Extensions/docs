@@ -5,7 +5,11 @@ sidebar_position: 1
 sidebar_custom_props:
   card_group: "Basics"
   icon: "fluent:new-20-filled"
+
+# TODO: Link to other docs
 ---
+
+import * as Doc from "/src/components/Doc";
 
 # Converter Basics
 
@@ -77,3 +81,203 @@ other values.
 
 When used with [slash commands](#), Discord shows the first 25 acceptable values to the user.
 
+## Configuration
+
+You can configure a converter via the builder functions it provides.
+While some converters may support special configuration functions and properties, all converters support a common set
+of options.
+
+### Shared Settings
+
+<Doc.Container>
+  <p className="text-center text-l">
+    **Required Settings**
+  </p>
+
+  <Doc.Property name="name" type="key" propType="var">
+    Translation key representing this argument's name.
+
+    Should be short, lowered-kebab-case, and without spaces.
+  </Doc.Property>
+
+  <Doc.Property name="description" type="key" propType="var">
+    Translation key representing this argument's description.
+
+    Should be descriptive, but try to avoid making it too long.
+  </Doc.Property>
+
+  <hr className="clear" />
+
+  <p className="text-center text-l">
+    **Optional Settings**
+  </p>
+
+  <Doc.Builder name="autoComplete" receiver="AutoCompleteInteraction">
+    Register the auto-complete callback for this argument.
+    Use the APIs provided by the `AutoCompleteInteraction` object to check the provided partial argument, and respond
+    with some options.
+
+    Extra APIs are available to help with this, which you can read about on [the interaction utils page](#).
+
+    <Doc.Arguments type="lambda">
+      <Doc.Arg name="event" type="AutoCompleteInteractionCreateEvent">
+        The event that triggered the auto-completion interaction.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <Doc.Builder name="mutate" lambdaReturns="T">
+    Register the mutator for this argument.
+    A mutator takes the final result of an argument conversion, and either returns that value or a new one based on it.
+
+    The generic type `T` represents the argument value's type.
+    A mutator may only return the same type.
+
+    <Doc.Arguments type="lambda">
+      <Doc.Arg name="value" type="T">
+        The value to mutate.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <Doc.Builder name="validate" receiver="ValidationContext">
+    Register the validator for this argument.
+    A validator examines the final result of an argument conversion, and may decide to cause a parsing failure via
+    the `fail()` function.
+
+    The API matches the one provided by [check contexts](#), but instead of an event object, validation contexts
+    provide the following properties.
+    The generic type `T` represents the argument value's type.
+
+    <Doc.Property name="context" type="CommandContext" propType="val">
+      The command context that triggered this validation.
+    </Doc.Property>
+
+    <Doc.Property name="value" type="T" propType="val">
+      The value to examine.
+    </Doc.Property>
+  </Doc.Builder>
+</Doc.Container>
+
+### Settings: Choice Converters
+
+Choice converter builders additionally extend `ChoiceConverterBuilder`, providing an API that allows you to define
+what the possible choices are.
+Choices have a human-readable component, represented by a `Key` object, which your bot will translate using
+[its locale resolvers](#).
+
+The generic type `T` below represents the argument value's type.
+
+<Doc.Container>
+  <Doc.Function name="choice">
+    Add a single choice to the collection of possible choices.
+
+    <Doc.Arguments>
+      <Doc.Arg name="key" type="Key">
+        Translation key, used to display the name of the choice on Discord.
+      </Doc.Arg>
+
+      <Doc.Arg name="value" type="T">
+        Corresponding value, used as the argument's value when a user selects this choice.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+
+  <Doc.Function name="choices">
+    Add multiple choices to the collection of possible choices.
+
+    <Doc.Arguments>
+      <Doc.Arg name="all" type="Map<Key, T>">
+        Collection of possible choices to add.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+
+  <Doc.Property name="choices" type="MutableMap<Key, T>" propType="var">
+    The collection of possible choices, which you can mutate directly if needed.
+  </Doc.Property>
+</Doc.Container>
+
+### Settings: Coalescing Converters
+
+Coalescing converter builders extend `CoalescingConverterBuilder`, instead of directly extending `ConverterBuilder`.
+
+There may be situations where you'd like to decide whether your coalescing converter should respond with an error when
+it can't parse any values, and this builder type provides a property for that.
+
+<Doc.Container>
+  <Doc.Property name="ignoreErrors" type="Boolean" default="true" propType="var">
+    Whether to ignore parsing errors when no values can be parsed.
+
+    If your argument should always require a value, set this to `false`.
+  </Doc.Property>
+</Doc.Container>
+
+### Settings: Defaulting Converters
+
+Defaulting converter builders extend `DefaultingConverterBuilder`, instead of directly extending `ConverterBuilder`.
+This type provides an API you can use to specify a default value, and what should happen when arguments fail to parse.
+
+The generic type `T` below represents the argument value's type.
+
+<Doc.Container>
+  <p className="text-center text-l">
+    **Required Settings**
+  </p>
+
+  <Doc.Property name="defaultValue" type="T" propType="var">
+    The default value to use when a user doesn't provide one, or when parsing fails and `ignoreErrors` is `true`.
+  </Doc.Property>
+
+  <hr className="clear" />
+
+  <p className="text-center text-l">
+    **Optional Settings**
+  </p>
+
+  <Doc.Property name="ignoreErrors" type="Boolean" default="false" propType="var">
+    Whether to use the default value when parsing fails.
+
+    Set this to `true` to ignore parsing errors, and use the default value instead.
+  </Doc.Property>
+</Doc.Container>
+
+### Settings: List Converters
+
+List converter builders extend `ListConverterBuilder`, instead of directly extending `ConverterBuilder`.
+
+There may be situations where you'd like to decide whether your list converter should respond with an error when
+it can't parse any values, and this builder type provides a property for that.
+
+<Doc.Container>
+  <Doc.Property name="ignoreErrors" type="Boolean" default="true" propType="var">
+    Whether to ignore parsing errors when no values can be parsed.
+
+    If your argument should always require a value, set this to `false`.
+  </Doc.Property>
+</Doc.Container>
+
+### Settings: Optional Converters
+
+List converter builders extend `OptionalConverterBuilder`, instead of directly extending `ConverterBuilder`.
+
+There may be situations where you'd like to decide whether your optional converter should respond with an error when
+it can't parse any values, and this builder type provides a property for that.
+
+<Doc.Container>
+  <Doc.Property name="ignoreErrors" type="Boolean" default="false" propType="var">
+    Whether to ignore parsing errors when no values can be parsed.
+
+    Set this to `true` to ignore parsing errors, and use `null` instead.
+  </Doc.Property>
+</Doc.Container>
+
+### Note: Combined Converters
+
+Coalescing converters created using the defaulting or optional builder variants are represented using their own
+builder types — `DefaultingCoalescingConverterBuilder` and `OptionalCoalescingConverterBuilder`.
+These builder types don't extend the `DefaultingConverterBuilder` or `OptionalConverterBuilder` types, but they still
+have the same API.
+
+These types work as you'd expect, but note that while the `ignoreErrors` property defaults to `true` for coalescing
+converters, it defaults to `false` for the defaulting and optional variants.
