@@ -370,3 +370,11 @@ hr.clear {
 .mb-1 {
 	margin-bottom: 1em;
 }
+
+.text-center {
+	text-align: center;
+}
+
+.text-l {
+	font-size: 115%;
+}

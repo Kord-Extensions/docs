@@ -69,6 +69,10 @@
 	gap: 0.5em;
 }
 
+.col .col:not(:last-child) {
+	margin-bottom: 1em;
+}
+
 .head {
 	font-size: 1.25em;
 	font-weight: bold;
