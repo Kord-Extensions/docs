@@ -377,6 +377,14 @@ hr.clear {
 	margin-bottom: 1em;
 }
 
+.mt-0\.5 {
+	margin-top: 0.5em;
+}
+
+.mt-1 {
+	margin-top: 1em;
+}
+
 .text-center {
 	text-align: center;
 }

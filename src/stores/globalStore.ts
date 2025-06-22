@@ -1,12 +1,12 @@
-import flexver from "flexver";
-
 import axios from "axios";
+import flexver from "flexver/dist/module";
 import {XMLParser} from "fast-xml-parser";
 import {configureStore, createSlice} from "@reduxjs/toolkit";
 
 import URLs from "@site/src/maven/URLs";
 import {MavenRootMetadata, MavenSnapshotMetadata} from "@site/src/maven/MavenMetadata";
 import {GradleMetadata, GradleVariant} from "@site/src/maven/GradleMetadata";
+
 
 const versions = await getMavenMetadata()
 const deps = await getDependencies(versions)
@@ -144,6 +144,9 @@ async function getMavenMetadata(): Promise<string[]> {
 			console.info(`Skipping ${url}`, e)
 		}
 	}
+
+	console.log("FLEXVER", flexver)
+
 	const array = Array.from(versions).sort(flexver).reverse()
 
 	console.log("KordEx Versions: ", array)
