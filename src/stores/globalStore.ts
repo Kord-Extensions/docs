@@ -131,21 +131,11 @@ async function getMavenMetadata(): Promise<string[]> {
 		URLs.kordExSnapshotUrlv2("maven-metadata.xml"),
 	]
 
-	for (const url of versionURLs) {
-		try {
-			let result: MavenRootMetadata = await getXML<MavenRootMetadata>(url)
-
-			result.metadata.versioning.versions.version.forEach(
-				(version) => {
-					versions.add(version)
-				}
-			)
-		} catch (e) {
-			console.info(`Skipping ${url}`, e)
-		}
-	}
-
-	console.log("FLEXVER", flexver)
+	await Promise.all(versionURLs.map(url =>
+		getXML<MavenRootMetadata>(url)
+			.then(result => result.metadata.versioning.versions.version.map(v => versions.add(v)))
+			.catch(err => console.info(`Skipping ${url}`, err))
+	));
 
 	const array = Array.from(versions).sort(flexver).reverse()
 
