@@ -26,7 +26,7 @@
 
 .menu select {
 	appearance: none;
-	background-color: transparent;
+	background-color: var(--ifm-color-secondary);
 	border: none;
 	padding: 0.5em;
 	margin: 0;
