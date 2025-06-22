@@ -67,8 +67,10 @@
 	--ifm-color-primary-lighter: #868ff6;
 	--ifm-color-primary-lightest: #b4baf9;
 
+	--ifm-link-color: var(--ifm-color-primary-lighter);
+
 	--ifm-color-primary: #A0A7F2;
-	--ifm-color-primary-text: #000;
+	--ifm-color-primary-text: #FFF;
 
 	--ifm-color-secondary: #4B4C4C;
 	--ifm-color-secondary-text: #FFF;
@@ -80,7 +82,7 @@
 	--ifm-color-info-text: #000;
 
 	--ifm-color-success: #72B072;
-	--ifm-color-success-text: #000;
+	--ifm-color-success-text: #000F;
 
 	--ifm-color-warning: #FFDD80;
 	--ifm-color-warning-text: #000;

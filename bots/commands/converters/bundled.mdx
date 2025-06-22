@@ -267,8 +267,8 @@ They cover the most common use-cases (and some uncommon ones), but you can alway
     Discord channel converter, converting the input to a resolved [Kord Channel object](#).
     This converter behaves differently depending on command type:
 
-    - [Chat commands]: Supports mentions, IDs, names, and `this` to refer to the current channel.
-    - [Slash commands]: Uses the resolved object Discord provides, and can't do its own parsing or resolution.
+    - [Chat commands](#): Supports mentions, IDs, names, and `this` to refer to the current channel.
+    - [Slash commands](#): Uses the resolved object Discord provides, and can't do its own parsing or resolution.
 
     This converter supports some extra settings:
 
@@ -321,17 +321,166 @@ They cover the most common use-cases (and some uncommon ones), but you can alway
     This converter supports the following input styles:
 
     - Unicode emojis.
-    - Discord custom emojis.
-    - Custom emoji IDs, with or without surrounding colons (`:`).
-    - Custom emoji names, with or without surrounding colons (`:`), resolved using the first matching emoji your bot can
-    find on any of its guilds.
+    - Discord custom/guild emojis.
+    - Custom/guild emoji IDs, with or without surrounding colons (`:`).
+    - Custom/guild emoji names, with or without surrounding colons (`:`), resolved using the first matching emoji your
+      bot can find on any of its guilds.
     - Unicode emoji names, as used in Discord's emoji picker.
+  </Doc.Converter>
+
+  <Doc.Converter name="Guild" codeName="guild" valueType="dev.kord.core.entity.Guild"
+                 types={["single", "optional", "list"]}
+  >
+    Discord guild converter, converting the input to a resolved [Kord Guild object](#).
+    This converter supports IDs, names, and `this` to refer to the current guild.
+  </Doc.Converter>
+
+  <Doc.Converter name="Member" codeName="member" valueType="dev.kord.core.entity.Member"
+                 types={["single", "optional", "list"]}
+  >
+    Discord member converter, converting the input to a resolved [Kord Guild Member object](#).
+    This converter behaves differently depending on command type:
+
+    - [Chat commands](#): Supports mentions, IDs, names, `you` to refer to the bot, and `me` to refer to the user
+      executing the command.
+    - [Slash commands](#): Uses the resolved object Discord provides, and can't do its own parsing or resolution.
+
+    This converter supports some extra settings:
+
+    <Doc.Property name="requiredGuild" type="(suspend () -> Snowflake)?" default="null" propType="var">
+      Callback that returns a `Snowflake` representing a predefined guild the supplied member must exist on.
+      This will also limit command executions to that guild.
+    </Doc.Property>
+
+    <Doc.Property name="requireSameGuild" type="Boolean" default="true" propType="var">
+      Whether the provided member must exist on the same guild used to execute the command.
+      If the command was executed in DMs, the argument will always be considered invalid.
+    </Doc.Property>
+
+    <Doc.Property name="useReply" type="Boolean" default="true" propType="var">
+      **For chat commands:** Whether to use the author of the replied-to message, when there is one.
+      If the command was executed in DMs, the argument will always be considered invalid.
+    </Doc.Property>
+  </Doc.Converter>
+
+  <Doc.Converter name="Message" codeName="message" valueType="dev.kord.core.entity.Message"
+                 types={["single", "optional", "list"]}
+  >
+    Discord message converter, converting the input to a resolved [Kord Message object](#).
+    This converter supports jump URLs and IDs, and the converter assumes that provided IDs refer to messages in the
+    current channel.
+
+    Messages will be retrieved if they're not already in Kord's cache, which requires the bot to be able to see the
+    message in question.
+    Your bot cannot resolve jump URLs referring to messages in DMs.
+
+    This converter supports some extra settings:
+
+    <Doc.Property name="requiredGuild" type="(suspend () -> Snowflake)?" default="null" propType="var">
+      Callback that returns a `Snowflake` representing a predefined guild the supplied message must exist on.
+      This will also limit command executions to that guild.
+    </Doc.Property>
+
+    <Doc.Property name="requireSameGuild" type="Boolean" default="true" propType="var">
+      When `requiredGuild` is specified, whether the message must exist on guild returned by that callback.
+      Otherwise, whether the provided message must exist on the same guild used to execute the command.
+
+      If the command was executed in DMs and this setting is `true`, the argument will always be considered invalid.
+    </Doc.Property>
+
+    <Doc.Property name="useReply" type="Boolean" default="true" propType="var">
+      Whether to use the author of the replied-to message, when there is one.
+    </Doc.Property>
+  </Doc.Converter>
+
+  <Doc.Converter name="Role" codeName="role" valueType="dev.kord.core.entity.Role"
+                 types={["single", "optional", "list"]}
+  >
+    Discord role converter, converting the input to a resolved [Kord Role object](#).
+
+    This converter doesn't support resolving roles via commands run in DMs.
+    It also behaves differently depending on command type:
+
+    - [Chat commands](#): Supports mentions, IDs and names.
+    - [Slash commands](#): Uses the resolved object Discord provides, and can't do its own parsing or resolution.
+
+    This converter supports some extra settings:
+
+    <Doc.Property name="requiredGuild" type="(suspend () -> Snowflake)?" default="null" propType="var">
+      **For chat commands:** Callback that returns a `Snowflake` representing a predefined guild the supplied role
+      must exist on.
+
+      Roles passed to slash commands are already limited to the same guild the command was executed on, so this
+      setting does nothing in that case.
+    </Doc.Property>
+  </Doc.Converter>
+
+  <Doc.Converter name="Snowflake" codeName="snowflake" valueType="dev.kord.common.entity.Snowflake"
+                 types={["single", "optional", "list", "defaulting"]}
+  >
+    Discord snowflake converter, converting the input to a
+    [Kord Snowflake object](https://dokka.kord.dev/common/dev.kord.common.entity/-snowflake/index.html).
+  </Doc.Converter>
+
+  <Doc.Converter name="Tag" codeName="tag" valueType="dev.kord.common.entity.ForumTag"
+                 types={["single", "optional", "list"]}
+  >
+    Discord tag converter, converting the input to a resolved [Kord ForumTag object](#).
+
+    This converter supports tag names, supplied via the built-in auto-completion based on its settings:
+    - **Default:** Use the parent channel for the current forum thread, if the command is being run within one.
+    - **With Channel Getter:** Always use the forum channel returned by the getter.
+
+    If you don't provide a channel getter and a user runs this command outside of a forum thread, your bot won't be able
+    to resolve any tags.
+
+    <Doc.Property name="channelGetter " type="(suspend () -> ForumChannel?)?" default="null" propType="var">
+      Callback that returns a `ForumChannel` representing a predefined forum channel the supplied tag must exist on.
+    </Doc.Property>
+  </Doc.Converter>
+
+  <Doc.Converter name="Timestamp" codeName="timestamp"
+                 valueType="dev.kordex.core.commands.converters.impl.FormattedTimestamp"
+                 types={["single", "optional", "list", "defaulting"]}
+  >
+    [Discord-formatted timestamp](https://discord.com/developers/docs/reference#message-formatting) converter,
+    converting the input to a `FormattedTimestamp` object, which includes the corresponding `Instant` and
+    `TimestampType`.
+
+    This converter only supports Discord-formatted timestamps.
+    For duration parsing (which includes Discord-formatted timestamps), see the `Duration` converter above.
+  </Doc.Converter>
+
+  <Doc.Converter name="User" codeName="user" valueType="dev.kord.core.entity.User"
+                 types={["single", "optional", "list"]}
+  >
+    Discord user converter, converting the input to a resolved [Kord User object](#).
+    This converter behaves differently depending on command type:
+
+    - [Chat commands](#): Supports mentions, IDs, usernames, tags, `you` to refer to the bot, and `me` to refer to the user
+      executing the command.
+    - [Slash commands](#): Uses the resolved object Discord provides, and can't do its own parsing or resolution.
+
+    This converter supports some extra settings:
+
+    <Doc.Property name="useReply" type="Boolean" default="true" propType="var">
+      **For chat commands:** Whether to use the author of the replied-to message, when there is one.
+    </Doc.Property>
   </Doc.Converter>
 </Doc.Container>
 
 ## Slash Commands
 
+<Doc.Container>
+  <Doc.Converter name="Attachment" codeName="attachment" valueType="dev.kord.core.entity.Attachment"
+                 types={["single", "optional"]}
+  >
+    Discord attachment converter, supplied as a file when invoking a slash command.
+    Discord provides a drop target for this type of argument.
 
+    This converter doesn't support chat commands.
+  </Doc.Converter>
+</Doc.Container>
 
 ## Unsafe
 
