@@ -19,6 +19,21 @@ export default function LayoutWrapper(props: Props): ReactNode {
 				Internal API - may change without warning!
 			</Tooltip>
 
+			<Tooltip id="api-dependency-tooltip" place="bottom" className="react-tooltip"
+			         classNameArrow="react-tooltip-arrow" opacity="1">
+				API Dependency
+			</Tooltip>
+
+			<Tooltip id="runtime-dependency-tooltip" place="bottom" className="react-tooltip"
+			         classNameArrow="react-tooltip-arrow" opacity="1">
+				Runtime Dependency
+			</Tooltip>
+
+			<Tooltip id="copy-dependency-tooltip" place="bottom" className="react-tooltip"
+			         classNameArrow="react-tooltip-arrow" opacity="1">
+				Copy Coordinates
+			</Tooltip>
+
 			{
 				// TODO: Remove warning on release!
 				isOpen ?
