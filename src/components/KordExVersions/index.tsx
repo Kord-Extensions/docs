@@ -234,25 +234,31 @@ function Metadata(props: MetadataProps): ReactNode {
 
 export default function (): ReactNode {
 	const globalState = useGlobalSelector((state) => state.versions)
-
-	const [selectedVersion, setSelectedVersion] = useState<string>(globalState.versions[0]);
-	const [selectedMetadata, setSelectedMetadata] = useState<GradleMetadata | null>(null);
-	const [isLoading, setIsLoading] = useState<boolean>(false);
-
 	const dispatch = useGlobalDispatch();
 
-	async function getMetadata(version: string) {
+	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [selectedVersion, setSelectedVersion] = useState<string>(globalState.versions[0]);
+	const [selectedMetadata, setSelectedMetadata] = useState<GradleMetadata | null>(
+		globalState.gradle[globalState.versions[0] ?? null]
+	);
+
+	function getMetadata(version: string) {
 		if (!globalState.gradle.hasOwnProperty(version)) {
 			console.log(`Loading version: ${version}`)
 
 			setIsLoading(true);
 
-			const data = await dispatch(getGradle(version))
-			setSelectedMetadata((data.payload as {metadata: GradleMetadata}).metadata)
+			dispatch(getGradle(version)).then((data) => {
+				if (data.payload !== undefined) {
+					setSelectedMetadata((data.payload as { metadata: GradleMetadata }).metadata)
+				} else {
+					setSelectedMetadata(null)
+				}
 
-			setIsLoading(false);
+				setIsLoading(false);
 
-			console.log(`Loading done.`)
+				console.log(`Loading done.`)
+			})
 		} else {
 			console.log(`Using existing data for version: ${version}`)
 
@@ -260,18 +266,15 @@ export default function (): ReactNode {
 		}
 	}
 
-	useEffect(() => {
-		getMetadata(globalState.versions[0]).then()
-	}, []);
-
 	return <div>
-		<div className={clsx(styles.menu)}>
+		<div className={clsx(styles.menu, isLoading ? styles.disabled : "")}>
 			<select value={selectedVersion}
+			        disabled={isLoading}
+
 			        onChange={e => {
 				        setSelectedVersion(e.target.value)
-				        getMetadata(e.target.value).then()
+				        getMetadata(e.target.value)
 			        }}
-			        disabled={isLoading}
 			>
 				{
 					globalState.versions.map((v) => (
@@ -286,11 +289,17 @@ export default function (): ReactNode {
 		{
 			isLoading ?
 				<div className="text-primary mt-1">Loading...</div> :
-				selectedMetadata === null ?
-					<div className="text-danger mt-1">Unable to retrieve metadata for version {selectedVersion}.</div> :
-					<Metadata version={selectedVersion} metadata={selectedMetadata}/>
-
+				<></>
 		}
-
+		{
+			selectedMetadata === null ?
+				<div className="text-danger mt-1">
+					Can't fetch metadata for
+					version {selectedVersion}: {globalState.lastError ?? "Metadata file missing"}.
+				</div> :
+				<div className={clsx(styles.darkener, isLoading ? styles.darken : "")}>
+					<Metadata version={selectedVersion} metadata={selectedMetadata}/>
+				</div>
+		}
 	</div>
 }
