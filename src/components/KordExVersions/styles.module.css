@@ -24,6 +24,11 @@
 	font-weight: bold;
 }
 
+.menu {
+	display: flex;
+	flex-direction: row;
+}
+
 .menu select {
 	appearance: none;
 	background-color: var(--ifm-color-secondary);
