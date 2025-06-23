@@ -1,19 +1,20 @@
 "use client";
 
-import {ReactNode, useState} from "react";
+import {ReactNode, useEffect, useState} from "react";
 import clsx from "clsx";
 
 import {Icon} from "@iconify/react";
 
-import {useGlobalSelector} from "@site/src/stores/globalHooks";
+import {getGradle, useGlobalDispatch, useGlobalSelector} from "@site/src/stores/globalHooks";
 import {Dependency} from "@site/src/stores/globalStore";
 import {Tag, Tags} from "@site/src/components/Tags";
 
 import styles from "./styles.module.css";
+import {GradleMetadata} from "@site/src/maven/GradleMetadata";
 
-type DepsProps = {
+type MetadataProps = {
 	version: string
-	deps: Dependency
+	metadata: GradleMetadata
 }
 
 type FlattenedDep = {
@@ -30,8 +31,11 @@ type FlattenedDep = {
 	}
 }
 
-function Deps(props: DepsProps): ReactNode {
-	const deps = props.deps
+function Metadata(props: MetadataProps): ReactNode {
+	const deps = {
+		api: props.metadata.variants.find((it) => (it.name === "apiElements")),
+		runtime: props.metadata.variants.find((it) => (it.name === "runtimeElements")),
+	}
 
 	const jvmVersion = deps.runtime.attributes["org.gradle.jvm.version"] as number;
 
@@ -232,15 +236,42 @@ export default function (): ReactNode {
 	const globalState = useGlobalSelector((state) => state.versions)
 
 	const [selectedVersion, setSelectedVersion] = useState<string>(globalState.versions[0]);
-	const [selectedDeps, setSelectedDeps] = useState<Dependency | undefined>(globalState.dependencies[globalState.versions[0]]);
+	const [selectedMetadata, setSelectedMetadata] = useState<GradleMetadata | null>(null);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
+
+	const dispatch = useGlobalDispatch();
+
+	async function getMetadata(version: string) {
+		if (!globalState.gradle.hasOwnProperty(version)) {
+			console.log(`Loading version: ${version}`)
+
+			setIsLoading(true);
+
+			const data = await dispatch(getGradle(version))
+			setSelectedMetadata((data.payload as {metadata: GradleMetadata}).metadata)
+
+			setIsLoading(false);
+
+			console.log(`Loading done.`)
+		} else {
+			console.log(`Using existing data for version: ${version}`)
+
+			setSelectedMetadata(globalState.gradle[version])
+		}
+	}
+
+	useEffect(() => {
+		getMetadata(globalState.versions[0]).then()
+	}, []);
 
 	return <div>
 		<div className={clsx(styles.menu)}>
 			<select value={selectedVersion}
 			        onChange={e => {
 				        setSelectedVersion(e.target.value)
-				        setSelectedDeps(globalState.dependencies[e.target.value])
+				        getMetadata(e.target.value).then()
 			        }}
+			        disabled={isLoading}
 			>
 				{
 					globalState.versions.map((v) => (
@@ -253,9 +284,12 @@ export default function (): ReactNode {
 		</div>
 
 		{
-			selectedDeps === undefined ?
-				<div className="text-danger mt-1">Unable to retrieve metadata for version {selectedVersion}.</div> :
-				<Deps version={selectedVersion} deps={selectedDeps}/>
+			isLoading ?
+				<div className="text-primary mt-1">Loading...</div> :
+				selectedMetadata === null ?
+					<div className="text-danger mt-1">Unable to retrieve metadata for version {selectedVersion}.</div> :
+					<Metadata version={selectedVersion} metadata={selectedMetadata}/>
+
 		}
 
 	</div>

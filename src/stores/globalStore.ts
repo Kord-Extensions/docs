@@ -1,15 +1,18 @@
 import axios from "axios";
 import flexver from "flexver/dist/module";
 import {XMLParser} from "fast-xml-parser";
-import {configureStore, createSlice} from "@reduxjs/toolkit";
 
-import URLs from "@site/src/maven/URLs";
-import {MavenRootMetadata, MavenSnapshotMetadata} from "@site/src/maven/MavenMetadata";
+import {applyMiddleware, configureStore, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {thunk} from "redux-thunk"
+
 import {GradleMetadata, GradleVariant} from "@site/src/maven/GradleMetadata";
-
+import {getGradleMetadata, getJSON, getMavenMetadata, getXML} from "@site/src/maven/Net";
+import {MavenSnapshotMetadata} from "@site/src/maven/MavenMetadata";
+import {getGradle} from "@site/src/stores/globalHooks";
 
 const versions = await getMavenMetadata()
-const deps = await getDependencies(versions)
+const latestVersion = versions[0]
+const latest = await getGradleMetadata(latestVersion)
 
 export type Dependency = {
 	api: GradleVariant,
@@ -20,20 +23,71 @@ export type Dependencies = {
 	[key: string]: Dependency
 }
 
+export interface VersionedGradleMetadata {
+	version: string,
+	metadata: GradleMetadata,
+}
+
 export const VersionSlice = createSlice({
 	name: "versions",
+
 	initialState: {
 		versions: versions,
-		dependencies: deps,
+		retrieved: [versions[0]] as string[],
+
+		gradle: {[latestVersion]: latest} as {[key: string] : GradleMetadata},
+
+		status: "idle" as "idle" | "pending" | "succeeded" | "failed",
+		lastError: null as string | null,
 	},
 
 	reducers: {
-		// Note: Reducers aren't useful for this state, we preload it and that's all.
-		// Still, TypeScript requires we have at least one.
-		clear: (state) => {
+		clearAll: (state) => {
 			state.versions = [];
-			state.dependencies = {};
-		}
+			state.gradle = {} as {[key: string] : GradleMetadata};
+		},
+
+		setGradle: {
+			reducer(state, action: PayloadAction<VersionedGradleMetadata>) {
+				state.gradle[action.payload.version] = action.payload.metadata;
+			},
+
+			prepare(version: string, metadata: GradleMetadata) {
+				return {payload: {version, metadata}};
+			}
+		},
+
+		addRetrieved: {
+			reducer(state, action: PayloadAction<string>) {
+				state.retrieved.push(action.payload)
+			},
+
+			prepare(version: string) {
+				return {payload: version}
+			}
+		},
+	},
+
+	selectors: {
+		getRetrieved: sliceState => sliceState.retrieved
+	},
+
+	extraReducers: builder => {
+		builder
+			.addCase(getGradle.pending, (state, action) => {
+				state.status = "pending"
+				state.lastError = null
+			})
+
+			.addCase(getGradle.fulfilled, (state, action) => {
+				state.status = "idle"
+				state.gradle[action.payload.version] = action.payload.metadata
+			})
+
+			.addCase(getGradle.rejected, (state, action) => {
+				state.status = "idle"
+				state.lastError = action.error.message ?? "Unknown error"
+			})
 	}
 })
 
@@ -41,105 +95,13 @@ export const Store = configureStore({
 	reducer: {
 		versions: VersionSlice.reducer,
 	},
+
+	middleware: getDefaultMiddleware =>
+		getDefaultMiddleware()
 })
 
-export const {clear} = VersionSlice.actions;
+export const { clearAll, setGradle, addRetrieved } = VersionSlice.actions;
+export const getRetrieved = (state: RootState) => VersionSlice.selectors.getRetrieved(state);
 
 export type RootState = ReturnType<typeof Store.getState>;
 export type AppDispatch = typeof Store.dispatch;
-
-async function getJSON<T>(url: string): Promise<T> {
-	const response = await axios.get(url, {responseType: "text"})
-
-	return JSON.parse(response.data) as T
-}
-
-async function getXML<T>(url: string): Promise<T> {
-	const parser = new XMLParser()
-	const response = await axios.get(url, {responseType: "text"})
-
-	return parser.parse(response.data) as T
-}
-
-async function getDependencies(versions: string[]): Promise<Dependencies> {
-	const result: Dependencies = {}
-
-	for (const version of versions) {
-		let url: string;
-
-		if (version.startsWith("1.") || version.startsWith("0.")) {
-			if (version.endsWith("-SNAPSHOT")) {
-				let mavenMetadata = await getXML<MavenSnapshotMetadata>(
-					URLs.kordExSnapshotUrlv1(`${version}/maven-metadata.xml`)
-				)
-
-				let versions = mavenMetadata.metadata.versioning.snapshotVersions.snapshotVersion.sort(
-					(left, right) => (left.updated - right.updated)
-				).reverse()
-
-				let latest = versions[0].value
-
-				url = URLs.kordExSnapshotUrlv1(`${version}/kord-extensions-${latest}.module`)
-			} else {
-				url = URLs.kordExReleasesUrlv1(`${version}/kord-extensions-${version}.module`)
-			}
-		} else {
-			if (version.endsWith("-SNAPSHOT")) {
-				let mavenMetadata = await getXML<MavenSnapshotMetadata>(
-					URLs.kordExSnapshotUrlv2(`${version}/maven-metadata.xml`)
-				)
-
-				let versions = mavenMetadata.metadata.versioning.snapshotVersions.snapshotVersion.sort(
-					(left, right) => (left.updated - right.updated)
-				).reverse()
-
-				let latest = versions[0].value
-
-				url = URLs.kordExSnapshotUrlv2(`${version}/kord-extensions-${latest}.module`)
-			} else {
-				url = URLs.kordExReleasesUrlv2(`${version}/kord-extensions-${version}.module`)
-			}
-		}
-
-		try {
-			let metadata = await getJSON<GradleMetadata>(url);
-
-			result[version] = {
-				api: metadata.variants.find(
-					(v) => (v.name == "apiElements")
-				),
-
-				runtime: metadata.variants.find(
-					(v) => (v.name == "runtimeElements")
-				),
-			}
-		} catch (e) {
-			console.error(`Failed to get metadata for KordEx ${version}`, e)
-		}
-	}
-
-	return result
-}
-
-async function getMavenMetadata(): Promise<string[]> {
-	let versions = new Set<string>()
-
-	const versionURLs = [
-		URLs.kordExReleasesUrlv1("maven-metadata.xml"),
-		URLs.kordExReleasesUrlv2("maven-metadata.xml"),
-		URLs.kordExSnapshotUrlv1("maven-metadata.xml"),
-		URLs.kordExSnapshotUrlv2("maven-metadata.xml"),
-	]
-
-	await Promise.all(versionURLs.map(url =>
-		getXML<MavenRootMetadata>(url)
-			.then(result => result.metadata.versioning.versions.version.map(v => versions.add(v)))
-			.catch(err => console.info(`Skipping ${url}`, err))
-	));
-
-	const array = Array.from(versions).sort(flexver).reverse()
-
-	console.log("KordEx Versions: ", array)
-
-	return array
-}
