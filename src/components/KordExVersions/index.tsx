@@ -6,7 +6,6 @@ import clsx from "clsx";
 import {Icon} from "@iconify/react";
 
 import {getGradle, useGlobalDispatch, useGlobalSelector} from "@site/src/stores/globalHooks";
-import {Dependency} from "@site/src/stores/globalStore";
 import {Tag, Tags} from "@site/src/components/Tags";
 
 import styles from "./styles.module.css";
