@@ -10,6 +10,7 @@ import {Tag, Tags} from "@site/src/components/Tags";
 
 import styles from "./styles.module.css";
 import {GradleMetadata} from "@site/src/maven/GradleMetadata";
+import Loader from "@site/src/components/Loader";
 
 type MetadataProps = {
 	version: string
@@ -266,39 +267,40 @@ function Inner(): ReactNode {
 	}
 
 	return <div>
-		<div className={clsx(styles.menu, isLoading ? styles.disabled : "")}>
-			<select value={selectedVersion}
-			        disabled={isLoading}
+		<div className={clsx(styles.row)}>
+			<div className={clsx(styles.menu, (isLoading || globalState.versions.length < 1) ? styles.disabled : "")}>
+				<select value={selectedVersion}
+				        disabled={isLoading || globalState.versions.length < 1}
 
-			        onChange={e => {
-				        setSelectedVersion(e.target.value)
-				        getMetadata(e.target.value)
-			        }}
-			>
-				{
-					globalState.versions.map((v) => (
-						<option key={v} value={v}>{v}</option>
-					))
-				}
-			</select>
+				        onChange={e => {
+					        setSelectedVersion(e.target.value)
+					        getMetadata(e.target.value)
+				        }}
+				>
+					{
+						globalState.versions.map((v) => (
+							<option key={v} value={v}>{v}</option>
+						))
+					}
+				</select>
 
-			<span className={clsx(styles.focus)}></span>
+				<span className={clsx(styles.focus)}></span>
+			</div>
+
+			{isLoading ? <Loader size="2em" style={{alignSelf: "center"}} /> : null}
 		</div>
 
 		{
-			isLoading ?
-				<div className="text-primary mt-1">Loading...</div> :
-				<></>
-		}
-		{
-			selectedMetadata === null || selectedMetadata === undefined ?
-				<div className="text-danger mt-1">
-					Can't fetch metadata for
-					version {selectedVersion}: {globalState.lastError ?? "Metadata file missing"}.
-				</div> :
-				<div className={clsx(styles.darkener, isLoading ? styles.darken : "")}>
-					<Metadata version={selectedVersion} metadata={selectedMetadata}/>
-				</div>
+			globalState.versions.length < 1 ?
+				<div className="text-danger mt-1">Can't load Kord Extensions versions from Maven!</div> :
+				selectedMetadata === null || selectedMetadata === undefined ?
+					<div className="text-danger mt-1">
+						Can't fetch metadata for
+						version {selectedVersion}: {globalState.lastError ?? "Metadata file missing"}.
+					</div> :
+					<div className={clsx(styles.darkener, isLoading ? styles.darken : "")}>
+						<Metadata version={selectedVersion} metadata={selectedMetadata}/>
+					</div>
 		}
 	</div>
 }
@@ -306,11 +308,7 @@ function Inner(): ReactNode {
 export default function(): ReactNode {
 	const isConfigured = useGlobalSelector((state) => state.versions.configured)
 
-	if (!isConfigured) {
-
-	}
-
 	return <>
-		{ isConfigured ? <Inner /> : undefined }
+		{ isConfigured ? <Inner /> : <div className="text-primary mt-1">Please wait, loading versions...</div> }
 	</>
 }
