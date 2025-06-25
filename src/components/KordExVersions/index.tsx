@@ -1,6 +1,6 @@
 "use client";
 
-import {ReactNode, useEffect, useState} from "react";
+import React, {Component, ReactNode, useEffect, useState, useSyncExternalStore} from "react";
 import clsx from "clsx";
 
 import {Icon} from "@iconify/react";
@@ -231,7 +231,7 @@ function Metadata(props: MetadataProps): ReactNode {
 	</div>
 }
 
-export default function (): ReactNode {
+function Inner(): ReactNode {
 	const globalState = useGlobalSelector((state) => state.versions)
 	const dispatch = useGlobalDispatch();
 
@@ -291,7 +291,7 @@ export default function (): ReactNode {
 				<></>
 		}
 		{
-			selectedMetadata === null ?
+			selectedMetadata === null || selectedMetadata === undefined ?
 				<div className="text-danger mt-1">
 					Can't fetch metadata for
 					version {selectedVersion}: {globalState.lastError ?? "Metadata file missing"}.
@@ -301,4 +301,16 @@ export default function (): ReactNode {
 				</div>
 		}
 	</div>
+}
+
+export default function(): ReactNode {
+	const isConfigured = useGlobalSelector((state) => state.versions.configured)
+
+	if (!isConfigured) {
+
+	}
+
+	return <>
+		{ isConfigured ? <Inner /> : undefined }
+	</>
 }

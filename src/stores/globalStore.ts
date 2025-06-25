@@ -1,18 +1,9 @@
-import axios from "axios";
-import flexver from "flexver/dist/module";
-import {XMLParser} from "fast-xml-parser";
-
-import {applyMiddleware, configureStore, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {thunk} from "redux-thunk"
+import {configureStore, createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 import {GradleMetadata, GradleVariant} from "@site/src/maven/GradleMetadata";
-import {getGradleMetadata, getJSON, getMavenMetadata, getXML} from "@site/src/maven/Net";
-import {MavenSnapshotMetadata} from "@site/src/maven/MavenMetadata";
-import {getGradle} from "@site/src/stores/globalHooks";
-
-const versions = await getMavenMetadata()
-const latestVersion = versions[0]
-const latest = await getGradleMetadata(latestVersion)
+import {getGradleMetadata, getMavenMetadata} from "@site/src/maven/Net";
+import {getGradle, useGlobalDispatch} from "@site/src/stores/globalHooks";
+import {useDispatch} from "react-redux";
 
 export type Dependency = {
 	api: GradleVariant,
@@ -32,10 +23,11 @@ export const VersionSlice = createSlice({
 	name: "versions",
 
 	initialState: {
-		versions: versions,
-		retrieved: [versions[0]] as string[],
+		configured: false,
+		versions: [] as string[],
+		retrieved: [] as string[],
 
-		gradle: {[latestVersion]: latest} as {[key: string] : GradleMetadata},
+		gradle: {} as { [key: string]: GradleMetadata },
 
 		status: "idle" as "idle" | "pending",
 		lastError: null as string | null,
@@ -44,7 +36,31 @@ export const VersionSlice = createSlice({
 	reducers: {
 		clearAll: (state) => {
 			state.versions = [];
-			state.gradle = {} as {[key: string] : GradleMetadata};
+			state.gradle = {} as { [key: string]: GradleMetadata };
+		},
+
+		markConfigured: (state) => {
+			state.configured = true
+		},
+
+		replaceGradle: {
+			reducer(state, action: PayloadAction<{ [key: string]: GradleMetadata }>) {
+				state.gradle = action.payload;
+			},
+
+			prepare(version: string, data: GradleMetadata) {
+				return {payload: {[version]: data}}
+			}
+		},
+
+		replaceVersions: {
+			reducer(state, action: PayloadAction<string[]>) {
+				state.versions = action.payload;
+			},
+
+			prepare(data: string[]) {
+				return {payload: data}
+			}
 		},
 
 		setGradle: {
@@ -100,8 +116,36 @@ export const Store = configureStore({
 		getDefaultMiddleware()
 })
 
-export const { clearAll, setGradle, addRetrieved } = VersionSlice.actions;
+export const {clearAll, setGradle, addRetrieved, replaceGradle, replaceVersions, markConfigured} = VersionSlice.actions;
 export const getRetrieved = (state: RootState) => VersionSlice.selectors.getRetrieved(state);
 
 export type RootState = ReturnType<typeof Store.getState>;
 export type AppDispatch = typeof Store.dispatch;
+
+// This replaces a top-level await.
+// Let's avoid using await here as well.
+function setup() {
+	console.log("Setting up initial data...")
+
+	getMavenMetadata().then(
+		(v) => {
+			console.log("KordEx Versions:", v)
+
+			const latestVersion = v[0];
+
+			addRetrieved(latestVersion)
+
+			getGradleMetadata(latestVersion).then(
+				(g) => {
+					console.log(`Latest version: ${latestVersion}`)
+
+					Store.dispatch(replaceVersions(v))
+					Store.dispatch(replaceGradle(latestVersion, g))
+					Store.dispatch(markConfigured())
+				}
+			)
+		}
+	)
+}
+
+setup()
