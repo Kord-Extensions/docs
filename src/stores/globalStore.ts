@@ -37,7 +37,7 @@ export const VersionSlice = createSlice({
 
 		gradle: {[latestVersion]: latest} as {[key: string] : GradleMetadata},
 
-		status: "idle" as "idle" | "pending" | "succeeded" | "failed",
+		status: "idle" as "idle" | "pending",
 		lastError: null as string | null,
 	},
 

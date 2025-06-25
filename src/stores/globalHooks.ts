@@ -17,7 +17,7 @@ export const useGlobalSelector = useSelector.withTypes<RootState>()
 export const useGlobalStore = useStore.withTypes<typeof Store>()
 
 export const getGradle = createAsyncThunk(
-	"versions/getMavenMetadata",
+	"versions/getGradle",
 
 	async (version: string, thunkAPI) => {
 		addRetrieved(version)
@@ -28,8 +28,6 @@ export const getGradle = createAsyncThunk(
 		} as VersionedGradleMetadata
 	}, {
 		condition(version, thunkApi) {
-			thunkApi.getState()
-
 			const retrieved = getRetrieved(thunkApi.getState() as RootState)
 
 			if (retrieved.includes(version)) {
