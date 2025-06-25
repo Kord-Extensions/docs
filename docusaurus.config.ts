@@ -48,6 +48,8 @@ const config: Config = {
 				theme: {
 					customCss: "./src/css/custom.css",
 				},
+
+				svgr: {},
 			} satisfies Preset.Options,
 		],
 	],
