@@ -37,8 +37,6 @@ export async function getMavenMetadata(): Promise<string[]> {
 
 	const array = Array.from(versions).sort(flexver).reverse()
 
-	console.log("KordEx Versions: ", array)
-
 	return array
 }
 
