@@ -29,10 +29,8 @@ export default function LayoutWrapper(props: Props): ReactNode {
 				Runtime Dependency
 			</Tooltip>
 
-			<Tooltip id="copy-dependency-tooltip" place="bottom" className="react-tooltip"
-			         classNameArrow="react-tooltip-arrow" opacity="1">
-				Copy Coordinates
-			</Tooltip>
+			<Tooltip id="generic-tooltip" className="react-tooltip"
+			         classNameArrow="react-tooltip-arrow" opacity="1" />
 
 			{
 				// TODO: Remove warning on release!
