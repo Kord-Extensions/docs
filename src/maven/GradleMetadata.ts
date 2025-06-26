@@ -92,3 +92,22 @@ export type GradleMetadata = {
 
 	variants: GradleVariant[]
 }
+
+export type VersionCatalogue = {
+	bundles: {
+		[key: string]: string[]
+	},
+
+	libraries: {
+		[key: string]: {
+			module: string,
+			version: {
+				ref: string,
+			}
+		}
+	},
+
+	versions: {
+		[key: string]: string
+	}
+}

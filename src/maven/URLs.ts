@@ -13,6 +13,11 @@ const KORDEX_SNAPSHOTS_BASE_V2 = `${KORDEX_SNAPSHOTS}/dev/kordex/kord-extensions
 const KORD_RELEASES_BASE = `${CENTRAL_BASE}/dev/kord/kord-core`
 const KORD_SNAPSHOTS_BASE = `${KORD_SNAPSHOTS}/dev/kord/kord-core`
 
+const GRADLE_PLUGIN_RELEASES = "https://api.github.com/repos/kord-extensions/gradle-plugins/tags"
+const GRADLE_WRAPPER_PROPS = "https://raw.githubusercontent.com/Kord-Extensions/gradle-plugins/refs/heads/root/gradle/wrapper/gradle-wrapper.properties"
+
+const VERSION_CATALOGUE = "https://raw.githubusercontent.com/Kord-Extensions/kord-extensions/refs/heads/root/gradle/libs.versions.toml"
+
 function kordExReleasesUrlv1(path: string) {
 	return `${KORDEX_RELEASES_BASE_V1}/${path}`
 }
@@ -37,8 +42,22 @@ function kordSnapshotUrl(path: string) {
 	return `${KORD_SNAPSHOTS_BASE}/${path}`
 }
 
+function gradlePluginUrl() {
+	return GRADLE_PLUGIN_RELEASES
+}
+
+function gradleWrapperUrl() {
+	return GRADLE_WRAPPER_PROPS
+}
+
+function kordExVersionCatalogueUrl() {
+	return VERSION_CATALOGUE
+}
+
 export default {
 	kordExReleasesUrlv1, kordExSnapshotUrlv1,
 	kordExReleasesUrlv2, kordExSnapshotUrlv2,
 	kordReleasesUrl, kordSnapshotUrl,
+	gradlePluginUrl, gradleWrapperUrl,
+	kordExVersionCatalogueUrl,
 }

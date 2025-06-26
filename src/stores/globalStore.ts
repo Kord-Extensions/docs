@@ -1,7 +1,13 @@
 import {configureStore, createSlice, PayloadAction} from "@reduxjs/toolkit";
 
-import {GradleMetadata, GradleVariant} from "@site/src/maven/GradleMetadata";
-import {getGradleMetadata, getMavenMetadata} from "@site/src/maven/Net";
+import {GradleMetadata, GradleVariant, VersionCatalogue} from "@site/src/maven/GradleMetadata";
+import {
+	getGradleMetadata,
+	getGradleVersion,
+	getMavenMetadata,
+	getPluginVersions,
+	getVersionCatalogue
+} from "@site/src/maven/Net";
 import {getGradle, useGlobalDispatch} from "@site/src/stores/globalHooks";
 import {useDispatch} from "react-redux";
 
@@ -24,7 +30,11 @@ export const VersionSlice = createSlice({
 
 	initialState: {
 		configured: false,
+		gradleVersion: "Unknown",
+
+		versionCatalogue: {} as VersionCatalogue,
 		versions: [] as string[],
+		pluginVersions: [] as string[],
 		retrieved: [] as string[],
 
 		gradle: {} as { [key: string]: GradleMetadata },
@@ -53,9 +63,29 @@ export const VersionSlice = createSlice({
 			}
 		},
 
+		replaceVersionCatalogue: {
+			reducer(state, action: PayloadAction<VersionCatalogue>) {
+				state.versionCatalogue = action.payload;
+			},
+
+			prepare(data: VersionCatalogue) {
+				return {payload: data}
+			}
+		},
+
 		replaceVersions: {
 			reducer(state, action: PayloadAction<string[]>) {
 				state.versions = action.payload;
+			},
+
+			prepare(data: string[]) {
+				return {payload: data}
+			}
+		},
+
+		replacePluginVersions: {
+			reducer(state, action: PayloadAction<string[]>) {
+				state.pluginVersions = action.payload;
 			},
 
 			prepare(data: string[]) {
@@ -70,6 +100,16 @@ export const VersionSlice = createSlice({
 
 			prepare(version: string, metadata: GradleMetadata) {
 				return {payload: {version, metadata}};
+			}
+		},
+
+		setGradleVersion: {
+			reducer(state, action: PayloadAction<string>) {
+				state.gradleVersion = action.payload;
+			},
+
+			prepare(version: string) {
+				return {payload: version};
 			}
 		},
 
@@ -116,36 +156,67 @@ export const Store = configureStore({
 		getDefaultMiddleware()
 })
 
-export const {clearAll, setGradle, addRetrieved, replaceGradle, replaceVersions, markConfigured} = VersionSlice.actions;
+export const {clearAll, setGradle, addRetrieved, replaceGradle, replaceVersions, replacePluginVersions, markConfigured, setGradleVersion, replaceVersionCatalogue} = VersionSlice.actions;
 export const getRetrieved = (state: RootState) => VersionSlice.selectors.getRetrieved(state);
 
 export type RootState = ReturnType<typeof Store.getState>;
 export type AppDispatch = typeof Store.dispatch;
 
-// This replaces a top-level await.
-// Let's avoid using await here as well.
+// NOTE: Must be done this way instead of using a top-level await.
+// Docusaurus will fail to build with a cryptic error otherwise.
 function setup() {
-	console.log("Setting up initial data...")
+	async function inner() {
+		console.log("VERSION CATALOGUE:", await getVersionCatalogue())
 
-	getMavenMetadata().then(
-		(v) => {
-			console.log("KordEx Versions:", v)
+		console.log("Setting up initial data...")
 
-			const latestVersion = v[0];
+		const mavenVersions = await getMavenMetadata()
+		const latestVersion = mavenVersions[0]
 
-			addRetrieved(latestVersion)
+		Store.dispatch(addRetrieved(latestVersion))
+		Store.dispatch(replaceVersions(mavenVersions))
 
-			getGradleMetadata(latestVersion).then(
-				(g) => {
-					console.log(`Latest version: ${latestVersion}`)
+		console.log(`Latest KordEx version: ${latestVersion}`)
+		console.log("All KordEx versions:", mavenVersions.join(", "))
 
-					Store.dispatch(replaceVersions(v))
-					Store.dispatch(replaceGradle(latestVersion, g))
-					Store.dispatch(markConfigured())
-				}
-			)
-		}
-	)
+		await Promise.all([
+			(async () => {
+				const pluginVersions = await getPluginVersions()
+				const latestPluginVersion = pluginVersions[0]
+
+				Store.dispatch(replacePluginVersions(pluginVersions))
+
+				console.log(`Latest plugin version: ${latestPluginVersion}`)
+				console.log("App plugin versions:", pluginVersions.join(", "))
+			})(),
+
+			(async () => {
+				const gradleVersion = await getGradleVersion()
+
+				Store.dispatch(setGradleVersion(gradleVersion))
+
+				console.log("Gradle Version:", gradleVersion)
+			})(),
+
+			(async () => {
+				const versionCatalogue = await getVersionCatalogue()
+
+				Store.dispatch(replaceVersionCatalogue(versionCatalogue))
+			})(),
+
+			(async () => {
+				const gradleMetadata = await getGradleMetadata(latestVersion)
+
+				Store.dispatch(replaceGradle(latestVersion, gradleMetadata))
+			})(),
+		])
+
+		Store.dispatch(markConfigured())
+
+		console.log("Initial data ready!")
+	}
+
+	inner().then()
 }
 
 setup()
