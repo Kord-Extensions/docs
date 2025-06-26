@@ -138,7 +138,7 @@ function Metadata(props: MetadataProps): ReactNode {
 		}
 
 		return <Tags key={`${item}-row`}>
-			<Row className="fullwidth-mobile scroll-mobile nowrap-mobile">
+			<Row className="fullwidth-mobile">
 				<FixedRow>
 					<Copyable content={clipboardText} prompt="Copy Coordinates"/>
 
@@ -169,7 +169,7 @@ function Metadata(props: MetadataProps): ReactNode {
 					}
 				</FixedRow>
 
-				<code className={clsx("shadow--lw", "grow-mobile")} key={`${item}-dep-string`}>
+				<code className={clsx("shadow--lw", "fullwidth-mobile scroll-mobile nowrap-mobile")} key={`${item}-dep-string`}>
 					{dep.group}:{dep.module}
 					{
 						dep.onlyRequires ? `:${dep.version.requires}` : ""
