@@ -2,9 +2,11 @@ export type MavenRootMetadata = {
 	metadata: {
 		artifactId: string,
 		groupId: string,
+		version?: string,
 		versioning: {
 			lastUpdated: number,
 			latest: string,
+			release?: string,
 
 			versions: {
 				version: string[],

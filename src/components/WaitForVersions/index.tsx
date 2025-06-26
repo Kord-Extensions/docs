@@ -4,7 +4,7 @@ import {useGlobalSelector} from "@site/src/stores/globalHooks";
 import Loader from "@site/src/components/Loader";
 
 interface WaitProps {
-	inText: boolean
+	inText?: boolean
 }
 
 export default function(props: PropsWithChildren<WaitProps>): ReactNode {

@@ -7,6 +7,8 @@ sidebar_custom_props:
   icon: "fluent-mdl2:gradle-logo-32"
 ---
 
+import * as Snippets from "/src/pageComponents/settingUp";
+import EmbeddedVersion from "/src/components/EmbeddedVersion"
 import Link from "@docusaurus/Link";
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
@@ -14,10 +16,6 @@ import TabItem from "@theme/TabItem";
 import { CardWithTitle } from "/src/components/Card";
 
 # Manual Setup
-
-
-
-[//]: # (TODO: Figure out how to dynamically get the correct version information.)
 
 :::note
 
@@ -33,18 +31,17 @@ instead.
 
 <CardWithTitle title="Plugin Information">
   - **Coordinate:** `dev.kordex.gradle.kordex`
-  - **Version:** 1.7.0
-  - **Requires Gradle:** 8.13
-  - **Minimum JDK:** 13
+  - **Version:** <EmbeddedVersion reference="plugin" />
+  - **Requires Gradle:** <EmbeddedVersion reference="gradle" />
+  - **Minimum JDK:** <EmbeddedVersion reference="java" />
 </CardWithTitle>
 
 ## Requirements
 
 Before getting started, please ensure you have the following:
 
-- A new or existing project, configured with a basic Gradle module and using Gradle 8.13 via the Gradle wrapper.
-- A Java Development Kit version [compatible with Gradle](https://docs.gradle.org/current/userguide/compatibility.html)
-  and Kord Extensions.
+- A new or existing project, configured with a basic Gradle module and using Gradle <EmbeddedVersion reference="gradle" /> via the Gradle wrapper.
+- A Java Development Kit version [compatible with Gradle](https://docs.gradle.org/current/userguide/compatibility.html), and at least version <EmbeddedVersion reference="java" />.
 
 ## Build Configuration
 
@@ -62,15 +59,7 @@ automatically.
 
     Add the required plugins to your `settings.gradle.kts` file, creating it if it doesn't exist.
 
-    ```kotlin
-    plugins {
-      kotlin("jvm") version "2.1.20"
-      kotlin("plugin.serialization") version "2.1.20"
-
-      id("com.google.devtools.ksp") version "2.1.20-1.0.32"
-      id("dev.kordex.gradle.kordex") version "1.7.0"
-    }
-    ```
+    <Snippets.SettingsKTS />
 
     Then, add the required Gradle plugins to your `build.gradle.kts` file.
 
@@ -86,21 +75,7 @@ automatically.
 
     Finally, finish configuring your `build.gradle.kts` file.
 
-    ```kotlin
-    // ...
-
-    kordEx {
-      kordExVersion = "2.3.1-SNAPSHOT"
-
-      bot {
-        // Data collection level, change this if desired.
-        dataCollection(DataCollection.Standard)
-
-        // Replace this with the coordinates to your bot's actual main class.
-        mainClass = "my.package.MyBotKt"
-      }
-    }
-    ```
+    <Snippets.BuildKTS />
 
   </TabItem>
 
@@ -108,15 +83,7 @@ automatically.
 
     Add the required plugins to your `settings.gradle` file, creating it if it doesn't exist.
 
-    ```groovy
-    plugins {
-      id "org.jetbrains.kotlin.jvm" version "2.1.20"
-      id "org.jetbrains.kotlin.plugin.serialization" version "2.1.20"
-
-      id "com.google.devtools.ksp" version "2.1.20-1.0.32"
-      id "dev.kordex.gradle.kordex" version "1.7.0"
-    }
-    ```
+    <Snippets.SettingsGroovy />
 
     Then, add the required Gradle plugins to your `build.gradle` file.
 
@@ -132,21 +99,7 @@ automatically.
 
     Finally, finish configuring your `build.gradle` file.
 
-    ```groovy
-    // ...
-
-    kordEx {
-      kordExVersion = "2.3.1-SNAPSHOT"
-
-      bot {
-        // Data collection level, change this if desired.
-        dataCollection(DataCollection.Standard)
-
-        // Replace this with the coordinates to your bot's actual main class.
-        mainClass = "my.package.MyBotKt"
-      }
-    }
-    ```
+    <Snippets.BuildGroovy />
 
   </TabItem>
 </Tabs>
@@ -157,7 +110,7 @@ The above guide provides a standard configuration that should get you started.
 However, we recommend exploring the following options for more ideas:
 
 - We can't recommend using the Shadow plugin to build a runnable JAR with your bot's dependencies, as a group of
-  vibe coders has taken over the project.
+  [vibe coders](https://en.wikipedia.org/wiki/Vibe_coding) has taken over the project.
   Instead, we recommend
   [the Gradle distribution plugin](https://docs.gradle.org/current/userguide/distribution_plugin.html).
 - The KordEx Gradle plugin has many configuration options, which you can explore [here](#).
