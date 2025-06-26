@@ -404,3 +404,53 @@ hr.clear {
 .text-bold {
 	font-weight: bold;
 }
+
+.hide-desktop {
+	display: none;
+}
+
+.hide-mobile {
+	display: revert;
+}
+
+.grow-desktop {
+	flex-grow: 1;
+}
+
+.fullwidth-desktop {
+	width: 100%;
+}
+
+@media screen and (max-width: 996px) {
+	.hide-desktop {
+		display: revert;
+	}
+
+	.grow-desktop {
+		flex-grow: revert;
+	}
+
+	.fullwidth-desktop {
+		width: revert;
+	}
+
+	.hide-mobile {
+		display: none;
+	}
+
+	.grow-mobile {
+		flex-grow: 1;
+	}
+
+	.nowrap-mobile {
+		white-space: nowrap;
+	}
+
+	.scroll-mobile {
+		overflow-x: scroll;
+	}
+
+	.fullwidth-mobile {
+		width: 100%;
+	}
+}

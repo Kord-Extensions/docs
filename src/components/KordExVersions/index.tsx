@@ -1,6 +1,6 @@
 "use client";
 
-import React, {Component, ReactNode, useEffect, useState, useSyncExternalStore} from "react";
+import React, {ReactNode, useState} from "react";
 import clsx from "clsx";
 
 import {Icon} from "@iconify/react";
@@ -11,6 +11,8 @@ import {Tag, Tags} from "@site/src/components/Tags";
 import styles from "./styles.module.css";
 import {GradleMetadata} from "@site/src/maven/GradleMetadata";
 import Loader from "@site/src/components/Loader";
+import {FixedRow, Row} from "@site/src/components/Layout";
+import {Copyable} from "@site/src/components/Copyable";
 
 type MetadataProps = {
 	version: string
@@ -136,38 +138,45 @@ function Metadata(props: MetadataProps): ReactNode {
 		}
 
 		return <Tags key={`${item}-row`}>
-			<Icon icon="fluent:clipboard-text-ltr-24-filled"
-			      style={{alignSelf: "center", cursor: "pointer"}} fontSize="25px"
-			      data-tooltip-id="copy-dependency-tooltip"
-			      key={`${item}-copy-icon`}
-			      onClick={e => {
-				      e.preventDefault();
+			<Row className="fullwidth-mobile scroll-mobile nowrap-mobile">
+				<FixedRow>
+					<Copyable content={clipboardText} prompt="Copy Coordinates"/>
 
-				      navigator.clipboard.writeText(clipboardText).then(() => {
-				      })
-			      }}
-			/>
+					{
+						isApiDep ?
+							<FixedRow>
+								<Icon icon="fluent:box-24-filled" className="text-primary"
+								      style={{alignSelf: "center"}} fontSize="25px"
+								      data-tooltip-id="api-dependency-tooltip"
+								      key={`${item}-icon`}
+								/>
 
-			{
-				isApiDep ?
-					<Icon icon="fluent:box-24-filled" className="text-primary"
-					      style={{alignSelf: "center"}} fontSize="25px"
-					      data-tooltip-id="api-dependency-tooltip"
-					      key={`${item}-icon`}
-					/> :
-					<Icon icon="fluent:play-circle-hint-24-regular" className="text-info"
-					      style={{alignSelf: "center"}} fontSize="25px"
-					      data-tooltip-id="runtime-dependency-tooltip"
-					      key={`${item}-icon`}
-					/>
-			}
+								<span className="hide-desktop text-success">
+									API Dependency
+								</span>
+							</FixedRow> :
+							<FixedRow>
+								<Icon icon="fluent:play-circle-hint-24-regular" className="text-info"
+								      style={{alignSelf: "center"}} fontSize="25px"
+								      data-tooltip-id="runtime-dependency-tooltip"
+								      key={`${item}-icon`}
+								/>
 
-			<code className={clsx("shadow--lw")} key={`${item}-dep-string`}>
-				{dep.group}:{dep.module}
-				{
-					dep.onlyRequires ? `:${dep.version.requires}` : ""
-				}
-			</code>
+								<span className="hide-desktop text-danger">
+									Runtime Dependency
+								</span>
+							</FixedRow>
+					}
+				</FixedRow>
+
+				<code className={clsx("shadow--lw", "grow-mobile")} key={`${item}-dep-string`}>
+					{dep.group}:{dep.module}
+					{
+						dep.onlyRequires ? `:${dep.version.requires}` : ""
+					}
+				</code>
+
+			</Row>
 
 			{
 				dep.onlyRequires ?
@@ -287,7 +296,7 @@ function Inner(): ReactNode {
 				<span className={clsx(styles.focus)}></span>
 			</div>
 
-			{isLoading ? <Loader size="2em" style={{alignSelf: "center"}} /> : null}
+			{isLoading ? <Loader size="2em" style={{alignSelf: "center"}}/> : null}
 		</div>
 
 		{
@@ -305,10 +314,10 @@ function Inner(): ReactNode {
 	</div>
 }
 
-export default function(): ReactNode {
+export default function (): ReactNode {
 	const isConfigured = useGlobalSelector((state) => state.versions.configured)
 
 	return <>
-		{ isConfigured ? <Inner /> : <div className="text-primary mt-1">Please wait, loading versions...</div> }
+		{isConfigured ? <Inner/> : <div className="text-primary mt-1">Please wait, loading versions...</div>}
 	</>
 }
