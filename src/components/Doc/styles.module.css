@@ -97,7 +97,7 @@
 
 	margin-bottom: var(--ifm-paragraph-margin-bottom);
 
-	> .docBg, > hr, > p, p.docBg {
+	> .docBg, .docBgContainer > *, > hr, > p, p.docBg {
 		border-radius: 0.5em;
 		padding: 0.5em;
 
@@ -122,7 +122,7 @@
 		padding: 0.5em;
 	}
 
-	> hr {
+	> hr, .docBgContainer > hr {
 		margin: 0 0.5em;
 		padding: 0;
 		height: 2px;
