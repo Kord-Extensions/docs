@@ -33,7 +33,7 @@ export function Card(props: PropsWithChildren<CardProps>): ReactNode {
 export function CardWithTitle(props: PropsWithChildren<TitleProps>): ReactNode {
 	return (
 		<Card className={props.className} style={props.style}>
-			<div className="card__header">
+			<div>
 				<Heading as="h3">{props.title}</Heading>
 			</div>
 

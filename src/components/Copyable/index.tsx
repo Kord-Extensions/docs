@@ -22,7 +22,7 @@ export function Copyable(props: CopyableProps): ReactNode {
 	loadIcons([DEFAULT_ICON, CLICKED_ICON])
 
 	const [isSetting, setIsSetting] = React.useState(false);
-	const [icon, setIcon] = React.useState<string>("fluent:clipboard-text-ltr-24-filled")
+	const [icon, setIcon] = React.useState<string>(DEFAULT_ICON)
 	const [text, setText] = React.useState(props.prompt ?? DEFAULT_TEXT);
 
 	return <Icon icon={icon}

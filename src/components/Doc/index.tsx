@@ -60,6 +60,14 @@ export function Arguments(props: PropsWithChildren<ArgumentsProps>): ReactNode {
 	);
 }
 
+export function Background(props: PropsWithChildren<CommonProps>): ReactNode {
+	return (
+		<div className={clsx(props.className, styles.col, styles.docBgContainer, "doc-builder")}>
+			{props.children}
+		</div>
+	);
+}
+
 type ContainerProps = {
 	internal?: boolean
 	internalText?: string
@@ -124,7 +132,7 @@ type ArgProps = {
 	supportsCollections?: boolean,
 	default?: string,
 	internal?: boolean,
-	propType?: "val" | "open val" | "var" | "open var",
+	propType?: "val" | "open val" | "override val" | "var" | "open var" | "override var",
 } & CommonProps
 
 export function Arg(props: PropsWithChildren<ArgProps>): ReactNode {
@@ -386,7 +394,7 @@ export function Converter(props: PropsWithChildren<ConverterProps>): ReactNode {
 type FunctionProps = {
 	name: string,
 	receiver?: string,
-	returns?: string,
+	returns?: string | string[],
 	default?: boolean,
 	suspend?: boolean,
 	open?: boolean,
@@ -395,6 +403,18 @@ type FunctionProps = {
 } & CommonProps
 
 export function Function(props: PropsWithChildren<FunctionProps>): ReactNode {
+	let returnsList: string[] = []
+
+	if (props.returns !== undefined) {
+		if (typeof (props.returns) === "string") {
+			returnsList = [props.returns]
+		} else {
+			returnsList = props.returns
+		}
+	}
+
+	returnsList.sort()
+
 	return (
 		<div className={clsx(props.className, styles.col, styles.docBg, "doc-function")}>
 			<div className={clsx(styles.row)}>
@@ -435,10 +455,18 @@ export function Function(props: PropsWithChildren<FunctionProps>): ReactNode {
 					}
 
 					{
-						props.returns == undefined ? <></> :
+						returnsList.length > 0 ?
 							<Tag style="info">
-								Returns: <code className="shadow--lw">{props.returns}</code>
-							</Tag>
+								Returns:
+								{
+									returnsList.map((it) => (
+										<div>
+											<code className="shadow--lw">{it}</code>
+										</div>
+									))
+								}
+							</Tag> :
+							<></>
 					}
 				</Tags>
 			</div>
