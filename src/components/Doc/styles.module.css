@@ -163,7 +163,7 @@ div.head, div.headMed, div.likeCode {
 	display: flex;
 	padding: 0.15em 0.5em;
 	color: var(--ifm-color-secondary-text);
-	background-color: var(--ifm-code-background);
+	background-color: color-mix(in srgb, var(--ifm-code-background) 35%, transparent) !important;
 	border: 0.1rem solid rgba(0, 0, 0, 0.1);
 	border-radius: 5px;
 	align-items: center;
@@ -171,7 +171,6 @@ div.head, div.headMed, div.likeCode {
 
 .indent {
 	margin-left: 1em;
-	margin-right: 1em;
 
 	p {
 		&:not(:last-child) {
@@ -191,5 +190,18 @@ div.head, div.headMed, div.likeCode {
 		&:last-child {
 			padding-bottom: 0;
 		}
+	}
+}
+
+@media screen and (max-width: 996px) {
+	.head, .headMed {
+		width: 100%;
+		flex-grow: 1;
+		overflow-x: scroll;
+		white-space: nowrap
+	}
+
+	.indent {
+		margin-left: 0.5em;
 	}
 }
