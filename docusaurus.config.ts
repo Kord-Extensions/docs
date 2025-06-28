@@ -105,6 +105,10 @@ const config: Config = {
 	themeConfig: {
 		image: "img/social-card.png",
 
+		tableOfContents: {
+			maxHeadingLevel: 4,
+		},
+
 		colorMode: {
 			disableSwitch: false,
 			respectPrefersColorScheme: true,

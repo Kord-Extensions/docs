@@ -76,7 +76,7 @@ For more information, see
 
     <Snippets.BuildKTS />
 
-    Finally, add the required repositories and dependency to your `build.gradle.kts` file.
+    Finally, add the required repositories, source sets and dependency to your `build.gradle.kts` file.
 
     ```kotlin
     repositories {
@@ -106,6 +106,18 @@ For more information, see
       implementation(libs.kord.extensions.core)
       ksp(libs.kord.extensions.ap)
     }
+
+    sourceSets.getByName("main") {
+      java {
+        srcDir(target.layout.buildDirectory.file("generated/ksp/main/kotlin/"))
+      }
+    }
+
+    sourceSets.getByName("test") {
+      java {
+        srcDir(target.layout.buildDirectory.file("generated/ksp/test/kotlin/"))
+      }
+    }
     ```
 
   </TabItem>
@@ -119,7 +131,7 @@ For more information, see
 
     <Snippets.BuildGroovy />
 
-    Finally, add the required repositories and dependency to your `build.gradle` file.
+    Finally, add the required repositories, source sets and dependency to your `build.gradle` file.
 
     ```groovy
     repositories {
@@ -146,9 +158,12 @@ For more information, see
     dependencies {
       // ...
 
-      implementation(libs.kord.extensions.core)
-      ksp(libs.kord.extensions.ap)
+      implementation libs.kord.extensions.core
+      ksp libs.kord.extensions.ap
     }
+
+    sourceSets.main.java.srcDirs += target.layout.buildDirectory.file("generated/ksp/main/kotlin/")
+    sourceSets.test.java.srcDirs += target.layout.buildDirectory.file("generated/ksp/test/kotlin/")
     ```
 
   </TabItem>
