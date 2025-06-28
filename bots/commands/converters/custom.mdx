@@ -21,34 +21,15 @@ generating converter builders functions automatically.
 
 ## Build Configuration
 
-### Kotlin Symbol Processor
+Before getting started, make sure you're
+[using our Gradle plugin](#),
+our [bot template](https://github.com/Kord-Extensions/template) or
+[plugin template](https://github.com/Kord-Extensions/template-plugin),
+or you
+[set your project up manually according to our tutorial](#).
 
-Before getting started, make sure you set your project up [with our Gradle plugin](#),
-or that you have [KSP](https://kotlinlang.org/docs/ksp-overview.html) version <EmbeddedVersion reference="ksp" code />
-configured with the Kord Extensions annotation processor,
-<code>dev.kordex:annotation-processor:<EmbeddedVersion reference="kordEx" /></code>.
-
-For more information on how you can do this,
-please read [the official KSP quickstart page](https://kotlinlang.org/docs/ksp-quickstart.html).
-
-### Source Directories
-
-If you're not [using our Gradle plugin](#), you may need to configure the KSP output directories as source roots.
-When using Gradle with Kotlin, you can do that as follows:
-
-```kt
-sourceSets.getByName("main") {
-	java {
-		srcDir(target.layout.buildDirectory.file("generated/ksp/main/kotlin/"))
-	}
-}
-
-sourceSets.getByName("test") {
-	java {
-		srcDir(target.layout.buildDirectory.file("generated/ksp/test/kotlin/"))
-	}
-}
-```
+Our annotation processor uses these coordinates:
+<code>dev.kordex:annotation-processor:<EmbeddedVersion reference="kordEx" /></code>
 
 ## Anatomy
 
@@ -79,6 +60,11 @@ into.
 Once you've picked a base type, you'll need to create a class extending it and implement the required APIs.
 
 ```kt
+@Converter(
+	"snowflake",
+
+	types = [ConverterType.DEFAULTING, ConverterType.LIST, ConverterType.OPTIONAL, ConverterType.SINGLE]
+)
 public class SnowflakeConverter(
   override var validator: Validator<Snowflake> = null,
 ) : SingleConverter<Snowflake>() {
@@ -183,7 +169,54 @@ public class SnowflakeConverter(
 
 ### Parsing
 
-Your converter must implement parsing for both chat command and slash command arguments.
+Your converter must implement parsing for both slash command and chat command arguments.
+
+#### Slash Commands
+
+Your bot will call the `parseOption` function to convert slash command arguments into the correct rich type,
+and `toSlashOption` to convert `Argument` objects to the correct slash command argument type that Discord should use.
+These functions together handle your converter's slash commands workflow, and they should follow this outline:
+
+- First, define `toSlashOption`, converting the `Argument` to the correct `OptionWrapper` type.
+  - We recommend starting with the return type, which should be `OptionWrapper<T>` where `T` is one of
+    [Kord's `OptionValue` subtypes](https://dokka.kord.dev/core/dev.kord.core.entity.interaction/-option-value/index.html).
+  - Then, call `wrapOption(name, description) { ... }`, setting `required = true` unless you're explicitly creating an
+    always-optional converter type.
+    Remember to return the resulting value from this function call!
+- Then, create the `parseOption` function, and note that the `option` argument must take an `OptionValue<*>` rather than
+  a more specific type.
+  - Start by casting this to the correct
+    [Kord `OptionValue` subtype](https://dokka.kord.dev/core/dev.kord.core.entity.interaction/-option-value/index.html)
+    using `as?`, and bail out via `return false` if this cast returns `null`.
+  - Attempt to parse the value, throwing a `DiscordRelayedException` if you need to return a specific error.
+    - Return `false` to signal that your converter couldn't parse any data, and respond with a generic error.
+  - Store the parsed value in `this.parsed`.
+    - Return `true` to signal that parsing was a success.
+
+When put together, your code should look something like this:
+
+```kt
+override suspend fun toSlashOption(arg: Argument<*>): OptionWrapper<StringChoiceBuilder> =
+  wrapOption(arg.displayName, arg.description) {
+    required = true
+  }
+
+override suspend fun parseOption(context: CommandContext, option: OptionValue<*>): Boolean {
+  val optionValue = (option as? StringOptionValue)?.value ?: return false
+
+  try {
+    this.parsed = Snowflake(optionValue)
+  } catch (_: NumberFormatException) {
+    throw DiscordRelayedException(
+      CoreTranslations.Converters.Snowflake.Error.invalid
+        .withContext(context)
+        .withOrdinalPlaceholders(optionValue)
+    )
+  }
+
+  return true
+}
+```
 
 #### Chat Commands
 
@@ -219,50 +252,6 @@ override suspend fun parse(parser: StringParser?, context: CommandContext, named
       CoreTranslations.Converters.Snowflake.Error.invalid
         .withContext(context)
         .withOrdinalPlaceholders(arg)
-    )
-  }
-
-  return true
-}
-```
-
-#### Slash Commands
-
-Your bot will call the `parseOption` function to convert slash command arguments into the correct rich type,
-and `toSlashOption` to convert `Argument` objects to the correct slash command argument type that Discord should use.
-These functions together handle your converter's slash commands workflow, and they should follow this outline:
-
-- First, define `toSlashOption`, converting the `Argument` to the correct `OptionWrapper` type.
-  - We recommend starting with the return type, which should be `OptionWrapper<T>` where `T` is one of
-    [Kord's `OptionValue` subtypes](https://dokka.kord.dev/core/dev.kord.core.entity.interaction/-option-value/index.html).
-  - Then, call `wrapOption(name, description) { ... }`, setting `required = true` unless you're explicitly creating an
-    always-optional converter type.
-    Remember to return the resulting value from this function call!
-- Then, create the `parseOption` function, and note that the `option` argument must take an `OptionValue<*>` rather than
-  a more specific type.
-  - Start by casting this to the correct
-    [Kord `OptionValue` subtype](https://dokka.kord.dev/core/dev.kord.core.entity.interaction/-option-value/index.html)
-    using `as?`, and bail out via `return false` if this cast returns `null`.
-  - Then, parse, store, throw, and return similarly to your `parse` function.
-
-When put together, your code should look something like this:
-
-```kt
-override suspend fun toSlashOption(arg: Argument<*>): OptionWrapper<StringChoiceBuilder> =
-  wrapOption(arg.displayName, arg.description) {
-    required = true
-  }
-
-override suspend fun parseOption(context: CommandContext, option: OptionValue<*>): Boolean {
-  val optionValue = (option as? StringOptionValue)?.value ?: return false
-
-  try {
-    this.parsed = Snowflake(optionValue)
-  } catch (_: NumberFormatException) {
-    throw DiscordRelayedException(
-      CoreTranslations.Converters.Snowflake.Error.invalid
-        .withContext(context)
-        .withOrdinalPlaceholders(optionValue)
     )
   }
 
