@@ -279,6 +279,13 @@ hr.clear {
 	}
 }
 
+@media screen and (max-width: 996px) {
+	.tags {
+		width: 100%;
+		flex-grow: 1;
+	}
+}
+
 .card {
 	border: 1px solid var(--ifm-toc-border-color);
 	padding: 1.25rem;
