@@ -488,6 +488,7 @@ type PropertyProps = {
 	open?: boolean,
 	default?: string,
 	internal?: boolean,
+	visibility?: "public" | "protected" | "private" | "internal",
 	propType?: "val" | "var",
 } & CommonProps
 
@@ -499,6 +500,12 @@ export function Property(props: PropsWithChildren<PropertyProps>): ReactNode {
 					{props.internal ? <Internal/> : <></>}
 
 					<code className={clsx(styles.head, "shadow--lw")}>
+						{
+							props.visibility === null || props.visibility === undefined || props.visibility === "public" ?
+								<></> :
+								<span className="text-danger">{props.visibility}&nbsp;</span>
+						}
+
 						{
 							props.abstract !== true ? <></> :
 								<span className="text-info">abstract&nbsp;</span>
