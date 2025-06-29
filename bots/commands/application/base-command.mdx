@@ -12,3 +12,182 @@ sidebar_custom_props:
 import * as Doc from "/src/components/Doc";
 
 # Basic Command APIs
+
+All application command types extend the `ApplicationCommand` type, which provides some basic common APIs.
+These APIs are available regardless of command type, so you should familiarise yourself with them!
+
+The `ApplicationCommand` type extends the base `Command` type, so it inherits the APIs defined there.
+For more information on the APIs common to all commands, see [the basic command API page](#).
+
+<Doc.Container>
+  <Doc.Type name="ApplicationCommand" type="abstract class" extends={["Command"]}>
+    Abstract base type representing everything that all commands have in common.
+
+    <Doc.Arguments type="type">
+      <Doc.Arg name="E" type="InteractionCreateEvent">
+        Base type representing the events that can trigger application command invocations.
+      </Doc.Arg>
+    </Doc.Arguments>
+
+    <Doc.Arguments type="constructor">
+      <Doc.Arg name="extension" type="Extension" propType="val">
+        The extension that registered this command.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Type>
+</Doc.Container>
+
+## Builders
+
+<Doc.Container>
+  <Doc.Builder name="check" receiver="CheckContext<E>" open>
+    Register a [check](#), which must pass for the command to execute when invoked.
+  </Doc.Builder>
+</Doc.Container>
+
+## Functions
+
+<Doc.Container>
+  <Doc.Function name="guild" open>
+    Provide a guild ID to register this command against, or `null` to override any previously-set guild.
+
+    By default, all application commands are global.
+    This can be changed in your bot's [application command builder](#), by calling the `defaultGuild()` function.
+  </Doc.Function>
+
+  <Doc.Function name="requirePermission" open>
+    Provide one or more default required permissions that users must have to be able to run this command.
+
+    **Note:** Kord Extensions doesn't enforce the permissions you specify here.
+    This is because server staff on Discord can change the permissions required to execute a command.
+
+    If you need to limit command usage to a specific role or set of permissions, consider also writing [a check](#)
+    when you set this.
+    If you write a check, you should also set this property - it'll hide the command on Discord!
+  </Doc.Function>
+</Doc.Container>
+
+<Doc.Container internal>
+  <Doc.Function name="call" abstract suspend internal>
+    Command logic function implemented by the application command sub-types, and called via the `doCall` function.
+
+    This function is responsible for a command's logical flow.
+    It should run the command's defined checks, respond to the Discord interaction, create the correct command context
+    object, and ultimately execute your command's `action {}` body.
+
+    <Doc.Arguments>
+      <Doc.Arg name="event" type="E">
+        Event triggering this command execution.
+      </Doc.Arg>
+
+      <Doc.Arg name="cache" type="MutableMap<String, Any>">
+        Map representing a data cache shared with the command's registered checks, and made available in the command
+        context.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+
+  <Doc.Function name="doCall" open suspend internal>
+    Attempt to execute this command based on the provided event object.
+    This function creates a cache map, and passes it to the `call` function along with the event object.
+
+    This is normally called by the `ApplicationCommandRegistry` when someone invokes an application command on Discord.
+  </Doc.Function>
+
+  <Doc.Function name="localise" returns="Localised<String>" open suspend internal>
+    Translates the given translation key object into your bot's default locale, and all configured application command
+    locales, lower-casing it if required.
+
+    This is used by the `ApplicationCommandRegistry` to figure out what names and descriptions your commands should use
+    in each configured locale, and it's also called by the `localisedName` lazy property when first accessed.
+
+    <Doc.Arguments>
+      <Doc.Arg name="key" type="Key">
+        Translation key to localise.
+      </Doc.Arg>
+
+      <Doc.Arg name="lowerCase" type="Boolean" default="false">
+        Whether the resulting strings should be lower-cased.
+
+        This is generally only used when translating slash command names, which must always be lower-case.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+
+  <Doc.Function name="runChecks" returns="Boolean" open suspend internal>
+    By default, this function simply returns the result of the `runStandardChecks()` function, but it can be overridden
+    if command types need to extend this behaviour.
+  </Doc.Function>
+
+  <Doc.Function name="runStandardChecks" returns="Boolean" open suspend internal>
+    Runs the checks defined in `checkList` (via the `check` builders and functions), throwing and interrupting command
+    execution if needed.
+  </Doc.Function>
+</Doc.Container>
+
+## Properties
+
+<Doc.Container>
+  <Doc.Property name="allowByDefault" type="Boolean" propType="var">
+    **We recommend using the `allow...()` functions defined on each command type instead of manually setting this
+    property, to keep things simple.**
+
+    Whether to allow everyone on a guild to use this command by default.
+    This property is represented by a set of getters and setters, and has no backing field of its own.
+
+    Setting this to `true` will set `defaultMemberPermissions` to `null` automatically.
+    Setting it to `false` will set `defaultMemberPermissions` to an empty `Permissions` object instead.
+
+    This property will return `true` if `defaultMemberPermissions` is `null`.
+  </Doc.Property>
+
+  <Doc.Property name="allowInDms" type="Boolean" propType="var" default="extension.allowApplicationCommandInDMs">
+    Whether this command should be allowed in DMs.
+
+    This will always return `false` if your command is restricted to a specific guild,
+    regardless of what you set it to.
+  </Doc.Property>
+
+  <Doc.Property name="defaultMemberPermissions" type="Permissions?" propType="var" default="null">
+    **We recommend using the `requirePermission()` function instead of manually setting this property, to keep things
+    simple.**
+
+    The permissions a guild member must have to be able to execute this command, by default.
+
+    **Note:** Kord Extensions doesn't enforce the permissions you specify here.
+    This is because server staff on Discord can change the permissions required to execute a command.
+
+    If you need to limit command usage to a specific role or set of permissions, consider also writing [a check](#)
+    when you set this.
+    If you write a check, you should also set this property - it'll hide the command on Discord!
+  </Doc.Property>
+</Doc.Container>
+
+<Doc.Container internal>
+  <Doc.Property name="bot" type="ExtensibleBot" propType="val" visibility="protected" internal>
+    Quick access to your bot's `ExtensibleBot` object.
+  </Doc.Property>
+
+  <Doc.Property name="checkList" type="MutableList<CheckWithCache<E>>" default="mutableListOf()" propType="val" open internal>
+    List of this command's registered checks.
+  </Doc.Property>
+
+  <Doc.Property name="guildId" type="Snowflake?" propType="var" default="settings.applicationCommands.defaultGuild" open internal>
+    Guild ID to register this command against.
+    Usually set via the `guild()` function.
+  </Doc.Property>
+
+  <Doc.Property name="localisedName" type="Localised<String>" propType="var" default="localise(name, this is SlashCommand)" open internal>
+    This function's localised name, calculated lazily when accessed.
+    Slash commands always have lower-cased names.
+  </Doc.Property>
+
+  <Doc.Property name="registry" type="ApplicationCommandRegistry" propType="val" internal>
+    Quick access to your bot's application command registry.
+  </Doc.Property>
+
+  <Doc.Property name="type" type="dev.kord.common.entity.ApplicationCommandType" propType="val" abstract internal>
+    This command object's Discord command type.
+    Overridden by each type of application command, and used during registration.
+  </Doc.Property>
+</Doc.Container>
