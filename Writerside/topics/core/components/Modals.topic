@@ -90,16 +90,16 @@
 
         <code-block lang="kotlin" collapsible="true" collapsed-title="Example">
             class MyModal : ModalForm() {
-                override var title: String = "Test Modal"
+                override var title: Key = "Test Modal".toKey()
 
                 val line = lineText {
-                    label = "Line Text"
-                    placeholder = "A single line of text"
+                    label = "Line Text".toKey()
+                    placeholder = "A single line of text".toKey()
                 }
 
                 val block = paragraphText {
-                    label = "Paragraph Text"
-                    placeholder = "A block of text which may span multiple lines"
+                    label = "Paragraph Text".toKey()
+                    placeholder = "A block of text which may span multiple lines".toKey()
                 }
             }
         </code-block>
