@@ -10,6 +10,20 @@ Discord provides several rich command types, and Kord Extensions provides its ow
 We split these abstractions between each command type, and further divide them into ephemeral and public interaction
 flows.
 
+:::warning User Apps
+
+Discord recently created a new type of bot:
+[user-installable apps](https://discord.com/developers/docs/tutorials/developing-a-user-installable-app).
+These bots have commands and activities meant to be run by users in group DMs or guilds, rather than requiring them
+to add the bot to a server.
+
+As of this writing, Kord doesn't support user-installable apps, so we don't either.
+If you need this feature,
+please [review this pull request](https://github.com/kordlib/kord/pull/970) and provide feedback, which will hopefully
+let the Kord team know there's demand for it.
+
+:::
+
 ## Philosophy
 
 We often see users asking us why we decided to explicitly divide our command types into ephemeral and public
