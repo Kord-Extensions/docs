@@ -183,6 +183,10 @@ div.head, div.headMed, div.likeCode {
 	margin-bottom: calc(var(--ifm-paragraph-margin-bottom) / 2);
 }
 
+.indent .args:not(:last-child) {
+	margin-bottom: calc(var(--ifm-paragraph-margin-bottom) / 2);
+}
+
 .args {
 	.arg {
 		padding-bottom: 0.5em;
