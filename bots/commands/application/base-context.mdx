@@ -13,3 +13,76 @@ sidebar_custom_props:
 import * as Doc from "/src/components/Doc";
 
 # Basic Context APIs
+
+All application command contexts extend the `ApplicationCommandContext` type, which provides some basic common APIs.
+These APIs are available in the `action { }` block regardless of interaction type,
+so you should familiarise yourself with them!
+
+The `ApplicationCommandContext` type extends the base `CommandContext` type, so it inherits the APIs defined there.
+For more information on the APIs common to all command contexts, see [the basic command context API page](#).
+
+All application command contexts also extend one of the [interaction context types](#), unless you're writing
+[an unsafe command](#).
+
+<Doc.Container>
+  <Doc.Type name="ApplicationCommandContext" type="abstract class" extends={["CommandContext"]}>
+    Abstract base type representing everything that all application command contexts have in common.
+
+    <Doc.Arguments type="constructor">
+      <Doc.Arg name="genericEvent" type="ApplicationCommandInteractionCreateEvent" propType="val">
+        Generic event object representing the interaction that triggered this command execution.
+
+        Usually accessed via a more specific `event` property in each command's specific context type.
+      </Doc.Arg>
+
+      <Doc.Arg name="genericCommand" type="ApplicationCommand" propType="val">
+        Generic event object representing the current command object.
+
+        Usually accessed via a more specific `command` property in each command's specific context type.
+      </Doc.Arg>
+
+      <Doc.Arg name="cache" type="MutableMap<String, Any>">
+        Map representing a data cache shared with the command's registered checks.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Type>
+</Doc.Container>
+
+## Properties
+
+<Doc.Container>
+  <Doc.Property name="appPermissions" type="Permissions?" propType="val">
+    The permissions your bot has in this command execution context - that is, based on the current guild, roles and
+    channel.
+
+    This is always `null` if the command was executed in a DM.
+  </Doc.Property>
+
+  <Doc.Property name="botSettings" type="ExtensibleBotBuilder" propType="val">
+    Quick access to [your bot's settings](#).
+  </Doc.Property>
+
+  <hr className="clear" />
+
+  <Doc.Property name="channel" type="MessageChannelBehavior" propType="var" open>
+    The channel this command invocation happened in.
+  </Doc.Property>
+
+  <Doc.Property name="guild" type="GuildBehavior?" propType="var" open>
+    The guild this command invocation happened in, or `null` if it happened in a DM.
+  </Doc.Property>
+
+  <Doc.Property name="member" type="MemberBehavior?" propType="var" open>
+    The guild member that caused this command invocation, or `null` if:
+    - This command invocation happened in a DM.
+    - This command invocation was caused by a webhook.
+  </Doc.Property>
+
+  <Doc.Property name="message" type="Message" propType="var" open>
+    The Discord message that caused this command invocation.
+  </Doc.Property>
+
+  <Doc.Property name="user" type="UserBehavior?" propType="var" open>
+    The Discord user that caused this command invocation, or `null` if it was a webhook.
+  </Doc.Property>
+</Doc.Container>
