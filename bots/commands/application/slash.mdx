@@ -5,6 +5,84 @@ sidebar_position: 4
 sidebar_custom_props:
   card_group: "Commands"
   icon: "fluent:slash-forward-20-filled"
+
+# TODO: Link to other docs
 ---
 
+import * as Doc from "/src/components/Doc";
+
 # Slash Commands
+
+Slash commands are the main type of [application command](#),
+executed on Discord by typing a slash (`/`), followed by the command's name and arguments.
+Slash commands registered by your bot are visible in a menu displayed above Discord's message input box when a user
+types a slash (`/`), allowing them to browse a list of all available commands,
+and providing information on their descriptions and arguments.
+
+:::tip Dynamic Registration
+
+You should register slash commands as part of your bot's startup process, by calling the relevant builder functions in
+your extension's `setup` function.
+However, if necessary, you can also register them dynamically by calling the same functions after your bot connects to
+Discord.
+**If you do this, your bot will immediately register the command with Discord,
+so be aware of Discord's strict rate limits.**
+
+:::
+
+```kt
+publicSlashCommand(::MyArguments) {
+    name = Translations.Commands.Ping.name
+    description = Translations.Commands.Ping.description
+
+    check { hasPermission(Permission.MentionEveryone) }
+
+    action {
+        respond {
+            // Note: Slash commands usually can't mention people, this is just an example.
+
+            content = "Hey, ${arguments.user.mention}! Get pinged!"
+        }
+    }
+}
+```
+
+## Extension API
+
+<Doc.Container>
+</Doc.Container>
+
+<Doc.Container internal>
+</Doc.Container>
+
+## Standalone Commands
+
+<Doc.Container>
+</Doc.Container>
+
+<Doc.Container internal>
+</Doc.Container>
+
+## Subcommands
+
+<Doc.Container>
+</Doc.Container>
+
+<Doc.Container internal>
+</Doc.Container>
+
+## Grouped Commands
+
+<Doc.Container>
+</Doc.Container>
+
+<Doc.Container internal>
+</Doc.Container>
+
+## Context API
+
+<Doc.Container>
+</Doc.Container>
+
+<Doc.Container internal>
+</Doc.Container>

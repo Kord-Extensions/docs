@@ -7,7 +7,35 @@ import { DocCardListWithDescriptions } from "/src/theme/DocCardList"
 # Application Commands
 
 Discord provides several rich command types, and Kord Extensions provides its own abstractions for them.
-See the following pages for more information.
+We split these abstractions between each command type, and further divide them into ephemeral and public interaction
+flows.
+
+## Philosophy
+
+We often see users asking us why we decided to explicitly divide our command types into ephemeral and public
+interaction types.
+
+When we originally designed this command system, the abstractions were pretty barebones.
+You would register an application command and handle all interaction logic on your own.
+However, we found that this was not a very user-friendly approach, for several reasons:
+
+- Discord only gives your bot 5 seconds to respond to an interaction event, and some command action blocks need more
+  time.
+- Discord's interaction API can be confusing, and automatically responding to interaction events makes our API
+  significantly easier to understand and work with.
+- Discord expects your commands to stick with either public or ephemeral, rather than mixing them — doing so can
+  give you some very unexpected behaviours.
+- Ephemeral interactions have limitations that public interactions don't, and we wanted to represent this in a
+  type-safe way.
+
+This philosophy also applies to [our component abstractions](#).
+
+**Note:** Our abstractions do have some limitations, especially when it comes to handling [modals](#).
+If you need more control, take a look at the [unsafe module](#).
+
+## Pages
+
+See the following pages for more information on each application command type, and how you can use them.
 
 <DocCardListWithDescriptions descriptions={{
   "Base APIs": "Learn about the APIs available on the base types extended by each command type.",
