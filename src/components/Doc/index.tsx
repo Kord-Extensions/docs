@@ -122,6 +122,27 @@ export function Details(props: PropsWithChildren<DetailsProps>): ReactNode {
 	</details>
 }
 
+type EnumMembersProps = {
+
+} & CommonProps
+
+export function EnumMembers(props: PropsWithChildren<EnumMembersProps>): ReactNode {
+	return (
+		<div className={clsx(props.className, styles.args, "doc-enum-members")}>
+			<div className={clsx(styles.headMed, "mb-0.5")}>
+				Enum Members
+			</div>
+
+			{props.children === undefined ?
+				<></> :
+				<div className={clsx(styles.indent, styles.col)}>
+					{props.children}
+				</div>
+			}
+		</div>
+	);
+}
+
 // endregion
 
 // region: Items
@@ -620,6 +641,12 @@ export function Type(props: PropsWithChildren<TypeProps>): ReactNode {
 		</div>
 	);
 }
+
+// endregion
+
+// region: Aliases
+
+export const Member = Arg
 
 // endregion
 
