@@ -131,6 +131,7 @@ type ArgProps = {
 	type?: string | string[] | undefined,
 	supportsCollections?: boolean,
 	default?: string,
+	reified?: boolean,
 	internal?: boolean,
 	propType?: "val" | "open val" | "override val" | "var" | "open var" | "override var",
 } & CommonProps
@@ -158,6 +159,7 @@ export function Arg(props: PropsWithChildren<ArgProps>): ReactNode {
 					{props.internal ? <Internal/> : <></>}
 
 					<code className={clsx(styles.headMed, "shadow--lw")}>
+						{props.reified === true ? <span className="text-danger">reified&nbsp;</span> : <></>}
 						{
 							props.propType === null || props.propType === undefined ?
 								<></> :
@@ -226,6 +228,7 @@ export function Arg(props: PropsWithChildren<ArgProps>): ReactNode {
 type BuilderProps = {
 	name: string,
 	hasArgs?: boolean,
+	hasGeneric?: boolean,
 	functionReturns?: string,
 	lambdaReturns?: string,
 	receiver?: string,
@@ -242,6 +245,7 @@ export function Builder(props: PropsWithChildren<BuilderProps>): ReactNode {
 					<code className={
 						clsx(styles.head, "shadow--lw")}>{props.name}
 						<span className="text-secondary">
+							{props.hasGeneric ? "<...>" : ""}
 							{props.hasArgs ? "(...)" : ""}
 							{props.hasArgs ? " { ... }" : <>&nbsp;{"{ ... }"}</>}
 						</span>
@@ -400,6 +404,7 @@ type FunctionProps = {
 	open?: boolean,
 	abstract?: boolean,
 	internal?: boolean,
+	hasGeneric?: boolean,
 } & CommonProps
 
 export function Function(props: PropsWithChildren<FunctionProps>): ReactNode {
@@ -437,20 +442,24 @@ export function Function(props: PropsWithChildren<FunctionProps>): ReactNode {
 								<span className="text-info">suspend&nbsp;</span>
 						}
 
-						{props.name}<span className="text-secondary">(...)</span>
+						{
+							props.receiver == undefined ?
+								props.name :
+								<>
+									<span className="text-success">{props.receiver}</span>
+									<span className="text-secondary">.</span>
+									{props.name}
+								</>
+
+						}
+						{props.hasGeneric ? <span className="text-secondary">{"<...>"}</span> : ""}
+						<span className="text-secondary">(...)</span>
 					</code>
 
 					{
 						props.default !== true ? <></> :
 							<Tag style="secondary">
 								Default
-							</Tag>
-					}
-
-					{
-						props.receiver == undefined ? <></> :
-							<Tag style="warning">
-								Receiver: <code className="shadow--lw">{props.receiver}</code>
 							</Tag>
 					}
 
@@ -484,6 +493,7 @@ export function Function(props: PropsWithChildren<FunctionProps>): ReactNode {
 type PropertyProps = {
 	name: string,
 	type: string,
+	receiver?: string,
 	abstract?: boolean,
 	open?: boolean,
 	default?: string,
@@ -521,7 +531,16 @@ export function Property(props: PropsWithChildren<PropertyProps>): ReactNode {
 								<></> :
 								<span className="text-info">{props.propType}&nbsp;</span>
 						}
-						{props.name}
+						{
+							props.receiver == undefined ?
+								props.name :
+								<>
+									<span className="text-success">{props.receiver}</span>
+									<span className="text-secondary">.</span>
+									{props.name}
+								</>
+
+						}
 					</code>
 
 					<Tag style="primary">

@@ -13,3 +13,253 @@ sidebar_custom_props:
 import * as Doc from "/src/components/Doc";
 
 # Event Handlers
+
+When something happens on Discord, or in your bot's lifecycle, it will fire an event.
+You can define event handlers in your extensions to react to these events.
+
+```kt
+event<MessageCreateEvent> {
+    action {
+        if (event.message.content == "hello") {
+            event.message.respond("Hello!")
+        }
+    }
+}
+```
+
+## Extension API
+
+### Builders
+
+<Doc.Container>
+  <Doc.Builder name="event" receiver="EventHandler<T>" functionReturns="EventHandler<T>" hasArgs hasGeneric>
+    Use this builder to register an event handler.
+
+    <Doc.Arguments type="type">
+      <Doc.Arg name="T" type="Event">
+        The event type you'll be handling.
+        You can use a less specific generic if you want to handle multiple event types.
+      </Doc.Arg>
+    </Doc.Arguments>
+
+    <Doc.Arguments type="function">
+      <!-- Turns out, using an escaped entity here fixes IDEA. -->
+      <Doc.Arg name="constructor" type="(Extension) -> EventHandler&lt;T>" default="::EventHandler">
+        If you need to use a custom event handler subtype, you can pass the constructor here.
+
+        **Note:** You shouldn't need to use this in most situations.
+        This is for advanced use-cases that the existing event handler type isn't suitable for.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+</Doc.Container>
+
+## Usage
+
+To create an event handler, use the `event {}` builder detailed above.
+All event handlers must define an `action`.
+
+### Builders
+
+<Doc.Container>
+  <Doc.Builder name="action" receiver="EventContext<T>">
+    Register your event handler's action block, defining what it will do when your bot fires a matching event.
+    See [the context API](#context-api) section for more information on what you can do here.
+  </Doc.Builder>
+
+  <Doc.Builder name="check" receiver="CheckContext<T>">
+    Register a [check](#), which must pass for the event handler's action block to execute.
+  </Doc.Builder>
+</Doc.Container>
+
+### Functions
+
+You can use these utility functions in your `action {}` block.
+
+<Doc.Container>
+  <Doc.Function name="getLocale" receiver="Event">
+    Retrieve this event's locale, calculated by your bot's [locale resolvers](#).
+
+    This function's output is cached.
+  </Doc.Function>
+
+  <Doc.Function name="translate" receiver="Event">
+    Quickly translate the given translation key using the event's resolved locale.
+
+    <Doc.Arguments>
+      <Doc.Arg name="key" type="Key">
+        Translation key object to translate.
+      </Doc.Arg>
+
+      <Doc.Arg name="replacements" type={["Array<Any?>", "Map<String, Any?>"]} default="arrayOf()">
+        Optionally, an array or map of placeholders to replace in the translation string.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+</Doc.Container>
+
+## Context API
+
+The `action { }` builder is a receiver against the `EventContext` type.
+This type provides a set of APIs, along with those provided by [the base `TranslatableContext` type](#),
+which allow your bot to respond to events.
+
+<Doc.Container>
+  <Doc.Type name="EventContext" type="class" extends={["KordExKoinComponent", "TranslatableContext"]} open>
+    <Doc.Arguments type="type">
+      <Doc.Arg name="T" type="Event">
+        The event type you're handling, provided by your event handler.
+      </Doc.Arg>
+    </Doc.Arguments>
+
+    <Doc.Arguments type="constructor">
+      <Doc.Arg name="cache" type="MutableMap<String, Any>" propType="open val">
+        Map representing a data cache shared with the event handler's registered checks.
+      </Doc.Arg>
+
+      <Doc.Arg name="event" type="T" propType="open val">
+        Object representing the event you're currently handling.
+      </Doc.Arg>
+
+      <Doc.Arg name="eventHandler" type="EventHandler<T>" propType="open val">
+        The event handler that was triggered by the event.
+      </Doc.Arg>
+    </Doc.Arguments>
+
+    <Doc.Property name="sentry" type="SentryContext" propType="val">
+      A [Sentry context](#) you can use to keep track of what happens in your event handler.
+    </Doc.Property>
+  </Doc.Type>
+</Doc.Container>
+
+## Extra Data
+
+All Kord Extensions events extend [the Kord `Event` type](https://dokka.kord.dev/core/dev.kord.core.event/-event/index.html),
+which provides a `customContext` property.
+Your bot will store a `MutableMap<String, Any>` here for all events it processes, which allows you to store extra data
+on event objects as part of processing.
+
+Kord Extensions provides some extra APIs that make using this more convenient.
+
+### Types
+
+The sections below use the following generic types for brevity.
+
+<Doc.Container>
+  <Doc.Background>
+    <Doc.Arg name="A" type="Map<String, Any?>">
+      Type representing all string-keyed maps.
+    </Doc.Arg>
+
+    <Doc.Arg name="M" type="MutableMap<String, Any>">
+      Type representing only mutable string-keyed maps without nullable values.
+    </Doc.Arg>
+  </Doc.Background>
+</Doc.Container>
+
+### Properties
+
+<Doc.Container>
+  <Doc.Property name="extraData" type="M" receiver="Event">
+    Convenient access to the extra data map stored in `customContext`.
+  </Doc.Property>
+</Doc.Container>
+
+### Functions
+
+<Doc.Container>
+  <Doc.Function name="getOf" receiver="A" returns="T" hasGeneric>
+    Attempt to retrieve a value from the map stored with the specified `key`, casting it to the given type `T` and
+    returning it.
+
+    This function will throw exceptions:
+    - `ClassCastException` - Thrown when the value stored under the given `key` can't be cast to `T`.
+    - `IllegalArgumentException` - Thrown when the map doesn't contain the given `key`.
+
+    <Doc.Arguments type="type">
+      <Doc.Arg name="T" type="Any" reified>
+        Type to cast the value to.
+      </Doc.Arg>
+    </Doc.Arguments>
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="key" type="String">
+        Key to attempt to retrieve a value for.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+
+  <Doc.Function name="getOfOrDefault" receiver="A" returns="T" hasGeneric>
+    Attempt to retrieve a value from the map stored with the specified `key`, casting it to the given type `T` and
+    returning it.
+
+    If the map doesn't contain the given `key` or the value can't be cast to `T`, this function will return the
+    specified `default` value.
+
+    <Doc.Arguments type="type">
+      <Doc.Arg name="T" type="Any" reified>
+        Type to cast the value to.
+      </Doc.Arg>
+    </Doc.Arguments>
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="key" type="String">
+        Key to attempt to retrieve a value for.
+      </Doc.Arg>
+
+      <Doc.Arg name="default" type="T">
+        Default value to return if the key is missing, or the value is the wrong type.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+
+  <Doc.Function name="getOfOrDefault" receiver="M" returns="T" hasGeneric>
+    Attempt to retrieve a value from the map stored with the specified `key`, casting it to the given type `T` and
+    returning it.
+
+    If the map doesn't contain the given `key` or the value can't be cast to `T`, this function will return the
+    specified `default` value, optionally storing it under the given `key` if `store` is `true`.
+
+    **Note:** This function variant only supports mutable string-keyed maps with non-nullable values.
+    If your map may contain `null` values, you can only use the `getOfOrDefault` function specified above.
+
+    <Doc.Arguments type="type">
+      <Doc.Arg name="T" type="Any" reified>
+        Type to cast the value to.
+      </Doc.Arg>
+    </Doc.Arguments>
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="key" type="String">
+        Key to attempt to retrieve a value for.
+      </Doc.Arg>
+
+      <Doc.Arg name="default" type="T">
+        Default value to return if the key is missing, or the value is the wrong type.
+      </Doc.Arg>
+
+      <Doc.Arg name="store" type="Boolean" default="false">
+        Set this to `true` to store the default value in the map under the given `key`, when the default value would be
+        returned.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+
+  <Doc.Function name="getOfOrNull" receiver="A" returns="T?" hasGeneric>
+    Attempt to retrieve a value from the map stored with the specified `key`, casting it to the given type `T` and
+    returning it.
+
+    If the map doesn't contain the given `key` or the value can't be cast to `T`, this function will return `null`.
+    <Doc.Arguments type="type">
+      <Doc.Arg name="T" type="Any?" reified>
+        Type to cast the value to.
+      </Doc.Arg>
+    </Doc.Arguments>
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="key" type="String">
+        Key to attempt to retrieve a value for.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+</Doc.Container>
