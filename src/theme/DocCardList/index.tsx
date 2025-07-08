@@ -1,5 +1,6 @@
 import React, {type ReactNode} from "react";
 import clsx from "clsx";
+import GithubSlugger from "github-slugger";
 import {filterDocCardListItems, useCurrentSidebarCategory,} from "@docusaurus/plugin-content-docs/client";
 import DocCard from "@theme/DocCard";
 import type {Props} from "@theme/DocCardList";
@@ -23,6 +24,7 @@ export function DocCardListWithDescriptions(props: CustomProps): ReactNode {
 
 export default function DocCardList(props: CustomProps): ReactNode {
 	console.log(props)
+	const slugger = new GithubSlugger()
 
 	const {items, className} = props;
 
@@ -77,7 +79,9 @@ export default function DocCardList(props: CustomProps): ReactNode {
 					style={{
 						marginTop: "1rem",
 						marginBottom: descriptions[key] === undefined ? "1rem" : "0",
-					}}>{key}</h2>
+					}}
+					id={slugger.slug(key)}
+				>{key}</h2>
 
 				{
 					descriptions[key] === undefined ? <></> :
