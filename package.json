@@ -29,6 +29,7 @@
 		"clsx": "^2.0.0",
 		"fast-xml-parser": "^5.2.5",
 		"flexver": "^1.1.1",
+		"github-slugger": "^2.0.0",
 		"js-toml": "^1.0.1",
 		"prism-react-renderer": "^2.3.0",
 		"react": "^18.3.1",

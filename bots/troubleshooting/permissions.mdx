@@ -1,0 +1,24 @@
+---
+description: 'Figuring out permissions errors.'
+sidebar_position: 2
+
+sidebar_custom_props:
+  card_group: "Sections"
+  icon: "fluent:chat-lock-24-filled"
+
+# TODO: Link to other docs
+---
+
+import * as Doc from "/src/components/Doc";
+
+# Permissions
+
+When working with Discord's guild APIs, you'll sometimes run into an error that looks like this:
+
+```
+Error during execution of event handler (...)
+dev.kord.rest.request.KtorRequestException: REST request returned an error: 403   Missing Access null
+    at dev.kord.rest.request.KtorRequestHandler.handle(KtorRequestHandler.kt:60)
+    at dev.kord.rest.request.KtorRequestHandler$handle$1.invokeSuspend(KtorRequestHandler.kt)
+    ...
+```

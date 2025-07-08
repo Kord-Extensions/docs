@@ -412,6 +412,14 @@ hr.clear {
 	font-weight: bold;
 }
 
+article ol > li::marker {
+	font-weight: bold;
+}
+
+div.markdown > img, div.markdown > p > img {
+	border-radius: var(--ifm-code-border-radius);
+}
+
 .hide-desktop {
 	display: none;
 }
