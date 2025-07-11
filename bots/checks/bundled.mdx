@@ -1,0 +1,145 @@
+---
+description: "All checks included with Kord Extensions."
+sidebar_position: 2
+sidebar_custom_props:
+  card_group: "Basics"
+  icon: "fluent:code-block-24-filled"
+  divider_below: true
+
+# TODO: Link to other docs
+---
+
+import * as Doc from "/src/components/Doc";
+
+# Bundled Checks
+
+Kord Extensions provides many built-in checks that you can use in all kinds of situations.
+To use them, call their functions as described on [the basics page](#).
+
+## Channels
+
+<Doc.Container>
+  <Doc.Check name="channelAbove">
+    Checks whether the current event happened in a channel ordered **above** the given channel in the channel list.
+    If the current event happened in a thread or the given channel is a thread, this check will use the threads'
+    parent channels.
+
+    **Note:** This check doesn't make sure both channels are in the same guild.
+
+    <Doc.Arguments>
+      <Doc.Arg name="channel" type={["Snowflake", "() -> ChannelBehavior"]}>
+        Channel to check against, either in ID or builder form.
+      </Doc.Arg>
+    </Doc.Arguments>
+
+    <Doc.WrongEvent missing="channels">
+      <Doc.PositiveCheck>Always fails.</Doc.PositiveCheck>
+    </Doc.WrongEvent>
+  </Doc.Check>
+
+  <Doc.Check name="channelBelow">
+    Checks whether the current event happened in a channel ordered **below** the given channel in the channel list.
+    If the current event happened in a thread or the given channel is a thread, this check will use the threads'
+    parent channels.
+
+    **Note:** This check doesn't make sure both channels are in the same guild.
+
+    <Doc.Arguments>
+      <Doc.Arg name="channel" type={["Snowflake", "() -> ChannelBehavior"]}>
+        Channel to check against, either in ID or builder form.
+      </Doc.Arg>
+    </Doc.Arguments>
+
+    <Doc.WrongEvent missing="channels">
+      <Doc.PositiveCheck>Always fails.</Doc.PositiveCheck>
+    </Doc.WrongEvent>
+  </Doc.Check>
+
+  <Doc.Check name="inCategory" negative="notInCategory">
+    Checks whether the current event happened in a channel within the given category.
+    If the current event happened in a thread, this check will use the thread's parent channel.
+
+    <Doc.Arguments>
+      <Doc.Arg name="category" type={["Snowflake", "() -> CategoryBehavior"]}>
+        Category to check against, either in ID or builder form.
+      </Doc.Arg>
+    </Doc.Arguments>
+
+    <Doc.WrongEvent missing="categories">
+      <Doc.PositiveCheck>Always fails.</Doc.PositiveCheck>
+      <Doc.NegativeCheck>Always passes.</Doc.NegativeCheck>
+    </Doc.WrongEvent>
+  </Doc.Check>
+
+  <Doc.Check name="inTopChannel" negative="notInTopChannel">
+    Checks whether the current event happened in the given channel.
+    If the current event happened in a thread, this check will use the thread's parent channel.
+
+    <Doc.Arguments>
+      <Doc.Arg name="channel" type={["Snowflake", "() -> ChannelBehavior"]}>
+        Channel to check against, either in ID or builder form.
+      </Doc.Arg>
+    </Doc.Arguments>
+
+    <Doc.WrongEvent missing="channels">
+      <Doc.PositiveCheck>Always fails.</Doc.PositiveCheck>
+      <Doc.NegativeCheck>Always passes.</Doc.NegativeCheck>
+    </Doc.WrongEvent>
+  </Doc.Check>
+</Doc.Container>
+
+### Channel Types
+
+<Doc.Container>
+  <Doc.Check name="channelType" negative="notChannelType">
+    Checks whether the current event happened in a channel matching the given channel types.
+
+    <Doc.Arguments>
+      <Doc.Arg name="channelTypes" type="vararg ChannelType">
+        Channel types to check.
+      </Doc.Arg>
+    </Doc.Arguments>
+
+    <Doc.WrongEvent missing="channels">
+      <Doc.PositiveCheck>Always fails.</Doc.PositiveCheck>
+      <Doc.NegativeCheck>Always passes.</Doc.NegativeCheck>
+    </Doc.WrongEvent>
+  </Doc.Check>
+</Doc.Container>
+
+### Flat Checks
+
+These checks don't resolve the parent channel if the event happened in a thread, which can be useful if you need to
+match a specific thread.
+
+<Doc.Container>
+  <Doc.Check name="inChannel" negative="notInChannel">
+    Checks whether the current event happened in the given channel.
+
+    **Note:** If the current event happened in a thread, this check won't use the thread's parent channel.
+    If you need this, use `inTopChannel` or `notInTopChannel`.
+
+    <Doc.Arguments>
+      <Doc.Arg name="channel" type={["Snowflake", "() -> ChannelBehavior"]}>
+        Channel to check against, either in ID or builder form.
+      </Doc.Arg>
+    </Doc.Arguments>
+
+    <Doc.WrongEvent missing="channels">
+      <Doc.PositiveCheck>Always fails.</Doc.PositiveCheck>
+      <Doc.NegativeCheck>Always passes.</Doc.NegativeCheck>
+    </Doc.WrongEvent>
+  </Doc.Check>
+</Doc.Container>
+
+## Guilds
+
+## Members
+
+## Misc
+
+## NSFW
+
+## Roles
+
+

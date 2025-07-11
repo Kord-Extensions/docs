@@ -1,10 +1,16 @@
 import {PropsWithChildren, ReactNode} from "react";
 import clsx from "clsx";
 import styles from "./styles.module.css";
-import {Icon} from "@iconify/react";
+import {Icon, InlineIcon} from "@iconify/react";
 import {Tooltip} from "react-tooltip"
 
 import {Tag, Tags} from "../Tags";
+
+// const positiveCheckIcon = "fa-solid:equals"
+// const negativeCheckIcon = "fa-solid:not-equal"
+
+const positiveCheckIcon = "pepicons-pop:question"
+const negativeCheckIcon = "pepicons-pop:question-off"
 
 // region: Common
 
@@ -12,11 +18,69 @@ type CommonProps = {
 	className?: string | null,
 }
 
-function Internal(): ReactNode {
+export function Internal(): ReactNode {
 	return (
 		<div style={{display: "flex", alignItems: "center"}} data-tooltip-id="internal-api-tooltip">
 			<Icon icon="fluent:warning-20-filled" height="2.5em" className="text-warning"></Icon>
 		</div>
+	)
+}
+
+export function NegativeCheck(props: PropsWithChildren): ReactNode {
+	return (
+		<>
+			{
+				props.children !== undefined ?
+					<Tags>
+						<Tag className={"mr-0.5"}>
+							<div style={{display: "flex", alignItems: "center", paddingTop: "0.25em", paddingBottom: "0.25em"}}
+							     data-tooltip-id="negative-check-tooltip">
+								<InlineIcon icon={negativeCheckIcon} height="1.25em" className="text-danger mr-0.5"></InlineIcon>
+								Negated
+							</div>
+						</Tag>
+
+						<span style={{alignSelf: "center"}}>
+							{props.children}
+						</span>
+					</Tags> :
+					<div style={{display: "flex", alignItems: "center"}}
+					     className="mr-0.5"
+					     data-tooltip-id="negative-check-tooltip">
+						<InlineIcon icon={negativeCheckIcon} height="1.25em" className="text-danger"></InlineIcon>
+					</div>
+			}
+		</>
+	)
+}
+
+export function PositiveCheck(props: PropsWithChildren): ReactNode {
+	return (
+		<>
+			{
+				props.children !== undefined ?
+					<Tags>
+						<Tag className={"mr-0.5"}>
+							<div style={{display: "flex", alignItems: "center", paddingTop: "0.25em", paddingBottom: "0.25em"}}
+							     data-tooltip-id="positive-check-tooltip">
+								<InlineIcon icon={positiveCheckIcon} height="1.25em" className="text-success mr-0.5"></InlineIcon>
+								<span style={{paddingRight: "0.5em"}}>
+									Normal
+								</span>
+							</div>
+						</Tag>
+
+						<span style={{alignSelf: "center"}}>
+							{props.children}
+						</span>
+					</Tags> :
+					<div style={{display: "flex", alignItems: "center"}}
+					     className="mr-0.5"
+					     data-tooltip-id="positive-check-tooltip">
+						<InlineIcon icon={positiveCheckIcon} height="1.25em" className="text-success"></InlineIcon>
+					</div>
+			}
+		</>
 	)
 }
 
@@ -45,6 +109,7 @@ export function Arguments(props: PropsWithChildren<ArgumentsProps>): ReactNode {
 				{
 					props.type === undefined ? "" : `${toTitleCase(props.type)}`
 				}
+
 				{
 					props.type === "type" ? " Parameters" : " Arguments"
 				}
@@ -64,6 +129,28 @@ export function Background(props: PropsWithChildren<CommonProps>): ReactNode {
 	return (
 		<div className={clsx(props.className, styles.col, styles.docBgContainer, "doc-builder")}>
 			{props.children}
+		</div>
+	);
+}
+
+type WrongEventProps = {
+	missing: string;
+} & CommonProps
+
+export function WrongEvent(props: PropsWithChildren<WrongEventProps>): ReactNode {
+	return (
+		<div className={clsx(props.className, styles.args, "doc-wrong-events")}>
+			<div className={clsx(styles.headMed, "mb-0.5")}>
+				Events without {toTitleCase(props.missing)}
+			</div>
+
+			{props.children === undefined ?
+				<></> :
+				<div className={clsx(styles.indent, styles.col)}>
+					For events without {props.missing.toLowerCase()}:
+					{props.children}
+				</div>
+			}
 		</div>
 	);
 }
@@ -122,9 +209,7 @@ export function Details(props: PropsWithChildren<DetailsProps>): ReactNode {
 	</details>
 }
 
-type EnumMembersProps = {
-
-} & CommonProps
+type EnumMembersProps = {} & CommonProps
 
 export function EnumMembers(props: PropsWithChildren<EnumMembersProps>): ReactNode {
 	return (
@@ -141,6 +226,12 @@ export function EnumMembers(props: PropsWithChildren<EnumMembersProps>): ReactNo
 			}
 		</div>
 	);
+}
+
+export function Indent(props: PropsWithChildren<CommonProps>): ReactNode {
+	return <div className={clsx(styles.indent, props.className)}>
+		{props.children}
+	</div>
 }
 
 // endregion
@@ -294,6 +385,105 @@ export function Builder(props: PropsWithChildren<BuilderProps>): ReactNode {
 					}
 				</Tags>
 			</div>
+
+			{props.children === undefined ?
+				<></> :
+				<div className={clsx(styles.indent)}>
+					{props.children}
+				</div>
+			}
+		</div>
+	);
+}
+
+type CheckProps = {
+	name: string,
+	function?: boolean,
+	builder?: boolean,
+	combined?: boolean,
+	negative?: string,
+} & CommonProps
+
+export function Check(props: PropsWithChildren<CheckProps>): ReactNode {
+	const totalVersions = [props.function, props.builder, props.combined].filter((it) => (it)).length
+	const singleRow = totalVersions < 2
+
+	function getCodeElements(name: string, props: PropsWithChildren<CheckProps>, tagElement: ReactNode) {
+		return <>
+			{
+				props.function ?
+					<code className={clsx(styles.head, "shadow--lw")}>
+						{tagElement}
+						{name}
+						<span className="text-secondary">(...)</span>
+					</code> :
+					<></>
+			}
+
+			{
+				props.builder ?
+					<code className={clsx(styles.head, "shadow--lw")}>
+						{tagElement}
+						{name}
+						<span className="text-secondary">&nbsp;{"{ ... }"}</span>
+					</code> :
+					<></>
+			}
+
+			{
+				props.combined ?
+					<code className={clsx(styles.head, "shadow--lw")}>
+						{tagElement}
+						{name}
+						<span className="text-secondary">(...) {"{ ... }"}</span>
+					</code> :
+					<></>
+			}
+
+			{
+				props.function !== true && props.builder !== true && props.combined !== true ?
+					<code className={clsx(styles.head, "shadow--lw")}>
+						{tagElement}
+						{name}
+					</code> :
+					<></>
+			}
+		</>
+	}
+
+	return (
+		<div className={clsx(props.className, styles.col, styles.docBg, "doc-check")}>
+			{
+				singleRow ?
+					<div className={clsx(styles.row)}>
+						<Tags>
+							{getCodeElements(props.name, props, <PositiveCheck />)}
+
+							{
+								props.negative !== undefined ?
+									getCodeElements(props.negative, props, <NegativeCheck />) :
+									<></>
+							}
+						</Tags>
+					</div> :
+					<>
+						<div className={clsx(styles.row)}>
+							<Tags>
+								{getCodeElements(props.name, props, <PositiveCheck />)}
+							</Tags>
+						</div>
+
+						{
+							props.negative !== undefined ?
+								<div className={clsx(styles.row)}>
+									<Tags>
+										{getCodeElements(props.negative, props, <NegativeCheck />)}
+									</Tags>
+								</div> :
+								<></>
+						}
+					</>
+			}
 
 			{props.children === undefined ?
 				<></> :

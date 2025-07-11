@@ -145,6 +145,10 @@
 	gap: 0.5em;
 }
 
+.inline-flex {
+	display: inline-flex;
+}
+
 .col .col:not(:last-child) {
 	margin-bottom: 1em;
 }

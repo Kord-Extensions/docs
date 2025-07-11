@@ -247,6 +247,13 @@ hr.clear {
 		background-color: var(--tag-bg);
 		color: var(--tag-fg);
 
+		&.normal {
+			--tag-fg: var(--ifm-color-secondary-text);
+			--tag-bg: var(--ifm-code-background);
+
+			border: 0.1rem solid rgba(0, 0, 0, 0.1);
+		}
+
 		&.primary {
 			--tag-bg: var(--ifm-color-primary);
 			--tag-fg: var(--ifm-color-primary-text);
@@ -390,6 +397,26 @@ hr.clear {
 
 .mt-1 {
 	margin-top: 1em;
+}
+
+.ml-0\.5 {
+	margin-left: 0.5em;
+}
+
+.ml-1 {
+	margin-left: 1em;
+}
+
+.mr-0\.25 {
+	margin-right: 0.25em;
+}
+
+.mr-0\.5 {
+	margin-right: 0.5em;
+}
+
+.mr-1 {
+	margin-right: 1em;
 }
 
 .text-center {

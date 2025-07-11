@@ -2,4 +2,4 @@ description: "Argument parsing, completion and validation."
 
 customProps:
   card_group: "Arguments"
-  icon: "fluent:convert-to-type-20-filled"
+  icon: "fluent:convert-to-type-24-filled"
