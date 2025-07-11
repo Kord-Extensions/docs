@@ -2,4 +2,4 @@ description: "Rich command types, including slash and context commands."
 
 customProps:
   card_group: "Commands"
-  icon: "fluent:apps-20-filled"
+  icon: "fluent:apps-24-filled"

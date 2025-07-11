@@ -32,7 +32,7 @@ function propsToClasses(props: ContainerProps): string {
 
 export function Tag(props: PropsWithChildren<TagProps>): ReactNode {
 	return <span
-		className={clsx("tag", "shadow--lw", props.style, props.className)}
+		className={clsx("tag", "shadow--lw", props.style ?? "normal", props.className)}
 		title={props.title}
 		data-tooltip-id={props.tooltip}
 	>
