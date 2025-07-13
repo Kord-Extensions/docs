@@ -18,6 +18,15 @@ unformatted and without mentions/pings.
 The `errorResponse { }` builder allows you to change how Kord Extensions formats and displays errors to users on
 Discord.
 
+:::warning Empty Messages
+
+Remember that by using the `errorResponse { }` builder, you're replacing the builder Kord Extensions provides by
+default.
+Make sure your builder always adds to the message and never results in an empty message, otherwise your bot may throw
+strange, cryptic errors in some situations.
+
+:::
+
 ```kt
 ExtensibleBot(TOKEN) {
     // ...
