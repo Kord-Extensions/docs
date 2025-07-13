@@ -15,8 +15,8 @@ type CommonProps = {
 
 export function Internal(): ReactNode {
 	return (
-		<div style={{display: "flex", alignItems: "center"}} data-tooltip-id="internal-api-tooltip">
-			<Icon icon="fluent:warning-20-filled" height="2.5em" className="text-warning"></Icon>
+		<div style={{display: "flex", alignItems: "center", width: "2.5em"}} data-tooltip-id="internal-api-tooltip">
+			<Icon icon="fluent:warning-20-filled" width="2.5em" className="text-warning"></Icon>
 		</div>
 	)
 }
@@ -30,7 +30,11 @@ export function NegativeCheck(props: PropsWithChildren): ReactNode {
 						<Tag className={"mr-0.5"}>
 							<div style={{display: "flex", alignItems: "center", paddingTop: "0.25em", paddingBottom: "0.25em"}}
 							     data-tooltip-id="negative-check-tooltip">
-								<InlineIcon icon={Icons.checkNegative} height="1.25em" className="text-danger mr-0.5"></InlineIcon>
+
+								<div style={{width: "1.2em", display: "flex", alignItems: "center"}} className="mr-0.5">
+									<InlineIcon icon={Icons.checkNegative} width="1.2em" className="text-danger"></InlineIcon>
+								</div>
+
 								Negated
 							</div>
 						</Tag>
@@ -39,10 +43,11 @@ export function NegativeCheck(props: PropsWithChildren): ReactNode {
 							{props.children}
 						</span>
 					</Tags> :
-					<div style={{display: "flex", alignItems: "center"}}
+					<div style={{display: "flex", alignItems: "center", width: "1.2em"}}
 					     className="mr-0.5"
 					     data-tooltip-id="negative-check-tooltip">
-						<InlineIcon icon={Icons.checkNegative} height="1.25em" className="text-danger"></InlineIcon>
+
+						<InlineIcon icon={Icons.checkNegative} width="1.2em" className="text-danger"></InlineIcon>
 					</div>
 			}
 		</>
@@ -58,7 +63,11 @@ export function PositiveCheck(props: PropsWithChildren): ReactNode {
 						<Tag className={"mr-0.5"}>
 							<div style={{display: "flex", alignItems: "center", paddingTop: "0.25em", paddingBottom: "0.25em"}}
 							     data-tooltip-id="positive-check-tooltip">
-								<InlineIcon icon={Icons.checkPositive} height="1.25em" className="text-success mr-0.5"></InlineIcon>
+
+								<div style={{width: "1.2em", display: "flex", alignItems: "center"}} className="mr-0.5">
+									<InlineIcon icon={Icons.checkPositive} width="1.2em" className="text-success"></InlineIcon>
+								</div>
+
 								<span style={{paddingRight: "0.5em"}}>
 									Normal
 								</span>
@@ -69,10 +78,11 @@ export function PositiveCheck(props: PropsWithChildren): ReactNode {
 							{props.children}
 						</span>
 					</Tags> :
-					<div style={{display: "flex", alignItems: "center"}}
+					<div style={{display: "flex", alignItems: "center", width: "1.2em"}}
 					     className="mr-0.5"
 					     data-tooltip-id="positive-check-tooltip">
-						<InlineIcon icon={Icons.checkPositive} height="1.25em" className="text-success"></InlineIcon>
+
+						<InlineIcon icon={Icons.checkPositive} width="1.2em" className="text-success"></InlineIcon>
 					</div>
 			}
 		</>
