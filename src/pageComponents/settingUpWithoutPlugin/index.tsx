@@ -8,51 +8,58 @@ import WaitForVersions from "@site/src/components/WaitForVersions";
 // THIS IS ANNOYING, BUT BY FUCK, IT WORKS!
 
 export function VersionCatalogue() : ReactNode {
-	return <WaitForVersions>
-		<CodeBlock language="toml">
-		{`[versions]
+	return <WaitForVersions
+		callback={() => (
+			<CodeBlock language="toml">
+{`[versions]
 kord-extensions = "${getVersion("kordEx")}"
 
 [libraries]
 kord-extensions-core = { module = "dev.kordex:kord-extensions", version.ref = "kord-extensions" }
 kord-extensions-ap = { module = "dev.kordex:annotation-processor", version.ref = "kord-extensions" }
 `}
-		</CodeBlock>
-	</WaitForVersions>
+			</CodeBlock>
+		)}
+	/>
 }
 
 export function BuildGroovy() : ReactNode {
-	return <WaitForVersions>
-		<CodeBlock language="groovy">
-		{`plugins {
+	return <WaitForVersions
+		callback={() => (
+			<CodeBlock language="groovy">
+{`plugins {
   id "org.jetbrains.kotlin.jvm" version "${getVersion("kotlin")}"
   id "org.jetbrains.kotlin.plugin.serialization" version "${getVersion("kotlin")}"
 
   id "com.google.devtools.ksp" version "${getVersion("ksp")}"
 }
 `}
-		</CodeBlock>
-	</WaitForVersions>
+			</CodeBlock>
+		)}
+	/>
 }
 
 export function BuildKTS() : ReactNode {
-	return <WaitForVersions>
-		<CodeBlock language="kotlin">
-		{`plugins {
+	return <WaitForVersions
+		callback={() => (
+			<CodeBlock language="kotlin">
+{`plugins {
   kotlin("jvm") version "${getVersion("kotlin")}"
   kotlin("plugin.serialization") version "${getVersion("kotlin")}"
 
   id("com.google.devtools.ksp") version "${getVersion("ksp")}"
 }
 `}
-		</CodeBlock>
-	</WaitForVersions>
+			</CodeBlock>
+		)}
+	/>
 }
 
 export function MavenPom() : ReactNode {
-	return <WaitForVersions>
-		<CodeBlock language="xml">
-		{`<repositories>
+	return <WaitForVersions
+		callback={() => (
+			<CodeBlock language="xml">
+{`<repositories>
   <!-- ... -->
 
   <repository>
@@ -84,14 +91,16 @@ export function MavenPom() : ReactNode {
   </dependency>
 </dependencies>
 `}
-		</CodeBlock>
-	</WaitForVersions>
+			</CodeBlock>
+		)}
+	/>
 }
 
 export function BuildSBT() : ReactNode {
-	return <WaitForVersions>
-		<CodeBlock language="scala">
-		{`enablePlugins(KotlinPlugin)
+	return <WaitForVersions
+		callback={() => (
+			<CodeBlock language="scala">
+{`enablePlugins(KotlinPlugin)
 
 kotlinLib("stdlib")
 kotlinPlugin("serialization")
@@ -107,6 +116,7 @@ libraryDependencies ++= Seq(
   "dev.kordex" % "kord-extensions" % "${getVersion("kordEx")}"
 )
 `}
-		</CodeBlock>
-	</WaitForVersions>
+			</CodeBlock>
+		)}
+	/>
 }
