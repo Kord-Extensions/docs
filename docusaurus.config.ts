@@ -23,6 +23,10 @@ const config: Config = {
 	onBrokenLinks: "throw",
 	onBrokenMarkdownLinks: "warn",
 
+	clientModules: [
+		"src/icons/client.ts"
+	],
+
 	i18n: {
 		defaultLocale: "en",
 		locales: ["en"],
