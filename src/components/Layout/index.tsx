@@ -1,5 +1,4 @@
 import React, {PropsWithChildren, ReactNode} from "react";
-import {Icon} from "@iconify/react";
 
 import styles from "./styles.module.css"
 import clsx, {ClassValue} from "clsx";

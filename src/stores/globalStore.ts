@@ -166,8 +166,6 @@ export type AppDispatch = typeof Store.dispatch;
 // Docusaurus will fail to build with a cryptic error otherwise.
 function setup() {
 	async function inner() {
-		console.log("VERSION CATALOGUE:", await getVersionCatalogue())
-
 		console.log("Setting up initial data...")
 
 		const mavenVersions = await getMavenMetadata()
@@ -186,8 +184,8 @@ function setup() {
 
 				Store.dispatch(replacePluginVersions(pluginVersions))
 
-				console.log(`Latest plugin version: ${latestPluginVersion}`)
-				console.log("App plugin versions:", pluginVersions.join(", "))
+				console.log(`Latest Gradle plugin version: ${latestPluginVersion}`)
+				console.log("Gradle plugin versions:", pluginVersions.join(", "))
 			})(),
 
 			(async () => {
@@ -195,7 +193,7 @@ function setup() {
 
 				Store.dispatch(setGradleVersion(gradleVersion))
 
-				console.log("Gradle Version:", gradleVersion)
+				console.log("Latest plugin's expected Gradle version:", gradleVersion)
 			})(),
 
 			(async () => {

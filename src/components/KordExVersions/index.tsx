@@ -4,6 +4,7 @@ import React, {ReactNode, useState} from "react";
 import clsx from "clsx";
 
 import {Icon} from "@iconify/react";
+import {Icons} from "/src/icons";
 
 import {getGradle, useGlobalDispatch, useGlobalSelector} from "@site/src/stores/globalHooks";
 import {Tag, Tags} from "@site/src/components/Tags";
@@ -145,7 +146,7 @@ function Metadata(props: MetadataProps): ReactNode {
 					{
 						isApiDep ?
 							<FixedRow>
-								<Icon icon="fluent:box-24-filled" className="text-primary"
+								<Icon icon={Icons.dependencyApi} className="text-primary"
 								      style={{alignSelf: "center"}} fontSize="25px"
 								      data-tooltip-id="api-dependency-tooltip"
 								      key={`${item}-icon`}
@@ -156,7 +157,7 @@ function Metadata(props: MetadataProps): ReactNode {
 								</span>
 							</FixedRow> :
 							<FixedRow>
-								<Icon icon="fluent:play-circle-hint-24-regular" className="text-info"
+								<Icon icon={Icons.dependencyRuntime} className="text-info"
 								      style={{alignSelf: "center"}} fontSize="25px"
 								      data-tooltip-id="runtime-dependency-tooltip"
 								      key={`${item}-icon`}

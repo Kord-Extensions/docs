@@ -5,12 +5,7 @@ import {Icon, InlineIcon} from "@iconify/react";
 import {Tooltip} from "react-tooltip"
 
 import {Tag, Tags} from "../Tags";
-
-// const positiveCheckIcon = "fa-solid:equals"
-// const negativeCheckIcon = "fa-solid:not-equal"
-
-const positiveCheckIcon = "pepicons-pop:question"
-const negativeCheckIcon = "pepicons-pop:question-off"
+import {Icons} from "/src/icons";
 
 // region: Common
 
@@ -35,7 +30,7 @@ export function NegativeCheck(props: PropsWithChildren): ReactNode {
 						<Tag className={"mr-0.5"}>
 							<div style={{display: "flex", alignItems: "center", paddingTop: "0.25em", paddingBottom: "0.25em"}}
 							     data-tooltip-id="negative-check-tooltip">
-								<InlineIcon icon={negativeCheckIcon} height="1.25em" className="text-danger mr-0.5"></InlineIcon>
+								<InlineIcon icon={Icons.checkNegative} height="1.25em" className="text-danger mr-0.5"></InlineIcon>
 								Negated
 							</div>
 						</Tag>
@@ -47,7 +42,7 @@ export function NegativeCheck(props: PropsWithChildren): ReactNode {
 					<div style={{display: "flex", alignItems: "center"}}
 					     className="mr-0.5"
 					     data-tooltip-id="negative-check-tooltip">
-						<InlineIcon icon={negativeCheckIcon} height="1.25em" className="text-danger"></InlineIcon>
+						<InlineIcon icon={Icons.checkNegative} height="1.25em" className="text-danger"></InlineIcon>
 					</div>
 			}
 		</>
@@ -63,7 +58,7 @@ export function PositiveCheck(props: PropsWithChildren): ReactNode {
 						<Tag className={"mr-0.5"}>
 							<div style={{display: "flex", alignItems: "center", paddingTop: "0.25em", paddingBottom: "0.25em"}}
 							     data-tooltip-id="positive-check-tooltip">
-								<InlineIcon icon={positiveCheckIcon} height="1.25em" className="text-success mr-0.5"></InlineIcon>
+								<InlineIcon icon={Icons.checkPositive} height="1.25em" className="text-success mr-0.5"></InlineIcon>
 								<span style={{paddingRight: "0.5em"}}>
 									Normal
 								</span>
@@ -77,7 +72,7 @@ export function PositiveCheck(props: PropsWithChildren): ReactNode {
 					<div style={{display: "flex", alignItems: "center"}}
 					     className="mr-0.5"
 					     data-tooltip-id="positive-check-tooltip">
-						<InlineIcon icon={positiveCheckIcon} height="1.25em" className="text-success"></InlineIcon>
+						<InlineIcon icon={Icons.checkPositive} height="1.25em" className="text-success"></InlineIcon>
 					</div>
 			}
 		</>
@@ -265,12 +260,12 @@ export function Arg(props: PropsWithChildren<ArgProps>): ReactNode {
 	}
 
 	return (
-		<div className={clsx(props.className, styles.arg, "doc-argument")}>
-			<div className={clsx(styles.row)} style={{marginBottom: "0.25em"}}>
-				<Tags>
+		<div className={clsx(props.className, styles.arg, "doc-argument")} key={`${props.name}-container`}>
+			<div className={clsx(styles.row)} style={{marginBottom: "0.25em"}} key={`${props.name}-inner`}>
+				<Tags key={`${props.name}-tags`}>
 					{props.internal ? <Internal/> : <></>}
 
-					<code className={clsx(styles.headMed, "shadow--lw")}>
+					<code className={clsx(styles.headMed, "shadow--lw")} key={`${props.name}-tag-code`}>
 						{props.reified === true ? <span className="text-danger">reified&nbsp;</span> : <></>}
 						{
 							props.propType === null || props.propType === undefined ?
@@ -282,8 +277,7 @@ export function Arg(props: PropsWithChildren<ArgProps>): ReactNode {
 
 					{
 						props.type === undefined ? <></> :
-
-							<Tag style="primary">
+							<Tag style="primary" key={`${props.name}-tag-types`}>
 								{typeof (props.type) === "string" ?
 									<>
 										<span>Type:</span> <code className="shadow--lw">{props.type}</code>
@@ -292,7 +286,7 @@ export function Arg(props: PropsWithChildren<ArgProps>): ReactNode {
 										<span>Types:</span>
 
 										{props.type.map((overload) => (
-											<code className="shadow--lw">
+											<code className="shadow--lw" key={`${props.name}-tag-types-${overload}`}>
 												{overload}
 											</code>
 										))}
@@ -302,11 +296,11 @@ export function Arg(props: PropsWithChildren<ArgProps>): ReactNode {
 												{hasMultipleTypes ?
 													<>
 														&amp;
-														<code className="shadow--lw">
+														<code className="shadow--lw" key={`${props.name}-tag-types-collection-multi`}>
 															Collection&lt;T&gt;
 														</code>
 													</> :
-													<code className="shadow--lw">
+													<code className="shadow--lw" key={`${props.name}-tag-types-collection-single`}>
 														Collection&lt;{firstType}&gt;
 													</code>
 												}
@@ -320,7 +314,7 @@ export function Arg(props: PropsWithChildren<ArgProps>): ReactNode {
 
 					{
 						props.default === undefined ? <></> :
-							<Tag style="success">
+							<Tag style="success" key={`${props.name}-tag-default`}>
 								<span>Default:</span> <code className="shadow--lw">{props.default}</code>
 							</Tag>
 					}

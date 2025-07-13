@@ -7,6 +7,8 @@ import clsx from "clsx";
 import {Icon} from "@iconify/react"; // Import the entire Iconify library.
 import {Tooltip} from "react-tooltip"
 
+import {Icons} from "/src/icons";
+
 type Props = WrapperProps<typeof LayoutType>;
 
 export default function LayoutWrapper(props: Props): ReactNode {
@@ -55,7 +57,7 @@ export default function LayoutWrapper(props: Props): ReactNode {
 									setIsOpen(false);
 									e.preventDefault()
 								}}>
-									<Icon icon="mdi:close-circle" height="1.5em" className="text-inverted"/>
+									<Icon icon={Icons.close} height="1.5em" className="text-inverted"/>
 								</a>
 							</div>
 
