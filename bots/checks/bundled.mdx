@@ -162,10 +162,241 @@ match a specific thread.
 
 ## Members
 
+<Doc.Container>
+  <Doc.Check name="hasPermission" negative="notHasPermission">
+    Checks whether the member triggering the current event has either the given permission, or the admin permission.
+
+    <Doc.Arguments>
+      <Doc.Arg name="perm" type="Permission">
+        Permission to check for.
+      </Doc.Arg>
+    </Doc.Arguments>
+
+    <Doc.WrongEvent missing="members">
+      <Doc.PositiveCheck>Always fails.</Doc.PositiveCheck>
+      <Doc.NegativeCheck>Always passes.</Doc.NegativeCheck>
+    </Doc.WrongEvent>
+  </Doc.Check>
+
+  <Doc.Check name="hasPermissions" negative="notHasPermissions">
+    Checks whether the member triggering the current event has either the given permissions set, or the admin
+    permission.
+
+    <Doc.Arguments>
+      <Doc.Arg name="perm" type="Permissions">
+        Permissions to check for.
+      </Doc.Arg>
+    </Doc.Arguments>
+
+    <Doc.WrongEvent missing="members">
+      <Doc.PositiveCheck>Always fails.</Doc.PositiveCheck>
+      <Doc.NegativeCheck>Always passes.</Doc.NegativeCheck>
+    </Doc.WrongEvent>
+  </Doc.Check>
+</Doc.Container>
+
 ## Misc
+
+<Doc.Container>
+  <Doc.Check name="isBotOwner" negative="isNotBotOwner">
+    Checks whether the user triggering the current event is the bot's sole owner.
+
+    <Doc.CheckNotes>
+      <Doc.PositiveCheck>Fails if the bot is owned by a team.</Doc.PositiveCheck>
+      <Doc.NegativeCheck>Passes if the bot is owned by a team.</Doc.NegativeCheck>
+    </Doc.CheckNotes>
+
+    <Doc.WrongEvent missing="users">
+      <Doc.PositiveCheck>Always fails.</Doc.PositiveCheck>
+      <Doc.NegativeCheck>Always passes.</Doc.NegativeCheck>
+    </Doc.WrongEvent>
+  </Doc.Check>
+
+  <Doc.Check name="isBotAdmin" negative="isNotBotAdmin">
+    Checks whether the user triggering the current event belongs to the bot's owning team.
+
+    <Doc.CheckNotes>
+      <Doc.PositiveCheck>Fails if the bot isn't owned by a team, or the team has no admins.</Doc.PositiveCheck>
+      <Doc.NegativeCheck>Passes if the bot isn't owned by a team, or the team has no admins.</Doc.NegativeCheck>
+    </Doc.CheckNotes>
+
+    <Doc.WrongEvent missing="users">
+      <Doc.PositiveCheck>Always fails.</Doc.PositiveCheck>
+      <Doc.NegativeCheck>Always passes.</Doc.NegativeCheck>
+    </Doc.WrongEvent>
+  </Doc.Check>
+
+  <Doc.Check name="isBot" negative="isNotBot">
+    Checks whether the user triggering the current event is a bot.
+
+    <Doc.WrongEvent missing="users">
+      <Doc.PositiveCheck>Always fails.</Doc.PositiveCheck>
+      <Doc.NegativeCheck>Always passes.</Doc.NegativeCheck>
+    </Doc.WrongEvent>
+  </Doc.Check>
+
+  <Doc.Check name="isInThread" negative="isNotInThread">
+    Checks whether the current event happened in a thread.
+
+    <Doc.WrongEvent missing="channels">
+      <Doc.PositiveCheck>Always fails.</Doc.PositiveCheck>
+      <Doc.NegativeCheck>Always passes.</Doc.NegativeCheck>
+    </Doc.WrongEvent>
+  </Doc.Check>
+</Doc.Container>
 
 ## NSFW
 
+These checks use [Kord's NsfwLevel type](https://dokka.kord.dev/common/dev.kord.common.entity/-nsfw-level/index.html),
+which Kord Extensions [customises to allow comparisons and translations](#).
+
+<Doc.Container>
+  <Doc.Check name="hasGuildNsfwLevel" negative="notHasGuildNsfwLevel">
+    Checks whether the current event happened in a guild with the given NSFW level.
+
+    <Doc.WrongEvent missing="guilds">
+      <Doc.PositiveCheck>Always fails.</Doc.PositiveCheck>
+      <Doc.NegativeCheck>Always passes.</Doc.NegativeCheck>
+    </Doc.WrongEvent>
+  </Doc.Check>
+
+  <Doc.Check name="guildNsfwLevelHigher">
+    Checks whether the current event happened in a guild with an NSFW level higher than the one provided.
+
+    <Doc.WrongEvent missing="guilds">
+      <Doc.PositiveCheck>Always fails.</Doc.PositiveCheck>
+    </Doc.WrongEvent>
+  </Doc.Check>
+
+  <Doc.Check name="guildNsfwLevelHigherorEqual">
+    Checks whether the current event happened in a guild with an NSFW level higher than or equal to the one provided.
+
+    <Doc.WrongEvent missing="guilds">
+      <Doc.PositiveCheck>Always fails.</Doc.PositiveCheck>
+    </Doc.WrongEvent>
+  </Doc.Check>
+
+  <Doc.Check name="guildNsfwLevelLower">
+    Checks whether the current event happened in a guild with an NSFW level lower than the one provided.
+
+    <Doc.WrongEvent missing="guilds">
+      <Doc.PositiveCheck>Always fails.</Doc.PositiveCheck>
+    </Doc.WrongEvent>
+  </Doc.Check>
+
+  <Doc.Check name="guildNsfwLevelLowerOrEqual">
+    Checks whether the current event happened in a guild with an NSFW level lower than or equal to the one provided.
+
+    <Doc.WrongEvent missing="guilds">
+      <Doc.PositiveCheck>Always fails.</Doc.PositiveCheck>
+    </Doc.WrongEvent>
+  </Doc.Check>
+
+  <Doc.Check name="channelIsNsfw" negative="notChannelIsNsfw">
+    Checks whether the current event happened in an NSFW channel.
+
+    <Doc.WrongEvent missing="channels">
+      <Doc.PositiveCheck>Always fails.</Doc.PositiveCheck>
+      <Doc.NegativeCheck>Always passes.</Doc.NegativeCheck>
+    </Doc.WrongEvent>
+  </Doc.Check>
+
+  <Doc.Check name="channelOrGuildIsNsfw" negative="notChannelOrGuildIsNsfw">
+    Checks whether the current event happened in an NSFW channel or guild.
+
+    <Doc.CheckNotes>
+      <Doc.PositiveCheck>Combines `channelIsNsfw()` and `guildNsfwLevelHigherOrEqual(NsfwLevel.AgeRestricted)`.</Doc.PositiveCheck>
+      <Doc.NegativeCheck>Combines `notChannelIsNsfw()` and `guildNsfwLevelLower(NsfwLevel.AgeRestricted)`.</Doc.NegativeCheck>
+    </Doc.CheckNotes>
+  </Doc.Check>
+</Doc.Container>
+
 ## Roles
 
+<Doc.Container>
+  <Doc.Check name="hasRole" negative="notHasRole">
+    Checks whether the user triggering the current event has the given role.
 
+    <Doc.Arguments>
+      <Doc.Arg name="role" type={["Snowflake", "() -> RoleBehavior"]}>
+        Role to check against, either in ID or builder form.
+      </Doc.Arg>
+    </Doc.Arguments>
+
+    <Doc.WrongEvent missing="members">
+      <Doc.PositiveCheck>Always fails.</Doc.PositiveCheck>
+      <Doc.NegativeCheck>Always passes.</Doc.NegativeCheck>
+    </Doc.WrongEvent>
+  </Doc.Check>
+
+  <Doc.Check name="topRoleEqual" negative="topRoleNotEqual">
+    Checks whether the user triggering the current event has a top role matching the given role.
+
+    <Doc.Arguments>
+      <Doc.Arg name="role" type={["Snowflake", "() -> RoleBehavior"]}>
+        Role to check against, either in ID or builder form.
+      </Doc.Arg>
+    </Doc.Arguments>
+
+    <Doc.WrongEvent missing="members">
+      <Doc.PositiveCheck>Always fails.</Doc.PositiveCheck>
+      <Doc.NegativeCheck>Always passes.</Doc.NegativeCheck>
+    </Doc.WrongEvent>
+  </Doc.Check>
+
+  <Doc.Check name="topRoleHigher">
+    Checks whether the user triggering the current event has a top role higher than the given role.
+
+    <Doc.Arguments>
+      <Doc.Arg name="role" type={["Snowflake", "() -> RoleBehavior"]}>
+        Role to check against, either in ID or builder form.
+      </Doc.Arg>
+    </Doc.Arguments>
+
+    <Doc.WrongEvent missing="members">
+      <Doc.PositiveCheck>Always fails.</Doc.PositiveCheck>
+    </Doc.WrongEvent>
+  </Doc.Check>
+
+  <Doc.Check name="topRoleHigherOrEqual">
+    Checks whether the user triggering the current event has a top role higher than or equal to the given role.
+
+    <Doc.Arguments>
+      <Doc.Arg name="role" type={["Snowflake", "() -> RoleBehavior"]}>
+        Role to check against, either in ID or builder form.
+      </Doc.Arg>
+    </Doc.Arguments>
+
+    <Doc.WrongEvent missing="members">
+      <Doc.PositiveCheck>Always fails.</Doc.PositiveCheck>
+    </Doc.WrongEvent>
+  </Doc.Check>
+
+  <Doc.Check name="topRoleLower">
+    Checks whether the user triggering the current event has a top role lower than the given role.
+
+    <Doc.Arguments>
+      <Doc.Arg name="role" type={["Snowflake", "() -> RoleBehavior"]}>
+        Role to check against, either in ID or builder form.
+      </Doc.Arg>
+    </Doc.Arguments>
+
+    <Doc.WrongEvent missing="members">
+      <Doc.PositiveCheck>Always fails.</Doc.PositiveCheck>
+    </Doc.WrongEvent>
+  </Doc.Check>
+
+  <Doc.Check name="topRoleLowerOrEqual">
+    Checks whether the user triggering the current event has a top role lower than or equal to the given role.
+
+    <Doc.Arguments>
+      <Doc.Arg name="role" type={["Snowflake", "() -> RoleBehavior"]}>
+        Role to check against, either in ID or builder form.
+      </Doc.Arg>
+    </Doc.Arguments>
+
+    <Doc.WrongEvent missing="members">
+      <Doc.PositiveCheck>Always fails.</Doc.PositiveCheck>
+    </Doc.WrongEvent>
+  </Doc.Check>
+</Doc.Container>

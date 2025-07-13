@@ -28,7 +28,7 @@ export function NegativeCheck(props: PropsWithChildren): ReactNode {
 				props.children !== undefined ?
 					<Tags>
 						<Tag className={"mr-0.5"}>
-							<div style={{display: "flex", alignItems: "center", paddingTop: "0.25em", paddingBottom: "0.25em"}}
+							<div style={{display: "flex", alignItems: "center"}}
 							     data-tooltip-id="negative-check-tooltip">
 
 								<div style={{width: "1.2em", display: "flex", alignItems: "center"}} className="mr-0.5">
@@ -39,9 +39,9 @@ export function NegativeCheck(props: PropsWithChildren): ReactNode {
 							</div>
 						</Tag>
 
-						<span style={{alignSelf: "center"}}>
+						<p style={{alignSelf: "center", display: "inline"}}>
 							{props.children}
-						</span>
+						</p>
 					</Tags> :
 					<div style={{display: "flex", alignItems: "center", width: "1.2em"}}
 					     className="mr-0.5"
@@ -61,7 +61,7 @@ export function PositiveCheck(props: PropsWithChildren): ReactNode {
 				props.children !== undefined ?
 					<Tags>
 						<Tag className={"mr-0.5"}>
-							<div style={{display: "flex", alignItems: "center", paddingTop: "0.25em", paddingBottom: "0.25em"}}
+							<div style={{display: "flex", alignItems: "center"}}
 							     data-tooltip-id="positive-check-tooltip">
 
 								<div style={{width: "1.2em", display: "flex", alignItems: "center"}} className="mr-0.5">
@@ -74,9 +74,9 @@ export function PositiveCheck(props: PropsWithChildren): ReactNode {
 							</div>
 						</Tag>
 
-						<span style={{alignSelf: "center"}}>
+						<p style={{alignSelf: "center", display: "inline"}}>
 							{props.children}
-						</span>
+						</p>
 					</Tags> :
 					<div style={{display: "flex", alignItems: "center", width: "1.2em"}}
 					     className="mr-0.5"
@@ -134,6 +134,26 @@ export function Background(props: PropsWithChildren<CommonProps>): ReactNode {
 	return (
 		<div className={clsx(props.className, styles.col, styles.docBgContainer, "doc-builder")}>
 			{props.children}
+		</div>
+	);
+}
+
+type CheckNotesProps = {
+} & CommonProps
+
+export function CheckNotes(props: PropsWithChildren<CheckNotesProps>): ReactNode {
+	return (
+		<div className={clsx(props.className, styles.args, "doc-check-notes")}>
+			<div className={clsx(styles.headMed, "mb-0.5")}>
+				Notes
+			</div>
+
+			{props.children === undefined ?
+				<></> :
+				<div className={clsx(styles.indent, styles.col)}>
+					{props.children}
+				</div>
+			}
 		</div>
 	);
 }
