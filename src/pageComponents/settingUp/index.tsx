@@ -4,12 +4,15 @@ import CodeBlock from '@theme/CodeBlock';
 import {ReactNode} from "react";
 import {getVersion} from "@site/src/versions/functions";
 import WaitForVersions from "@site/src/components/WaitForVersions";
+import {useGlobalSelector} from "@site/src/stores/globalHooks";
+import Loader from "@site/src/components/Loader";
 
 // THIS IS ANNOYING, BUT BY FUCK, IT WORKS!
 
 export function BuildGroovy() : ReactNode {
-	return <WaitForVersions>
-		<CodeBlock language="groovy">
+	return <WaitForVersions
+		callback={() => (
+			<CodeBlock language="groovy">
 {`// ...
 
 kordEx {
@@ -24,13 +27,15 @@ kordEx {
   }
 }
 `}
-		</CodeBlock>
-	</WaitForVersions>
+			</CodeBlock>
+		)}
+	/>
 }
 
 export function SettingsGroovy() : ReactNode {
-	return <WaitForVersions>
-		<CodeBlock language="groovy">
+	return <WaitForVersions
+		callback={() => (
+			<CodeBlock language="groovy">
 {`plugins {
   id "org.jetbrains.kotlin.jvm" version "${getVersion("kotlin")}"
   id "org.jetbrains.kotlin.plugin.serialization" version "${getVersion("kotlin")}"
@@ -39,13 +44,15 @@ export function SettingsGroovy() : ReactNode {
   id "dev.kordex.gradle.kordex" version "${getVersion("plugin")}"
 }
 `}
-		</CodeBlock>
-	</WaitForVersions>
+			</CodeBlock>
+		)}
+	/>
 }
 
 export function BuildKTS() : ReactNode {
-	return <WaitForVersions>
-		<CodeBlock language="kotlin">
+	return <WaitForVersions
+		callback={() => (
+			<CodeBlock language="kotlin">
 {`// ...
 
 kordEx {
@@ -60,13 +67,15 @@ kordEx {
   }
 }
 `}
-		</CodeBlock>
-	</WaitForVersions>
+			</CodeBlock>
+		)}
+	/>
 }
 
 export function SettingsKTS() : ReactNode {
-	return <WaitForVersions>
-		<CodeBlock language="kotlin">
+	return <WaitForVersions
+		callback={() => (
+			<CodeBlock language="kotlin">
 {`plugins {
   kotlin("jvm") version "${getVersion("java")}"
   kotlin("plugin.serialization") version "${getVersion("kotlin")}"
@@ -75,6 +84,7 @@ export function SettingsKTS() : ReactNode {
   id("dev.kordex.gradle.kordex") version "${getVersion("plugin")}"
 }
 `}
-		</CodeBlock>
-	</WaitForVersions>
+			</CodeBlock>
+		)}
+	/>
 }
