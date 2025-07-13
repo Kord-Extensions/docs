@@ -134,6 +134,32 @@ match a specific thread.
 
 ## Guilds
 
+<Doc.Container>
+  <Doc.Check name="anyGuild" negative="noGuild">
+    Checks whether the current event happened in a guild.
+
+    <Doc.WrongEvent missing="guilds">
+      <Doc.PositiveCheck>Always fails.</Doc.PositiveCheck>
+      <Doc.NegativeCheck>Always passes.</Doc.NegativeCheck>
+    </Doc.WrongEvent>
+  </Doc.Check>
+
+  <Doc.Check name="inGuild" negative="notInGuild">
+    Checks whether the current event happened in the given guild.
+
+    <Doc.Arguments>
+      <Doc.Arg name="guild" type={["Snowflake", "() -> GuildBehavior"]}>
+        Guild to check against, either in ID or builder form.
+      </Doc.Arg>
+    </Doc.Arguments>
+
+    <Doc.WrongEvent missing="guild">
+      <Doc.PositiveCheck>Always fails.</Doc.PositiveCheck>
+      <Doc.NegativeCheck>Always passes.</Doc.NegativeCheck>
+    </Doc.WrongEvent>
+  </Doc.Check>
+</Doc.Container>
+
 ## Members
 
 ## Misc
