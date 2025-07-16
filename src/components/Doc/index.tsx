@@ -270,6 +270,7 @@ type ArgProps = {
 	default?: string,
 	reified?: boolean,
 	internal?: boolean,
+	variance?: "in" | "out",
 	propType?: "val" | "open val" | "override val" | "var" | "open var" | "override var",
 } & CommonProps
 
@@ -297,6 +298,7 @@ export function Arg(props: PropsWithChildren<ArgProps>): ReactNode {
 
 					<code className={clsx(styles.headMed, "shadow--lw")} key={`${props.name}-tag-code`}>
 						{props.reified === true ? <span className="text-danger">reified&nbsp;</span> : <></>}
+						{props.variance !== undefined ? <span className="text-danger">{props.variance}&nbsp;</span> : <></>}
 						{
 							props.propType === null || props.propType === undefined ?
 								<></> :
@@ -704,9 +706,7 @@ export function Function(props: PropsWithChildren<FunctionProps>): ReactNode {
 								Returns:
 								{
 									returnsList.map((it) => (
-										<div>
-											<code className="shadow--lw">{it}</code>
-										</div>
+										<code className="shadow--lw">{it}</code>
 									))
 								}
 							</Tag> :
@@ -807,10 +807,18 @@ type TypeProps = {
 	sealed?: boolean,
 	open?: boolean,
 	internal?: boolean,
-	extends?: string[],
+	extends?: string | string[],
 } & CommonProps
 
 export function Type(props: PropsWithChildren<TypeProps>): ReactNode {
+	let ext: string[];
+
+	if (typeof(props.extends) === "string") {
+		ext = [props.extends]
+	} else {
+		ext = props.extends
+	}
+
 	return (
 		<div className={clsx(props.className, styles.col, styles.docBg, "doc-type")}>
 			<div className={clsx(styles.row)} style={{marginBottom: "0.25em"}}>
@@ -840,7 +848,7 @@ export function Type(props: PropsWithChildren<TypeProps>): ReactNode {
 						&nbsp;{props.name} {
 						props.extends === null || props.extends === undefined ?
 							<></> :
-							" : " + props.extends.join(", ")
+							" : " + ext.join(", ")
 					}
 					</code>
 				</Tags>
