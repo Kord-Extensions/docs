@@ -11,21 +11,27 @@
 
 	--ifm-color-primary: #5865f2;
 	--ifm-color-primary-text: #FFF;
+	--ifm-color-primary-text-code: #000;
 
 	--ifm-color-secondary: #DEE0E3;
 	--ifm-color-secondary-text: #000;
+	--ifm-color-secondary-code: #000;
 
 	--ifm-color-danger: #fa383e;
 	--ifm-color-danger-text: #FFF;
+	--ifm-color-danger-code: #000;
 
 	--ifm-color-info: #439FBC;
 	--ifm-color-info-text: #FFF;
+	--ifm-color-info-code: #000;
 
 	--ifm-color-success: #00a400;
 	--ifm-color-success-text: #FFF;
+	--ifm-color-success-text-code: #000;
 
 	--ifm-color-warning: #C48F00;
 	--ifm-color-warning-text: #FFF;
+	--ifm-color-warning-code: #000;
 
 	--docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
 
@@ -71,21 +77,27 @@
 
 	--ifm-color-primary: #A0A7F2;
 	--ifm-color-primary-text: #FFF;
+	--ifm-color-primary-text-code: #FFF;
 
 	--ifm-color-secondary: #4B4C4C;
 	--ifm-color-secondary-text: #FFF;
+	--ifm-color-secondary-code: #FFF;
 
 	--ifm-color-danger: #FA8286;
 	--ifm-color-danger-text: #000;
+	--ifm-color-danger-code: #FFF;
 
 	--ifm-color-info: #9DD9ED;
 	--ifm-color-info-text: #000;
+	--ifm-color-info-code: #FFF;
 
 	--ifm-color-success: #72B072;
-	--ifm-color-success-text: #000F;
+	--ifm-color-success-text: #000;
+	--ifm-color-success-text-code: #FFF;
 
 	--ifm-color-warning: #FFDD80;
 	--ifm-color-warning-text: #000;
+	--ifm-color-warning-code: #FFF;
 
 	--docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 
@@ -257,31 +269,55 @@ hr.clear {
 		&.primary {
 			--tag-bg: var(--ifm-color-primary);
 			--tag-fg: var(--ifm-color-primary-text);
+
+			code, .code {
+				color: var(--ifm-color-primary-text-code);
+			}
 		}
 
 		&.secondary {
 			--tag-bg: var(--ifm-color-secondary);
 			--tag-fg: var(--ifm-color-secondary-text);
+
+			code, .code {
+				color: var(--ifm-color-secondary-code);
+			}
 		}
 
 		&.danger {
 			--tag-bg: var(--ifm-color-danger);
 			--tag-fg: var(--ifm-color-danger-text);
+
+			code, .code {
+				color: var(--ifm-color-danger-code);
+			}
 		}
 
 		&.info {
 			--tag-bg: var(--ifm-color-info);
 			--tag-fg: var(--ifm-color-info-text);
+
+			code, .code {
+				color: var(--ifm-color-info-code);
+			}
 		}
 
 		&.success {
 			--tag-bg: var(--ifm-color-success);
 			--tag-fg: var(--ifm-color-success-text);
+
+			code, .code {
+				color: var(--ifm-color-success-text-code);
+			}
 		}
 
 		&.warning {
 			--tag-bg: var(--ifm-color-warning);
 			--tag-fg: var(--ifm-color-warning-text);
+
+			code, .code {
+				color: var(--ifm-color-warning-code);
+			}
 		}
 	}
 }
