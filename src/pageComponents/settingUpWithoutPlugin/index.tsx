@@ -63,21 +63,27 @@ export function MavenPom() : ReactNode {
   <!-- ... -->
 
   <repository>
-    <id>kordex-snapshots</id>
-    <name>KordEx (Snapshots)</name>
+    <id>kordex-snapshots-r2</id>
+    <name>KordEx (Snapshots, R2)</name>
     <url>https://snapshots-repo.kordex.dev</url>
   </repository>
 
   <repository>
-    <id>kordex-releases</id>
-    <name>KordEx (Releases)</name>
+    <id>kordex-releases-r2</id>
+    <name>KordEx (Releases, R2)</name>
     <url>https://releases-repo.kordex.dev</url>
   </repository>
 
   <repository>
-    <id>sonatype-snapshots-legacy</id>
-    <name>Kord (Snapshots)</name>
-    <url>https://repo.kord.dev/snapshots/</url>
+    <id>kordex-snapshots-reposilite</id>
+    <name>KordEx (Snapshots + Mirror, Reposilite)</name>
+    <url>https://repo.kordex.dev/snapshots</url>
+  </repository>
+
+  <repository>
+    <id>kordex-mirror-r2</id>
+    <name>KordEx (Mirror, R2)</name>
+    <url>https://mirror-repo.kordex.dev</url>
   </repository>
 </repositories>
 
@@ -108,9 +114,10 @@ kotlinPlugin("serialization")
 kotlinVersion := "${getVersion("kotlin")}"
 kotlincJvmTarget := "${getVersion("java")}"
 
-resolvers += "KordEx (Snapshots)" at "https://snapshots-repo.kordex.dev"
-resolvers += "KordEx (Releases)" at "https://releases-repo.kordex.dev"
-resolvers += "Kord (Snapshots)" at "https://repo.kord.dev/snapshots/"
+resolvers += "KordEx (Snapshots, R2)" at "https://snapshots-repo.kordex.dev"
+resolvers += "KordEx (Releases, R2)" at "https://releases-repo.kordex.dev"
+resolvers += "KordEx (Snapshots + Mirror, Reposilite)" at "https://repo.kordex.dev/snapshots"
+resolvers += "Kord (Mirror, R2)" at "https://mirror-repo.kordex.dev"
 
 libraryDependencies ++= Seq(
   "dev.kordex" % "kord-extensions" % "${getVersion("kordEx")}"
