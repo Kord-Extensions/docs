@@ -1,0 +1,112 @@
+---
+description: "Component basics, limitations, and general information."
+sidebar_position: 1
+
+sidebar_custom_props:
+  card_group: "Basics"
+  icon: "fluent:new-24-filled"
+  divider_below: true
+
+# TODO: Link to other docs
+---
+
+import { MessageContainer, Message, ActionRow, Button, SelectMenu } from "/src/components/Messages"
+
+# Basics
+
+Discord components allow for more advanced user interactions, by adding interactive components to your bot's messages.
+Kord Extensions exposes these via its components systems.
+
+:::info Components v1
+
+Kord only supports Components v1, so Kord Extensions also only supports Components v1.
+If you'd like to use Components v2, please test and review
+[this Kord pull request](https://github.com/kordlib/kord/pull/1009).
+
+:::
+
+## Understanding Components
+
+Each Discord message supports up to five rows of components, with each row spanning up to five units.
+
+[//]: # (All Units)
+<MessageContainer>
+  <Message>
+    Example message text.
+
+    <ActionRow>
+      <Button label="Unit" style="disabled"/>
+      <Button label="Unit" style="disabled"/>
+      <Button label="Unit" style="disabled"/>
+      <Button label="Unit" style="disabled"/>
+      <Button label="Unit" style="disabled"/>
+    </ActionRow>
+
+    <ActionRow>
+      <Button label="Unit" style="disabled"/>
+      <Button label="Unit" style="disabled"/>
+      <Button label="Unit" style="disabled"/>
+      <Button label="Unit" style="disabled"/>
+      <Button label="Unit" style="disabled"/>
+    </ActionRow>
+
+    <ActionRow>
+      <Button label="Unit" style="disabled"/>
+      <Button label="Unit" style="disabled"/>
+      <Button label="Unit" style="disabled"/>
+      <Button label="Unit" style="disabled"/>
+      <Button label="Unit" style="disabled"/>
+    </ActionRow>
+
+    <ActionRow>
+      <Button label="Unit" style="disabled"/>
+      <Button label="Unit" style="disabled"/>
+      <Button label="Unit" style="disabled"/>
+      <Button label="Unit" style="disabled"/>
+      <Button label="Unit" style="disabled"/>
+    </ActionRow>
+
+    <ActionRow>
+      <Button label="Unit" style="disabled"/>
+      <Button label="Unit" style="disabled"/>
+      <Button label="Unit" style="disabled"/>
+      <Button label="Unit" style="disabled"/>
+      <Button label="Unit" style="disabled"/>
+    </ActionRow>
+  </Message>
+</MessageContainer>
+
+
+[//]: # (All Buttons)
+<MessageContainer>
+  <Message>
+    Example message text.
+
+    <ActionRow>
+      <Button label="Primary" style="primary"/>
+      <Button label="Secondary" style="secondary"/>
+      <Button label="Success" style="success"/>
+      <Button label="Danger" style="danger"/>
+      <Button label="Link" style="link"/>
+    </ActionRow>
+
+    <ActionRow>
+      <Button label="Premium" style="premium"/>
+    </ActionRow>
+  </Message>
+</MessageContainer>
+
+[//]: # (All Dropdown)
+<MessageContainer>
+  <Message>
+    Example message text.
+
+    <ActionRow>
+      <SelectMenu label="Select Menu" />
+    </ActionRow>
+  </Message>
+</MessageContainer>
+
+## Component Types
+
+

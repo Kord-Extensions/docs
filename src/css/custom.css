@@ -3,6 +3,15 @@
 	--discord-fg: #323339;
 	--discord-hover-bg: #EEEEEF;
 
+	--discord-blurple: #5865F2;
+	--discord-light-blurple: #E0E3FF;
+	--discord-green: #3BA55C;
+	--discord-yellow: #F3DE6C;
+	--discord-fuchsia: #D9539D;
+	--discord-red: #ED4245;
+	--discord-white: #FEFEFE;
+	--discord-black: #1E2227;
+
 	--ifm-code-font-size: 95%;
 	--ifm-font-color-inverted: white;
 
@@ -538,49 +547,5 @@ div.markdown > img, div.markdown > p > img {
 
 	.fullwidth-mobile {
 		width: 100%;
-	}
-}
-
-.discord-message {
-	.wb-msg-c-button-component-wb {
-		width: 7.5em;
-	}
-
-	.wb-msg-c-message-wb {
-		background-color: var(--discord-bg);
-		border-radius: 0.5em;
-		padding-top: 1em;
-		padding-bottom: 1em;
-		border: 1px solid color-mix(in srgb, var(--discord-fg) 20%, transparent);
-
-		&:hover {
-			background-color: var(--discord-hover-bg);
-		}
-	}
-
-	.wb-msg-c-large-timestamp-wb {
-		color: color-mix(in srgb, var(--discord-fg) 60%, transparent);
-	}
-
-	.wb-msg-c-message-author-username-wb {
-		color: var(--discord-fg);
-		font-weight: 600;
-	}
-
-	.wb-msg-c-md-text-wb {
-		color: color-mix(in srgb, var(--discord-fg) 80%, transparent)
-	}
-
-	.wb-msg-c-content-container-wb {
-		margin-bottom: 0.25em;
-	}
-
-	.wb-msg-c-message-author-avatar-wb {
-		border-radius: 50%;
-		border: 0;
-
-		* {
-			border-radius: inherit;
-		}
 	}
 }

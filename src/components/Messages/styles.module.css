@@ -1,0 +1,120 @@
+:root {
+	--unit-width: 8em;
+	--unit-gap: 0.5em;
+
+	--five-unit-width: calc(
+		calc(var(--unit-width) * 5) + calc(var(--unit-gap) * 4)
+	);
+}
+
+.avatar {
+	border-radius: 50%;
+	border: 0;
+
+	* {
+		border-radius: inherit;
+		height: 2.6em;
+		margin-top: 0.4em;
+	}
+}
+
+.button {
+	width: var(--unit-width);
+	padding: 0.5em 1em;
+	border-radius: 0.5em;
+	font-weight: 600;
+
+	display: flex;
+	flex-direction: row;
+	gap: 0.5em;
+	align-items: center;
+	justify-content: center;
+	user-select: none;
+
+	&.primary, &.premium {
+		background-color: var(--discord-blurple);
+		color: var(--discord-white);
+	}
+
+	&.success {
+		background-color: var(--discord-green);
+		color: var(--discord-white);
+	}
+
+	&.secondary, &.link {
+		background-color: var(--discord-fg);
+		color: var(--discord-bg);
+	}
+
+	&.danger {
+		background-color: var(--discord-red);
+		color: var(--discord-white);
+	}
+
+	&.disabled {
+		background-color: var(--discord-fg);
+		color: var(--discord-bg);
+		opacity: 50%;
+	}
+}
+
+.menu {
+	width: var(--five-unit-width);
+	align-items: center;
+	border: 2px solid var(--discord-fg);
+	background-color: var(--discord-hover-bg);
+	padding: 0.5em 1em;
+	border-radius: 0.5em;
+	user-select: none;
+
+	* {
+		align-self: center;
+	}
+}
+
+.actionRow {
+	margin-top: 0.5em;
+	gap: var(--unit-gap);
+}
+
+.timestamp {
+	color: color-mix(in srgb, var(--discord-fg) 60%, transparent);
+	font-size: 85%;
+	align-self: center;
+}
+
+.userName {
+	color: var(--discord-fg);
+	font-weight: 600;
+	align-self: center;
+}
+
+.userTag {
+	background-color: var(--discord-blurple);
+	color: var(--discord-white);
+
+	font-size: 75%;
+	font-weight: 600;
+	padding: 0 0.4em;
+	border-radius: 0.4em;
+	align-self: center;
+	user-select: none;
+}
+
+.message {
+	background-color: var(--discord-bg);
+	border-radius: 0.5em;
+	padding: 1em;
+	border: 1px solid color-mix(in srgb, var(--discord-fg) 20%, transparent);
+	color: color-mix(in srgb, var(--discord-fg) 80%, transparent);
+	margin-bottom: 0.25em;
+
+	&:hover {
+		background-color: var(--discord-hover-bg);
+	}
+
+	p {
+		margin-top: 0;
+		margin-bottom: 0.25em;
+	}
+}
