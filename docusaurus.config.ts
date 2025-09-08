@@ -180,6 +180,10 @@ const config: Config = {
 							href: "https://discord.gg/nYzQWcjAmK",
 						},
 						{
+							label: "Codeberg",
+							href: "https://codeberg.org/Kord-Extensions/",
+						},
+						{
 							label: "GitHub",
 							href: "https://github.com/orgs/Kord-Extensions/discussions",
 						},

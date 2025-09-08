@@ -1,4 +1,8 @@
 :root {
+	--discord-bg: #FBFBFB;
+	--discord-fg: #323339;
+	--discord-hover-bg: #EEEEEF;
+
 	--ifm-code-font-size: 95%;
 	--ifm-font-color-inverted: white;
 
@@ -61,6 +65,10 @@
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme='dark'] {
+	--discord-bg: #323339;
+	--discord-fg: #DFE0E2;
+	--discord-hover-bg: #3A3B41;
+
 	--ifm-color-mix-card: #000;
 	--ifm-ratio-mix-card: 85%;
 
@@ -530,5 +538,49 @@ div.markdown > img, div.markdown > p > img {
 
 	.fullwidth-mobile {
 		width: 100%;
+	}
+}
+
+.discord-message {
+	.wb-msg-c-button-component-wb {
+		width: 7.5em;
+	}
+
+	.wb-msg-c-message-wb {
+		background-color: var(--discord-bg);
+		border-radius: 0.5em;
+		padding-top: 1em;
+		padding-bottom: 1em;
+		border: 1px solid color-mix(in srgb, var(--discord-fg) 20%, transparent);
+
+		&:hover {
+			background-color: var(--discord-hover-bg);
+		}
+	}
+
+	.wb-msg-c-large-timestamp-wb {
+		color: color-mix(in srgb, var(--discord-fg) 60%, transparent);
+	}
+
+	.wb-msg-c-message-author-username-wb {
+		color: var(--discord-fg);
+		font-weight: 600;
+	}
+
+	.wb-msg-c-md-text-wb {
+		color: color-mix(in srgb, var(--discord-fg) 80%, transparent)
+	}
+
+	.wb-msg-c-content-container-wb {
+		margin-bottom: 0.25em;
+	}
+
+	.wb-msg-c-message-author-avatar-wb {
+		border-radius: 50%;
+		border: 0;
+
+		* {
+			border-radius: inherit;
+		}
 	}
 }
