@@ -1,18 +1,19 @@
 :root {
-	--discord-bg: #FBFBFB;
+	--discord-bg: #FFFFFF;
 	--discord-fg: #323339;
 	--discord-close: #AFB3C8;
-	--discord-hover-bg: #EEEEEF;
+	--discord-hover-bg: #FAFAFA;
 	--discord-warning: #C99A59;
 
 	--discord-blurple: #5865F2;
 	--discord-light-blurple: #E0E3FF;
-	--discord-green: #3BA55C;
+	--discord-green: #00863A;
 	--discord-yellow: #F3DE6C;
 	--discord-fuchsia: #D9539D;
-	--discord-red: #ED4245;
+	--discord-red: #D22D39;
 	--discord-white: #FEFEFE;
 	--discord-black: #1E2227;
+	--discord-secondary: #EEEEF0;
 
 	--ifm-code-font-size: 95%;
 	--ifm-font-color-inverted: white;
@@ -76,10 +77,11 @@
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme='dark'] {
-	--discord-bg: #323339;
+	--discord-bg: #2E2E33;
 	--discord-fg: #DFE0E2;
 	--discord-close: #717273;
-	--discord-hover-bg: #3A3B41;
+	--discord-hover-bg: #323238;
+	--discord-secondary: #3A3A40;
 
 	--ifm-color-mix-card: #000;
 	--ifm-ratio-mix-card: 85%;

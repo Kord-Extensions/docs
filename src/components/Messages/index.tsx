@@ -24,7 +24,7 @@ export function Message(props: PropsWithChildren) {
 
 			<Column style={{gap: 0}}>
 				<Row collapse={false}>
-					<span className={clsx(styles.userName)}>KordEx Testing</span>
+					<span className={clsx(styles.userName)}>Kord Extensions</span>
 					<span className={clsx(styles.userTag)}>APP</span>
 					<span className={clsx(styles.timestamp)}>10:30</span>
 				</Row>
@@ -53,7 +53,7 @@ export function Modal(props: ModalProps) {
 			<Icon className={clsx(styles.icon)} icon="fluent:error-circle-24-filled" />
 
 			<div>
-				This form will be submitted to <strong>KordEx Testing</strong>.
+				This form will be submitted to <strong>Kord Extensions</strong>.
 				Do not share passwords or other sensitive information.
 			</div>
 		</Row>
