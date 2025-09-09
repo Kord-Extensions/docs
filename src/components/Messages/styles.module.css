@@ -1,10 +1,15 @@
 :root {
+	--unit-height: 2.75em;
 	--unit-width: 8em;
 	--unit-gap: 0.5em;
 
 	--five-unit-width: calc(
 		calc(var(--unit-width) * 5) + calc(var(--unit-gap) * 4)
 	);
+}
+
+.modal {
+	--five-unit-width: 100%;
 }
 
 .avatar {
@@ -14,11 +19,13 @@
 	* {
 		border-radius: inherit;
 		height: 2.6em;
+		width: 2.6em;
 		margin-top: 0.4em;
 	}
 }
 
 .button {
+	height: var(--unit-height);
 	width: var(--unit-width);
 	padding: 0.5em 1em;
 	border-radius: 0.5em;
@@ -26,10 +33,15 @@
 
 	display: flex;
 	flex-direction: row;
-	gap: 0.5em;
 	align-items: center;
 	justify-content: center;
+	gap: 0.5em;
 	user-select: none;
+
+	*.unMask {
+		mask-image: none;
+		background: none;
+	}
 
 	&.primary, &.premium {
 		background-color: var(--discord-blurple);
@@ -56,25 +68,78 @@
 		color: var(--discord-bg);
 		opacity: 50%;
 	}
+
+	&.cutout {
+		color: var(--discord-fg);
+		border: 2px dotted var(--discord-fg);
+
+		opacity: 50%;
+	}
 }
 
 .menu {
+	height: var(--unit-height);
 	width: var(--five-unit-width);
 	align-items: center;
+	justify-content: center;
 	border: 2px solid var(--discord-fg);
 	background-color: var(--discord-hover-bg);
 	padding: 0.5em 1em;
 	border-radius: 0.5em;
 	user-select: none;
+}
 
-	* {
-		align-self: center;
+.modalWarning {
+	color: var(--discord-fg);
+	border: 2px solid var(--discord-warning);
+	border-radius: 1em;
+	padding: 1em;
+	margin-top: 1em;
+	margin-bottom: 1em;
+	background-color: color-mix(in srgb, var(--discord-warning) 10%, transparent);;
+
+	.icon {
+		margin-top: 0.15em;
+		height: 1.5em;
+		width: 1.5em;
+		color: var(--discord-warning);
 	}
+}
+
+.paragraph {
+	height: calc(var(--unit-height) * 4);
+	width: var(--five-unit-width);
+	border: 2px solid var(--discord-fg);
+	background-color: var(--discord-hover-bg);
+	padding: 0.5em 1em;
+	border-radius: 0.5em;
+	user-select: none;
 }
 
 .actionRow {
 	margin-top: 0.5em;
 	gap: var(--unit-gap);
+}
+
+.modalHeader {
+	color: var(--discord-fg);
+	font-weight: 700;
+	font-size: 150%;
+	align-items: center;
+	justify-content: center;
+	margin-left: 0.25em;
+	margin-right: 0.25em;
+
+	img {
+		height: 1.25em;
+		width: 1.25em;
+		border-radius: 50%;
+	}
+}
+
+.modalRowHeader {
+	color: var(--discord-fg);
+	font-weight: 600;
 }
 
 .timestamp {

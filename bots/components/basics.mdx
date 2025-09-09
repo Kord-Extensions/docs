@@ -10,7 +10,16 @@ sidebar_custom_props:
 # TODO: Link to other docs
 ---
 
-import { MessageContainer, Message, ActionRow, Button, SelectMenu } from "/src/components/Messages"
+import {
+  MessageContainer,
+  Message,
+  ActionRow,
+  Button,
+  SelectMenu,
+  Modal,
+  ModalRow,
+  LineInput, ParagraphInput
+} from "/src/components/Messages"
 
 # Basics
 
@@ -35,43 +44,43 @@ Each Discord message supports up to five rows of components, with each row spann
     Example message text.
 
     <ActionRow>
-      <Button label="Unit" style="disabled"/>
-      <Button label="Unit" style="disabled"/>
-      <Button label="Unit" style="disabled"/>
-      <Button label="Unit" style="disabled"/>
-      <Button label="Unit" style="disabled"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
     </ActionRow>
 
     <ActionRow>
-      <Button label="Unit" style="disabled"/>
-      <Button label="Unit" style="disabled"/>
-      <Button label="Unit" style="disabled"/>
-      <Button label="Unit" style="disabled"/>
-      <Button label="Unit" style="disabled"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
     </ActionRow>
 
     <ActionRow>
-      <Button label="Unit" style="disabled"/>
-      <Button label="Unit" style="disabled"/>
-      <Button label="Unit" style="disabled"/>
-      <Button label="Unit" style="disabled"/>
-      <Button label="Unit" style="disabled"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
     </ActionRow>
 
     <ActionRow>
-      <Button label="Unit" style="disabled"/>
-      <Button label="Unit" style="disabled"/>
-      <Button label="Unit" style="disabled"/>
-      <Button label="Unit" style="disabled"/>
-      <Button label="Unit" style="disabled"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
     </ActionRow>
 
     <ActionRow>
-      <Button label="Unit" style="disabled"/>
-      <Button label="Unit" style="disabled"/>
-      <Button label="Unit" style="disabled"/>
-      <Button label="Unit" style="disabled"/>
-      <Button label="Unit" style="disabled"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
     </ActionRow>
   </Message>
 </MessageContainer>
@@ -92,6 +101,10 @@ Each Discord message supports up to five rows of components, with each row spann
 
     <ActionRow>
       <Button label="Premium" style="premium"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
     </ActionRow>
   </Message>
 </MessageContainer>
@@ -104,7 +117,32 @@ Each Discord message supports up to five rows of components, with each row spann
     <ActionRow>
       <SelectMenu label="Select Menu" />
     </ActionRow>
+
+    <ActionRow>
+      <Button label="Save" style="success"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+    </ActionRow>
   </Message>
+</MessageContainer>
+
+[//]: # (Modal)
+<MessageContainer>
+  <Modal title="Bug Report">
+    <ModalRow label="What's your favourite bug?" required>
+      <SelectMenu label="Choose..." />
+    </ModalRow>
+
+    <ModalRow label="Why is it your favourite?" description="Please provide as much detail as possible!" required>
+      <ParagraphInput label="Write your explanation here..." />
+    </ModalRow>
+
+    <ModalRow label="What do you call it?">
+      <LineInput label="Nickname here, if it has one..." />
+    </ModalRow>
+  </Modal>
 </MessageContainer>
 
 ## Component Types
