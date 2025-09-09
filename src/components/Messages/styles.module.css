@@ -1,6 +1,6 @@
 :root {
 	--unit-height: 2.75em;
-	--unit-width: 8em;
+	--unit-width: 9em;
 	--unit-gap: 0.5em;
 
 	--five-unit-width: calc(
@@ -10,6 +10,8 @@
 
 .modal {
 	--five-unit-width: 100%;
+
+	margin-bottom: 1em;
 }
 
 .avatar {
@@ -53,8 +55,8 @@
 	}
 
 	&.secondary, &.link {
-		background-color: var(--discord-fg);
-		color: var(--discord-bg);
+		background-color: var(--discord-secondary);
+		color: var(--discord-fg);
 	}
 
 	&.danger {
@@ -171,7 +173,7 @@
 	padding: 1em;
 	border: 1px solid color-mix(in srgb, var(--discord-fg) 20%, transparent);
 	color: color-mix(in srgb, var(--discord-fg) 80%, transparent);
-	margin-bottom: 0.25em;
+	margin-bottom: 1em;
 
 	&:hover {
 		background-color: var(--discord-hover-bg);
