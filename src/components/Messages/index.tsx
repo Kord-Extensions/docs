@@ -35,14 +35,70 @@ export function Message(props: PropsWithChildren) {
 	</Column>
 }
 
+type ModalProps = {
+	title: string
+} & PropsWithChildren;
+
+export function Modal(props: ModalProps) {
+	return <Column className={clsx(styles.modal)}>
+		<Row className={clsx(styles.modalHeader)}>
+			<img src="/img/logo.png" alt="Avatar"/>
+			<span style={{flexGrow: 1}}>{props.title}</span>
+			<span>
+				<Icon icon="fluent-mdl2:chrome-close" fontSize="0.75em" style={{color: "var(--discord-close)"}} />
+			</span>
+		</Row>
+
+		<Row className={clsx(styles.modalWarning)}>
+			<Icon className={clsx(styles.icon)} icon="fluent:error-circle-24-filled" />
+
+			<div>
+				This form will be submitted to <strong>KordEx Testing</strong>.
+				Do not share passwords or other sensitive information.
+			</div>
+		</Row>
+
+		<Column style={{gap: "1em", flexGrow: 1}}>
+			{props.children}
+		</Column>
+	</Column>
+}
+
 export function ActionRow(props: PropsWithChildren) {
 	return <Row className={clsx(styles.actionRow)}>
 		{props.children}
 	</Row>
 }
 
+type ModalRowProps = {
+	label: string
+	required?: boolean
+	description?: string
+} & PropsWithChildren
+
+export function ModalRow(props: ModalRowProps) {
+	let required: boolean = props.required ?? false;
+
+	return <Column style={{gap: "0.25em"}} className={clsx(styles.modalRow)}>
+		<Row className={clsx(styles.modalRowHeader)}>
+			{props.label}
+			{required ? <span style={{color: "var(--discord-red)"}}>*</span> : undefined}
+		</Row>
+
+		{
+			props.description === undefined ?
+				undefined :
+				<span>{props.description}</span>
+		}
+
+		<Row className={clsx(styles.actionRow)}>
+			{props.children}
+		</Row>
+	</Column>
+}
+
 type ButtonProps = {
-	style: "primary" | "secondary" | "success" | "danger" | "link" | "premium" | "disabled"
+	style: "primary" | "secondary" | "success" | "danger" | "link" | "premium" | "disabled" | "cutout"
 	label: string
 }
 
@@ -73,6 +129,10 @@ export function Button(props: ButtonProps) {
 			style = clsx(styles.button, styles.disabled)
 			break;
 
+		case "cutout":
+			style = clsx(styles.button, styles.cutout)
+			break;
+
 		case "link":
 			style = clsx(styles.button, styles.link)
 			endIcon = <Icon icon="fluent-mdl2:navigate-external-inline"/>
@@ -101,6 +161,28 @@ export function SelectMenu(props: SelectMenuProps) {
 		<span style={{flexGrow: 1}}>&nbsp;</span>
 		<Icon icon="fluent:chevron-down-24-filled"></Icon>
 	</Row>
+}
+
+type LineInputProps = {
+	label: string,
+} & PropsWithChildren
+
+export function LineInput(props: LineInputProps) {
+	return <Row className={clsx(styles.menu)}>
+		<span>{props.label}</span>
+		<span style={{flexGrow: 1}}>&nbsp;</span>
+	</Row>
+}
+
+type ParagraphInputProps = {
+	label: string,
+} & PropsWithChildren
+
+export function ParagraphInput(props: ParagraphInputProps) {
+	return <Column className={clsx(styles.paragraph)}>
+		<span>{props.label}</span>
+		<span style={{flexGrow: 1}}>&nbsp;</span>
+	</Column>
 }
 
 // endregion

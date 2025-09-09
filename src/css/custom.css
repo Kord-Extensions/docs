@@ -1,7 +1,9 @@
 :root {
 	--discord-bg: #FBFBFB;
 	--discord-fg: #323339;
+	--discord-close: #AFB3C8;
 	--discord-hover-bg: #EEEEEF;
+	--discord-warning: #C99A59;
 
 	--discord-blurple: #5865F2;
 	--discord-light-blurple: #E0E3FF;
@@ -76,6 +78,7 @@
 [data-theme='dark'] {
 	--discord-bg: #323339;
 	--discord-fg: #DFE0E2;
+	--discord-close: #717273;
 	--discord-hover-bg: #3A3B41;
 
 	--ifm-color-mix-card: #000;
