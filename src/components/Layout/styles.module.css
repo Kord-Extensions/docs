@@ -11,7 +11,7 @@
 }
 
 @media screen and (max-width: 996px) {
-	.row {
+	.row.collapse {
 		flex-direction: column;
 		gap: 0.25em;
 	}

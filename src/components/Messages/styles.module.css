@@ -18,8 +18,7 @@
 
 	* {
 		border-radius: inherit;
-		height: 2.6em;
-		width: 2.6em;
+		width: 2.6em !important;
 		margin-top: 0.4em;
 	}
 }

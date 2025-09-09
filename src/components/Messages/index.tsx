@@ -17,13 +17,13 @@ export function MessageContainer(props: PropsWithChildren): ReactNode {
 
 export function Message(props: PropsWithChildren) {
 	return <Column>
-		<Row>
+		<Row collapse={false}>
 			<div className={clsx(styles.avatar)}>
-				<img src="/img/logo.png" alt="Avatar"/>
+				<img src="/img/logo.png" alt="Avatar" />
 			</div>
 
 			<Column style={{gap: 0}}>
-				<Row>
+				<Row collapse={false}>
 					<span className={clsx(styles.userName)}>KordEx Testing</span>
 					<span className={clsx(styles.userTag)}>APP</span>
 					<span className={clsx(styles.timestamp)}>10:30</span>
@@ -41,7 +41,7 @@ type ModalProps = {
 
 export function Modal(props: ModalProps) {
 	return <Column className={clsx(styles.modal)}>
-		<Row className={clsx(styles.modalHeader)}>
+		<Row collapse={false} className={clsx(styles.modalHeader)}>
 			<img src="/img/logo.png" alt="Avatar"/>
 			<span style={{flexGrow: 1}}>{props.title}</span>
 			<span>
@@ -49,7 +49,7 @@ export function Modal(props: ModalProps) {
 			</span>
 		</Row>
 
-		<Row className={clsx(styles.modalWarning)}>
+		<Row collapse={false} className={clsx(styles.modalWarning)}>
 			<Icon className={clsx(styles.icon)} icon="fluent:error-circle-24-filled" />
 
 			<div>
@@ -62,7 +62,7 @@ export function Modal(props: ModalProps) {
 			{props.children}
 		</Column>
 
-		<Row style={{marginTop: "2em"}}>
+		<Row collapse={false} style={{marginTop: "2em"}}>
 			<div className={clsx(styles.button, styles.secondary)} style={{flexGrow: 1}}>Cancel</div>
 			<div className={clsx(styles.button, styles.primary)} style={{flexGrow: 1}}>Submit</div>
 		</Row>
@@ -70,7 +70,7 @@ export function Modal(props: ModalProps) {
 }
 
 export function ActionRow(props: PropsWithChildren) {
-	return <Row className={clsx(styles.actionRow)}>
+	return <Row collapse={false} className={clsx(styles.actionRow)}>
 		{props.children}
 	</Row>
 }
@@ -85,10 +85,10 @@ export function ModalRow(props: ModalRowProps) {
 	let required: boolean = props.required ?? false;
 
 	return <Column style={{gap: "0.25em"}} className={clsx(styles.modalRow)}>
-		<Row className={clsx(styles.modalRowHeader)}>
+		<div className={clsx(styles.modalRowHeader)}>
 			{props.label}
 			{required ? <span style={{color: "var(--discord-red)"}}>*</span> : undefined}
-		</Row>
+		</div>
 
 		{
 			props.description === undefined ?
@@ -96,7 +96,7 @@ export function ModalRow(props: ModalRowProps) {
 				<span>{props.description}</span>
 		}
 
-		<Row className={clsx(styles.actionRow)}>
+		<Row collapse={false} className={clsx(styles.actionRow)}>
 			{props.children}
 		</Row>
 	</Column>
@@ -161,7 +161,7 @@ type SelectMenuProps = {
 } & PropsWithChildren
 
 export function SelectMenu(props: SelectMenuProps) {
-	return <Row className={clsx(styles.menu)}>
+	return <Row collapse={false} className={clsx(styles.menu)}>
 		<span>{props.label}</span>
 		<span style={{flexGrow: 1}}>&nbsp;</span>
 		<Icon icon="fluent:chevron-down-24-filled"></Icon>
@@ -173,7 +173,7 @@ type LineInputProps = {
 } & PropsWithChildren
 
 export function LineInput(props: LineInputProps) {
-	return <Row className={clsx(styles.menu)}>
+	return <Row collapse={false} className={clsx(styles.menu)}>
 		<span>{props.label}</span>
 		<span style={{flexGrow: 1}}>&nbsp;</span>
 	</Row>
