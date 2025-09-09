@@ -87,7 +87,7 @@ export function ModalRow(props: ModalRowProps) {
 	return <Column style={{gap: "0.25em"}} className={clsx(styles.modalRow)}>
 		<div className={clsx(styles.modalRowHeader)}>
 			{props.label}
-			{required ? <span style={{color: "var(--discord-red)"}}>*</span> : undefined}
+			{required ? <span style={{color: "var(--discord-red)", marginLeft: "0.25em"}}>*</span> : undefined}
 		</div>
 
 		{

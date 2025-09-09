@@ -1,0 +1,170 @@
+---
+description: "Message component DSL, for short-lived components."
+sidebar_position: 2
+
+sidebar_custom_props:
+  card_group: "Usage"
+  icon: "fluent:hand-left-chat-24-filled"
+
+# TODO: Link to other docs
+---
+
+import * as Doc from "/src/components/Doc";
+
+import {
+  MessageContainer,
+  Message,
+  ActionRow,
+  Button, SelectMenu,
+} from "/src/components/Messages"
+
+# Messages: Easy DSL
+
+Messages support a specific set of components, which you can read about [on the basics page](#).
+
+The components DSL (based on the `ComponentContainer` class) is a convenient API for working with short-lived message
+components.
+
+If you need your components to work after your bot restarts, we recommend [using the manual handling approach](#).
+
+:::tip No Atomic API
+
+Kord Extensions doesn't provide an atomic API for modifying your components after you've sent them to Discord.
+This is mostly due to technical limitations within Kotlin's type system,
+and it is unlikely this will change any time soon.
+
+If you wish to edit components, we suggest keeping a reference to the `ComponentContainer` returned by the `components`
+builder, and any relevant components that you create.
+The components within any given `ComponentContainer` may be applied to any message creation/editing builder via the
+`applyComponents` extension function.
+
+:::
+
+## Usage
+
+To get started, use the `components` builder in any message creation or editing builder.
+This builder will automatically add the defined components to the message, and set up the code necessary for your bot
+to respond to them.
+
+```kt
+respond {
+	components {
+		publicButton {
+			label = "Button"
+			style = ButtonStyle.Primary
+
+			action {
+				respond {
+					content = "Clicked button."
+				}
+			}
+		}
+	}
+}
+```
+
+The above example produces a message like the following:
+
+<MessageContainer>
+  <Message>
+    <ActionRow>
+      <Button label="Button" style="primary"/>
+    </ActionRow>
+  </Message>
+</MessageContainer>
+
+For more information on what components you can add with this DSL, see the builder API section below.
+
+## Packing
+
+The `components` DSL automatically packs its defined components as tightly as possible, while retaining the order you
+defined them in.
+
+As an example, let's say you provided a select menu, six buttons, and another select menu.
+The resulting message would look like this:
+
+<MessageContainer>
+  <Message>
+    <ActionRow>
+      <SelectMenu label="Select Menu"/>
+    </ActionRow>
+
+    <ActionRow>
+      <Button label="Button" style="primary"/>
+      <Button label="Button" style="primary"/>
+      <Button label="Button" style="primary"/>
+      <Button label="Button" style="primary"/>
+      <Button label="Button" style="primary"/>
+    </ActionRow>
+
+    <ActionRow>
+      <Button label="Button" style="primary"/>
+    </ActionRow>
+
+    <ActionRow>
+      <SelectMenu label="Select Menu"/>
+    </ActionRow>
+  </Message>
+</MessageContainer>
+
+You can prevent this for specific components by specifying the row to add your component to — just pass an integer
+representing the row to the corresponding component builder function.
+This will add that component to the specified row immediately, and the builder will pack any components without defined
+rows around it before your bot finishes creating the message.
+
+As an example, let's say you provided a select menu on row 2, six buttons without row numbers, and another select
+menu on row 3.
+The resulting message would look like this:
+
+<MessageContainer>
+  <Message>
+
+    <ActionRow>
+      <Button label="Button" style="primary"/>
+      <Button label="Button" style="primary"/>
+      <Button label="Button" style="primary"/>
+      <Button label="Button" style="primary"/>
+      <Button label="Button" style="primary"/>
+    </ActionRow>
+
+    <ActionRow>
+      <SelectMenu label="Select Menu"/>
+    </ActionRow>
+
+    <ActionRow>
+      <SelectMenu label="Select Menu"/>
+    </ActionRow>
+
+    <ActionRow>
+      <Button label="Button" style="primary"/>
+    </ActionRow>
+  </Message>
+</MessageContainer>
+
+## Builder Functions
+
+## Builder API
+
+### Builders
+
+### Functions
+
+### Properties
+
+## Component Builders
+
+### All Components
+
+### Buttons
+
+#### Interaction Buttons
+
+#### Disabled Buttons
+
+#### Link Buttons
+
+### Select Menus
+
+#### Channel Menus
+
+#### String Menus
