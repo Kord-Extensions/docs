@@ -61,6 +61,11 @@ export function Modal(props: ModalProps) {
 		<Column style={{gap: "1em", flexGrow: 1}}>
 			{props.children}
 		</Column>
+
+		<Row style={{marginTop: "2em"}}>
+			<div className={clsx(styles.button, styles.secondary)} style={{flexGrow: 1}}>Cancel</div>
+			<div className={clsx(styles.button, styles.primary)} style={{flexGrow: 1}}>Submit</div>
+		</Row>
 	</Column>
 }
 
