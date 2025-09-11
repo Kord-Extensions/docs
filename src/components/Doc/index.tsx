@@ -7,7 +7,7 @@ import {Tooltip} from "react-tooltip"
 import {Tag, Tags} from "../Tags";
 import {Icons} from "/src/icons";
 
-// region: Common
+// region Common
 
 type CommonProps = {
 	className?: string | null,
@@ -91,7 +91,7 @@ export function PositiveCheck(props: PropsWithChildren): ReactNode {
 
 // endregion
 
-// region: Containers
+// region Containers
 
 type ArgumentsProps = {
 	type?: "constructor" | "function" | "lambda" | "type"
@@ -261,7 +261,7 @@ export function Indent(props: PropsWithChildren<CommonProps>): ReactNode {
 
 // endregion
 
-// region: Items
+// region Items
 
 type ArgProps = {
 	name: string,
@@ -866,13 +866,13 @@ export function Type(props: PropsWithChildren<TypeProps>): ReactNode {
 
 // endregion
 
-// region: Aliases
+// region Aliases
 
 export const Member = Arg
 
 // endregion
 
-// region: Misc utils
+// region Misc utils
 
 function splitLast(str: string, delimiter: string): string[] {
 	if (!str.includes(delimiter)) {
