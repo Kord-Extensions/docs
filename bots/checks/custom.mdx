@@ -12,8 +12,8 @@ import * as Doc from "/src/components/Doc";
 
 # Custom Checks
 
-You can create your own custom checks in one of several ways, using the [context API](#)
-and [check utilities](#).
+You can create your own custom checks in one of several ways, using the [context API](#context-api)
+and [check utilities](/bots/checks/utilities).
 
 ## Writing Checks
 
@@ -80,7 +80,7 @@ All `check {}` builders use `CheckContext` as their receiver type.
       </Doc.Arg>
 
       <Doc.Arg name="locale" type="Locale" propType="val">
-        Locale for the current event, retrieved via your bot's [locale resolvers](#).
+        Locale for the current event, retrieved via your bot's [locale resolvers](/bots/config/i18n).
       </Doc.Arg>
     </Doc.Arguments>
   </Doc.Type>
@@ -247,7 +247,8 @@ All `check {}` builders use `CheckContext` as their receiver type.
   </Doc.Function>
 
   <Doc.Function name="throwIfFailedWithMessage" internal>
-    Throws a [`DiscordRelayedException`](#) with the value returned by `getMessageKey()`, if that value isn't `null`.
+    Throws a [`DiscordRelayedException`](/bots/exceptions#discord-relayed) with the value returned by `getMessageKey()`,
+    if that value isn't `null`.
   </Doc.Function>
 </Doc.Container>
 
@@ -299,11 +300,12 @@ This type provides [the same `CheckContext API surface`](#context-api), with som
       </Doc.Arg>
 
       <Doc.Arg name="context" type="CommandContext" propType="val">
-        The [command context](#) representing the command invocation triggering this validator.
+        The [command context](/bots/commands/base-context) representing the command invocation triggering this
+        validator.
       </Doc.Arg>
 
       <Doc.Arg name="locale" type="Locale">
-        Locale for the current event, retrieved via your bot's [locale resolvers](#).
+        Locale for the current event, retrieved via your bot's [locale resolvers](/bots/config/i18n).
       </Doc.Arg>
     </Doc.Arguments>
   </Doc.Type>
@@ -318,7 +320,8 @@ This type provides [the same `CheckContext API surface`](#context-api), with som
   </Doc.Function>
 
   <Doc.Function name="throwIfFailed" internal>
-    If this validator is failing, throws a [`DiscordRelayedException`](#) with the value returned by `getMessageKey()`,.
+    If this validator is failing, throws a [`DiscordRelayedException`](/bots/exceptions#discord-relayed) with the value
+    returned by `getMessageKey()`,.
 
     If the value returned by `getMessageKey()` is `null`, this function throws an `IllegalStateException` instead.
   </Doc.Function>

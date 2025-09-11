@@ -47,7 +47,7 @@ You can also extend it to create your own exception types, for convenience.
 
 <Doc.Container>
   <Doc.Type name="ArgumentParsingException" type="class" extends="DiscordRelayedException" open>
-    Your bot throws this exception when something goes wrong during [command argument](#) parsing.
+    Your bot throws this exception when something goes wrong during [command argument](/bots/commands/arguments) parsing.
 
     <Doc.Arguments type="constructor">
       <Doc.Arg name="reason" type="Key" propType="val">
@@ -69,7 +69,7 @@ You can also extend it to create your own exception types, for convenience.
   </Doc.Type>
 
   <Doc.Type name="InvalidArgumentException" type="class">
-    Your bot throws this exception when it has a misconfigured [command argument](#).
+    Your bot throws this exception when it has a misconfigured [command argument](/bots/commands/arguments).
 
     <Doc.Arguments type="constructor">
       <Doc.Arg name="builder" type="ConverterBuilder" propType="val">
@@ -87,7 +87,7 @@ You can also extend it to create your own exception types, for convenience.
 
 <Doc.Container>
   <Doc.Type name="CommandRegistrationException" type="class">
-    Your bot throws this exception when it fails to register a [command](#).
+    Your bot throws this exception when it fails to register a [command](/bots/commands/).
 
     <Doc.Arguments type="constructor">
       <Doc.Arg name="name" type="Key" propType="val">
@@ -101,7 +101,7 @@ You can also extend it to create your own exception types, for convenience.
   </Doc.Type>
 
   <Doc.Type name="InvalidCommandException" type="class">
-    Your bot throws this exception when it has a misconfigured [command](#).
+    Your bot throws this exception when it has a misconfigured [command](/bots/commands/).
 
     <Doc.Arguments type="constructor">
       <Doc.Arg name="name" type="Key?" propType="val">
@@ -121,7 +121,7 @@ You can also extend it to create your own exception types, for convenience.
 
 <Doc.Container>
   <Doc.Type name="EventHandlerRegistrationException" type="class">
-    Your bot throws this exception when it fails to register an [event handler](#).
+    Your bot throws this exception when it fails to register an [event handler](/bots/events/handlers).
 
     <Doc.Arguments type="constructor">
       <Doc.Arg name="handler" type="EventHandler" propType="val">
@@ -135,7 +135,7 @@ You can also extend it to create your own exception types, for convenience.
   </Doc.Type>
 
   <Doc.Type name="InvalidEventHandlerException" type="class">
-    Your bot throws this exception when it has a misconfigured [event handler](#).
+    Your bot throws this exception when it has a misconfigured [event handler](/bots/events/handlers).
 
     <Doc.Arguments type="constructor">
       <Doc.Arg name="handler" type="EventHandler" propType="val">
@@ -153,7 +153,7 @@ You can also extend it to create your own exception types, for convenience.
 
 <Doc.Container>
   <Doc.Type name="InvalidExtensionException" type="class">
-    Your bot throws this exception when it has a misconfigured [extension](#).
+    Your bot throws this exception when it has a misconfigured [extension](/bots/extensions).
 
     <Doc.Arguments type="constructor">
       <Doc.Arg name="clazz" type="KClass<out Extension>" propType="val">

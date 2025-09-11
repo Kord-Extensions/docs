@@ -14,13 +14,13 @@ sidebar_custom_props:
 
 :::note Command Types
 
-While most command types support modals, [Chat Commands](#) don't.
-However, chat commands can handle multiple lines of text via [Coalescing Converters](#).
+While most command types support modals, [Chat Commands](/bots/commands/chat) don't.
+However, chat commands can handle multiple lines of text via [Coalescing Converters](/bots/commands/converters/basics#multiple-inputs).
 
 :::
 
 A [Discord Modal](https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-response-object-modal)
-is a pop-up modal window containing a set of form components, sent in response to any type of [Interaction](#).
+is a pop-up modal window containing a set of form components, sent in response to any type of Discord Interaction.
 They allow your bot to collect information from users without asking them to type out a bunch of command arguments,
 and even support paragraph inputs with text spanning multiple lines.
 
@@ -53,4 +53,4 @@ publicSlashCommand(modal = ::MyModal) {
 ```
 
 This page is just a brief overview of how modals interact with commands.
-For more information, see [the relevant page in the Components section](#).
+For more information, see [the relevant page in the Components section](/bots/components).

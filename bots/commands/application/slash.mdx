@@ -13,7 +13,7 @@ import * as Doc from "/src/components/Doc";
 
 # Slash Commands
 
-Slash commands are the main type of [application command](#),
+Slash commands are the main type of [application command](/bots/commands/application/),
 executed on Discord by typing a slash (`/`), followed by the command's name and arguments.
 Slash commands registered by your bot are visible in a menu displayed above Discord's message input box when a user
 types a slash (`/`), allowing them to browse a list of all available commands,
@@ -61,7 +61,7 @@ Despite this, it is worth remembering a few things:
 - Choice converters work as you'd expect, but Discord limits them to 25 options.
   If you need more, use auto-completion instead.
 - Slash commands can't accept newline characters, which means all string arguments will always be on a single line.
-  - [Modals](#) support paragraph inputs, and this is Discord's official solution to that problem.
+  - [Modals](/bots/commands/modals) support paragraph inputs, and this is Discord's official solution to that problem.
 
 When writing your own converters, remember that users can provide mentions in string arguments, which we feel may
 be useful in a small handful of situations.
@@ -78,13 +78,13 @@ which you can use to define your chat commands and modify their behaviour.
     <Doc.Arguments type="function">
       <Doc.Arg name="arguments" type="() -> T">
         Optional callable returning an instance of your `Arguments` subtype,
-        as explained on [the arguments page](#).
+        as explained on [the arguments page](/bots/commands/arguments).
         You'll usually want to pass a constructor here.
       </Doc.Arg>
 
       <Doc.Arg name="modal" type="() -> M">
         Optional callable returning an instance of your `ModalForm` subtype,
-        as explained on [the modals page](#).
+        as explained on [the modals page](/bots/commands/modals).
         You'll usually want to pass a constructor here.
       </Doc.Arg>
     </Doc.Arguments>
@@ -92,12 +92,12 @@ which you can use to define your chat commands and modify their behaviour.
     <Doc.Arguments type="type">
       <Doc.Arg name="T" type="Arguments" default="Arguments">
         Optional generic type referring to your `Arguments` subtype, as explained on
-        [the arguments page](#).
+        [the arguments page](/bots/commands/arguments).
       </Doc.Arg>
 
       <Doc.Arg name="M" type="ModalForm" default="ModalForm">
         Optional generic type referring to your `ModalForm` subtype, as explained on
-        [the modals page](#).
+        [the modals page](/bots/commands/modals).
       </Doc.Arg>
     </Doc.Arguments>
   </Doc.Builder>
@@ -108,13 +108,13 @@ which you can use to define your chat commands and modify their behaviour.
     <Doc.Arguments type="function">
       <Doc.Arg name="arguments" type="() -> T">
         Optional callable returning an instance of your `Arguments` subtype,
-        as explained on [the arguments page](#).
+        as explained on [the arguments page](/bots/commands/arguments).
         You'll usually want to pass a constructor here.
       </Doc.Arg>
 
       <Doc.Arg name="modal" type="() -> M">
         Optional callable returning an instance of your `ModalForm` subtype,
-        as explained on [the modals page](#).
+        as explained on [the modals page](/bots/commands/modals).
         You'll usually want to pass a constructor here.
       </Doc.Arg>
     </Doc.Arguments>
@@ -122,12 +122,12 @@ which you can use to define your chat commands and modify their behaviour.
     <Doc.Arguments type="type">
       <Doc.Arg name="T" type="Arguments" default="Arguments">
         Optional generic type referring to your `Arguments` subtype, as explained on
-        [the arguments page](#).
+        [the arguments page](/bots/commands/arguments).
       </Doc.Arg>
 
       <Doc.Arg name="M" type="ModalForm" default="ModalForm">
         Optional generic type referring to your `ModalForm` subtype, as explained on
-        [the modals page](#).
+        [the modals page](/bots/commands/modals).
       </Doc.Arg>
     </Doc.Arguments>
   </Doc.Builder>
@@ -136,7 +136,7 @@ which you can use to define your chat commands and modify their behaviour.
   <hr className="clear" />
 
   <Doc.Builder name="slashCommandCheck" receiver="CheckContext<ChatInputCommandInteractionCreateEvent>">
-    Register a [check](#) that must pass for any of the slash commands in this extension to run.
+    Register a [check](/bots/checks) that must pass for any of the slash commands in this extension to run.
   </Doc.Builder>
 </Doc.Container>
 
@@ -150,7 +150,7 @@ At minimum, a slash command must have a `name` and `description` defined.
 Standalone commands must also have an `action` defined.
 
 The following APIs are available for use when writing a slash command, along with those provided by
-[the base `ApplicationCommand` type](#).
+[the base `ApplicationCommand` type](/bots/commands/application/base-command).
 
 ### Builders
 
@@ -272,7 +272,8 @@ Subcommands must define a `name`, `description` and `action`.
 ## Context API
 
 The `action { }` builder is a receiver against the `SlashCommandContext` type.
-This type provides a set of APIs, along with those provided by [the base `ApplicationCommandContext` type](#),
+This type provides a set of APIs, along with those provided by
+[the base `ApplicationCommandContext` type](/bots/commands/application/base-command),
 which allow your bot to respond to slash command invocations.
 
 ### Properties

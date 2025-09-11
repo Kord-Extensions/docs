@@ -18,9 +18,12 @@ and plugins can bundle them together.
 
 Some examples of these extensions include:
 
-- A [help extension](#) implementing `HelpProvider`, containing all help-related commands and event handlers.
-- A [PluralKit extension](#) providing a PluralKit API wrapper, along with custom events and configuration commands.
-- An [anti-phishing extension](#) downloading and maintaining a database of known phishing domains and providing commands and event handlers that help with automatic moderation.
+- A [help extension](http://localhost:3000/bots/config/extensions#help-extension) implementing `HelpProvider`,
+  containing all help-related commands and event handlers.
+- A [PluralKit extension (TODO)](#) providing a PluralKit API wrapper, along with custom events and
+  configuration commands.
+- An [anti-phishing extension (TODO)](#) downloading and maintaining a database of known phishing domains and providing
+  commands and event handlers that help with automatic moderation.
 
 ## Structure
 
@@ -38,7 +41,8 @@ Your extensions must implement the following:
 
   <Doc.Function name="setup" abstract suspend>
     Called when Kord Extension creates and sets up your extension.
-    Use this to register your extension's [commands](#), [event handlers](#), and other functionality.
+    Use this to register your extension's [commands](/bots/commands), [event handlers](/bots/events/handlers),
+    and other functionality.
 
     **Note:** Kord Extensions calls this before your bot connects to Discord, and its `Kord` instance won't be
     available until after that.
@@ -118,14 +122,12 @@ bot's functionality.
 For the sake of brevity, the lists below don't include any APIs documented on other pages.
 For more information, see the following:
 
-- [Checks](#)
-- [Commands](#)
-- [Events](#)
-- [Health Checks](#)
-- [Internationalisation (i18n)](#)
-- [Utilities](#)
-
-### Builders
+- [Checks](/bots/checks)
+- [Commands](/bots/commands)
+- [Events](/bots/events)
+- [Health Checks (TODO)](#)
+- [Internationalisation (i18n) (TODO)](#)
+- [Utilities (TODO)](#)
 
 ### Functions
 

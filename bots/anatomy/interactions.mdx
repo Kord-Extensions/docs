@@ -26,10 +26,10 @@ bot needs to deal with.
 
 Your bot receives an Interaction in response to one of the following actions taken on Discord:
 
-- A user executes an [application command](#) belonging to your bot.
-- A user enters data into a slash [command argument](#) that supports auto-completion.
-- A user uses a [message component](#), such as an interactive button or a select menu.
-- A user submits a [modal form](#).
+- A user executes an [application command](/bots/commands/application/) belonging to your bot.
+- A user enters data into a slash [command argument](/bots/commands/arguments) that supports auto-completion.
+- A user uses a [message component](/bots/components/messages-dsl), such as an interactive button or a select menu.
+- A user submits a [modal form](/bots/commands/modals).
 
 When your bot receives an Interaction from Discord, Kord will fire an event that extends
 [`InteractionCreateEvent`](https://dokka.kord.dev/core/dev.kord.core.event.interaction/-interaction-create-event/index.html).
@@ -55,7 +55,7 @@ triggered the Interaction and how they triggered it.
 
 Internally, Discord's Interaction system is a bit of a mess.
 While it is technically possible to work with the Interaction API directly via the objects exposed by Kord Extensions
-(especially via [the Unsafe Module](#)),
+(especially via [the Unsafe Module (TODO)](#)),
 we recommend you use the core abstractions to avoid unexpected behaviour.
 
 Known instances of unexpected behaviour include:
@@ -150,7 +150,7 @@ allowing you to respond to Interactions easily without accidentally specifying t
     Convenience function allowing you to easily create a button-based paginator by editing the first response to this
     Interaction.
 
-    For more information, see [the paginator documentation](#).
+    For more information, see [the paginator documentation (TODO)](#).
 
     <Doc.Arguments type="function">
       <Doc.Arg name="defaultGroup" type="Key" default="EMPTY_KEY">
@@ -171,7 +171,7 @@ allowing you to respond to Interactions easily without accidentally specifying t
     Discord makes it impossible to edit ephemeral follow-ups, so **this function always sends a public paginator.**
     If you're in an ephemeral Interaction context and need an ephemeral paginator, use `editingPaginator` instead.
 
-    For more information, see [the paginator documentation](#).
+    For more information, see [the paginator documentation (TODO)](#).
 
     <Doc.Arguments type="function">
       <Doc.Arg name="defaultGroup" type="Key" default="EMPTY_KEY">

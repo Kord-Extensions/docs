@@ -22,11 +22,11 @@ generating converter builders functions automatically.
 ## Build Configuration
 
 Before getting started, make sure you're
-[using our Gradle plugin](#),
+[using our Gradle plugin](/bots/tutorials/setting-up),
 our [bot template](https://codeberg.org/Kord-Extensions/template) or
 [plugin template](https://codeberg.org/Kord-Extensions/template-plugin),
 or you
-[set your project up manually according to our tutorial](#).
+[set your project up manually according to our tutorial](/bots/tutorials/setting-up-without-plugin).
 
 Our annotation processor uses these coordinates:
 <code>dev.kordex:annotation-processor:<EmbeddedVersion reference="kordEx" /></code>
@@ -91,7 +91,8 @@ public class SnowflakeConverter(
       Translation key referring to a short, non-title-case name for the type of data your converter handles.
       For example, `number`, `ID`, `regex`, `locale name/code`, etc.
 
-      This is used by the `help` command in your [help extension](#), and shown in error responses.
+      This is used by the `help` command in your [help extension](/bots/config/extensions#help-extension),
+      and shown in error responses.
     </Doc.Property>
 
     <Doc.Property name="errorType" type="Key?" default="null">
@@ -102,7 +103,8 @@ public class SnowflakeConverter(
     </Doc.Property>
 
     <Doc.Property name="showTypeInSignature" type="Boolean" default="true">
-      Whether the `signatureType` property should be shown by the `help` command in your [help extension](#).
+      Whether the `signatureType` property should be shown by the `help` command in your
+      [help extension](/bots/config/extensions#help-extension).
 
       Set this to `false` to hide it.
     </Doc.Property>
@@ -137,7 +139,7 @@ public class SnowflakeConverter(
       Discord option parsing function used when handling slash command arguments, as explained below.
 
       <Doc.Arguments>
-        <Doc.Arg name="context" type="CoommandContext">
+        <Doc.Arg name="context" type="CommandContext">
           Command context representing this command invocation.
 
           **Do not try to cast this to a simpler type** - stick with the basic APIs available on this type.
@@ -222,7 +224,7 @@ override suspend fun parseOption(context: CommandContext, option: OptionValue<*>
 
 Your bot will call the `parse` function to parse chat command arguments into the correct rich type.
 This function operates on a stream of string-based tokens, as provided by Kord Extensions'
-[tokenising string parser](#).
+[tokenising string parser (TODO)](#).
 
 Your parsing workflow must follow this outline:
 
@@ -547,9 +549,10 @@ If you need more examples, please take a look at
 
 ## Usage
 
-You can use your custom converters just like any of the bundled ones, as described on [the converter basics page](#).
-Create an [Arguments subtype](#), define arguments using the corresponding builder functions, and use it in your command
-definitions.
+You can use your custom converters just like any of the bundled ones, as described on
+[the converter basics page](/bots/commands/converters/basics).
+Create an [Arguments subtype](/bots/commands/arguments), define arguments using the corresponding builder functions,
+and use it in your command definitions.
 
 If you're developing a library, your users will also be able to use any custom converters you develop for it.
 </>

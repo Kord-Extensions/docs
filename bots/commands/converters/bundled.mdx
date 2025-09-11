@@ -14,7 +14,8 @@ import * as Doc from "/src/components/Doc";
 # Bundled Converters
 
 Kord Extensions includes many built-in converters.
-They cover the most common use-cases (and some uncommon ones), but you can always [make your own](#) if needed.
+They cover the most common use-cases (and some uncommon ones),
+but you can always [make your own](/bots/commands/converters/custom) if needed.
 
 ## General
 
@@ -85,7 +86,7 @@ They cover the most common use-cases (and some uncommon ones), but you can alway
     [DateTimePeriod objects](https://kotlinlang.org/api/kotlinx-datetime/kotlinx-datetime/kotlinx.datetime/-date-time-period/).
     These objects are timezone-agnostic, and you may need to normalise them against a specific timezone.
 
-    If you're writing a [chat command](#), consider using the coalescing variant for this converter, allowing
+    If you're writing a [chat command](/bots/commands/chat), consider using the coalescing variant for this converter, allowing
     users to supply spaces in their input.
 
     This converter supports some extra settings:
@@ -264,11 +265,13 @@ They cover the most common use-cases (and some uncommon ones), but you can alway
   <Doc.Converter name="Channel" codeName="channel" valueType="dev.kord.core.entity.channel.Channel"
                  types={["single", "optional", "list"]}
   >
-    Discord channel converter, converting the input to a resolved [Kord Channel object](#).
+    Discord channel converter, converting the input to a resolved
+    [Kord Channel object](https://dokka.kord.dev/core/dev.kord.core.entity.channel/-channel/index.html).
     This converter behaves differently depending on command type:
 
-    - [Chat commands](#): Supports mentions, IDs, names, and `this` to refer to the current channel.
-    - [Slash commands](#): Uses the resolved object Discord provides, and can't do its own parsing or resolution.
+    - [Chat commands](/bots/commands/chat): Supports mentions, IDs, names, and `this` to refer to the current channel.
+    - [Slash commands](/bots/commands/application/slash): Uses the resolved object Discord provides,
+      and can't do its own parsing or resolution.
 
     This converter supports some extra settings:
 
@@ -331,19 +334,22 @@ They cover the most common use-cases (and some uncommon ones), but you can alway
   <Doc.Converter name="Guild" codeName="guild" valueType="dev.kord.core.entity.Guild"
                  types={["single", "optional", "list"]}
   >
-    Discord guild converter, converting the input to a resolved [Kord Guild object](#).
+    Discord guild converter, converting the input to a resolved
+    [Kord Guild object](https://dokka.kord.dev/core/dev.kord.core.entity/-guild/index.html).
     This converter supports IDs, names, and `this` to refer to the current guild.
   </Doc.Converter>
 
   <Doc.Converter name="Member" codeName="member" valueType="dev.kord.core.entity.Member"
                  types={["single", "optional", "list"]}
   >
-    Discord member converter, converting the input to a resolved [Kord Guild Member object](#).
+    Discord member converter, converting the input to a resolved
+    [Kord Guild Member object](https://dokka.kord.dev/core/dev.kord.core.entity/-member/index.html).
     This converter behaves differently depending on command type:
 
-    - [Chat commands](#): Supports mentions, IDs, names, `you` to refer to the bot, and `me` to refer to the user
-      executing the command.
-    - [Slash commands](#): Uses the resolved object Discord provides, and can't do its own parsing or resolution.
+    - [Chat commands](/bots/commands/chat): Supports mentions, IDs, names, `you` to refer to the bot,
+      and `me` to refer to the user executing the command.
+    - [Slash commands](/bots/commands/application/slash): Uses the resolved object Discord provides,
+      and can't do its own parsing or resolution.
 
     This converter supports some extra settings:
 
@@ -366,7 +372,8 @@ They cover the most common use-cases (and some uncommon ones), but you can alway
   <Doc.Converter name="Message" codeName="message" valueType="dev.kord.core.entity.Message"
                  types={["single", "optional", "list"]}
   >
-    Discord message converter, converting the input to a resolved [Kord Message object](#).
+    Discord message converter, converting the input to a resolved
+    [Kord Message object](https://dokka.kord.dev/core/dev.kord.core.entity/-message/index.html).
     This converter supports jump URLs and IDs, and the converter assumes that provided IDs refer to messages in the
     current channel.
 
@@ -396,13 +403,14 @@ They cover the most common use-cases (and some uncommon ones), but you can alway
   <Doc.Converter name="Role" codeName="role" valueType="dev.kord.core.entity.Role"
                  types={["single", "optional", "list"]}
   >
-    Discord role converter, converting the input to a resolved [Kord Role object](#).
+    Discord role converter, converting the input to a resolved
+    [Kord Role object](https://dokka.kord.dev/core/dev.kord.core.entity/-role/index.html).
 
     This converter doesn't support resolving roles via commands run in DMs.
     It also behaves differently depending on command type:
 
-    - [Chat commands](#): Supports mentions, IDs and names.
-    - [Slash commands](#): Uses the resolved object Discord provides, and can't do its own parsing or resolution.
+    - [Chat commands](/bots/commands/chat): Supports mentions, IDs and names.
+    - [Slash commands](/bots/commands/application/slash): Uses the resolved object Discord provides, and can't do its own parsing or resolution.
 
     This converter supports some extra settings:
 
@@ -425,7 +433,8 @@ They cover the most common use-cases (and some uncommon ones), but you can alway
   <Doc.Converter name="Tag" codeName="tag" valueType="dev.kord.common.entity.ForumTag"
                  types={["single", "optional", "list"]}
   >
-    Discord tag converter, converting the input to a resolved [Kord ForumTag object](#).
+    Discord tag converter, converting the input to a resolved
+    [Kord ForumTag object](https://dokka.kord.dev/common/dev.kord.common.entity/-forum-tag/index.html).
 
     This converter supports tag names, supplied via the built-in auto-completion based on its settings:
     - **Default:** Use the parent channel for the current forum thread, if the command is being run within one.
@@ -454,12 +463,13 @@ They cover the most common use-cases (and some uncommon ones), but you can alway
   <Doc.Converter name="User" codeName="user" valueType="dev.kord.core.entity.User"
                  types={["single", "optional", "list"]}
   >
-    Discord user converter, converting the input to a resolved [Kord User object](#).
+    Discord user converter, converting the input to a resolved
+    [Kord User object](https://dokka.kord.dev/core/dev.kord.core.entity/-user/index.htm).
     This converter behaves differently depending on command type:
 
-    - [Chat commands](#): Supports mentions, IDs, usernames, tags, `you` to refer to the bot, and `me` to refer to the user
+    - [Chat commands](/bots/commands/chat): Supports mentions, IDs, usernames, tags, `you` to refer to the bot, and `me` to refer to the user
       executing the command.
-    - [Slash commands](#): Uses the resolved object Discord provides, and can't do its own parsing or resolution.
+    - [Slash commands](/bots/commands/application/slash): Uses the resolved object Discord provides, and can't do its own parsing or resolution.
 
     This converter supports some extra settings:
 
@@ -503,7 +513,8 @@ Use them at your own risk!
     **Remember that untrusted regular expressions are dangerous, and executing them carries risks (such as
     [catastrophic backtracking](https://www.regular-expressions.info/catastrophic.html)) that this converter isn't
     designed to prevent.**
-    If you need to execute untrusted regular expressions, consider writing [a custom converter](#) using
+    If you need to execute untrusted regular expressions, consider writing
+    [a custom converter](/bots/commands/converters/custom) using
     [Google's RE2/J library](https://github.com/google/re2j).
 
     This converter supports some extra settings:
@@ -519,7 +530,8 @@ Use them at your own risk!
     Serialized value converter, converting argument values to the given type using `kotlinx.serialization`.
 
     **This isn't how `kotlinx.serialization` is supposed to be used.**
-    **This converter is a best-effort attempt to support new argument types without writing a [custom converter](#),
+    **This converter is a best-effort attempt to support new argument types without writing a
+    [custom converter](/bots/commands/converters/custom),
     and it's important to thoroughly test any code using this before deploying it.**
 
     This converter has some **required extra settings**:

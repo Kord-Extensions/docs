@@ -14,7 +14,7 @@ import * as Doc from "/src/components/Doc";
 # Bundled Events
 
 Kord Extensions provides a set of extra event types, representing things that were out of scope for Kord.
-You handle these events in your extensions [by writing event handlers](#).
+You handle these events in your extensions [by writing event handlers](/bots/events/handlers).
 
 :::warning Brevity Warning
 
@@ -29,7 +29,7 @@ For more information on the specific structure for these events, use your IDE to
 
 ## Command Events
 
-Kord Extensions fires command events based on how [command](#) executions go.
+Kord Extensions fires command events based on how [command](/bots/commands) executions go.
 These events all contain `command` and `event` properties representing the execution context,
 and all failure events include an extra property explaining what went wrong.
 
@@ -63,9 +63,9 @@ No extra base event types exist.
 
 ## Extension Events
 
-Kord Extensions fires extension state events based on the loading state of each registered [extension](#).
+Kord Extensions fires extension state events based on the loading state of each registered [extension](/bots/extensions).
 This is particularly useful because your bot can load and unload extensions at runtime, including dynamically if
-they're part of a [plugin](#).
+they're part of a [plugin (TODO)](#).
 
 <Doc.Container>
   <Doc.Type name="ExtensionStateEvent" extends={["KordExEvent"]} type="data class">
@@ -119,8 +119,8 @@ they're part of a [plugin](#).
 
 ## Modal Events
 
-Kord Extensions fires a special state event when a [modal](#) interaction has completed, provided the corresponding
-`ModalForm` was registered correctly.
+Kord Extensions fires a special state event when a [modal](/bots/commands/modals) interaction has completed,
+provided the corresponding `ModalForm` was registered correctly.
 Your bot uses this event to figure out when a user submits a modal, and it can continue processing your command or
 component actions.
 

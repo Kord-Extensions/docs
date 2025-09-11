@@ -16,7 +16,8 @@ import * as Doc from "/src/components/Doc";
 While Kord and Kord Extensions both provide a rich library of event types, it is often useful to be able to create your
 own, especially when writing modules for other folks to use.
 
-Custom events work just like other events, and you can react to them using [a normal event handler](#).
+Custom events work just like other events, and you can react to them using
+[a normal event handler](/bots/events/handlers).
 
 ## Writing Events
 
@@ -29,7 +30,7 @@ This will define the base type you can use:
   Along with Kord's `Event` type, it additionally extends `KordExKoinComponent`, making it easier to inject values.
 
 If your events refer to Discord entities, you must also implement the relevant [rich base types](#rich-base-types).
-This is important, as it ensures your custom events will work with the [built-in checks](#).
+This is important, as it ensures your custom events will work with the [built-in checks](/bots/checks/bundled).
 
 Once you've decided on your base types, create an event class:
 
@@ -49,7 +50,7 @@ class MyGatewayEvent(
 ## Firing Events
 
 To fire your event, use the `send` function defined against your bot's `ExtensibleBot`.
-You can use [Koin](#) if you need to get a reference.
+You can use [Koin (TODO)](#) if you need to get a reference.
 
 ```kt
 class MyClass : KordExKoinComponent {
@@ -66,7 +67,7 @@ class MyClass : KordExKoinComponent {
 ## Rich Base Types
 
 If your events refer to Discord entities, you must also implement the relevant rich base types.
-This is important, as it ensures your custom events will work with the [built-in checks](#).
+This is important, as it ensures your custom events will work with the [built-in checks](/bots/checks/bundled).
 
 These rich base types come with the API surface you'd expect from Kord events, but since they are interfaces, you will
 need to implement some basic functions yourself.

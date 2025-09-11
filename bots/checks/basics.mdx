@@ -14,10 +14,10 @@ import Link from "@docusaurus/Link";
 
 Checks are re-usable, generic predicates that you can apply to many Kord Extensions APIs, including:
 
-- [Argument validators](#)
-- [Commands](#)
-- [Components](#)
-- [Event handlers](#)
+- [Argument validators](/bots/commands/converters/basics#shared-settings)
+- [Commands](/bots/commands/)
+- [Components](/bots/components/)
+- [Event handlers](/bots/events/)
 
 These predicates prevent code from running unless they pass.
 In a sense, they act like re-usable conditionals that you can use in any context triggered by an event.
@@ -25,8 +25,8 @@ In a sense, they act like re-usable conditionals that you can use in any context
 ## Usage
 
 All check builders are receivers against the `CheckContext` or `ValidationContext` types.
-These types provide an API you can [learn more about here](#), but the extension functions that represent individual
-checks also use these types as a receiver.
+These types provide an API you can [learn more about here](/bots/checks/),
+but the extension functions that represent individual checks also use these types as a receiver.
 You apply a check by calling the relevant builders and functions in your check builders:
 
 ```kt
