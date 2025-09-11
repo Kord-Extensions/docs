@@ -19,10 +19,11 @@ These APIs are available in the `action { }` block regardless of interaction typ
 so you should familiarise yourself with them!
 
 The `ApplicationCommandContext` type extends the base `CommandContext` type, so it inherits the APIs defined there.
-For more information on the APIs common to all command contexts, see [the basic command context API page](#).
+For more information on the APIs common to all command contexts,
+see [the basic command context API page](/bots/commands/base-context).
 
-All application command contexts also extend one of the [interaction context types](#), unless you're writing
-[an unsafe command](#).
+All application command contexts also extend one of the [interaction context types (TODO)](#), unless you're writing
+[an unsafe command (TODO)](#).
 
 <Doc.Container>
   <Doc.Type name="ApplicationCommandContext" type="abstract class" extends={["CommandContext"]}>
@@ -59,7 +60,7 @@ All application command contexts also extend one of the [interaction context typ
   </Doc.Property>
 
   <Doc.Property name="botSettings" type="ExtensibleBotBuilder" propType="val">
-    Quick access to [your bot's settings](#).
+    Quick access to [your bot's settings](/bots/config/).
   </Doc.Property>
 
   <hr className="clear" />

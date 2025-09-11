@@ -13,7 +13,7 @@ import * as Doc from "/src/components/Doc";
 
 # Context Commands
 
-Context commands are a special type of [application command](#),
+Context commands are a special type of [application command](/bots/commands/application/),
 invoked by users via a right-click or tap-and-hold "Apps" menu in their Discord client.
 Instead of arguments, context commands receive whatever the user was targeting when they opened the menu.
 
@@ -42,7 +42,7 @@ so be aware of Discord's strict rate limits.**
     <Doc.Arguments type="function">
       <Doc.Arg name="modal" type="() -> M">
         Optional callable returning an instance of your `ModalForm` subtype,
-        as explained on [the modals page](#).
+        as explained on [the modals page](/bots/commands/modals).
         You'll usually want to pass a constructor here.
       </Doc.Arg>
     </Doc.Arguments>
@@ -50,7 +50,7 @@ so be aware of Discord's strict rate limits.**
     <Doc.Arguments type="type">
       <Doc.Arg name="M" type="ModalForm" default="ModalForm">
         Optional generic type referring to your `ModalForm` subtype, as explained on
-        [the modals page](#).
+        [the modals page](/bots/commands/modals).
       </Doc.Arg>
     </Doc.Arguments>
   </Doc.Builder>
@@ -61,7 +61,7 @@ so be aware of Discord's strict rate limits.**
     <Doc.Arguments type="function">
       <Doc.Arg name="modal" type="() -> M">
         Optional callable returning an instance of your `ModalForm` subtype,
-        as explained on [the modals page](#).
+        as explained on [the modals page](/bots/commands/modals).
         You'll usually want to pass a constructor here.
       </Doc.Arg>
     </Doc.Arguments>
@@ -69,7 +69,7 @@ so be aware of Discord's strict rate limits.**
     <Doc.Arguments type="type">
       <Doc.Arg name="M" type="ModalForm" default="ModalForm">
         Optional generic type referring to your `ModalForm` subtype, as explained on
-        [the modals page](#).
+        [the modals page](/bots/commands/modals).
       </Doc.Arg>
     </Doc.Arguments>
   </Doc.Builder>
@@ -80,7 +80,7 @@ so be aware of Discord's strict rate limits.**
     <Doc.Arguments type="function">
       <Doc.Arg name="modal" type="() -> M">
         Optional callable returning an instance of your `ModalForm` subtype,
-        as explained on [the modals page](#).
+        as explained on [the modals page](/bots/commands/modals).
         You'll usually want to pass a constructor here.
       </Doc.Arg>
     </Doc.Arguments>
@@ -88,7 +88,7 @@ so be aware of Discord's strict rate limits.**
     <Doc.Arguments type="type">
       <Doc.Arg name="M" type="ModalForm" default="ModalForm">
         Optional generic type referring to your `ModalForm` subtype, as explained on
-        [the modals page](#).
+        [the modals page](/bots/commands/modals).
       </Doc.Arg>
     </Doc.Arguments>
   </Doc.Builder>
@@ -99,7 +99,7 @@ so be aware of Discord's strict rate limits.**
     <Doc.Arguments type="function">
       <Doc.Arg name="modal" type="() -> M">
         Optional callable returning an instance of your `ModalForm` subtype,
-        as explained on [the modals page](#).
+        as explained on [the modals page](/bots/commands/modals).
         You'll usually want to pass a constructor here.
       </Doc.Arg>
     </Doc.Arguments>
@@ -107,7 +107,7 @@ so be aware of Discord's strict rate limits.**
     <Doc.Arguments type="type">
       <Doc.Arg name="M" type="ModalForm" default="ModalForm">
         Optional generic type referring to your `ModalForm` subtype, as explained on
-        [the modals page](#).
+        [the modals page](/bots/commands/modals).
       </Doc.Arg>
     </Doc.Arguments>
   </Doc.Builder>
@@ -116,11 +116,11 @@ so be aware of Discord's strict rate limits.**
   <hr className="clear" />
 
   <Doc.Builder name="messageCommandCheck" receiver="CheckContext<MessageCommandInteractionCreateEvent>">
-    Register a [check](#) that must pass for any of the message commands in this extension to run.
+    Register a [check](/bots/checks) that must pass for any of the message commands in this extension to run.
   </Doc.Builder>
 
   <Doc.Builder name="userCommandCheck" receiver="CheckContext<UserCommandInteractionCreateEvent>">
-    Register a [check](#) that must pass for any of the user commands in this extension to run.
+    Register a [check](/bots/checks) that must pass for any of the user commands in this extension to run.
   </Doc.Builder>
 </Doc.Container>
 
@@ -129,8 +129,8 @@ so be aware of Discord's strict rate limits.**
 You can register a message command using the corresponding builder functions explained above.
 All message commands must define a `name` and `action`.
 
-Message commands don't support arguments, but you can still provide [a ModalForm subtype](#) to prompt the user with a
-modal, similarly to how [slash commands](#) work.
+Message commands don't support arguments, but you can still provide [a ModalForm subtype](/bots/commands/modals)
+to prompt the user with a modal, similarly to how [slash commands](/bots/commands/application/slash) work.
 
 ```kt
 publicMessageCommand {
@@ -147,9 +147,9 @@ publicMessageCommand {
 ```
 
 Message commands don't expose any extra APIs, aside from an `action { }` builder and those provided by the
-[base application command type](#) they extend.
-However, along with [the basic context APIs](#), the message command context provides a `targetMessages` property
-containing a list of targeted messages.
+[base application command type](/bots/commands/application/base-command) they extend.
+However, along with [the basic context APIs](/bots/commands/application/base-context),
+the message command context provides a `targetMessages` property containing a list of targeted messages.
 
 :::note List of Targets
 
@@ -166,8 +166,8 @@ We decided to mirror Discord's choice, as this might become possible at some poi
 You can register a user command using the corresponding builder functions explained above.
 All user commands must define a `name` and `action`.
 
-User commands don't support arguments, but you can still provide [a ModalForm subtype](#) to prompt the user with a
-modal, similarly to how [slash commands](#) work.
+User commands don't support arguments, but you can still provide [a ModalForm subtype](/bots/commands/modals) to
+prompt the user with a modal, similarly to how [slash commands](/bots/commands/application/slash) work.
 
 ```kt
 publicUserCommand(::GreetModal) {
@@ -186,9 +186,9 @@ publicUserCommand(::GreetModal) {
 ```
 
 User commands don't expose any extra APIs, aside from an `action { }` builder and those provided by the
-[base application command type](#) they extend.
-However, along with [the basic context APIs](#), the user command context provides a `targetUsers` property
-containing a list of targeted user.
+[base application command type](/bots/commands/application/base-command) they extend.
+However, along with [the basic context APIs](/bots/commands/application/base-context),
+the user command context provides a `targetUsers` property containing a list of targeted user.
 
 :::note List of Targets
 

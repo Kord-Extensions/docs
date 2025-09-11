@@ -20,8 +20,8 @@ They're a core part of Kord Extensions' command system, allowing you to focus on
 worrying about parsing logic.
 
 Each converter is a class extending the `Converter` type, and annotated with the `@Converter` annotation.
-You can read [the custom converters page](#) for more information on converter anatomy, but for now you should
-understand that converters can:
+You can read [the custom converters page](/bots/commands/converters/custom) for more information on converter anatomy,
+but for now you should understand that converters can:
 
 - Parse String-based values.
 - Transform entities and Snowflakes received from Discord.
@@ -30,7 +30,7 @@ understand that converters can:
 ## Usage
 
 You can create a converter using the corresponding builder functions, available in your `Arguments` subtype,
-[which you'll need to create to handle command arguments](#).
+[which you'll need to create to handle command arguments](/bots/commands/arguments).
 Builder functions have descriptive names based on the corresponding converter's name, and the behaviour you should
 expect from them.
 
@@ -51,8 +51,8 @@ value.
 
 :::warning Chat commands only!
 
-As of this writing, while you can use these argument types with [slash commands](#), they can only process and return
-a single value.
+As of this writing, while you can use these argument types with [slash commands](/bots/commands/application/slash),
+they can only process and return a single value.
 This is because Discord lacks any real way to provide an argument with multiple values.
 
 If you do use these argument types with slash commands, please note that they will only ever resolve a single value.
@@ -62,14 +62,14 @@ For list converters, this value is a `List<T>` with one element.
 
 You can make arguments consume or output multiple inputs by specifying their **coalescing** or **list** variants.
 
-**Coalescing** arguments are meant for use with [chat commands](#), allowing your bot to combine multiple arguments
-into a single value.
+**Coalescing** arguments are meant for use with [chat commands](/bots/commands/chat),
+allowing your bot to combine multiple arguments into a single value.
 This is helpful when you want to make it easier to provide arguments containing spaces without requiring quoting,
 but remember that **coalescing arguments consume as many arguments as possible** until the next value would make
 argument data invalid.
 
-**List** arguments are also meant for use with [chat commands](#), but instead of combining arguments into a single
-value, they place them into a list.
+**List** arguments are also meant for use with [chat commands](/bots/commands/chat),
+but instead of combining arguments into a single value, they place them into a list.
 However, like coalescing arguments, **list arguments consume as many arguments as possible** until the next value would
 be an invalid argument.
 
@@ -80,7 +80,8 @@ You can limit the values accepted by an argument by specifying the **choice** va
 Choice arguments include a limited set of pre-set possible values, and they respond with an error when users provide
 other values.
 
-When used with [slash commands](#), Discord shows the first 25 acceptable values to the user.
+When used with [slash commands](/bots/commands/application/slash),
+Discord shows the first 25 acceptable values to the user.
 
 ## Configuration
 
@@ -118,7 +119,7 @@ of options.
     Use the APIs provided by the `AutoCompleteInteraction` object to check the provided partial argument, and respond
     with some options.
 
-    Extra APIs are available to help with this, which you can read about on [the interaction utils page](#).
+    Extra APIs are available to help with this, which you can read about on [the interaction utils page (TODO)](#).
 
     <Doc.Arguments type="lambda">
       <Doc.Arg name="event" type="AutoCompleteInteractionCreateEvent">
@@ -146,7 +147,8 @@ of options.
     A validator examines the final result of an argument conversion, and may decide to cause a parsing failure via
     the `fail()` function.
 
-    The API matches the one provided by [check contexts](#), but with some additional properties.
+    The API matches the one provided by [check contexts](/bots/checks/custom#context-api), but with some additional
+    properties.
     The generic type `T` represents the argument value's type.
 
     <Doc.Property name="context" type="CommandContext" propType="val">
@@ -168,7 +170,7 @@ of options.
 Choice converter builders additionally extend `ChoiceConverterBuilder`, providing an API that allows you to define
 what the possible choices are.
 Choices have a human-readable component, represented by a `Key` object, which your bot will translate using
-[its locale resolvers](#).
+[its locale resolvers](/bots/config/i18n).
 
 The generic type `T` below represents the argument value's type.
 

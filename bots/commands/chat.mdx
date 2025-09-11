@@ -25,7 +25,7 @@ While chat commands were traditionally how users interacted with bots on Discord
 
 If your bot is on 75 or more guilds (or you plan to grow it to that point),
 you should consider using
-[Application Commands](#) instead of chat commands as much as possible.
+[Application Commands](/bots/commands/application/) instead of chat commands as much as possible.
 
 Your bot will need to go through a verification process (which starts at 75 guilds) before it can join over 100 guilds.
 Discord **will not verify bots** that are using the "message content" privileged intent without a good reason.
@@ -35,7 +35,7 @@ The only situations that we advise you to use chat commands for are
 This largely only applies to commands that need to take a large amount of text as input (if modals do not suffice).
 
 Additionally, it is worth noting that users will expect your bots to support
-[Application Commands](#) as a default mode of interaction.
+[Application Commands](/bots/commands/application/) as a default mode of interaction.
 
 :::
 
@@ -61,11 +61,11 @@ the command name and arguments, Kord Extensions can process it accordingly.
 Call the builder functions within your `setup` function when you're registering commands before the bot starts up.
 You can also register commands later in the bot's lifecycle by calling the same functions.
 
-Chat commands support command arguments, as explained on [the arguments page](#).
-However, unlike the other command types, they do not support [Modals](#).
+Chat commands support command arguments, as explained on [the arguments page](/bots/commands/arguments).
+However, unlike the other command types, they do not support [Modals](/bots/commands/modals).
 
 As Discord recommends against using chat commands, you must enable them before your bot will respond to them.
-For more information, see [the configuration documentation](#).
+For more information, see [the configuration documentation](/bots/config/commands#chat-commands).
 
 ```kt
 chatCommand(::MyArguments) {
@@ -118,14 +118,16 @@ which you can use to define your chat commands and modify their behaviour.
 
     <Doc.Arguments type="function">
       <Doc.Arg name="arguments" type="() -> T">
-        Optional callable returning an instance of your `Arguments` subtype, as explained on [the arguments page](#).
+        Optional callable returning an instance of your `Arguments` subtype, as explained on
+        [the arguments page](/bots/commands/arguments).
         You'll usually want to pass a constructor here.
       </Doc.Arg>
     </Doc.Arguments>
 
     <Doc.Arguments type="type">
       <Doc.Arg name="T" type="Arguments">
-        Optional generic type referring to your `Arguments` subtype, as explained on [the arguments page](#).
+        Optional generic type referring to your `Arguments` subtype, as explained on
+        [the arguments page](/bots/commands/arguments).
       </Doc.Arg>
     </Doc.Arguments>
   </Doc.Builder>
@@ -135,14 +137,16 @@ which you can use to define your chat commands and modify their behaviour.
 
     <Doc.Arguments type="function">
       <Doc.Arg name="arguments" type="() -> T">
-        Optional callable returning an instance of your `Arguments` subtype, as explained on [the arguments page](#).
+        Optional callable returning an instance of your `Arguments` subtype, as explained on
+        [the arguments page](/bots/commands/arguments).
         You'll usually want to pass a constructor here.
       </Doc.Arg>
     </Doc.Arguments>
 
     <Doc.Arguments type="type">
       <Doc.Arg name="T" type="Arguments">
-        Optional generic type referring to your `Arguments` subtype, as explained on [the arguments page](#).
+        Optional generic type referring to your `Arguments` subtype, as explained on
+        [the arguments page](/bots/commands/arguments).
       </Doc.Arg>
     </Doc.Arguments>
   </Doc.Builder>
@@ -151,7 +155,7 @@ which you can use to define your chat commands and modify their behaviour.
   <hr className="clear" />
 
   <Doc.Builder name="chatCommandCheck" receiver="CheckContext<MessageCreateEvent>">
-    Register a [check](#) that must pass for any of the chat commands in this extension to run.
+    Register a [check](/bots/checks) that must pass for any of the chat commands in this extension to run.
   </Doc.Builder>
 </Doc.Container>
 
@@ -164,7 +168,7 @@ your command and its metadata.
 At minimum, a standalone command must have a `name` and `action` defined.
 
 The following APIs are available for use when writing a chat command,
-along with those provided by [the base `Command` type](#).
+along with those provided by [the base `Command` type](/bots/commands/base-command).
 
 ### Builders
 
@@ -224,7 +228,7 @@ small handful of advanced use-cases.
   <Doc.Function name="getSignature" returns="String" open internal>
     Retrieve the command's translated signature, which explains how users should structure the arguments this command
     takes.
-    Usually used by the `help` command in your bot's [help extension](#).
+    Usually used by the `help` command in your bot's [help extension](/bots/config/extensions#help-extension).
 
     Command signatures are usually generated by the chat command parser, but you can provide one manually when you
     define your command.
@@ -300,8 +304,8 @@ small handful of advanced use-cases.
   </Doc.Property>
 
   <Doc.Property name="description" type="Key" default="CoreTranslations.Commands.defaultDescription" propType="var" open>
-    This command's description, used by the `help` command in your [help extension](#), and shown in argument parsing
-    errors.
+    This command's description, used by the `help` command in your
+    [help extension](/bots/config/extensions#help-extension), and shown in argument parsing errors.
 
     Defaults to `No description provided`.
     We strongly recommend providing your own description!
@@ -322,10 +326,11 @@ small handful of advanced use-cases.
   </Doc.Property>
 
   <Doc.Property name="localeFallback" type="Boolean" default="false" propType="var" open>
-    Whether to fall back to your bot's [configured default locale](#) when resolving command names for execution.
+    Whether to fall back to your bot's [configured default locale](/bots/config/i18n) when resolving command names for
+    execution.
 
     Enabling this allows users to execute your command by providing its name or aliases in your bot's default locale,
-    as well as those provided in the locale returned by your bot's [configured locale resolvers](#).
+    as well as those provided in the locale returned by your bot's [configured locale resolvers](/bots/config/i18n).
   </Doc.Property>
 
   <Doc.Property name="signature" type="Key?" default="null" propType="var" open>
@@ -463,7 +468,8 @@ They all need to pass for the command to execute.
 ## Context API
 
 The `action { }` builder is a receiver against the `ChatCommandContext` type.
-This type provides a set of APIs, along with those provided by [the base `CommandContext` type](#),
+This type provides a set of APIs, along with those provided by
+[the base `CommandContext` type](/bots/commands/base-context),
 which allow your bot to respond to command invocations.
 
 <Doc.Container internalText="Class Definition" internal>
@@ -501,7 +507,7 @@ which allow your bot to respond to command invocations.
       </Doc.Arg>
 
       <Doc.Arg name="cache" type="MutableMap<String, Any>">
-        Data cache map shared with this command's [checks](#).
+        Data cache map shared with this command's [checks](/bots/checks).
       </Doc.Arg>
     </Doc.Arguments>
   </Doc.Type>
@@ -513,7 +519,7 @@ which allow your bot to respond to command invocations.
   <Doc.Builder name="paginator" functionReturns="MessageButtonPaginator" receiver="PaginatorBuilder">
     Convenience builder for creating a paginator.
 
-    For more information, see [the paginator documentation](#).
+    For more information, see [the paginator documentation (TODO)](#).
 
     <Doc.Arguments type="function">
       <Doc.Arg name="defaultGroup" type="Key" default="EMPTY_KEY">
@@ -544,7 +550,8 @@ which allow your bot to respond to command invocations.
 
 <Doc.Container>
   <Doc.Function name="respondTranslated" suspend>
-    Generate and send the help embed for this command, generated using [your bot's help extension](#).
+    Generate and send the help embed for this command, generated using
+    [your bot's help extension](/bots/config/extensions#help-extension).
 
     Returns `true` if your bot has a proper help extension and the message was sent, `false` otherwise.
   </Doc.Function>

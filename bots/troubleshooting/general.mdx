@@ -67,7 +67,7 @@ us is <code>403&nbsp;&nbsp;&nbsp;Missing Access null</code>:
   details, but that's missing here.
 
 The first thing you should do here is enable Kord's stack-trace recovery feature.
-You can do this via [the Kord configuration builder](#):
+You can do this via [the Kord configuration builder](/bots/config/general#kord):
 
 ```kt
 val bot = ExtensibleBot(TOKEN) {
@@ -120,7 +120,7 @@ As you can see, this points at our code, and helps us find the specific block of
 
 ### Alternative: Sentry
 
-If you're using the [Sentry integration](#), consider creating
+If you're using the [Sentry integration (TODO)](#), consider creating
 breadcrumbs in your commands and event handlers.
 Breadcrumbs keep track of what your code has been doing, and they can provide extra context when looking at exceptions
 in Sentry:
@@ -153,6 +153,6 @@ action {
 }
 ```
 
-This will give you a new panel in Sentry — example here taken from the [mappings module](#):
+This will give you a new panel in Sentry — example here taken from the [mappings module (TODO)](#):
 
 ![Screenshot showing an example Breadcrumbs section in the Sentry UI.](/img/bots/troubleshooting/breadcrumbs.png)

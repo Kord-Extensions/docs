@@ -17,7 +17,7 @@ All application command types extend the `ApplicationCommand` type, which provid
 These APIs are available regardless of command type, so you should familiarise yourself with them!
 
 The `ApplicationCommand` type extends the base `Command` type, so it inherits the APIs defined there.
-For more information on the APIs common to all commands, see [the basic command API page](#).
+For more information on the APIs common to all commands, see [the basic command API page](/bots/commands/base-command).
 
 <Doc.Container>
   <Doc.Type name="ApplicationCommand" type="abstract class" extends={["Command"]}>
@@ -41,7 +41,7 @@ For more information on the APIs common to all commands, see [the basic command 
 
 <Doc.Container>
   <Doc.Builder name="check" receiver="CheckContext<E>" open>
-    Register a [check](#), which must pass for the command to execute when invoked.
+    Register a [check](/bots/checks), which must pass for the command to execute when invoked.
   </Doc.Builder>
 </Doc.Container>
 
@@ -52,7 +52,8 @@ For more information on the APIs common to all commands, see [the basic command 
     Provide a guild ID to register this command against, or `null` to override any previously-set guild.
 
     By default, all application commands are global.
-    This can be changed in your bot's [application command builder](#), by calling the `defaultGuild()` function.
+    This can be changed in your bot's [application command builder](/bots/config/commands#application-commands),
+    by calling the `defaultGuild()` function.
   </Doc.Function>
 
   <Doc.Function name="requirePermission" open>
@@ -61,8 +62,8 @@ For more information on the APIs common to all commands, see [the basic command 
     **Note:** Kord Extensions doesn't enforce the permissions you specify here.
     This is because server staff on Discord can change the permissions required to execute a command.
 
-    If you need to limit command usage to a specific role or set of permissions, consider also writing [a check](#)
-    when you set this.
+    If you need to limit command usage to a specific role or set of permissions, consider also writing
+    [a check](/bots/checks) when you set this.
     If you write a check, you should also set this property - it'll hide the command on Discord!
   </Doc.Function>
 </Doc.Container>
@@ -157,8 +158,8 @@ For more information on the APIs common to all commands, see [the basic command 
     **Note:** Kord Extensions doesn't enforce the permissions you specify here.
     This is because server staff on Discord can change the permissions required to execute a command.
 
-    If you need to limit command usage to a specific role or set of permissions, consider also writing [a check](#)
-    when you set this.
+    If you need to limit command usage to a specific role or set of permissions, consider also writing
+    [a check](/bots/checks/) when you set this.
     If you write a check, you should also set this property - it'll hide the command on Discord!
   </Doc.Property>
 </Doc.Container>

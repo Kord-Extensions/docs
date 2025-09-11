@@ -15,8 +15,9 @@ import * as Doc from "/src/components/Doc";
 
 :::note Command Types
 
-While most command types support arguments, [Context Commands](#) don't.
-If you need to collect anything from users who run these commands, you'll need to use [Modals](#) instead.
+While most command types support arguments, [Context Commands](/bots/commands/application/context) don't.
+If you need to collect anything from users who run these commands, you'll need to use [Modals](/bots/commands/modals)
+instead.
 
 :::
 
@@ -60,8 +61,9 @@ arguments, among other things.
     <Doc.Property name="parseForAutocomplete" type="Boolean" default="false" propType="var" open>
       Whether to attempt to parse previous arguments when handling an autocompletion event.
 
-      When working with [Slash Commands](#) and Discord's autocomplete system, setting this to `true` allows your
-      `autoComplete { }` blocks to retrieve the value for the other arguments, if the user provides them.
+      When working with [Slash Commands](/bots/commands/application/slash) and Discord's autocomplete system, setting
+      this to `true` allows your `autoComplete { }` blocks to retrieve the value for the other arguments, if the user
+      provides them.
 
       Some converter types provide a default `autoComplete { }` block, and you'll need to set this property to `true`
       when using them.
@@ -88,7 +90,7 @@ arguments, among other things.
     <Doc.Arguments>
       <Doc.Arg name="displayName" type="Key">
         Display name shown on Discord, used in help messages, and the key for keyword arguments
-        in [Chat Commands](#).
+        in [Chat Commands](/bots/commands/chat).
       </Doc.Arg>
 
       <Doc.Arg name="description" type="Key">

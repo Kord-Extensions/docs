@@ -68,7 +68,7 @@ All event handlers must define an `action`.
   </Doc.Builder>
 
   <Doc.Builder name="check" receiver="CheckContext<T>">
-    Register a [check](#), which must pass for the event handler's action block to execute.
+    Register a [check](/bots/checks), which must pass for the event handler's action block to execute.
   </Doc.Builder>
 </Doc.Container>
 
@@ -78,7 +78,7 @@ You can use these utility functions in your `action {}` block.
 
 <Doc.Container>
   <Doc.Function name="getLocale" receiver="Event">
-    Retrieve this event's locale, calculated by your bot's [locale resolvers](#).
+    Retrieve this event's locale, calculated by your bot's [locale resolvers](/bots/config/i18n).
 
     This function's output is cached.
   </Doc.Function>
@@ -101,7 +101,7 @@ You can use these utility functions in your `action {}` block.
 ## Context API
 
 The `action { }` builder is a receiver against the `EventContext` type.
-This type provides a set of APIs, along with those provided by [the base `TranslatableContext` type](#),
+This type provides a set of APIs, along with those provided by [the base `TranslatableContext` type (TODO)](#),
 which allow your bot to respond to events.
 
 <Doc.Container>
@@ -127,7 +127,7 @@ which allow your bot to respond to events.
     </Doc.Arguments>
 
     <Doc.Property name="sentry" type="SentryContext" propType="val">
-      A [Sentry context](#) you can use to keep track of what happens in your event handler.
+      A [Sentry context (TODO)](#) you can use to keep track of what happens in your event handler.
     </Doc.Property>
   </Doc.Type>
 </Doc.Container>
