@@ -118,7 +118,6 @@ The resulting message would look like this:
 
 <MessageContainer>
   <Message>
-
     <ActionRow>
       <Button label="Button" style="primary"/>
       <Button label="Button" style="primary"/>
@@ -143,28 +142,314 @@ The resulting message would look like this:
 
 ## Builder Functions
 
-## Builder API
+<Doc.Container>
+  <p className="text-center text-l">
+    **Entrypoint**
+  </p>
+
+  <Doc.Builder name="components" receiver="MessageBuilder" functionReturns="ComponentContainer" hasArgs>
+    Convenience function for creating a `ComponentContainer` with components, and applying it to the message you're creating/editing.
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="timeout" type="Duration?" default="null">
+        Optional component interaction timeout.
+        When nobody interacts with the components for the length of the timeout, Kord Extensions will unregister them and they'll stop working.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <hr className="clear" />
+
+  <p className="text-center text-l">
+    **Buttons**
+  </p>
+
+  <Doc.Builder name="disabledButton" receiver="DisabledInteractionButton" functionReturns="DisabledInteractionButton" hasArgs>
+    Create a disabled button.
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="row" type="Int?" default="null">
+        Optional action row the component should be placed into, if you don't want it to be packed automatically.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <Doc.Builder name="ephemeralButton" receiver="EphemeralInteractionButton" functionReturns="EphemeralInteractionButton" hasArgs>
+    Create an interactable button based on an ephemeral interaction flow.
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="modal" type="(() -> ModalForm)?" default="null">
+        Optional callable returning the [Modal form](#) to present users with when they interact with this component.
+      </Doc.Arg>
+
+      <Doc.Arg name="row" type="Int?" default="null">
+        Optional action row the component should be placed into, if you don't want it to be packed automatically.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <Doc.Builder name="linkButton" receiver="LinkInteractionButton" functionReturns="LinkInteractionButton" hasArgs>
+    Create a link button.
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="row" type="Int?" default="null">
+        Optional action row the component should be placed into, if you don't want it to be packed automatically.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <Doc.Builder name="publicButton" receiver="PublicInteractionButton" functionReturns="PublicInteractionButton" hasArgs>
+    Create an interactable button based on a public interaction flow.
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="modal" type="(() -> ModalForm)?" default="null">
+        Optional callable returning the [Modal form](#) to present users with when they interact with this component.
+      </Doc.Arg>
+
+      <Doc.Arg name="row" type="Int?" default="null">
+        Optional action row the component should be placed into, if you don't want it to be packed automatically.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <hr className="clear" />
+
+  <p className="text-center text-l">
+    **Select Menu (Channels)**
+  </p>
+
+  <Doc.Builder name="ephemeralChannelSelectMenu" receiver="EphemeralChannelSelectMenu" functionReturns="EphemeralChannelSelectMenu" hasArgs>
+    Create an channel select menu based on an ephemeral interaction flow.
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="modal" type="(() -> ModalForm)?" default="null">
+        Optional callable returning the [Modal form](#) to present users with when they interact with this component.
+      </Doc.Arg>
+
+      <Doc.Arg name="row" type="Int?" default="null">
+        Optional action row the component should be placed into, if you don't want it to be packed automatically.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <Doc.Builder name="publicChannelSelectMenu" receiver="PublicChannelSelectMenu" functionReturns="PublicChannelSelectMenu" hasArgs>
+    Create an channel select menu based on a public interaction flow.
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="modal" type="(() -> ModalForm)?" default="null">
+        Optional callable returning the [Modal form](#) to present users with when they interact with this component.
+      </Doc.Arg>
+
+      <Doc.Arg name="row" type="Int?" default="null">
+        Optional action row the component should be placed into, if you don't want it to be packed automatically.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <hr className="clear" />
+
+  <p className="text-center text-l">
+    **Select Menu (Mentionables)**
+  </p>
+
+  <Doc.Builder name="ephemeralMentionableSelectMenu" receiver="EphemeralMentionableSelectMenu" functionReturns="EphemeralMentionableSelectMenu" hasArgs>
+    Create a mentionable select menu based on an ephemeral interaction flow.
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="modal" type="(() -> ModalForm)?" default="null">
+        Optional callable returning the [Modal form](#) to present users with when they interact with this component.
+      </Doc.Arg>
+
+      <Doc.Arg name="row" type="Int?" default="null">
+        Optional action row the component should be placed into, if you don't want it to be packed automatically.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <Doc.Builder name="publicMentionableSelectMenu" receiver="PublicMentionableSelectMenu" functionReturns="PublicMentionableSelectMenu" hasArgs>
+    Create a mentionable select menu based on a public interaction flow.
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="modal" type="(() -> ModalForm)?" default="null">
+        Optional callable returning the [Modal form](#) to present users with when they interact with this component.
+      </Doc.Arg>
+
+      <Doc.Arg name="row" type="Int?" default="null">
+        Optional action row the component should be placed into, if you don't want it to be packed automatically.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <hr className="clear" />
+
+  <p className="text-center text-l">
+    **Select Menu (Roles)**
+  </p>
+
+  <Doc.Builder name="ephemeralRoleSelectMenu" receiver="EphemeralRoleSelectMenu" functionReturns="EphemeralRoleSelectMenu" hasArgs>
+    Create a role select menu based on an ephemeral interaction flow.
+
+    <Doc.Arg name="modal" type="(() -> ModalForm)?" default="null">
+      Optional callable returning the [Modal form](#) to present users with when they interact with this component.
+    </Doc.Arg>
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="row" type="Int?" default="null">
+        Optional action row the component should be placed into, if you don't want it to be packed automatically.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <Doc.Builder name="publicRoleSelectMenu" receiver="PublicRoleSelectMenu" functionReturns="PublicRoleSelectMenu" hasArgs>
+    Create a role select menu based on a public interaction flow.
+
+    <Doc.Arg name="modal" type="(() -> ModalForm)?" default="null">
+      Optional callable returning the [Modal form](#) to present users with when they interact with this component.
+    </Doc.Arg>
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="row" type="Int?" default="null">
+        Optional action row the component should be placed into, if you don't want it to be packed automatically.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <hr className="clear" />
+
+  <p className="text-center text-l">
+    **Select Menu (Strings)**
+  </p>
+
+  <Doc.Builder name="ephemeralStringSelectMenu" receiver="EphemeralStringSelectMenu" functionReturns="EphemeralStringSelectMenu" hasArgs>
+    Create a string select menu based on an ephemeral interaction flow.
+
+    <Doc.Arg name="modal" type="(() -> ModalForm)?" default="null">
+      Optional callable returning the [Modal form](#) to present users with when they interact with this component.
+    </Doc.Arg>
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="row" type="Int?" default="null">
+        Optional action row the component should be placed into, if you don't want it to be packed automatically.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <Doc.Builder name="publicStringSelectMenu" receiver="PublicStringSelectMenu" functionReturns="PublicStringSelectMenu" hasArgs>
+    Create a string select menu based on a public interaction flow.
+
+    <Doc.Arg name="modal" type="(() -> ModalForm)?" default="null">
+      Optional callable returning the [Modal form](#) to present users with when they interact with this component.
+    </Doc.Arg>
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="row" type="Int?" default="null">
+        Optional action row the component should be placed into, if you don't want it to be packed automatically.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <hr className="clear" />
+
+  <p className="text-center text-l">
+    **Select Menu (Users)**
+  </p>
+
+  <Doc.Builder name="ephemeralUserSelectMenu" receiver="EphemeralUserSelectMenu" functionReturns="EphemeralUserSelectMenu" hasArgs>
+    Create a user select menu based on an ephemeral interaction flow.
+
+    <Doc.Arg name="modal" type="(() -> ModalForm)?" default="null">
+      Optional callable returning the [Modal form](#) to present users with when they interact with this component.
+    </Doc.Arg>
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="row" type="Int?" default="null">
+        Optional action row the component should be placed into, if you don't want it to be packed automatically.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <Doc.Builder name="publicUserSelectMenu" receiver="PublicUserSelectMenu" functionReturns="PublicUserSelectMenu" hasArgs>
+    Create a user select menu based on a public interaction flow.
+
+    <Doc.Arg name="modal" type="(() -> ModalForm)?" default="null">
+      Optional callable returning the [Modal form](#) to present users with when they interact with this component.
+    </Doc.Arg>
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="row" type="Int?" default="null">
+        Optional action row the component should be placed into, if you don't want it to be packed automatically.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+</Doc.Container>
+
+## Container API
 
 ### Builders
 
+<Doc.Container>
+</Doc.Container>
+
 ### Functions
+
+<Doc.Container>
+</Doc.Container>
 
 ### Properties
 
+<Doc.Container>
+</Doc.Container>
+
 ## Component Builders
 
-### All Components
+<Doc.Container>
+</Doc.Container>
 
 ### Buttons
 
+<Doc.Container>
+</Doc.Container>
+
 #### Interaction Buttons
+
+<Doc.Container>
+</Doc.Container>
 
 #### Disabled Buttons
 
+<Doc.Container>
+</Doc.Container>
+
 #### Link Buttons
+
+<Doc.Container>
+</Doc.Container>
 
 ### Select Menus
 
+<Doc.Container>
+</Doc.Container>
+
 #### Channel Menus
 
+<Doc.Container>
+</Doc.Container>
+
 #### String Menus
+
+<Doc.Container>
+</Doc.Container>
+
+## Utilities
+
+<Doc.Container>
+  <Doc.Function name="applyComponents" receiver="MessageBuilder">
+    Convenience function for applying an arbitrary `ComponentContainer` to the message you're currently creating/editing.
+
+    <Doc.Arguments>
+      <Doc.Arg name="components" type="ComponentContainer">
+        `ComponentContainer` to apply.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+</Doc.Container>
