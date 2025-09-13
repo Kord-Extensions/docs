@@ -397,19 +397,127 @@ The resulting message would look like this:
 
 ## Container API
 
+<Doc.Container>
+  <Doc.Type name="ComponentContainer" type="class" extends="KordExKoinComponent" open>
+    Class representing a single set of components to apply to any message.
+
+    <Doc.Arguments type="constructor">
+      <Doc.Arg name="timeout" type="Duration?" default="null" propType="val">
+        Optional timeout, after which all registered components will be unregistered and won't work anymore.
+        This timeout is reset whenever a user interacts with a registered component.
+      </Doc.Arg>
+
+      <Doc.Arg name="startNow" type="Boolean" default="false">
+        Whether to start the timeout immediately.
+        This is usually set to `true` by the `components { }` DSL, but you can call `timeoutTask.start()` yourself
+        in other situations.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Type>
+</Doc.Container>
+
 ### Builders
 
 <Doc.Container>
+  <Doc.Builder name="onTimeout" receiver="ComponentContainer" open>
+    Register a callback to be run when the `timeout` expires, if one was provided.
+
+    Component containers can only have one registered callback.
+    Calling this function twice will overwrite the previous one.
+  </Doc.Builder>
 </Doc.Container>
 
 ### Functions
 
 <Doc.Container>
+  <Doc.Function name="cancel" open suspend>
+    Cancel the timeout task and remove all stored components, unregistering them.
+
+    This behaviour is similar to letting the timeout expire, but **it won't run the extra `timeoutCallback` provided by
+    the `onTimeout { }` builder.**
+  </Doc.Function>
+
+  <Doc.Function name="remove" open suspend>
+    Remove a component from this container, and unregister it.
+
+    <Doc.Arguments>
+      <Doc.Arg name="component" type="Component">
+        Component to remove.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+
+  <Doc.Function name="removeAll" open suspend>
+    Remove all components from this container, and unregister them.
+  </Doc.Function>
+
+  <Doc.Function name="replace" open suspend>
+    Remove a component from this container, replacing it with a new one and likewise handling un/registration.
+
+    <Doc.Arguments>
+      <Doc.Arg name="old" type={["Component", "String"]}>
+        The component to remove.
+        You can provide the component object, or a `String` representing its ID.
+      </Doc.Arg>
+
+      <Doc.Arg name="new" type="Component">
+        The component to replace with.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+
+  <Doc.Function name="sort" open suspend>
+    Sort any unsorted components into `rows`, by packing them as tightly as possible.
+  </Doc.Function>
+</Doc.Container>
+
+<Doc.Container internal>
+  <Doc.Function name="add" open suspend internal>
+    Add a component to this container, and register it.
+
+    This is usually called by the [builder functions](#builder-functions).
+
+    <Doc.Arguments>
+      <Doc.Arg name="component" type="Component">
+        Component to add.
+      </Doc.Arg>
+
+      <Doc.Arg name="rowNum" type="Int?" default="null">
+        Optional row to pack the component into.
+
+        If you provide a row number, the component will immediately be packed into the corresponding list in `rows`.
+        Otherwise, it'll be added to `unsortedComponents` for the `sort()` function to handle later.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
 </Doc.Container>
 
 ### Properties
 
 <Doc.Container>
+  <Doc.Property name="timeoutTask" type="Task?" propType="val" visibility="public" open>
+    Timeout task, responsible for enforcing the provided `timeout`.
+    This will be `null` if no `timeout` was provided.
+  </Doc.Property>
+</Doc.Container>
+
+<Doc.Container internal>
+  <Doc.Property name="rows" type="Array<MutableList<Component>>" propType="val" visibility="public" open internal>
+    Array representing up to five rows of sorted and packed components.
+
+    This array always contains five mutable lists, which are filled by the `sort()` function.
+  </Doc.Property>
+
+  <Doc.Property name="timeoutCallback" type="(suspend (ComponentContainer).() -> Unit)?" default="null" propType="var" visibility="public" open internal>
+    Extra callback to run when the `timeout` expires, if one was provided.
+
+    Usually set via the `onTimeout { }` builder.
+  </Doc.Property>
+
+  <Doc.Property name="unsortedComponents" type="MutableList<Component>" propType="val" visibility="public" open internal>
+    List containing all components without an explicitly defined `row`, to be packed into `rows` before adding the
+    components to a message.
+  </Doc.Property>
 </Doc.Container>
 
 ## Component Builders
