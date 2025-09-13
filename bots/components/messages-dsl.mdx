@@ -523,6 +523,100 @@ The resulting message would look like this:
 ## Component Builders
 
 <Doc.Container>
+  <Doc.Type name="Component" type="abstract class" extends="KordExKoinComponent">
+    Abstract class representing a Discord component.
+
+    <Doc.Property name="unitWidth" type="Int" default="1" propType="val" open>
+      How many units this component will take up.
+    </Doc.Property>
+
+    <Doc.Function name="apply" abstract>
+      Apply this component to a Kord action row.
+
+      <Doc.Arg name="builder" type="ActionRowBuilder">
+      </Doc.Arg>
+    </Doc.Function>
+
+    <Doc.Function name="validate" abstract>
+      Throws exceptions if this component isn't valid.
+    </Doc.Function>
+  </Doc.Type>
+
+  <Doc.Type name="ComponentWithID" type="abstract class" extends="Component">
+    Abstract class representing a Discord component with an ID.
+
+    <Doc.Property name="id" type="String" default="UUID.randomUUID()" propType="var" open>
+      Component's ID.
+      Defaults to a random UUID, but you can overwrite this in your component builders.
+    </Doc.Property>
+  </Doc.Type>
+
+  <Doc.Type name="ComponentWithAction" type="abstract class" extends={["ComponentWithID", "Lockable"]}>
+    Abstract class representing a Discord component which can respond to an interaction.
+
+    <Doc.Arguments type="type">
+      <Doc.Arg name="E" type="ComponentInteractionCreateEvent">
+        Generic type representing the event type corresponding with the interactions this component can respond to.
+      </Doc.Arg>
+
+      <Doc.Arg name="C" type="ComponentContext">
+        Generic type representing the context object type that will be created when handling interactions for this
+        component.
+      </Doc.Arg>
+
+      <Doc.Arg name="M" type="ModalForm">
+        Generic type representing the [modal form](/bots/commands/modals) type that will be sent in response to
+        interactions for this component.
+      </Doc.Arg>
+    </Doc.Arguments>
+
+    <Doc.Arguments type="constructor">
+      <Doc.Arg name="timeoutTask" type="Task?">
+        Timeout task, passed down from the component container.
+        Will be `null` if no timeout was provided.
+      </Doc.Arg>
+
+      <Doc.Arg name="modal" type="(() -> M)?" default="null">
+        Callback returning a `ModalForm` object, as explained [here](/bots/commands/modals).
+      </Doc.Arg>
+    </Doc.Arguments>
+
+    <Doc.Builder name="action" receiver="C">
+      Call this builder to register an action block, which will be run in response to a component interaction.
+
+      <Doc.Arguments type="lambda">
+        <Doc.Arg name="modal" type="M?">
+          Modal form object, if a `modal` callback was provided when registering this component.
+          Will be `null` if you don't provide that callback, or if the user doesn't submit the modal quickly enough.
+        </Doc.Arg>
+      </Doc.Arguments>
+    </Doc.Builder>
+
+    <Doc.Function name="check">
+      Register a [check](/bots/checks/) that must pass before the `action` can be run.
+
+      <Doc.Arguments>
+        <Doc.Arg name="vararg checks" type="Check">
+          Checks to add.
+        </Doc.Arg>
+      </Doc.Arguments>
+    </Doc.Function>
+
+    <Doc.Function name="requireBotPermissions">
+      Register a set of permissions the bot will need to respond successfully to an interaction.
+
+      <Doc.Arguments>
+        <Doc.Arg name="vararg perms" type="Permission">
+          Permissions to add.
+        </Doc.Arg>
+      </Doc.Arguments>
+    </Doc.Function>
+
+    <Doc.Property name="deferredAck" type="Boolean" default="true" propType="var" open>
+      Whether to use a deferred ack when responding to interactions.
+      This will prevent Discord from showing a "Thinking..." message.
+    </Doc.Property>
+  </Doc.Type>
 </Doc.Container>
 
 ### Buttons
@@ -560,9 +654,25 @@ The resulting message would look like this:
 <Doc.Container>
 </Doc.Container>
 
+## Component Contexts
+
 ## Utilities
 
 <Doc.Container>
+  <Doc.Type name="HasPartialEmoji" type="interface">
+    Interface representing components that support emojis.
+
+    <Doc.Function name="emoji">
+      Set this component's emoji.
+
+      <Doc.Arguments>
+        <Doc.Arg name="emoji" type={["String", "GuildEmoji", "ReactionEmoji"]}>
+          Emoji to set.
+        </Doc.Arg>
+      </Doc.Arguments>
+    </Doc.Function>
+  </Doc.Type>
+
   <Doc.Function name="applyComponents" receiver="MessageBuilder">
     Convenience function for applying an arbitrary `ComponentContainer` to the message you're currently creating/editing.
 
