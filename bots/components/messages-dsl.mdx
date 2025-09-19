@@ -836,7 +836,7 @@ All component `action { }` blocks use a corresponding context object as the rece
 relevant data and respond to component interactions.
 
 <Doc.Container>
-  <Doc.Type name="ComponentContext" type="abstract class">
+  <Doc.Type name="ComponentContext" type="abstract class" extends={["KordExKoinComponent", "TranslatableContext"]}>
     Class representing a basic component context, with functionality common to all contexts.
 
     <Doc.Arguments type="type">
@@ -844,8 +844,60 @@ relevant data and respond to component interactions.
         Generic type representing the event that triggered this interaction.
       </Doc.Arg>
     </Doc.Arguments>
+
+    <Doc.Arguments type="constructor">
+      <Doc.Arg name="component" type="Component">
+        Component object corresponding with this interaction.
+      </Doc.Arg>
+
+      <Doc.Arg name="event" type="E">
+        Object representing the event that triggered this interaction.
+      </Doc.Arg>
+
+      <Doc.Arg name="cache" type="MutableMap<String, Any>">
+        Data cache map shared with this command's [checks](/bots/checks).
+      </Doc.Arg>
+    </Doc.Arguments>
+
+    <Doc.Property name="channel" type="MessageChannelBehavior" propType="var" open>
+      The channel this component interaction happened in.
+    </Doc.Property>
+
+    <Doc.Property name="guild" type="GuildBehavior?" propType="var" open>
+      The guild this component interaction happened in, or `null` if it happened in a DM.
+    </Doc.Property>
+
+    <Doc.Property name="member" type="MemberBehavior?" propType="var" open>
+      The guild member that caused this component interaction, or `null` if
+      this component interaction happened in a DM.
+    </Doc.Property>
+
+    <Doc.Property name="message" type="Message" propType="var" open>
+      The Discord message this component belongs to.
+    </Doc.Property>
+
+    <Doc.Property name="user" type="UserBehavior" propType="var" open>
+      The Discord user that caused this component interaction.
+    </Doc.Property>
   </Doc.Type>
 </Doc.Container>
+
+### Select Menus
+
+Select menus use a context type extending the above, with some small additions:
+
+- **Channel Menus:**
+  - A `selected` property containing the selected channels.
+- **Mentionable Menus:**
+  - A `selected` property containing the IDs of all selected users and roles.
+  - A `selectedRoles` property containing the selected roles.
+  - A `selectedUsers` property containing the selected users.
+- **Role Menus:**
+  - A `selected` property containing the selected roles.
+- **String Menus:**
+  - A `selected` property containing the selected option strings.
+- **String Menus:**
+  - A `selected` property containing the selected users.
 
 ## Utilities
 
