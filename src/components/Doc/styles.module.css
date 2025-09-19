@@ -137,6 +137,12 @@
 	display: flex;
 	flex-direction: row;
 	gap: 0.5em;
+
+	overflow-x: scroll;;
+
+	code, span {
+		white-space: nowrap;
+	}
 }
 
 .col {

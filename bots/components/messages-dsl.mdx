@@ -643,14 +643,6 @@ The resulting message would look like this:
   <Doc.Type name="InteractionButtonWithAction" type="abstract class" extends={["ComponentWithAction", "HasPartialEmoji"]}>
     Class representing a button component that can respond to interactions.
 
-    <Doc.Function name="disable">
-      Disable this button by setting `disabled` to `true`.
-    </Doc.Function>
-
-    <Doc.Function name="enable">
-      Enable this button by setting `disabled` to `false`.
-    </Doc.Function>
-
     <Doc.Property name="disabled" type="Boolean" default="false" propType="var">
       Whether this button is disabled.
     </Doc.Property>
@@ -659,6 +651,14 @@ The resulting message would look like this:
       Translated button label, for display on Discord.
       Optional if you provide an emoji.
     </Doc.Property>
+
+    <Doc.Function name="disable">
+      Disable this button by setting `disabled` to `true`.
+    </Doc.Function>
+
+    <Doc.Function name="enable">
+      Enable this button by setting `disabled` to `false`.
+    </Doc.Function>
   </Doc.Type>
 </Doc.Container>
 
@@ -700,20 +700,152 @@ Link buttons extend `InteractionButton`, and provide some additional APIs.
 
 ### Select Menus
 
+All ephemeral and public select menus extend the `SelectMenu` type below, along with an interface representing the
+type of data they handle.
+
 <Doc.Container>
+  <Doc.Type name="SelectMenu" type="abstract class" extends="ComponentWithAction">
+    Class representing a select menu component.
+
+    <Doc.Property name="disabled" type="Boolean?" default="null" propType="var" open>
+      Whether this select menu is disabled.
+
+      A `true` value here will disable the component.
+      To enable the component, the value must be `null` instead, not `false`.
+      We don't know why this is, unfortunately.
+
+      Consider using the `disable()` and `enable()` functions instead of setting this directly.
+    </Doc.Property>
+
+    <Doc.Property name="maximumChoices" type="Int?" default="1" propType="var">
+      The maximum number of selections a user can choose.
+      Set to `null` for no maximum.
+    </Doc.Property>
+
+    <Doc.Property name="minimumChoices" type="Int" default="1" propType="var">
+      The minimum number of selections a user can choose.
+    </Doc.Property>
+
+    <Doc.Property name="placeholder" type="Key?" default="null" propType="var">
+      Placeholder text to show when the user hasn't made a selection.
+    </Doc.Property>
+
+    <Doc.Function name="disable">
+      Disable this select menu by setting `disabled` to `true`.
+    </Doc.Function>
+
+    <Doc.Function name="enable">
+      Enable this select menu by setting `disabled` to `null`.
+    </Doc.Function>
+  </Doc.Type>
 </Doc.Container>
 
 #### Channel Menus
 
 <Doc.Container>
+  <Doc.Type name="ChannelSelectMenu" type="interface">
+    <Doc.Function name="channelType">
+      Add one or more channel types to this select menu.
+      This will limit which channels the user can select.
+
+      <Doc.Arguments>
+        <Doc.Arg name="vararg types" type="ChannelType">
+          Channel types to add.
+        </Doc.Arg>
+      </Doc.Arguments>
+    </Doc.Function>
+
+    <Doc.Function name="defaultChannel" type={["ChannelBehavior", "Snowflake"]} supportsCollections>
+      Add one or more pre-selected channels to this select menu.
+      These channels will be selected by default.
+    </Doc.Function>
+  </Doc.Type>
+</Doc.Container>
+
+#### Mentionable Menus
+
+<Doc.Container>
+  <Doc.Type name="MentionableSelectMenu" type="interface">
+    <Doc.Function name="defaultRole" type={["RoleBehavior", "Snowflake"]} supportsCollections>
+      Add one or more pre-selected roles to this select menu.
+      These roles will be selected by default.
+    </Doc.Function>
+
+    <Doc.Function name="defaultUser" type={["UserBehavior", "Snowflake"]} supportsCollections>
+      Add one or more pre-selected users to this select menu.
+      These users will be selected by default.
+    </Doc.Function>
+  </Doc.Type>
+</Doc.Container>
+
+#### Role Menus
+
+<Doc.Container>
+  <Doc.Type name="RoleSelectMenu" type="interface">
+    <Doc.Function name="defaultRole" type={["RoleBehavior", "Snowflake"]} supportsCollections>
+      Add one or more pre-selected roles to this select menu.
+      These roles will be selected by default.
+    </Doc.Function>
+  </Doc.Type>
 </Doc.Container>
 
 #### String Menus
 
 <Doc.Container>
+  <Doc.Type name="StringSelectMenu" type="interface">
+    <Doc.Builder name="option" receiver="StringSelectOption" suspend>
+      Add an option to this select menu.
+
+      <Doc.Arguments type="function">
+        <Doc.Arg name="label" type="Key">
+          Translatable option label, shown to users on Discord.
+        </Doc.Arg>
+
+        <Doc.Arg name="value" type="String">
+          String value, which is what you'll actually receive when users interact with the select menu.
+        </Doc.Arg>
+      </Doc.Arguments>
+    </Doc.Builder>
+  </Doc.Type>
+
+  <Doc.Type name="StringSelectOption" type="class" extends="HasPartialEmoji">
+    <Doc.Property name="description" type="Key?" default="null">
+      Translatable additional option description, shown to users on Discord.
+    </Doc.Property>
+
+    <Doc.Property name="default" type="Boolean" default="false">
+      Whether this option should be selected by default.
+    </Doc.Property>
+  </Doc.Type>
+</Doc.Container>
+
+#### User Menus
+
+<Doc.Container>
+  <Doc.Type name="UserSelectMenu" type="interface">
+    <Doc.Function name="defaultUser" type={["UserBehavior", "Snowflake"]} supportsCollections>
+      Add one or more pre-selected users to this select menu.
+      These users will be selected by default.
+    </Doc.Function>
+  </Doc.Type>
 </Doc.Container>
 
 ## Component Contexts
+
+All component `action { }` blocks use a corresponding context object as the receiver, allowing you to retrieve any
+relevant data and respond to component interactions.
+
+<Doc.Container>
+  <Doc.Type name="ComponentContext" type="abstract class">
+    Class representing a basic component context, with functionality common to all contexts.
+
+    <Doc.Arguments type="type">
+      <Doc.Arg name="E" type="ComoponentInteractionCreateEvent">
+        Generic type representing the event that triggered this interaction.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Type>
+</Doc.Container>
 
 ## Utilities
 
