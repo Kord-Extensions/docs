@@ -520,7 +520,7 @@ The resulting message would look like this:
   </Doc.Property>
 </Doc.Container>
 
-## Component Builders
+## Component API
 
 <Doc.Container>
   <Doc.Type name="Component" type="abstract class" extends="KordExKoinComponent">
@@ -622,21 +622,80 @@ The resulting message would look like this:
 ### Buttons
 
 <Doc.Container>
+  <Doc.Type name="InteractionButton" type="abstract class" extends={["Component", "HasPartialEmoji"]}>
+    Class representing a button component.
+
+    <Doc.Property name="label" type="Key?" default="null" propType="var">
+      Translated button label, for display on Discord.
+      Optional if you provide an emoji.
+    </Doc.Property>
+  </Doc.Type>
+
+  <Doc.Type name="InteractionButtonWithID" type="abstract class" extends={["ComponentWithID", "HasPartialEmoji"]}>
+    Class representing a button component that has an ID.
+
+    <Doc.Property name="label" type="Key?" default="null" propType="var">
+      Translated button label, for display on Discord.
+      Optional if you provide an emoji.
+    </Doc.Property>
+  </Doc.Type>
+
+  <Doc.Type name="InteractionButtonWithAction" type="abstract class" extends={["ComponentWithAction", "HasPartialEmoji"]}>
+    Class representing a button component that can respond to interactions.
+
+    <Doc.Function name="disable">
+      Disable this button by setting `disabled` to `true`.
+    </Doc.Function>
+
+    <Doc.Function name="enable">
+      Enable this button by setting `disabled` to `false`.
+    </Doc.Function>
+
+    <Doc.Property name="disabled" type="Boolean" default="false" propType="var">
+      Whether this button is disabled.
+    </Doc.Property>
+
+    <Doc.Property name="label" type="Key?" default="null" propType="var">
+      Translated button label, for display on Discord.
+      Optional if you provide an emoji.
+    </Doc.Property>
+  </Doc.Type>
 </Doc.Container>
 
 #### Interaction Buttons
 
+Ephemeral and public interaction buttons extend `InteractionButtonWithAction`, and provide some additional APIs.
+
 <Doc.Container>
+  <Doc.Property name="style" type="ButtonStyle" default="Primary" propType="var" open>
+    This button's style.
+    Anything other than `Link` or `Premium` is valid here.
+  </Doc.Property>
+
+  <Doc.Builder name="initialResponse" receiver="(suspend InteractionResponseCreateBuilder.(ButtonInteractionCreateEvent) -> Unit)?">
+    Use this builder to respond to interactions with a message immediately, instead of using an empty acknowledgement.
+  </Doc.Builder>
 </Doc.Container>
 
 #### Disabled Buttons
 
+Disabled buttons extend `InteractionButtonWithID`, and provide some additional APIs.
+
 <Doc.Container>
+  <Doc.Property name="style" type="ButtonStyle" default="Primary" propType="var" open>
+    This button's style.
+    Anything other than `Link` or `Premium` is valid here.
+  </Doc.Property>
 </Doc.Container>
 
 #### Link Buttons
 
+Link buttons extend `InteractionButton`, and provide some additional APIs.
+
 <Doc.Container>
+  <Doc.Property name="url" type="String" propType="var" open>
+    URL to send the user to when they click/tap this button.
+  </Doc.Property>
 </Doc.Container>
 
 ### Select Menus
