@@ -13,6 +13,45 @@ import useIsBrowser from "@docusaurus/useIsBrowser";
 import DocSidebarItems from "@theme/DocSidebarItems";
 import type {Props} from "@theme/DocSidebarItem/Category";
 
+import {Icon} from "@iconify/react";
+import {Tooltip} from "react-tooltip"
+
+function processTags({item}: Props): ReactNode {
+	const tags: ReactNode[] = [];
+
+	if (!item.customProps || !item.customProps["tags"]) {
+		return <></>;
+	}
+
+	item.customProps.tags.forEach((tag: string) => {
+		if (tag === "wip") {
+			tags.push(
+				<Icon
+					data-tooltip-id="wip-tooltip"
+					fontSize="1.25em"
+					icon="lucide:hourglass" color="var(--discord-red)"
+				/>
+			);
+		} else if (tag.startsWith("v-")) {
+			let version = tag.split("-", 2)[1];
+
+			if (!version.includes(".")) {
+				version = `${version}.x`
+			}
+
+			tags.push(<span title={`New in version ${version}`} className={"text-info"}>{version}</span>);
+		} else {
+			throw new Error(`Unknown tag: ${tag}`);
+		}
+	})
+
+	return <span className={"tags grow inline right"}>
+		<span style={{flexGrow: 1}}/>
+
+		{tags.map(tag => tag)}
+	</span>;
+}
+
 // If we navigate to a category and it becomes active, it should automatically
 // expand itself
 function useAutoExpandActiveCategory(
@@ -175,7 +214,7 @@ export default function DocSidebarItemCategory(
 					aria-expanded={collapsible && !href ? !collapsed : undefined}
 					href={collapsible ? hrefWithSSRFallback ?? "#" : hrefWithSSRFallback}
 					{...props}>
-					{label}
+					{label} {processTags({item})}
 				</Link>
 				{href && collapsible && (
 					<CollapseButton
