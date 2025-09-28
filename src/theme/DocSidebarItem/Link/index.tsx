@@ -7,6 +7,9 @@ import isInternalUrl from "@docusaurus/isInternalUrl";
 import IconExternalLink from "@theme/Icon/ExternalLink";
 import type {Props} from "@theme/DocSidebarItem/Link";
 
+import {Tooltip} from "react-tooltip"
+import {Icon} from "@iconify/react";
+
 import styles from "./styles.module.css";
 
 function processTags({item}: Props): ReactNode {
@@ -18,11 +21,21 @@ function processTags({item}: Props): ReactNode {
 
 	item.customProps.tags.forEach((tag: string) => {
 		if (tag === "wip") {
-			tags.push(<span title={"Work in progress!"} className={"tag danger"}>WIP</span>);
+			tags.push(
+				<Icon
+					data-tooltip-id="wip-tooltip"
+					fontSize="1.25em"
+					icon="lucide:hourglass" color="var(--discord-red)"
+				/>
+			);
 		} else if (tag.startsWith("v-")) {
-			const version = tag.split("-", 2)[1];
+			let version = tag.split("-", 2)[1];
 
-			tags.push(<span title={`New in version ${version}`} className={"tag info"}>v{version}</span>);
+			if (!version.includes(".")) {
+				version = `${version}.x`
+			}
+
+			tags.push(<span title={`New in version ${version}`} className={"text-info"}>{version}</span>);
 		} else {
 			throw new Error(`Unknown tag: ${tag}`);
 		}

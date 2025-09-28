@@ -41,6 +41,11 @@ export default function LayoutWrapper(props: Props): ReactNode {
 				Runtime Dependency
 			</Tooltip>
 
+			<Tooltip id="wip-tooltip" place="left" className="react-tooltip"
+			         classNameArrow="react-tooltip-arrow" opacity="1">
+				Work in progress!
+			</Tooltip>
+
 			<Tooltip id="generic-tooltip" className="react-tooltip"
 			         classNameArrow="react-tooltip-arrow" opacity="1" />
 
