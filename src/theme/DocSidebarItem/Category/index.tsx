@@ -39,7 +39,16 @@ function processTags({item}: Props): ReactNode {
 				version = `${version}.x`
 			}
 
-			tags.push(<span title={`New in version ${version}`} className={"text-info"}>{version}</span>);
+			tags.push(
+				<span
+					data-tooltip-id="generic-tooltip"
+					data-tooltip-content={`New in version ${version}`}
+					data-tooltip-place="left"
+					className={"text-info"}
+				>
+					{version}
+				</span>
+			);
 		} else {
 			throw new Error(`Unknown tag: ${tag}`);
 		}
