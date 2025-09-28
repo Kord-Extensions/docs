@@ -4,7 +4,7 @@ import React, {ReactNode, useState} from "react";
 import clsx from "clsx";
 
 import {Icon} from "@iconify/react";
-import {Icons} from "/src/icons";
+import {Icons} from "@site/src/icons";
 
 import {getGradle, useGlobalDispatch, useGlobalSelector} from "@site/src/stores/globalHooks";
 import {Tag, Tags} from "@site/src/components/Tags";

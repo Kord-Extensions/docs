@@ -45,7 +45,6 @@ const config: Config = {
 					rehypePlugins: rhpPlugins,
 					remarkPlugins: rmkPlugins,
 
-					tags: "../src/tags.yml",
 					onInlineTags: "throw",
 				},
 
@@ -70,7 +69,6 @@ const config: Config = {
 				rehypePlugins: rhpPlugins,
 				remarkPlugins: rmkPlugins,
 
-				tags: "../src/tags.yml",
 				onInlineTags: "throw",
 			}
 		],
@@ -85,7 +83,6 @@ const config: Config = {
 				rehypePlugins: rhpPlugins,
 				remarkPlugins: rmkPlugins,
 
-				tags: "../src/tags.yml",
 				onInlineTags: "throw",
 			}
 		],
@@ -100,7 +97,6 @@ const config: Config = {
 				rehypePlugins: rhpPlugins,
 				remarkPlugins: rmkPlugins,
 
-				tags: "../src/tags.yml",
 				onInlineTags: "throw",
 			}
 		],
