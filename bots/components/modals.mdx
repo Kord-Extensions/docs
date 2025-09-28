@@ -9,4 +9,450 @@ sidebar_custom_props:
 # TODO: Link to other docs
 ---
 
+import * as Doc from "/src/components/Doc";
+
 # Modals
+
+The term "Modal" refers to a pop-up window within the Discord client.
+Modals contain a title and a specific set of components, which you can read about
+[on the basics page](/bots/components/basics#types).
+
+## Limitations
+
+You should keep these limitations in mind when working with Discord modals:
+
+- Discord **won't tell the bot when a user closes a Modal without submitting it.**
+  The only way around this is to use a timeout, and assume that the Modal won't be submitted once it expires.
+- As Modals use interactions, **they must be submitted within 15 minutes.**
+  The interaction will fail if the user takes too long to submit a Modal.
+- Modals have **a very limited number of compatible Widgets.**
+  They used to support Select Menus, but this support was suddenly removed without explanation.
+- Modals **may only be sent as the first response to an interaction.**
+  This means they must be created and sent within 5 seconds,
+  and they cannot be sent once the interaction has been deferred, edited, or responded to.
+
+## Modal Forms
+
+Kord Extensions represents Discord Modals using `ModalForm` objects that contain widgets, which represent components
+placed on a grid.
+
+Kord Extensions represents Modals using the `ModalForm` type.
+This type provides a container for a Modal's widgets, settings, and data.
+Similarly to [command arguments classes](/bots/commands/arguments),
+you'll need to extend `ModalForm` when creating your Modals.
+
+```kt
+class MyModal : ModalForm() {
+    override var title: String = "Test Modal"
+
+    val line = lineText {
+        label = "Line Text"
+        placeholder = "A single line of text"
+    }
+
+    val block = paragraphText {
+        label = "Paragraph Text"
+        placeholder = "A block of text which may span multiple lines"
+    }
+}
+```
+
+### Modal Form APIs
+
+The `ModalForm` type exposes some APIs you can use to create widgets and configure the modal send to Discord.
+
+#### Configuration
+
+<Doc.Container>
+  <Doc.Property name="title" type="Key" propType="var" abstract>
+    **Required:** Translation key representing this modal's title.
+  </Doc.Property>
+
+  <hr className="clear" />
+
+  <Doc.Property name="id" type="String" propType="var" default="randomUUID()">
+    Unique ID representing this form on Discord.
+
+    You won't need to provide this unless you plan on writing your own event handlers.
+  </Doc.Property>
+
+  <Doc.Property name="timeout" type="Duration" propType="var" default="15.minutes">
+    How long to wait after sending this modal form to Discord before assuming the user won't submit it.
+
+    This functionally cannot be longer than 15 minutes, as Discord invalidates all interactions after that long.
+  </Doc.Property>
+</Doc.Container>
+
+#### Widgets
+
+The `ModalForm` type exposes some APIs you can use to create widgets.
+
+<Doc.Container>
+  <Doc.Builder name="lineText" functionReturns="LineTextWidget" receiver="LineTextWidget" hasArgs>
+    Create a text input widget which supports a single line of text.
+  </Doc.Builder>
+
+  <Doc.Builder name="paragraphText" functionReturns="ParagraphTextWidget" receiver="ParagraphTextWidget" hasArgs>
+    Create a text input widget which supports multiple lines of text.
+  </Doc.Builder>
+</Doc.Container>
+
+#### Utilities
+
+<Doc.Container>
+  <Doc.Function name="applyToBuilder" suspend>
+    Convenience function to apply this modal form to
+    [a Kord `ModalBuilder`](https://dokka.kord.dev/rest/dev.kord.rest.builder.interaction/-modal-builder/index.html).
+
+    Potentially useful for some of the implementation strategies detailed below.
+
+    <Doc.Arguments>
+      <Doc.Arg name="builder" type="ModalBuilder">
+        Builder to apply this modal's widgets to.
+      </Doc.Arg>
+
+      <Doc.Arg name="locale" type="Locale">
+        Locale object to use for translations.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+
+  <Doc.Builder name="awaitCompletion" lambdaReturns="T" functionReturns="T" suspend hasGeneric>
+    Wait for a user to submit this modal form, calling the callback with the relevant event and interaction object.
+
+    This function returns the value you return from the callback.
+    The modal form object you call this against will have been filled with data by the time your callback runs.
+
+    <Doc.Arguments type="type">
+      <Doc.Arg name="T" type="Any?">
+        Generic type representing whatever you end up returning from the callback.
+      </Doc.Arg>
+    </Doc.Arguments>
+
+    <Doc.Arguments type="lambda">
+      <Doc.Arg name="interaction" type="ModalSubmitInteraction?">
+        Corresponding interaction object, or `null` if the interaction timed out before the user could submit the modal.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <Doc.Builder name="sendAndAwait" lambdaReturns="T" functionReturns="T" suspend hasGeneric>
+    Convenience function to send this modal form in response to the given interaction, and wait for the user to submit
+    it.
+
+    This function returns the value you return from the callback.
+    The modal form object you call this against will have been filled with data by the time your callback runs.
+
+    <Doc.Arguments type="type">
+      <Doc.Arg name="T" type="Any?">
+        Generic type representing whatever you end up returning from the callback.
+      </Doc.Arg>
+    </Doc.Arguments>
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="locale" type="Locale">
+        Locale object to use for translations.
+      </Doc.Arg>
+
+      <Doc.Arg name="interaction" type="ModalParentInteractionBehavior">
+        Object representing the interaction to send the modal to.
+      </Doc.Arg>
+    </Doc.Arguments>
+
+    <Doc.Arguments type="lambda">
+      <Doc.Arg name="interaction" type="ModalSubmitInteraction?">
+        Corresponding interaction object, or `null` if the interaction timed out before the user could submit the modal.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <Doc.Builder name="sendAndAwait" lambdaReturns="T" functionReturns="T" suspend hasGeneric>
+    Overloaded version of `sendAndAwait` which takes various context objects instead of requiring that you pass a
+    locale and interaction object manually.
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="context" type={["ApplicationCommandContext", "ComponentContext", "EventContext"]}>
+        Context object to extract the relevant data from.
+
+        Only event contexts handling an `InteractionCreateEvent` or one of its subtypes are supported.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <Doc.Function name="sendAndDeferEphemeral" returns="EphemeralMessageInteractionResponseBehavior?">
+    Convenience function to send this modal form in response to an interaction, wait for the user to submit it, and
+    respond with a deferred ephemeral interaction response.
+
+    Returns the response behaviour, or `null` if the user didn't submit the modal in time.
+
+    <Doc.Arguments>
+      <Doc.Arg name="context" type={["ApplicationCommandContext", "ComponentContext", "EventContext"]}>
+        Context object to respond to.
+
+        Only event contexts handling an `InteractionCreateEvent` or one of its subtypes are supported.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+
+  <Doc.Function name="sendAndDeferPublic" returns="PublicMessageInteractionResponseBehavior?">
+    Convenience function to send this modal form in response to an interaction, wait for the user to submit it, and
+    respond with a deferred public interaction response.
+
+    Returns the response behaviour, or `null` if the user didn't submit the modal in time.
+
+    <Doc.Arguments>
+      <Doc.Arg name="context" type={["ApplicationCommandContext", "ComponentContext", "EventContext"]}>
+        Context object to respond to.
+
+        Only event contexts handling an `InteractionCreateEvent` or one of its subtypes are supported.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+</Doc.Container>
+
+### Widget APIs
+
+<Doc.Container>
+  <Doc.Type name="Widget" type="abstract class">
+    Base type representing a generic widget.
+    All widgets extend this type.
+
+    <Doc.Arguments type="type">
+      <Doc.Arg name="T" type="Any?">
+        Generic representing the type of the widget's final value.
+      </Doc.Arg>
+    </Doc.Arguments>
+
+    <Doc.Property name="height" type="T" propType="val" abstract>
+      How many units this widget's height takes up.
+    </Doc.Property>
+
+    <Doc.Property name="width" type="T" propType="val" abstract>
+      How many units this widget's width takes up.
+    </Doc.Property>
+
+    <Doc.Property name="value" type="T" propType="var" abstract>
+      The final value, as provided by a user on Discord.
+    </Doc.Property>
+  </Doc.Type>
+
+  <Doc.Type name="TextInputWidget" extends={["Widget", "KordExKoinComponent"]} type="abstract class">
+    Abstract type representing a basic text input widget.
+
+    <Doc.Property name="id" type="String" propType="var" default="randomUUID()">
+      This widget's unique ID on Discord, used internally to retrieve values provided by users.
+    </Doc.Property>
+
+    <Doc.Property name="initialValue" type="Key?" propType="var" default="null">
+      This widget's initial value, which will pre-fill it on Discord if set.
+
+      You can use `String.toKey()` to transform a plain string to be used here.
+      By default, this property isn't translated - set `translateInitialValue` to `true` to enable that.
+    </Doc.Property>
+
+    <Doc.Property name="label" type="Key" propType="var">
+      This widget's translated label, to be shown on Discord.
+    </Doc.Property>
+
+    <Doc.Property name="maxLength" type="Int" propType="var" default="4000">
+      The maximum number of characters the user can enter into this widget.
+      Cannot be higher than 4,000 characters.
+    </Doc.Property>
+
+    <Doc.Property name="minLength" type="Int" propType="var" default="0">
+      The minimum number of characters the user must enter into this widget.
+      Cannot be lower than 0 characters.
+    </Doc.Property>
+
+    <Doc.Property name="placeholder" type="Key?" propType="var" default="null">
+      This widget's optional translated placeholder, to be shown on Discord when nothing has been typed into the widget.
+    </Doc.Property>
+
+    <Doc.Property name="required" type="Boolean" propType="var" default="true">
+      Whether this widget is required, and users must fill it in before they can submit the modal.
+    </Doc.Property>
+
+    <Doc.Property name="translateInitialValue" type="Boolean" propType="var" default="false">
+      Whether to translate the `Key` provided in the `initialValue` property.
+      When this is `false`, the provided `Key` is used verbatim instead.
+    </Doc.Property>
+  </Doc.Type>
+</Doc.Container>
+
+## Implementation Strategies
+
+Because Discord is very specific about when bots can send modals and how they should respond to interactions, you'll
+need to consider several potential implementation strategies.
+
+Please consider reading over all of them before you get started!
+
+### Automatic
+
+:::tip
+
+The automatic approach is best suited for the simplest of forms.
+You can't modify forms sent this way based on the arguments provided to your commands, so consider a different approach
+if that's something you need.
+
+:::
+
+The simplest approach — create a `ModalForm` subtype as described earlier, and pass the constructor to your
+[application command](/bots/commands/application/) or [component](/bots/components/messages-dsl) builder function.
+
+When you do this, your bot will send your modal as the first response to incoming interactions, waiting for the user to
+submit it (or fail to in time) before calling the `action { }` block.
+
+```kt
+publicButton(::MyModal) {
+    // Button configuration
+
+    action { modal ->
+        // Button body
+    }
+}
+```
+
+If you're writing [a slash command](/bots/commands/application/slash), you can combine this with an `Arguments` subtype.
+
+```kt
+publicSlashCommand(::MyArguments, ::MyModal) {
+    // Command configuration
+
+    action { modal ->
+        // Command body
+    }
+}
+```
+
+### Semi-Automatic
+
+:::tip
+
+The semi-automatic approach is best suited for slightly more complex situations than the automatic approach detailed
+above.
+This approach allows you to run extra code before sending the modal to Discord.
+
+:::
+
+For more complex situations, consider [creating an unsafe command](#TODO) and instantiating your form object manually.
+This allows you to pass extra data into your form's constructor, making it possible to modify it in response to command
+arguments or other data.
+
+You should combine this approach with the `sendAndDefer` functions detailed earlier.
+
+```kt
+unsafeSlashCommand {
+    // Command configuration
+
+    action {
+        val modal = MyModal()
+        val result = modal.sendAndDeferEphemeral(this)
+
+        if (result == null) {
+            // Modal timed out
+        } else {
+            // Modal was submitted, use it
+        }
+    }
+}
+```
+
+You can also use this approach when working with interaction event handlers.
+
+```kt
+event<ButtonInteractionCreateEvent> {
+    // Event handler configuration
+
+    action {
+        val modal = MyModal()
+        val result = modal.sendAndDeferEphemeral(this)
+
+        if (result == null) {
+            // Modal timed out
+        } else {
+            // Modal was submitted, use it
+        }
+    }
+}
+```
+
+### Manual
+
+:::tip
+
+The manual approach is best-suited for situations where you need to change how your bot responds to the interaction
+based on contextual data, such as what the user provided to the submitted modal.
+
+:::
+
+The manual approach is like the semi-automatic one, but it gives you more control over how your bot responds to the
+submitted modal interaction.
+
+You can implement it by replacing the `sendAndDefer` functions with `sendAndAwait`.
+
+```kt
+unsafeSlashCommand {
+    // Command configuration
+
+    action {
+        val modal = MyModal()
+
+        val result = modal.sendAndAwait(this) { interaction ->
+            // interaction will be `null` if the Modal timed out
+            interaction?.deferEphemeralResponse()
+        }
+
+        if (result == null) {
+            // Modal timed out
+        } else {
+            // Modal was submitted, use it
+        }
+    }
+}
+```
+
+### Without Forms
+
+:::tip
+
+We don't believe the fully-manual approach has many true use-cases, but we've still provided an example for when you
+might need it.
+This approach uses
+[the Kord APIs](https://dokka.kord.dev/rest/dev.kord.rest.builder.interaction/-modal-builder/index.html) directly.
+
+:::
+
+For even more complex situations, you can craft your own interaction responses and manually send your modals to Discord,
+skipping the `ModalForm` abstraction.
+
+```kt
+interaction.modal("title", "modalId") {
+    actionRow {
+        textInput(
+            TextInputStyle.Short,
+            "componentId",
+            "label"
+        ) {
+            allowedLength = 0 .. 1000
+            placeholder = "Placeholder Text"
+            required = true
+            value = "Initial Value"
+        }
+    }
+}
+
+// ...
+
+event<ModalSubmitInteractionCreateEvent> {
+    check {
+        failIfNot(event.interaction.modalId == "modalId")
+    }
+
+    action {
+        // Value is null if empty/missing/wrong ID
+        val value = event.interaction.textInputs["componentId"]?.value
+
+        // Event handler body
+    }
+}
+```
