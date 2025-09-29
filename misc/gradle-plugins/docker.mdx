@@ -1,0 +1,188 @@
+---
+description: Generate Dockerfiles programmatically.
+sidebar_position: 2
+
+sidebar_custom_props:
+  icon: "mdi:docker"
+---
+
+import * as Doc from "/src/components/Doc";
+import * as Snippets from "/src/pageComponents/dockerPlugin";
+import {CardWithTitle} from "/src/components/Card";
+import EmbeddedVersion from "/src/components/EmbeddedVersion"
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Docker
+
+<CardWithTitle title="Plugin Information">
+  - **Coordinate:** `dev.kordex.gradle.docker`
+  - **Version:** <EmbeddedVersion reference="plugin" />
+  - **Requires Gradle:** <EmbeddedVersion reference="gradle" />
+</CardWithTitle>
+
+The Kord Extensions Docker Plugin (the Docker Plugin) allows you to programmatically generate a Dockerfile, either every
+time you build your project or using a separate Gradle task.
+
+We created this plugin because it can be annoying to maintain infrastructure and build files across multiple sources
+of truth, and generating the file using Gradle means it can directly reference parts of your project's metadata.
+This is particularly useful when you need to add versioned artifacts to your Docker containers, as it allows you
+to simply update your Gradle configuration without needing to remember to modify a static Dockerfile.
+
+## Features
+
+The Docker Plugin provides a few useful features:
+
+- Generate Dockerfiles programmatically, or based on your project's metadata.
+- Write Dockerfiles using a declarative, type-safe Kotlin DSL.
+- Automatically generate Dockerfiles when you build your project.
+
+## Setting Up
+
+:::warning Gradle Version Requirements
+
+Because the KordEx Gradle plugin uses Gradle's problem reporting API, and the Gradle team has been dragging their
+heels on stabilising it, you'll need to use the same version of Gradle we build the plugin against.
+
+This means you'll need to use **Gradle <EmbeddedVersion reference="gradle" />** with the latest plugin version.
+
+We hope this API stabilises soon, and we can move on from this issue!
+
+:::
+
+<Tabs groupId="gradle-approach">
+  <TabItem value="basic" label="Basic">
+    First, add the plugin to your project:
+
+    <Snippets.PluginBlock />
+  </TabItem>
+
+  <TabItem value="convention" label="Convention Plugin">
+    First, add the plugin dependency to your `buildSrc/build.gradle.kts`:
+
+    <Snippets.ConventionDependency />
+
+    Then, add the plugin to any convention plugins or Gradle modules that need it:
+
+    ```kt
+    plugins {
+        id("dev.kordex.gradle.docker")
+    }
+    ```
+  </TabItem>
+</Tabs>
+
+Finally, configure the plugin:
+
+```kt
+docker {
+    // Settings go here.
+}
+```
+
+### Configuration
+
+You can configure the plugin using the `docker { }` builder provided.
+
+<Doc.Container>
+  <p className="text-center">
+    **Required Settings*
+  </p>
+
+  <Doc.Property name="target" type="File">
+    File representing the path to the Dockerfile you wish to generate.
+
+    This needs to point directly to the Dockerfile, not the directory you want to generate it within.
+  </Doc.Property>
+
+  <p className="text-center">
+    **Optional Settings**
+  </p>
+
+  <Doc.Function name="directive">
+    Add a [parser directive](https://docs.docker.com/reference/dockerfile/#parser-directives)
+    to the generated Dockerfile.
+
+    The default directives are listed below.
+    You can override any of them by providing them yourself.
+    - `escape` -> `\\`
+    - `syntax` -> `docker/dockerfile:1`
+
+    <Doc.Arguments>
+      <Doc.Arg name="key" type="String">
+        Directive name.
+      </Doc.Arg>
+
+      <Doc.Arg name="value" type="String">
+        Directive value.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+
+  <Doc.Property name="generateOnBuild" type="Boolean" default="true">
+    Whether to automatically generate a new Dockerfile every time you build the project.
+    If you set this to `false`, then you'll need to run the `createDockerfile` task manually when needed.
+  </Doc.Property>
+</Doc.Container>
+
+#### Docker Instructions
+
+To define the instructions in your Dockerfile, use the `commands { }` builder defined in the `docker { }` builder.
+This builder exposes a set of functions and builders that match
+[the Dockerfile instructions](https://docs.docker.com/reference/dockerfile/#overview)
+you can add to a Dockerfile.
+
+For more information on what's available, please read
+[the official Docker docs](https://docs.docker.com/reference/dockerfile/#overview)
+and use your IDE's autocomplete.
+
+## Usage
+
+Once you've finished configuring the plugin, you'll find a `createDockerfile` task is now available under `generation`.
+You can run this task whenever you need to generate a new Dockerfile, or you can let this happen automatically whenever you build your project.
+
+## Example
+
+```kt
+docker {
+    file(rootProject.file("Dockerfile"))
+
+    commands {
+        from("openjdk:21-jdk-slim")
+
+        emptyLine()
+
+        comment("Create required directories")
+        runShell("mkdir -p /bot/data")
+
+        emptyLine()
+
+        comment("Declare required volumes")
+        volume("/bot/data")  // Storage for data files
+
+        comment("Copy the distribution files into the container")
+        copy("build/distributions/${project.name}-${project.version}.tar", "/dist")
+
+        emptyLine()
+
+        comment("Extract the distribution files, and prepare them for use")
+        runShell("tar -xf /dist/${project.name}-${project.version}.tar -C /dist/out")
+        runShell("chmod +x /dist/out/${project.name}-${project.version}/bin/$name")
+
+        emptyLine()
+
+        comment("Clean up unnecessary files")
+        runShell("rm /dist/${project.name}-${project.version}.tar")
+
+        emptyLine()
+
+        comment("Set the correct working directory")
+        workdir("/bot")
+
+        emptyLine()
+
+        comment("Run the distribution start script")
+        entryPointExec("/dist/out/${project.name}-${project.version}/bin/$name")
+    }
+}
+```
