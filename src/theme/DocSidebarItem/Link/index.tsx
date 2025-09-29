@@ -94,7 +94,8 @@ export default function DocSidebarItemLink(
 
 				{...props}
 			>
-				{label} {processTags({item})}
+				<span style={{height: "1.3em", whiteSpace: "nowrap", maxWidth: "90%", overflowY: "visible", overflowX: "scroll"}}>{label}</span>
+				{processTags({item})}
 				{!isInternalLink && <IconExternalLink/>}
 			</Link>
 		</li>
