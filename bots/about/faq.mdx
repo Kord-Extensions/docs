@@ -1,5 +1,6 @@
 ---
 sidebar_position: 4
+
 sidebar_custom_props:
   tags:
   - wip
@@ -19,24 +20,19 @@ and they aren't appropriate for long-lived components. Some examples of long-liv
 - Moderation action pickers/buttons on logged infractions.
 
 You need to manually define these components and write your own event handlers to respond to their interactions.
-For more information, please check [the page on handling components yourself].
+For more information, please check [the page on handling components yourself](/bots/components/messages-manual).
 
 ## Why can't I respond to command/component interactions with a modal?
 
 Because Discord requires that your bot responds to all interactions within 15 seconds, Kord Extensions will respond to
 all expected interactions immediately, with an acknowledgement or deferred acknowledgement as appropriate.
-You must send a modal as the first response to an interaction and you can't send it later, meaning we have limitations
+You must send a modal as the first response to an interaction, and you can't send it later, meaning we have limitations
 on how you can define commands and components.
 
 ### Potential Strategies
 
-You can pick from multiple implementation strategies, depending on what you need:
-
-- [The automatic approach] suitable for immediately responding with a modal without any conditional logic.
-- [The semi-automatic approach], suitable for conditionally responding to [manually defined components] or commands
-  from the Unsafe module.
-- [The manual approach], suitable for the rare situations requiring greater control.
-- [Without forms], which may be helpful in a few situations where Kord Extensions' abstractions may get in the way.
+You can pick from multiple implementation strategies, depending on what you need.
+For full details on these, please see [the Modals page](/bots/components/modals).
 
 ### Notes
 
@@ -57,7 +53,7 @@ this is not legal advice, and you should review any code you have any doubts abo
 
 You need to consider several things when it comes to the GDPR:
 
-1. Read [Sentry's official guide to GDPR compliance](<https://sentry.io/trust/privacy/gdpr-best-practices/>).
+1. Read [Sentry's official guide to GDPR compliance](https://sentry.io/trust/privacy/gdpr-best-practices/).
 2. Use the `channel`, `guild`, `role` and `user` properties when adding data to breadcrumbs, exception and scope
    captures, where possible.
 3. If you can't use the above properties, prefix the keys you're adding to the `data`, `hints` and `tags` maps with
@@ -71,18 +67,18 @@ You need to consider several things when it comes to the GDPR:
    extension configuration.
    This allows you to conditionally filter data-types based on the contents of the given Sentry capture object.
 
-Ultimately, it is important to be aware of the data you're handling, storing,and submitting to third-party services.
+Ultimately, it is important to be aware of the data you're handling, storing, and submitting to third-party services.
 While we've done our best to provide a useful and comprehensive API and configuration,
 **it is critical to review all third-party extensions.
 No Kord Extensions contributor can be held responsible for third-party code that provides data incorrectly or
 otherwise results in data being submitted to Sentry unexpectedly.**
 
-For more information on how to configure the Sentry integration, [please see the documentation].
+For more information on how to configure the Sentry integration, [please see the documentation (TODO)](#).
 
 ## Why does the KordEx Gradle plugin break dependency resolution?
 **(Or, how do I specify a JVM target newer than 13?)**
 
-As explained [in the documentation], the KordEx Gradle plugin will, by default,
+As explained [in the documentation](/bots/gradle-plugin), the KordEx Gradle plugin will, by default,
 configure your project's JVM compatibility to match the JVM version KordEx is compatible with.
 If you need your project to be compatible with a later JVM version, you'll need to configure the plugin to match.
 
@@ -117,7 +113,7 @@ pluginManagement {
 The short answer is: **you don't**.
 
 Kord Extensions uses
-[the EUPL (European Union Public License)](<https://interoperable-europe.ec.europa.eu/collection/eupl>).
+[the EUPL (European Union Public License)](https://interoperable-europe.ec.europa.eu/collection/eupl).
 We decided on this licence as it allows for the appropriate amount of freedom, while adequately protecting the project
 from exploitation — at least in the ways we feel are relevant.
 
@@ -139,10 +135,10 @@ Because of this, we don't provide any built-in way to disable the command.
 
 We've tried to take the least invasive approach possible, and many options are available that allow you to customise
 the command or add your own subcommands.
-For more information, [see this page](</bots/config/about>).
+For more information, [see this page](/bots/config/about).
 
 Kord Extensions won't attempt to stop you from tampering with the relevant command or extension objects,
 but this may change if we notice users committing licence violations through any such attempt.
 
 For more information on our understanding of the EUPL and what we believe you should be doing, please
-[see this page](</about/licencing/eupl>).
+[see this page](/about/licencing/eupl).
