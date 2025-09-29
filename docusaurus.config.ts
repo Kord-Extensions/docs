@@ -21,7 +21,6 @@ const config: Config = {
 	projectName: "docs",
 
 	onBrokenLinks: "throw",
-	onBrokenMarkdownLinks: "warn",
 
 	clientModules: [
 		"src/icons/client.ts"
@@ -30,6 +29,12 @@ const config: Config = {
 	i18n: {
 		defaultLocale: "en",
 		locales: ["en"],
+	},
+
+	markdown: {
+		hooks: {
+			onBrokenMarkdownLinks: "warn",
+		}
 	},
 
 	presets: [
