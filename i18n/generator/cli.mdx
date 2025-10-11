@@ -16,7 +16,6 @@ import { CardWithTitle } from "/src/components/Card";
 <CardWithTitle title="CLI Information">
   - **Current Version:** <EmbeddedVersion reference="i18n" code />
   - **Minimum Java:** `17`
-
 </CardWithTitle>
 
 <EmbeddedVersion
@@ -26,11 +25,10 @@ import { CardWithTitle } from "/src/components/Card";
   button
 />
 
-&nbsp;
 
 The i18n generator CLI tool allows you to generate translations classes on the command-line, existing as a standalone
 JAR file.
-You can download this file and use it to generate translation classes whenever you can't use
+You can download and use it to generate translation classes whenever you can't use
 [the Gradle plugin](/i18n/plugin), including writing your own plugins for other build tools.
 
 We plan to provide launch scripts and better support for extra formats later.
@@ -85,7 +83,6 @@ You can also provide any of the following optional command-line arguments to cus
 
   <Doc.CliArg name={["-ec", "--editorconfig"]} arg="path" default=".editorconfig">
     Path to your project's [EditorConfig file](https://editorconfig.org/), if it has one.
-
     The generator will use this to format the code it outputs.
   </Doc.CliArg>
 
