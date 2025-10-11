@@ -5,15 +5,18 @@ import {getVersion} from "@site/src/versions/functions";
 import {Copyable} from "@site/src/components/Copyable";
 import clsx from "clsx";
 import {Property} from "@site/src/components/Doc";
+import CodeBlock from "@theme/CodeBlock";
 
 type EmbeddedVersionProps = {
 	reference: string
 	button?: boolean
 	code?: boolean
+	codeLang?: string
 	copyable?: boolean
 
 	url?: string
 	template?: string
+	templateTab?: string
 }
 
 function Inner(props: EmbeddedVersionProps): ReactNode {
@@ -25,6 +28,8 @@ function Inner(props: EmbeddedVersionProps): ReactNode {
 		template = url.replaceAll("(VERSION)", version)
 	} else if (template !== undefined) {
 		template = template.replaceAll("(VERSION)", version)
+			.replaceAll("%n", "\n")
+			.replaceAll("%t", props.templateTab || "    ")
 	} else {
 		template = version
 	}
@@ -50,8 +55,10 @@ function Inner(props: EmbeddedVersionProps): ReactNode {
 					}
 				</a> :
 				props.code === true ?
-					<code>{template}</code> :
-					template
+					template.includes("\n") ?
+						<CodeBlock language={props.codeLang || "sh"}>{template}</CodeBlock> :
+						<code>{template}</code>
+					: template
 		}
 	</>
 }
