@@ -43,7 +43,9 @@ To get and use the CLI tool:
 
 ## Arguments
 
-[//]: # (TODO: Consider adding <Doc.Container> support for CLI tool arguments.)
+[//]: # (TODO: Add <Doc.Container> support for CLI tool arguments.)
+
+## Required
 
 To generate code using this tool, you'll need to provide the following command-line arguments:
 
@@ -52,6 +54,16 @@ To generate code using this tool, you'll need to provide the following command-l
   E.g., if your bundle is `template.strings` and it exists at
   `src/main/resources/translations/template/strings.properties`, you should provide `src/main/resources/translations`.
 - `-p / --class-package [package]` - Package to place the generated class in, e.g. `template.i18n`.
+
+For example:
+<EmbeddedVersion
+  reference="i18n"
+  template="java -jar i18n-generator-(VERSION)-all.jar %n%t-b template.strings %n%t-i src/main/resources/translations %n%t-p template.i18n"
+  templateTab="     "
+  code
+/>
+
+## Optional
 
 You can also provide any of the following optional command-line arguments to customise the output:
 
@@ -79,6 +91,7 @@ replacing `/path/to/jars` with the path to that folder:
 
 <EmbeddedVersion
   reference="i18n"
-  template='java -cp "i18n-generator-(VERSION)-all.jar:/path/to/jars/*" dev.kordex.i18n.generator.MainKt [arguments...]'
+  template='java -cp "i18n-generator-(VERSION)-all.jar:/path/to/jars/*" dev.kordex.i18n.generator.MainKt %n%t-b template.strings %n%t-i src/main/resources/translations %n%t-p template.i18n'
+  templateTab="     "
   code
 />
