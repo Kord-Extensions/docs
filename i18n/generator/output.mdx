@@ -1,0 +1,173 @@
+---
+description: What to expect from the generated code.
+sidebar_position: 24
+
+sidebar_custom_props:
+  card_group: "Output"
+  icon: "fluent:reading-list-20-filled"
+---
+
+# Output Code
+
+The translations class generator will output code as follows:
+
+- A base `object` with your configured `className`, or named `Translations` by default.
+  - A `bundle` property containing the `Bundle` object representing your translation bundle.
+  - If you have any top-level translation keys, a set of `Key` properties representing those keys, pre-populated with
+    the `Bundle` object.
+  - If you have any nested translation keys, a set of `object`s named after the key's prefixes, containing `Key`
+    properties and other nested `object`s.
+
+All `Key` objects also include a KDoc comment containing the default translation for the corresponding key.
+
+See below for a specific example.
+
+## Bundle Definition
+
+For example, `src/main/resources/translations/template/strings.yml`:
+
+```yaml
+commands:
+  button:
+    action: 'You pushed the button!'
+    description: 'A simple example command sending a button'
+    label: 'Button!'
+    name: 'button'
+
+  slap:
+    action: 'slaps {0} with their {1}'
+    description: 'Ask the bot to slap another user'
+    name: 'slap'
+
+    args:
+      target:
+        description: 'Person you want to slap'
+        name: 'target'
+
+      weapon:
+        description: 'What you want to slap with'
+        name: 'weapon'
+```
+
+## Gradle Configuration
+
+This is the corresponding [Gradle plugin](/i18n/plugin) configuration for the output code below:
+
+```kt
+i18n {
+    bundle("template.strings", "template.i18n") {
+        className = "PublicTranslations"
+    }
+}
+```
+
+## Output Code
+
+- `bundle = "template.strings"`
+- `className = "PublicTranslations"`
+- `classPackage = "template.i18n"`
+
+```kt
+package template.i18n
+
+import dev.kordex.i18n.Bundle
+import dev.kordex.i18n.Key
+
+public object PublicTranslations {
+    public val bundle: Bundle =
+        Bundle(
+            name = "template.strings",
+            fileFormat = "properties",
+            messageFormat = "icu-v1",
+        )
+
+    public object Commands {
+        public object Button {
+            /**
+             * You pushed the button!
+             */
+            public val action: Key =
+                Key("commands.button.action")
+                    .withBundle(PublicTranslations.bundle)
+
+            /**
+             * A simple example command sending a button
+             */
+            public val description: Key =
+                Key("commands.button.description")
+                    .withBundle(PublicTranslations.bundle)
+
+            /**
+             * Button!
+             */
+            public val label: Key =
+                Key("commands.button.label")
+                    .withBundle(PublicTranslations.bundle)
+
+            /**
+             * button
+             */
+            public val name: Key =
+                Key("commands.button.name")
+                    .withBundle(PublicTranslations.bundle)
+        }
+
+        public object Slap {
+            /**
+             * slaps {0} with their {1}
+             */
+            public val action: Key =
+                Key("commands.slap.action")
+                    .withBundle(PublicTranslations.bundle)
+
+            /**
+             * Ask the bot to slap another user
+             */
+            public val description: Key =
+                Key("commands.slap.description")
+                    .withBundle(PublicTranslations.bundle)
+
+            /**
+             * slap
+             */
+            public val name: Key =
+                Key("commands.slap.name")
+                    .withBundle(PublicTranslations.bundle)
+
+            public object Args {
+                public object Target {
+                    /**
+                     * Person you want to slap
+                     */
+                    public val description: Key =
+                        Key("commands.slap.args.target.description")
+                            .withBundle(PublicTranslations.bundle)
+
+                    /**
+                     * target
+                     */
+                    public val name: Key =
+                        Key("commands.slap.args.target.name")
+                            .withBundle(PublicTranslations.bundle)
+                }
+
+                public object Weapon {
+                    /**
+                     * What you want to slap with
+                     */
+                    public val description: Key =
+                        Key("commands.slap.args.weapon.description")
+                            .withBundle(PublicTranslations.bundle)
+
+                    /**
+                     * weapon
+                     */
+                    public val name: Key =
+                        Key("commands.slap.args.weapon.name")
+                            .withBundle(PublicTranslations.bundle)
+                }
+            }
+        }
+    }
+}
+```
