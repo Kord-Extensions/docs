@@ -521,6 +521,66 @@ export function Check(props: PropsWithChildren<CheckProps>): ReactNode {
 	);
 }
 
+type CliArgProps = {
+	name: string | string[],
+	arg?: string | string[],
+	default?: string
+} & CommonProps
+
+export function CliArg(props: PropsWithChildren<CliArgProps>): ReactNode {
+	let args: string[]
+	let names: string[]
+
+	if (typeof (props.arg) === "string") {
+		args = [props.arg]
+	} else if (props.arg === undefined) {
+		args = []
+	} else {
+		args = props.arg
+	}
+
+	if (typeof (props.name) === "string") {
+		names = [props.name]
+	} else {
+		names = props.name
+	}
+
+	return (
+		<div className={clsx(props.className, styles.col, styles.docBg, "doc-builder")}>
+			<div className={clsx(styles.row)}>
+				<Tags>
+					{names.map((it) =>
+						<code className={clsx(styles.head, "shadow--lw")}>
+							{it}
+
+							{args.map((arg) =>
+								<span className="text-success">
+									&nbsp;{arg}
+								</span>
+							)}
+						</code>
+					)}
+
+					{
+						props.default ?
+							<Tag style="success">
+								Default: <code className="shadow--lw">{props.default}</code>
+							</Tag> :
+							<></>
+					}
+				</Tags>
+			</div>
+
+			{props.children === undefined ?
+				<></> :
+				<div className={clsx(styles.indent)}>
+					{props.children}
+				</div>
+			}
+		</div>
+	);
+}
+
 type ConverterProps = {
 	name: string,
 	codeName: string | string[],

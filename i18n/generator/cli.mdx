@@ -7,6 +7,7 @@ sidebar_custom_props:
   icon: "fluent:window-text-20-filled"
 ---
 
+import * as Doc from "/src/components/Doc";
 import EmbeddedVersion from "/src/components/EmbeddedVersion"
 import { CardWithTitle } from "/src/components/Card";
 
@@ -49,11 +50,25 @@ To get and use the CLI tool:
 
 To generate code using this tool, you'll need to provide the following command-line arguments:
 
-- `-b / --bundle [bundle]` - The name of the translation bundle to process, e.g. `template.strings`.
-- `-i / --input-path [path]` - Directory containing the translation bundle, without the bundle prefix.
-  E.g., if your bundle is `template.strings` and it exists at
-  `src/main/resources/translations/template/strings.properties`, you should provide `src/main/resources/translations`.
-- `-p / --class-package [package]` - Package to place the generated class in, e.g. `template.i18n`.
+<Doc.Container>
+  <Doc.CliArg name={["-b", "--bundle"]} arg="bundle">
+    The name of the translation bundle to process.
+    For example: `template.strings`.
+  </Doc.CliArg>
+
+  <Doc.CliArg name={["-i", "--input-path"]} arg="path">
+    Directory containing the translation bundle, without the bundle prefix.
+
+    For example, if your bundle is `template.strings` and it exists at
+    `src/main/resources/translations/template/strings.properties`,
+    you should provide `src/main/resources/translations`.
+  </Doc.CliArg>
+
+  <Doc.CliArg name={["-p", "--class-package"]} arg="package">
+    Package to place the generated class in.
+    For example: `template.i18n`.
+  </Doc.CliArg>
+</Doc.Container>
 
 For example:
 <EmbeddedVersion
@@ -67,16 +82,39 @@ For example:
 
 You can also provide any of the following optional command-line arguments to customise the output:
 
-- `-c / --class-name [name]` - Generated class name. Defaults to `Translations`.
-- `--editorconfig [path]` - Path to your `.editorconfig`, if your project has one. Defaults to `.editorconfig`.
-- `-f / --file-format [format]` - Translations file format. Defaults to `properties`. See `--help` for a full list.
-- `-in / --internal` - Generate code with the `internal` visibility modifier, instead of using `public`.
-- `-m / --message-format [format]` - Message format. Defaults to `icu-v1`. See `--help` for a full list.
-- `-o / --output-dir [path]` - Output directory for generated code. Defaults to `./output`.
-- `-ucc / --use-class-classloader` - Generate bundle objects that specify the classloader used to load their containing
-  `object`, rather than defaulting to the system classloader.
-  This is particularly useful if you're writing a plugin for something, as the i18n framework will need to load your
-  translations from the plugin, rather than the system classloader.
+<Doc.Container>
+  <Doc.CliArg name={["-c", "--class-name"]} arg="name" default="Translations">
+    Generated class name.
+  </Doc.CliArg>
+
+  <Doc.CliArg name={["-ec", "--editorconfig"]} arg="path" default=".editorconfig">
+    Path to your project's [EditorConfig file](https://editorconfig.org/), if it has one.
+
+    The generator will use this to format the code it outputs.
+  </Doc.CliArg>
+
+  <Doc.CliArg name={["-f", "--file-format"]} arg="format" default="properties">
+    Translations file format.
+
+    See `--help` for a full list.
+  </Doc.CliArg>
+
+  <Doc.CliArg name={["-in", "--internal"]}>
+    Generate code with the `internal` visibility modifier, instead of using `public`.
+  </Doc.CliArg>
+
+  <Doc.CliArg name={["-o", "--output-dir"]} arg="path" default="./output">
+    Output directory for generated code.
+  </Doc.CliArg>
+
+  <Doc.CliArg name={["-ucc", "--use-class-classloader"]}>
+    Generate bundle objects that specify the classloader used to load their containing
+    `object`, rather than defaulting to the system classloader.
+
+    This is particularly useful if you're writing a plugin for something, as the i18n framework will need to load your
+    translations from the plugin, rather than the system classloader.
+  </Doc.CliArg>
+</Doc.Container>
 
 For more information on these settings and to see a full list of available file/message formats, run the tool with
 `--help`.
