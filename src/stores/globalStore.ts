@@ -1,15 +1,16 @@
 import {configureStore, createSlice, PayloadAction} from "@reduxjs/toolkit";
-
 import {GradleMetadata, GradleVariant, VersionCatalogue} from "@site/src/maven/GradleMetadata";
+
 import {
 	getGradleMetadata,
 	getGradleVersion,
+	getI18nVersions,
 	getMavenMetadata,
 	getPluginVersions,
 	getVersionCatalogue
 } from "@site/src/maven/Net";
-import {getGradle, useGlobalDispatch} from "@site/src/stores/globalHooks";
-import {useDispatch} from "react-redux";
+
+import {getGradle} from "@site/src/stores/globalHooks";
 
 export type Dependency = {
 	api: GradleVariant,
@@ -35,6 +36,7 @@ export const VersionSlice = createSlice({
 		versionCatalogue: {} as VersionCatalogue,
 		versions: [] as string[],
 		pluginVersions: [] as string[],
+		i18nVersions: [] as string[],
 		retrieved: [] as string[],
 
 		gradle: {} as { [key: string]: GradleMetadata },
@@ -86,6 +88,16 @@ export const VersionSlice = createSlice({
 		replacePluginVersions: {
 			reducer(state, action: PayloadAction<string[]>) {
 				state.pluginVersions = action.payload;
+			},
+
+			prepare(data: string[]) {
+				return {payload: data}
+			}
+		},
+
+		replaceI18nVersions: {
+			reducer(state, action: PayloadAction<string[]>) {
+				state.i18nVersions = action.payload;
 			},
 
 			prepare(data: string[]) {
@@ -156,7 +168,19 @@ export const Store = configureStore({
 		getDefaultMiddleware()
 })
 
-export const {clearAll, setGradle, addRetrieved, replaceGradle, replaceVersions, replacePluginVersions, markConfigured, setGradleVersion, replaceVersionCatalogue} = VersionSlice.actions;
+export const {
+	addRetrieved,
+	clearAll,
+	markConfigured,
+	replaceGradle,
+	replaceI18nVersions,
+	replacePluginVersions,
+	replaceVersionCatalogue,
+	replaceVersions,
+	setGradle,
+	setGradleVersion,
+} = VersionSlice.actions;
+
 export const getRetrieved = (state: RootState) => VersionSlice.selectors.getRetrieved(state);
 
 export type RootState = ReturnType<typeof Store.getState>;
@@ -186,6 +210,16 @@ function setup() {
 
 				console.log(`Latest Gradle plugin version: ${latestPluginVersion}`)
 				console.log("Gradle plugin versions:", pluginVersions.join(", "))
+			})(),
+
+			(async () => {
+				const i18nVersions = await getI18nVersions()
+				const latestI18nVersion = i18nVersions[0]
+
+				Store.dispatch(replaceI18nVersions(i18nVersions))
+
+				console.log(`Latest i18n framework version: ${latestI18nVersion}`)
+				console.log("I18n framework versions:", i18nVersions.join(", "))
 			})(),
 
 			(async () => {
