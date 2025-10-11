@@ -46,7 +46,7 @@ function Inner(props: EmbeddedVersionProps): ReactNode {
 				<a href={props.url.replaceAll("(VERSION)", version)}
 				   target="_blank"
 				   rel="noopener noreferrer"
-				   className={clsx(props.button === true ? "button button--primary button--block mt-1" : undefined)}
+				   className={clsx(props.button === true ? "button button--primary button--block mt-1 mb-1" : undefined)}
 				>
 					{
 						props.code === true ?

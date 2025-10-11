@@ -6,5 +6,152 @@ sidebar_custom_props:
   card_group: "Usage"
   icon: "fluent:code-20-filled"
 ---
+import * as Doc from "/src/components/Doc";
+import EmbeddedVersion from "/src/components/EmbeddedVersion"
+import { CardWithTitle } from "/src/components/Card";
 
 # Programmatic API
+
+<CardWithTitle title="API Information">
+  - **Coordinate:** `dev.kordex.i18n:i18n-generator`
+  - **Current Version:** <EmbeddedVersion reference="i18n" code />
+  - **Minimum JDK:** `17`
+</CardWithTitle>
+
+The i18n generator API tool allows you to generate translations classes programmatically, to suit whatever situations
+your code needs to handle.
+You can use it to generate translation classes whenever you can't use
+[the Gradle plugin](/i18n/plugin), including writing your own plugins for other build tools.
+
+Since it gives you access to the KotlinPoet `FileSpec`, you can also modify the code before it is generated.
+
+## Usage
+
+The generation API is encapsulated in a single class, `TranslationsClass`.
+Create an instance of this class, configuring it via its constructor parameters, and use `writeTo()` to generate the
+code and store the result in the given file.
+
+### Constructor Parameters
+
+<Doc.Container>
+  <Doc.Background>
+    <Doc.Arg name="bundle" type="String" propType="val">
+      The name of the translation bundle to process.
+      For example: `template.strings`.
+    </Doc.Arg>
+
+    <Doc.Arg name="className" type="String" propType="val" default='"Translations"'>
+      Generated class name.
+    </Doc.Arg>
+
+    <Doc.Arg name="classPackage" type="String" propType="val">
+      Package to place the generated class in.
+      For example: `template.i18n`.
+    </Doc.Arg>
+
+    <Doc.Arg name="editorConfig" type="Path?" propType="val" default='Path(".editorconfig")'>
+      Path to your project's [EditorConfig file](https://editorconfig.org/), if it has one.
+      The generator will use this to format the code it outputs.
+    </Doc.Arg>
+
+    <Doc.Arg name="fileFormat" type="FileFormat" propType="val" default="PropertiesFormat">
+      Translations file format.
+    </Doc.Arg>
+
+    <Doc.Arg name="messageFormat" type="String" propType="val" default='"icu-v1"'>
+      Message format.
+    </Doc.Arg>
+
+    <Doc.Arg name="publicVisibility" type="Boolean" propType="val" default="true">
+      Whether to generate code with the `public` visibility modifier.
+      Provide `false` to use `internal` instead.
+    </Doc.Arg>
+
+    <Doc.Arg name="resourceBundle" type="ResourceBundle" propType="val">
+      Resource bundle object containing your bundle's base translations.
+    </Doc.Arg>
+
+    <Doc.Arg name="useClassClassloader" type="Boolean" propType="val" default="false">
+      Whether to generate bundle objects that specify the classloader used to load their containing `object`,
+      rather than defaulting to the system classloader.
+
+      This is particularly useful if you're writing a plugin for something,
+      as the i18n framework will need to load your translations from the plugin,
+      rather than the system classloader.
+    </Doc.Arg>
+  </Doc.Background>
+</Doc.Container>
+
+### Functions
+
+<Doc.Container>
+  <Doc.Function name="writeToFile">
+    Write the generated translations object to an output directory, generating interim directories for the
+    `classPackage` as necessary.
+
+    You can usually call this immediately after creating your `TranslationsClass`, unless you need to mess with the
+    `spec` object first.
+
+    <Doc.Arguments>
+      <Doc.Arg name="outputDir" type="File">
+        `File` object representing the output directory.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+</Doc.Container>
+
+### Properties
+
+These properties are provided for advanced use-cases only, and may change from version to version.
+
+<Doc.Container internal>
+  <Doc.Property name="allKeys" type="List<String>" internal>
+    Flat list containing all of the translation keys contained within the `resourceBundle` property.
+  </Doc.Property>
+
+  <Doc.Property name="spec" type="com.squareup.kotlinpoet.FileSpec" internal>
+    KotlinPoet `FileSpec` representing the file to be generated.
+
+    This is filled as part of the `TranslationClass` initialisation, but you can modify it if you need to.
+  </Doc.Property>
+</Doc.Container>
+
+## Example
+
+This API is a little involved, so see below for a working example.
+
+```kt
+val bundleName = "template.strings"
+val classPackage = "template.i18n"
+
+val resourceBundle = ResourceBundle.getBundle(
+    // Resource bundles don't use package specifiers for some reason.
+    bundleName.replace(".", "/"),
+
+    // Generally, you want the default translations, so we use a fake locale here.
+    Locale("dummy"),
+
+    // You could also use a URLClassLoader, for example.
+    ClassLoader.getSystemClassLoader(),
+
+    // The default, each file format object defines a control for you to use.
+    PropertiesFormat.control,
+)
+
+// Create and populate a TranslationsClass object.
+val translationsClass = TranslationsClass(
+    bundle = bundleName,
+    classPackage = classPackage,
+    resourceBundle = resourceBundle,
+)
+
+// Write the generated code to file.
+// You could also use `translationsClass.spec.writeTo(buffer)` if you need to work with it yourself.
+translationsClass.writeTo(File("./output"))
+```
+
+## Extra Formats
+
+The i18n framework uses [sweet-spi](https://github.com/whyoleg/sweet-spi/tree/main) to load extra file/message formats
+from the classpath.
+For that reason, there's nothing special you need to do — just use any formats your IDE and the compiler can resolve.
