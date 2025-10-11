@@ -6,7 +6,7 @@ import URLs from "@site/src/maven/URLs";
 import {GradleMetadata, VersionCatalogue} from "@site/src/maven/GradleMetadata";
 import {GitHubReleases} from "@site/src/maven/GitHubMetadata";
 import {MavenRootMetadata, MavenSnapshotMetadata} from "@site/src/maven/MavenMetadata";
-import { load as tomlParse } from "js-toml";
+import {load as tomlParse} from "js-toml";
 
 const GRADLE_REGEX = /gradle-([\d.]+)(?:-[a-z]+)?.zip/i
 
@@ -41,6 +41,12 @@ export async function getVersionCatalogue(): Promise<VersionCatalogue> {
 
 export async function getPluginVersions(): Promise<string[]> {
 	const data = await getJSON<GitHubReleases>(URLs.gradlePluginUrl())
+
+	return data.map((it) => (it.name.substring(1))).sort(flexver).reverse()
+}
+
+export async function getI18nVersions(): Promise<string[]> {
+	const data = await getJSON<GitHubReleases>(URLs.i18nUrl())
 
 	return data.map((it) => (it.name.substring(1))).sort(flexver).reverse()
 }

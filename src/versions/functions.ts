@@ -48,6 +48,7 @@ export function getVersion(reference: string): string {
 	const pluginVersions = state.pluginVersions
 	const gradleModules = state.gradle
 	const gradleVersion = state.gradleVersion
+	const i18nVersions = state.i18nVersions
 	const versionCatalogue = state.versionCatalogue
 
 	const gradle = gradleModules[versions[0]]
@@ -63,6 +64,8 @@ export function getVersion(reference: string): string {
 		versionNumber = pluginVersions[0]
 	} else if (reference === "gradle") {
 		versionNumber = gradleVersion
+	}  else if (reference === "i18n") {
+		versionNumber = i18nVersions[0]
 	} else if (predefined.hasOwnProperty(reference)) {
 		versionNumber = (predefined[reference](gradle, deps.api, deps.runtime) ?? "Unknown") + ""
 	} else if (versionCatalogue.versions.hasOwnProperty(reference)) {

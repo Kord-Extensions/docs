@@ -7,4 +7,78 @@ sidebar_custom_props:
   icon: "fluent:window-text-20-filled"
 ---
 
+import EmbeddedVersion from "/src/components/EmbeddedVersion"
+import { CardWithTitle } from "/src/components/Card";
+
 # CLI Tool
+
+<CardWithTitle title="CLI Information">
+  - **Current Version:** <EmbeddedVersion reference="i18n" code />
+  - **Minimum Java:** `17`
+
+</CardWithTitle>
+
+<EmbeddedVersion
+  reference="i18n"
+  template="Download from Codeberg"
+  url="https://codeberg.org/Kord-Extensions/i18n/releases/download/v(VERSION)/i18n-generator-(VERSION)-all.jar"
+  button
+/>
+
+&nbsp;
+
+The i18n generator CLI tool allows you to generate translations classes on the command-line, existing as a standalone
+JAR file.
+You can download this file and use it to generate translation classes whenever you can't use
+[the Gradle plugin](/i18n/plugin), including writing your own plugins for other build tools.
+
+We plan to provide launch scripts and better support for extra formats later.
+
+## Usage
+
+To get and use the CLI tool:
+- Download and install a compatible version of Java, as listed above.
+- Download the tool using the button above.
+- Run the tool: <EmbeddedVersion reference="i18n" template="java -jar i18n-generator-(VERSION)-all.jar [arguments...]" code />
+
+## Arguments
+
+[//]: # (TODO: Consider adding <Doc.Container> support for CLI tool arguments.)
+
+To generate code using this tool, you'll need to provide the following command-line arguments:
+
+- `-b / --bundle [bundle]` - The name of the translation bundle to process, e.g. `template.strings`.
+- `-i / --input-path [path]` - Directory containing the translation bundle, without the bundle prefix.
+  E.g., if your bundle is `template.strings` and it exists at
+  `src/main/resources/translations/template/strings.properties`, you should provide `src/main/resources/translations`.
+- `-p / --class-package [package]` - Package to place the generated class in, e.g. `template.i18n`.
+
+You can also provide any of the following optional command-line arguments to customise the output:
+
+- `-c / --class-name [name]` - Generated class name. Defaults to `Translations`.
+- `--editorconfig [path]` - Path to your `.editorconfig`, if your project has one. Defaults to `.editorconfig`.
+- `-f / --file-format [format]` - Translations file format. Defaults to `properties`. See `--help` for a full list.
+- `-in / --internal` - Generate code with the `internal` visibility modifier, instead of using `public`.
+- `-m / --message-format [format]` - Message format. Defaults to `icu-v1`. See `--help` for a full list.
+- `-o / --output-dir [path]` - Output directory for generated code. Defaults to `./output`.
+- `-ucc / --use-class-classloader` - Generate bundle objects that specify the classloader used to load their containing
+  `object`, rather than defaulting to the system classloader.
+  This is particularly useful if you're writing a plugin for something, as the i18n framework will need to load your
+  translations from the plugin, rather than the system classloader.
+
+For more information on these settings and to see a full list of available file/message formats, run the tool with
+`--help`.
+
+## Extra Formats
+
+If you need to add support for any file/message formats we don't ship by default, please note that the i18n framework
+uses a service loader to locate implementations of these formats.
+
+We recommend placing any JARs containing extra formats in a single folder, and launching the CLI tool as follows,
+replacing `/path/to/jars` with the path to that folder:
+
+<EmbeddedVersion
+  reference="i18n"
+  template='java -cp "i18n-generator-(VERSION)-all.jar:/path/to/jars/*" dev.kordex.i18n.generator.MainKt [arguments...]'
+  code
+/>
