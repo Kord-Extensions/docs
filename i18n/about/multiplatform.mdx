@@ -50,3 +50,10 @@ Specifically, there's too much hard-coded validation, which we've found:
 We believe that the only way we can create a framework that can support all potential languages is to use a Locale
 type without forced data validation — aside from validating standard formats like
 [IETF BCP 47](https://en.wikipedia.org/wiki/IETF_language_tag), of course.
+
+## Resource Bundles
+
+While the Java resource bundle concept is a good match for our framework, we don't have a multiplatform replacement in
+mind.
+We're not against building our own alternative against a library like
+[moko-resources](https://github.com/icerockdev/moko-resources), however.
