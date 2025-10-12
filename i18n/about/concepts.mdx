@@ -1,0 +1,49 @@
+---
+description: A different take on i18n frameworks.
+sidebar_position: 12
+---
+
+# Concepts
+
+Before getting started, we recommend familiarising yourself with a few terms and types.
+
+## Terminology
+
+As the i18n framework began as a JVM project, it uses terminology generally understood by the Java development
+community:
+
+- **Resource Bundle:** A bundle of files that share a directory, prefix, and file extension, placed within your
+  project's resources and packaged along with it when built.
+- **Translation Bundle:** A resource bundle containing a set of translations, including a set of base translations
+  in a file matching the last part of the bundle's name, along with a set of files for each language.
+  Languages are defined by appending them to the filename, before the extension — for example. `strings.properties`
+  would become `strings_tok.properties` for Toki Pona, or `strings_es-AR.properties` for Argentinian Spanish.
+
+  In this framework, translation bundles must include a containing folder that is itself placed within `translations/`
+  in your project's resources.
+  For example, `template.strings` refers to `translations/template/strings.properties` in your project's resources.
+
+The framework also introduces its own terminology:
+
+- **Bundle:** Short-hand form of "translation bundle".
+- **Key:** Translation keys, which are the dotted-form string you use to reference a specific translation in your
+  bundle.
+  For example, if a properties file contains `commands.slap.name=slap`, then the key is `commands.slap.name`.
+
+  In this framework, you still use dotted-form strings to represent keys, even if the file format mandates a nested
+  object structure.
+  In situations like that, you use a dot to split the current nesting level from the next one.
+- **File Format:** Refers to how a file is structured, by referencing its format by name.
+  Some examples include JSON, Properties, TOML, YAML, etc.
+- **Message Format:** Refers to how individual translations are formatted within a file, by referencing the formatter
+  to be used.
+  Some examples include ICU v1, ICU v2, Fluent, etc.
+
+## Platform Types
+
+We also recommend reading up on how the following platform types work:
+
+- The [Java Locale type](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Locale.html)
+  is one of the core types you'll need to work with — at least until Kotlin has its own equivalent Locale type.
+
+  This type represents various locales (valid or not), containing languages, scripts, regions, variants, and extensions.
