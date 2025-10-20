@@ -223,7 +223,7 @@ export default function DocSidebarItemCategory(
 					aria-expanded={collapsible && !href ? !collapsed : undefined}
 					href={collapsible ? hrefWithSSRFallback ?? "#" : hrefWithSSRFallback}
 					{...props}>
-					<span style={{height: "1.3em", whiteSpace: "nowrap", maxWidth: "90%", overflowY: "visible", overflowX: "scroll"}}>{label}</span>
+					<span style={{height: "1.3em", whiteSpace: "nowrap", maxWidth: "90%", overflowY: "visible", overflowX: "auto"}}>{label}</span>
 					{processTags({item})}
 				</Link>
 				{href && collapsible && (
