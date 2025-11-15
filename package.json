@@ -15,37 +15,37 @@
 		"typecheck": "tsc"
 	},
 	"dependencies": {
-		"@docusaurus/core": "3.9.1",
-		"@docusaurus/plugin-content-docs": "^3.9.1",
-		"@docusaurus/preset-classic": "3.9.1",
-		"@docusaurus/theme-common": "^3.9.1",
-		"@iconify/react": "^6.0.0",
+		"@docusaurus/core": "3.9.2",
+		"@docusaurus/plugin-content-docs": "^3.9.2",
+		"@docusaurus/preset-classic": "3.9.2",
+		"@docusaurus/theme-common": "^3.9.2",
+		"@iconify/react": "^6.0.2",
 		"@js.properties/properties": "^0.5.4",
-		"@mdx-js/react": "^3.0.0",
-		"@reduxjs/toolkit": "^2.8.2",
-		"@skyra/discord-components-react": "^3.6.1",
-		"@types/react": "^18",
+		"@mdx-js/react": "^3.1.1",
+		"@reduxjs/toolkit": "^2.10.1",
+		"@skyra/discord-components-react": "^4.0.2",
+		"@types/react": "^19",
 		"@widgetbot/message-renderer": "^2.3.2",
-		"axios": "^1.10.0",
-		"clsx": "^2.0.0",
-		"discord-api-types": "0.37.120",
-		"fast-xml-parser": "^5.2.5",
+		"axios": "^1.13.2",
+		"clsx": "^2.1.1",
+		"discord-api-types": "0.38.33",
+		"fast-xml-parser": "^5.3.2",
 		"flexver": "^1.1.1",
 		"github-slugger": "^2.0.0",
-		"js-toml": "^1.0.1",
-		"prism-react-renderer": "^2.3.0",
-		"react": "^18.3.1",
-		"react-dom": "^18.3.1",
+		"js-toml": "^1.0.2",
+		"prism-react-renderer": "^2.4.1",
+		"react": "^19.2.0",
+		"react-dom": "^19.2.0",
 		"react-redux": "^9.2.0",
-		"react-tooltip": "^5.28.1",
+		"react-tooltip": "^5.30.0",
 		"redux-thunk": "^3.1.0",
 		"rehype-extended-table": "^0.1.3"
 	},
 	"devDependencies": {
-		"@docusaurus/module-type-aliases": "3.9.1",
-		"@docusaurus/tsconfig": "3.9.1",
-		"@docusaurus/types": "3.9.1",
-		"typescript": "~5.7.3"
+		"@docusaurus/module-type-aliases": "3.9.2",
+		"@docusaurus/tsconfig": "3.9.2",
+		"@docusaurus/types": "3.9.2",
+		"typescript": "~5.9.3"
 	},
 	"browserslist": {
 		"production": [
@@ -60,7 +60,7 @@
 		]
 	},
 	"engines": {
-		"node": ">=18.0"
+		"node": ">=25.0"
 	},
-	"packageManager": "pnpm@10.12.1+sha512.f0dda8580f0ee9481c5c79a1d927b9164f2c478e90992ad268bbb2465a736984391d6333d2c327913578b2804af33474ca554ba29c04a8b13060a717675ae3ac"
+	"packageManager": "pnpm@10.22.0+sha512.bf049efe995b28f527fd2b41ae0474ce29186f7edcb3bf545087bd61fbbebb2bf75362d1307fda09c2d288e1e499787ac12d4fcb617a974718a6051f2eee741c"
 }
