@@ -68,7 +68,7 @@ export function getVersion(reference: string): string {
 		versionNumber = i18nVersions[0]
 	} else if (predefined.hasOwnProperty(reference)) {
 		versionNumber = (predefined[reference](gradle, deps.api, deps.runtime) ?? "Unknown") + ""
-	} else if (versionCatalogue.versions.hasOwnProperty(reference)) {
+	} else if (reference in versionCatalogue.versions) {
 		versionNumber = versionCatalogue.versions[reference]
 	} else if (reference.indexOf(":") > -1) {
 		const [refGroup, refModule] = reference.split(":")
