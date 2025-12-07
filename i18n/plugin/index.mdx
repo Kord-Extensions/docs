@@ -1,5 +1,5 @@
 ---
-description: A different take on i18n frameworks.
+description: Gradle plugin integrating the translation class code generator.
 sidebar_position: 011
 
 # sidebar_custom_props:
@@ -190,6 +190,11 @@ i18n {
       Set this to `false` to use `internal` instead.
     </Doc.Property>
 
+    <Doc.Property name="useClassClassLoader" type="Property<Boolean>">
+      Whether the generated `Bundle` object should use the translation class' class-loader.
+      Set this to `false` to use the system class-loader instead.
+    </Doc.Property>
+
     <Doc.Function name="messageFormat">
       Set the `messageFormat` property based on the provided argument.
 
@@ -258,6 +263,11 @@ i18n {
     <Doc.Property name="publicVisibility" type="Property<Boolean>" default="true">
       Whether the generated classes and properties should be marked `public`.
       Set this to `false` to use `internal` instead.
+    </Doc.Property>
+
+    <Doc.Property name="useClassClassLoader" type="Property<Boolean>" default="true">
+      Whether the generated `Bundle` object should use the translation class' class-loader.
+      Set this to `false` to use the system class-loader instead.
     </Doc.Property>
 
     <Doc.Function name="messageFormat">
