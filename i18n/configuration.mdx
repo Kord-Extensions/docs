@@ -1,0 +1,54 @@
+---
+description: A different take on i18n frameworks.
+sidebar_position: 04
+---
+
+import * as Doc from "/src/components/Doc";
+
+# Configuration
+
+You can configure the framework using the properties available on the `I18n` object.
+At minimum, you'll need to set the `defaultBundle` property, and we recommend configuring the framework as early
+as possible, ideally right at the start of your project's `main()` function.
+
+<Doc.Container>
+  <Doc.Property name="defaultBundle" type="Bundle" required>
+    Your project's default translation bundle, which will be used whenever a `Key` is translated without one set.
+
+    While you can technically get away without setting this, we strongly recommend setting it regardless, especially
+    if your project exposes any kind of API or can otherwise load third-party code.
+  </Doc.Property>
+
+  <Doc.Property name="defaultLocale" type="Locale" default="Locale.getDefault()">
+    Your project's default locale, which will be used whenever a `Key` is translated without one set.
+
+    Unless your project is a GUI app that should match the system's locale, we strongly recommend providing a specific
+    default locale.
+  </Doc.Property>
+
+  <Doc.Property name="defaultBundlePrefix" type="String" default="translations">
+    Your project's default bundle prefix.
+
+    This is a dotted package-notation string that represents the root path all of your project's translations must be
+    placed within.
+    For example, if you set this to `i18n.example`, your project's translations must be placed within the
+    `i18n/example` folder in its resources.
+
+    If your project has a plugin system or otherwise loads or is embedded within third-party code, this restriction
+    also applies to any other libraries or JARs on the classpath.
+    For example, if your project loads plugins, those plugins must also place their translations in the `i18n` folder
+    in their resources.
+  </Doc.Property>
+
+  <Doc.Property name="defaultBundleSuffix" type="String" default="strings">
+    Your project's default bundle suffix.
+
+    This is a string representing the default suffix to use when the bundle referred to by a `Key` doesn't contain
+    a `.`, and thus refers only to a containing folder.
+
+    For example, if a `Key` refers to a bundle named `test` and this property is set to `strings`, the bundle name
+    becomes `test.strings`, referring to `${"defaultBundlePrefix"}/test`, matching files beginning with `strings`.
+
+    If the bundle in a `Key` contains a `.`, this setting is ignored.
+  </Doc.Property>
+</Doc.Container>

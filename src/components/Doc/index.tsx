@@ -13,10 +13,26 @@ type CommonProps = {
 	className?: string | null,
 }
 
+export function Required(): ReactNode {
+	return (
+		<div style={{display: "flex", alignItems: "center", width: "2.5em"}} data-tooltip-id="required-api-tooltip">
+			<Icon icon="fluent:arrow-import-20-filled" width="2.5em" className="text-danger"></Icon>
+		</div>
+	)
+}
+
 export function Internal(): ReactNode {
 	return (
 		<div style={{display: "flex", alignItems: "center", width: "2.5em"}} data-tooltip-id="internal-api-tooltip">
 			<Icon icon="fluent:warning-20-filled" width="2.5em" className="text-warning"></Icon>
+		</div>
+	)
+}
+
+export function NoIcon(): ReactNode {
+	return (
+		<div style={{display: "flex", alignItems: "center", width: "2.5em"}}>
+			<span style={{width: "2.5em"}}>&nbsp;</span>
 		</div>
 	)
 }
@@ -793,6 +809,8 @@ type PropertyProps = {
 	open?: boolean,
 	default?: string,
 	internal?: boolean,
+	required?: boolean,
+	iconIndent?: boolean,
 	visibility?: "public" | "protected" | "private" | "internal",
 	propType?: "val" | "var",
 } & CommonProps
@@ -803,6 +821,8 @@ export function Property(props: PropsWithChildren<PropertyProps>): ReactNode {
 			<div className={clsx(styles.row)}>
 				<Tags>
 					{props.internal ? <Internal/> : <></>}
+					{props.required ? <Required/> : <></>}
+					{props.iconIndent ? <NoIcon/> : <></>}
 
 					<code className={clsx(styles.head, "shadow--lw")}>
 						{
