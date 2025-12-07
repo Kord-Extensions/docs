@@ -45,12 +45,12 @@ To get and use the CLI tool:
 To generate code using this tool, you'll need to provide the following command-line arguments:
 
 <Doc.Container>
-  <Doc.CliArg name={["-b", "--bundle"]} arg="bundle">
+  <Doc.CliArg name={["-b", "--bundle"]} arg="bundle" required>
     The name of the translation bundle to process.
     For example: `template.strings`.
   </Doc.CliArg>
 
-  <Doc.CliArg name={["-i", "--input-path"]} arg="path">
+  <Doc.CliArg name={["-i", "--input-path"]} arg="path" required>
     Directory containing the translation bundle, without the bundle prefix.
 
     For example, if your bundle is `template.strings` and it exists at
@@ -58,7 +58,7 @@ To generate code using this tool, you'll need to provide the following command-l
     you should provide `src/main/resources/translations`.
   </Doc.CliArg>
 
-  <Doc.CliArg name={["-p", "--class-package"]} arg="package">
+  <Doc.CliArg name={["-p", "--class-package"]} arg="package" required>
     Package to place the generated class in.
     For example: `template.i18n`.
   </Doc.CliArg>

@@ -94,13 +94,13 @@ of options.
     **Required Settings**
   </p>
 
-  <Doc.Property name="name" type="key" propType="var">
+  <Doc.Property name="name" type="key" propType="var" required>
     Translation key representing this argument's name.
 
     Should be short, lowered-kebab-case, and without spaces.
   </Doc.Property>
 
-  <Doc.Property name="description" type="key" propType="var">
+  <Doc.Property name="description" type="key" propType="var" required>
     Translation key representing this argument's description.
 
     Should be descriptive, but try to avoid making it too long.
@@ -229,7 +229,7 @@ The generic type `T` below represents the argument value's type.
     **Required Settings**
   </p>
 
-  <Doc.Property name="defaultValue" type="T" propType="var">
+  <Doc.Property name="defaultValue" type="T" propType="var" required>
     The default value to use when a user doesn't provide one, or when parsing fails and `ignoreErrors` is `true`.
   </Doc.Property>
 

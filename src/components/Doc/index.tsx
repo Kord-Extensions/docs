@@ -286,6 +286,7 @@ type ArgProps = {
 	default?: string,
 	reified?: boolean,
 	internal?: boolean,
+	required?: boolean,
 	variance?: "in" | "out",
 	propType?: "val" | "open val" | "override val" | "var" | "open var" | "override var",
 } & CommonProps
@@ -311,6 +312,7 @@ export function Arg(props: PropsWithChildren<ArgProps>): ReactNode {
 			<div className={clsx(styles.row)} style={{marginBottom: "0.25em"}} key={`${props.name}-inner`}>
 				<Tags key={`${props.name}-tags`}>
 					{props.internal ? <Internal/> : <></>}
+					{props.required ? <Required/> : <></>}
 
 					<code className={clsx(styles.headMed, "shadow--lw")} key={`${props.name}-tag-code`}>
 						{props.reified === true ? <span className="text-danger">reified&nbsp;</span> : <></>}
@@ -540,6 +542,7 @@ export function Check(props: PropsWithChildren<CheckProps>): ReactNode {
 type CliArgProps = {
 	name: string | string[],
 	arg?: string | string[],
+	reqiured?: boolean,
 	default?: string
 } & CommonProps
 
@@ -565,6 +568,8 @@ export function CliArg(props: PropsWithChildren<CliArgProps>): ReactNode {
 		<div className={clsx(props.className, styles.col, styles.docBg, "doc-builder")}>
 			<div className={clsx(styles.row)}>
 				<Tags>
+					{props.required ? <Required/> : <></>}
+
 					{names.map((it) =>
 						<code className={clsx(styles.head, "shadow--lw")}>
 							{it}

@@ -12,12 +12,22 @@ At minimum, you'll need to set the `defaultBundle` property, and we recommend co
 as possible, ideally right at the start of your project's `main()` function.
 
 <Doc.Container>
+  <p className="text-center">
+    **Required Settings**
+  </p>
+
   <Doc.Property name="defaultBundle" type="Bundle" required>
     Your project's default translation bundle, which will be used whenever a `Key` is translated without one set.
 
     While you can technically get away without setting this, we strongly recommend setting it regardless, especially
     if your project exposes any kind of API or can otherwise load third-party code.
   </Doc.Property>
+
+  <hr className="clear" />
+
+  <p className="text-center">
+    **Optional Settings**
+  </p>
 
   <Doc.Property name="defaultLocale" type="Locale" default="Locale.getDefault()">
     Your project's default locale, which will be used whenever a `Key` is translated without one set.

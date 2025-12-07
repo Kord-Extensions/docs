@@ -202,8 +202,8 @@ and configure it as explained below.
     **Required Settings**
   </p>
 
-  <Doc.Property name="mainClass" type="String">
-    **Required:** Your bot's main class, including the `Kt` suffix.
+  <Doc.Property name="mainClass" type="String" required>
+    Your bot's main class, including the `Kt` suffix.
 
     This matches
     [the configuration for the application plugin](https://docs.gradle.org/current/userguide/application_plugin.html#ex-configure-the-application-main-class),
@@ -249,16 +249,16 @@ and configure it as explained below.
     **Required Settings**
   </p>
 
-  <Doc.Property name="pluginClass" type="String">
+  <Doc.Property name="pluginClass" type="String" required>
     Coordinates for your plugin's class.
     The class you provide must extend `KordExPlugin`.
   </Doc.Property>
 
-  <Doc.Property name="id" type="String">
+  <Doc.Property name="id" type="String" required>
     Your plugin's unique ID.
   </Doc.Property>
 
-  <Doc.Property name="version" type="String">
+  <Doc.Property name="version" type="String" required>
     Your plugin's version, which must be [a SemVer version](https://devhints.io/semver).
     You need to set this manually, as plugin versions can't contain specifiers like `-SNAPSHOT`.
   </Doc.Property>
@@ -338,12 +338,12 @@ add the `i18n { }` builder within the `kordEx { }` builder, and configure it as 
     **Required Settings**
   </p>
 
-  <Doc.Property name="classPackage" type="String">
+  <Doc.Property name="classPackage" type="String" required>
     Package to place the generated translation class into.
     You should use a package within your bot's base package.
   </Doc.Property>
 
-  <Doc.Property name="translationBundle" type="String">
+  <Doc.Property name="translationBundle" type="String" required>
     The name of your translation bundle.
     This must match the name of the directory you created for your bundle, in `src/main/resources/translations/`.
 
