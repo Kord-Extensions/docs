@@ -167,7 +167,7 @@ but you can always [make your own](/bots/commands/converters/custom) if needed.
 
     This converter has some **required extra settings**:
 
-    <Doc.Property name="typeName" type="Key" propType="var">
+    <Doc.Property name="typeName" type="Key" propType="var" required>
       Translation key representing a short (one or two word) lower-case name for whatever the enum represents to the
       user.
 
@@ -175,7 +175,7 @@ but you can always [make your own](/bots/commands/converters/custom) if needed.
       translation key should, in English, resolve to `status` or `issue status`.
     </Doc.Property>
 
-    It also supports some extra settings:
+    It also supports some other settings:
 
     <Doc.Property name="getter" type="suspend (String, Locale) -> E?" default="::getEnum" propType="var">
       Getter used to resolve the correct enum entry.
@@ -534,7 +534,7 @@ Use them at your own risk!
 
     This converter has some **required extra settings**:
 
-    <Doc.Property name="typeName" type="Key" propType="var">
+    <Doc.Property name="typeName" type="Key" propType="var" required>
       Translation key representing a short (one or two word) lower-case name for whatever the value type represents to
       the user.
 

@@ -280,14 +280,14 @@ To do that, you'll need to annotate your class with `@Converter`, and provide th
   </p>
 
   <Doc.Background>
-    <Doc.Arg name="names" type={["String", "Array<String>"]}>
+    <Doc.Arg name="names" type={["String", "Array<String>"]} required>
       Converter names, used to generate the corresponding builder functions.
 
       You can specify multiple names here to generate multiple sets of builder functions, which might be useful when
       dealing with names that may differ in different locales - for example, `colour` and `color`.
     </Doc.Arg>
 
-    <Doc.Arg name="types" type="Array<ConverterType>">
+    <Doc.Arg name="types" type="Array<ConverterType>" required>
       Converter types to generate builders and builder functions for, following these rules:
 
       - You must specify exactly one of `SINGLE` or `COALESCING` - not both.
