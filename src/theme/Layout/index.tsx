@@ -21,6 +21,11 @@ export default function LayoutWrapper(props: Props): ReactNode {
 				Internal API - may change without warning!
 			</Tooltip>
 
+			<Tooltip id="required-api-tooltip" place="bottom" className="react-tooltip"
+			         classNameArrow="react-tooltip-arrow" opacity="1">
+				Required - if you don't set this, things won't work properly!
+			</Tooltip>
+
 			<Tooltip id="negative-check-tooltip" place="bottom" className="react-tooltip"
 			         classNameArrow="react-tooltip-arrow" opacity="1">
 				Negated check, opposite to a normal check.
