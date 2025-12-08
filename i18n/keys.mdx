@@ -46,9 +46,12 @@ Translations.Command.Slap.name
 
 ### Placeholders
 
-:::warning Ordinal Placeholders
+:::warning Placeholder Types
 
-Please note that some [message formats](/i18n/formats) only support named placeholders,
+`Keys` support both ordinal and named placeholder types.
+However, they only support one type at a time, and mixing them may result in unpredictable behaviour.
+
+Additionally, please note that some [message formats](/i18n/formats) only support named placeholders,
 and will throw an exception if you try to use ordinal placeholders.
 For that reason, **we recommend you only use named placeholders,** unless you know _**for sure**_ you'll only ever need
 to use ordinal placeholders.
@@ -158,7 +161,7 @@ Translations.Command.time
     .translateNamed("country" to Translations.Country.France)
 ```
 
-If you need to disable this feature, you can use the `withTranslateNestedKeys` function.
+If you need to disable this feature, you can use the `withTranslateNestedKeys()` function.
 
 ```kt
 // Disable nested `Key` support.
@@ -182,27 +185,184 @@ These functions use the locale stored in the `Key`, or [the configured default l
 if the `Key` doesn't have one set.
 
 <Doc.Container>
-  <Doc.Function name="capitalize" receiver="Key">
+  <Doc.Function name="capitalize" receiver="Key" returns="Key">
     Capitalise the first letter of the translated string, if that makes sense in the current locale.
   </Doc.Function>
 
-  <Doc.Function name="capitalizeWords" receiver="Key">
+  <Doc.Function name="capitalizeWords" receiver="Key" returns="Key">
     Capitalise the first letter of each word in the translated string, if that makes sense in the current locale.
   </Doc.Function>
 
-  <Doc.Function name="lowercase" receiver="Key">
+  <Doc.Function name="lowercase" receiver="Key" returns="Key">
     Transform the translated string to lower-case letters, if that makes sense in the current locale.
   </Doc.Function>
 
-  <Doc.Function name="uppercase" receiver="Key">
+  <Doc.Function name="uppercase" receiver="Key" returns="Key">
     Transform the translated string to upper-case letters, if that makes sense in the current locale.
   </Doc.Function>
 </Doc.Container>
 
 ### Preset Placeholders
 
+Sometimes, it is useful to be able to store placeholders in a copy of a `Key` object,
+to be passed around and translated elsewhere.
+`Key`s can store both named and ordinal placeholders, and you can create clones containing them using the
+`withNamedPlaceholders()` and `withOrdinalPlaceholders()` functions, respectively.
+
+These placeholders are stored in the `namedPlaceholders` and `ordinalPlaceholders` properties, allowing other functions
+to retrieve them and act accordingly.
+
+The following example assumes ICU message format v2, with the following key:
+- `command.time.response` -> `The time in {$country} is {$time}.`
+
+```kt
+// Create `Key` clone with a locale and a preset placeholder.
+val key = Translations.Command.Time.response
+    .withLocale(locale)
+    .withNamedPlaceholders("country" to "France")
+
+// Pass the key to another function, which translates the `Key`,
+// providing the correct time.
+user.sendTime(key)
+```
+
+You can use `withPresetPlaceholderPosition()` to change whether the preset placeholders are processed before or after
+any placeholders passed to the translation functions, a particularly useful tool for ordinal placeholders.
+
+Provide `FIRST` (the default) to use the preset placeholders first, or `LAST` to use the translation function's
+arguments first:
+- **Named Placeholders:** Combine them into a single map in the given order, giving priority to any duplicate values in
+  the second map.
+- **Ordinal Placeholders:** Combine them into a single list, placing the first list at the beginning, and the second
+  list at the end.
+
 ### Removing Settings
+
+`Key` objects also provide several functions you can use to copy them with filtered preset placeholders, or without
+certain settings.
+
+<Doc.Container>
+  <p className="text-center">
+    **Filtering Functions**
+  </p>
+
+  <Doc.Builder name="filterNamedPlaceholders" functionReturns="Key">
+    Returns a copy of this `Key`, containing a filtered set of named placeholders based on the provided predicate.
+  </Doc.Builder>
+
+  <Doc.Builder name="filterOrdinalPlaceholders" functionReturns="Key">
+    Returns a copy of this `Key`, containing a filtered set of ordinal placeholders based on the provided predicate.
+  </Doc.Builder>
+
+  <Doc.Builder name="filterPostProcessors" functionReturns="Key">
+    Returns a copy of this `Key`, containing a filtered set of post-processors based on the provided predicate.
+  </Doc.Builder>
+
+  <p className="text-center">
+    **Removal Functions**
+  </p>
+
+  <Doc.Function name="withoutBoth" returns="Key">
+    Returns a copy of this `Key`, with the stored bundle and locale removed.
+
+    Returns the same `Key` if both are already `null`.
+  </Doc.Function>
+
+  <Doc.Function name="withoutBundle" returns="Key">
+    Returns a copy of this `Key`, with the stored bundle removed.
+
+    Returns the same `Key` if the bundle is already `null`.
+  </Doc.Function>
+
+  <Doc.Function name="withoutLocale" returns="Key">
+    Returns a copy of this `Key`, with the stored locale removed.
+
+    Returns the same `Key` if the locale is already `null`.
+  </Doc.Function>
+
+  <Doc.Function name="withoutNamedPlaceholders" returns="Key">
+    Returns a copy of this `Key`, with the stored named preset placeholders removed.
+
+    Returns the same `Key` if there are already no named preset placeholders.
+  </Doc.Function>
+
+  <Doc.Function name="withoutOrdinalPlaceholders" returns="Key">
+    Returns a copy of this `Key`, with the stored ordinal preset placeholders removed.
+
+    Returns the same `Key` if there are already no ordinal preset placeholders.
+  </Doc.Function>
+</Doc.Container>
 
 ### Replacing Settings
 
-## API
+You can replace specific `Key` object settings using the following functions.
+
+<Doc.Container>
+  <Doc.Function name="withBoth" returns="Key">
+    Returns a copy of this `Key`, potentially with a new bundle and locale set.
+
+    <Doc.Arguments>
+      <Doc.Arg name="bundle" type="Bundle">
+        The new bundle to store in the `Key`.
+      </Doc.Arg>
+
+      <Doc.Arg name="locale" type="Locale">
+        The new locale to store in the `Key`.
+      </Doc.Arg>
+
+      <Doc.Arg name="overwriteBundle" type="Boolean" default="true">
+        Whether to overwrite the bundle, if this `Key` already contains one.
+
+        Provide `false` and the existing bundle will not be overwritten.
+      </Doc.Arg>
+
+      <Doc.Arg name="overwriteLocale" type="Boolean" default="true">
+        Whether to overwrite the locale, if this `Key` already contains one.
+
+        Provide `false` and the existing locale will not be overwritten.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+
+  <Doc.Function name="withBundle" returns="Key">
+    Returns a copy of this `Key`, potentially with a new bundle set.
+
+    <Doc.Arguments>
+      <Doc.Arg name="bundle" type="Bundle">
+        The new bundle to store in the `Key`.
+      </Doc.Arg>
+
+      <Doc.Arg name="overwrite" type="Boolean" default="true">
+        Whether to overwrite the bundle, if this `Key` already contains one.
+
+        Provide `false` and the existing bundle will not be overwritten.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+
+  <Doc.Function name="withLocale" returns="Key">
+    Returns a copy of this `Key`, potentially with a new locale set.
+
+    <Doc.Arguments>
+      <Doc.Arg name="locale" type="Bundle">
+        The new locale to store in the `Key`.
+      </Doc.Arg>
+
+      <Doc.Arg name="overwrite" type="Boolean" default="true">
+        Whether to overwrite the locale, if this `Key` already contains one.
+
+        Provide `false` and the existing locale will not be overwritten.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+</Doc.Container>
+
+### Other APIs
+
+<Doc.Container>
+  <Doc.Function name="toString">
+    Returns a string in this form: `Key "$name" (Bundle $bundle, Locale $locale)`.
+
+    The bundle and locale will be omitted if they're missing.
+  </Doc.Function>
+</Doc.Container>
