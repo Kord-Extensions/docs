@@ -9,3 +9,50 @@ sidebar_custom_props:
 import * as Doc from "/src/components/Doc";
 
 # Registries
+
+The framework includes a set of registries it uses to look various pieces of data.
+While you shouldn't need to interact with these registries yourself in most instances, they may be helpful
+for addressing a handful of advanced use-cases, so we've documented some of them here.
+
+## Class-Loader Registry
+
+The `ClassLoaderRegistry` is in charge of keeping track of which class-loaders should be used to load your project's
+translation bundles.
+While this is mostly handled automatically, it can be helpful to customise this behaviour if you're using, for example,
+a complicated plugin system.
+
+<Doc.Container>
+  <Doc.Function name="getCallbackClassloaders" returns="Map<String, ClassLoader>">
+    Call all registered class-loader callbacks, returning a map containing the resolved class-loaders.
+
+    The map's keys are strings representing each class-loader's name.
+  </Doc.Function>
+
+  <Doc.Function name="getForBundle" returns="ClassLoader">
+    Look up a specific translation bundle, and retrieve the correct class-loader used to load translations from that
+    bundle.
+
+    This will be the system class-loader if the bundle doesn't define a more specific one.
+
+    <Doc.Arguments>
+      <Doc.Arg name="bundle" type={["Bundle", "String"]}>
+        The bundle to look up, either by name or using the object itself.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+
+  <Doc.Function name="register" returns="Boolean">
+    Register a custom class-loader callback.
+
+    These callbacks take the form of a lambda of the type `() -> Map&lt;String, ClassLoader&gt;`.
+    You can also call this function like a builder, if you prefer.
+
+    <Doc.Arguments>
+      <Doc.Arg name="callback" type="() -> Map<String, ClassLoader>">
+        The class-loader callback to register.
+
+        This callback must return a mapping of class-loader names to class-loaders.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+</Doc.Container>
