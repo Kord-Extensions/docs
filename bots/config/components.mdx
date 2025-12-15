@@ -1,0 +1,33 @@
+---
+description: "Configure how your bot handles message components."
+sidebar_position: 6
+
+sidebar_custom_props:
+  card_group: "Technical Settings"
+  icon: "fluent:scan-type-24-filled"
+---
+
+import * as Doc from "/src/components/Doc";
+
+# Components
+
+The `components { }` builder allows you to change the component registry by providing your own implementation.
+
+```kt
+ExtensibleBot(TOKEN) {
+    // ...
+
+    components {
+        registry(::MyComponentRegistrySubclass)
+    }
+}
+```
+
+### Builders
+
+<Doc.Container>
+  <Doc.Builder name="registry" lambdaReturns="ComponentRegistry">
+    Register a callback that constructs and returns an alternative implementation of the `ComponentRegistry`
+    type, if needed.
+  </Doc.Builder>
+</Doc.Container>

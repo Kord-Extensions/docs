@@ -1,0 +1,198 @@
+---
+description: "Extra exceptions provided by Kord Extensions."
+sidebar_position: 37
+---
+
+import * as Doc from "/src/components/Doc";
+
+# Exceptions
+
+Kord Extensions provides a set of extra exception types, including some we expect you to throw yourself.
+
+All the provided exceptions extend `KordExException`.
+This is a sentinel type, and other than extending `Exception`, it provides no extra functionality on its own.
+
+## Functional
+
+The following exceptions don't necessarily represent errors or issues.
+Rather, they exist for you to throw in your own code when necessary.
+
+### Discord Relayed
+
+This is a special exception you can throw in your command and component action blocks, event handlers, and pretty much
+anywhere else.
+When thrown, your bot will respond with the message represented by the `reason` property in whatever the current
+execution context is.
+
+For example, throwing a `DiscordRelayedException` in a chat command will make your bot reply-ping whoever invoked that
+command with the message.
+
+This exception has an alternative constructor that accepts another `DiscordRelayedException`, copying the `reason`
+property from it.
+You can also extend it to create your own exception types, for convenience.
+
+<Doc.Container>
+  <Doc.Type name="DiscordRelayedException" type="class" open>
+    <Doc.Arguments type="constructor">
+      <Doc.Arg name="reason" type="Key" propType="val">
+        Translation key representing the message to respond with.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Type>
+</Doc.Container>
+
+---
+
+## Arguments
+
+<Doc.Container>
+  <Doc.Type name="ArgumentParsingException" type="class" extends="DiscordRelayedException" open>
+    Your bot throws this exception when something goes wrong during [command argument](/bots/commands/arguments) parsing.
+
+    <Doc.Arguments type="constructor">
+      <Doc.Arg name="reason" type="Key" propType="val">
+        Translation key representing what went wrong.
+      </Doc.Arg>
+
+      <Doc.Arg name="argument" type="Argument?" propType="val">
+        Current command `Argument` wrapper object, if any.
+      </Doc.Arg>
+
+      <Doc.Arg name="arguments" type="Arguments" propType="val">
+        Property representing the `Arguments` object you wrote to contain your command's arguments.
+      </Doc.Arg>
+
+      <Doc.Arg name="parser" type="StringParser?" propType="val">
+        For chat commands, the tokenising string parser used.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Type>
+
+  <Doc.Type name="InvalidArgumentException" type="class">
+    Your bot throws this exception when it has a misconfigured [command argument](/bots/commands/arguments).
+
+    <Doc.Arguments type="constructor">
+      <Doc.Arg name="builder" type="ConverterBuilder" propType="val">
+        Converter builder that failed to validate.
+      </Doc.Arg>
+
+      <Doc.Arg name="reason" type="String" propType="val">
+        The validation failure reason.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Type>
+</Doc.Container>
+
+## Commands
+
+<Doc.Container>
+  <Doc.Type name="CommandRegistrationException" type="class">
+    Your bot throws this exception when it fails to register a [command](/bots/commands/).
+
+    <Doc.Arguments type="constructor">
+      <Doc.Arg name="name" type="Key" propType="val">
+        Name of the command that failed to register.
+      </Doc.Arg>
+
+      <Doc.Arg name="reason" type="String" propType="val">
+        Why registration failed.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Type>
+
+  <Doc.Type name="InvalidCommandException" type="class">
+    Your bot throws this exception when it has a misconfigured [command](/bots/commands/).
+
+    <Doc.Arguments type="constructor">
+      <Doc.Arg name="name" type="Key?" propType="val">
+        Name of the command that failed to validate.
+
+        May be `null` in some cases — for example, if validation fails because the command has no name.
+      </Doc.Arg>
+
+      <Doc.Arg name="reason" type="String" propType="val">
+        The validation failure reason.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Type>
+</Doc.Container>
+
+## Events
+
+<Doc.Container>
+  <Doc.Type name="EventHandlerRegistrationException" type="class">
+    Your bot throws this exception when it fails to register an [event handler](/bots/events/handlers).
+
+    <Doc.Arguments type="constructor">
+      <Doc.Arg name="handler" type="EventHandler" propType="val">
+        Event handler that failed to register.
+      </Doc.Arg>
+
+      <Doc.Arg name="reason" type="String" propType="val">
+        Why registration failed.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Type>
+
+  <Doc.Type name="InvalidEventHandlerException" type="class">
+    Your bot throws this exception when it has a misconfigured [event handler](/bots/events/handlers).
+
+    <Doc.Arguments type="constructor">
+      <Doc.Arg name="handler" type="EventHandler" propType="val">
+        Event handler that failed to validate.
+      </Doc.Arg>
+
+      <Doc.Arg name="reason" type="String" propType="val">
+        The validation failure reason.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Type>
+</Doc.Container>
+
+## Extensions
+
+<Doc.Container>
+  <Doc.Type name="InvalidExtensionException" type="class">
+    Your bot throws this exception when it has a misconfigured [extension](/bots/extensions).
+
+    <Doc.Arguments type="constructor">
+      <Doc.Arg name="clazz" type="KClass<out Extension>" propType="val">
+        The invalid extension class.
+      </Doc.Arg>
+
+      <Doc.Arg name="reason" type="String" propType="val">
+        Why the extension is invalid.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Type>
+</Doc.Container>
+
+## Parser Exceptions
+
+
+All general parsing exceptions extend `BaseParserException`.
+This is a sentinel type, and other than extending `KordExException`, it provides no extra functionality on its own.
+
+### Duration Parser
+
+<Doc.Container>
+  <Doc.Type name="DurationParserException" type="class" extends="BaseParserException" open>
+    Base type for all duration parser exceptions.
+
+    <Doc.Arguments type="constructor">
+      <Doc.Arg name="error" type="Key">
+        Translation key representing what went wrong.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Type>
+
+  <Doc.Type name="InvalidTimeUnitException" type="class" extends="DurationParserException" open>
+    Exception thrown when the parser encounters an invalid time unit.
+
+    <Doc.Arguments type="constructor">
+      <Doc.Arg name="unit" type="String">
+        The invalid time unit.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Type>
+</Doc.Container>

@@ -1,0 +1,105 @@
+---
+description: "Request guild members on connect."
+sidebar_position: 13
+
+sidebar_custom_props:
+  card_group: "Basics"
+  icon: "fluent:people-24-filled"
+---
+
+import Link from "@docusaurus/Link";
+import * as Doc from "/src/components/Doc";
+
+# Members
+
+The `members { }` builder allows you to request guild members on connect and configure a few aspects of that request.
+
+```kt
+ExtensibleBot(TOKEN) {
+    // ...
+
+    members {
+        fillPresences = false
+
+        fill(TEST_GUILD)
+    }
+}
+```
+
+:::danger Privileged Intents Required
+
+**This builder requires privileged intents**, which you must enable in your bot's developer dashboard.
+If your bot uses privileged intents, Discord may make you justify your use-case to them.
+
+* **GuildMembers**: Required to request guild member entities from the gateway or REST API.
+* **GuildPresences**: Required along with `GuildMembers` to request guild members' presence information.
+  This includes online/away/DnD statuses, as well as what application a user is using, whether they're streaming,
+  what game they're playing, what music they're listening to, and their rich presence information.
+
+**Note:** Enabling these intents may massively increase the number of events your bot needs to handle.
+This is especially the case for **GuildPresences**, and enabling it means your bot will receive an event every time a
+user changes their online status or activity.
+
+**This can overwhelm even small bots, so we recommend avoiding it unless you're completely certain you need it!**
+
+:::
+
+:::warning API Rate Limits
+
+If you decide to request members for all guilds, please note that your bot must request the members individually for
+each guild.
+**Discord has strict rate limits on how often you can make this request,** and this rate limit applies across all of your
+bot's shards, so be prepared for a significantly slower startup phase.
+
+:::
+
+## Functions
+
+<Doc.Container>
+  <Doc.Function name="all">
+    Request member entities from all guilds.
+  </Doc.Function>
+
+  <Doc.Function name="fill">
+    Request member entities from the specified guild IDs.
+    May be called multiple times.
+
+    <Doc.Arguments>
+      <Doc.Arg name="id" type={["Snowflake", "String", "ULong"]} supportsCollections>
+
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+
+  <Doc.Function name="none" default>
+    Don't request member entities from any guilds.
+  </Doc.Function>
+</Doc.Container>
+
+## Properties
+
+<Doc.Container>
+  <Doc.Property name="fillPresences" type="Boolean?" default="null" propType="var">
+    Whether to request presence information from member entities requested from the gateway.
+
+    Provide `null` to defer to Kord's recommended default behavior, which is currently equivalent to `false`.
+  </Doc.Property>
+
+  <hr className="clear" />
+
+  :::info
+
+  We believe there are probably better ways to limit guild member requests than `lockMemberRequests` below, but we lack
+  the experience with large bots required to come up with a better solution.
+
+  If you have any ideas, please get in touch!
+
+  :::
+
+  <Doc.Property name="lockMemberRequests" type="Boolean" default="false" propType="var">
+    Whether to force guild member requests to be sequential via a `Mutex`, preventing concurrent requests for guild
+    members.
+
+    This will significantly slow down requests for guild members, but may help larger bots to avoid hitting a rate limit.
+  </Doc.Property>
+</Doc.Container>

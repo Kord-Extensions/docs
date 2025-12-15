@@ -1,0 +1,153 @@
+---
+description: Supported file and message formats, and how to provide custom ones.
+sidebar_position: 07
+---
+
+import * as Doc from "/src/components/Doc";
+
+# Formats
+
+This framework supports pluggable file formats and message formats, which allows your projects to use whatever
+formats you feel work best for you.
+
+All formats are loaded using service-loaders based on [sweet-spi](https://github.com/whyoleg/sweet-spi).
+
+## File Formats
+
+File formats are represented by the `FileFormat` type, and allow the framework to load translations from different
+filetypes.
+
+### Bundled
+
+The framework comes with built-in support for the following file formats:
+
+- **Java Properties:** `.properties` via the `PropertiesFormat` type.
+- **YAML:** `.yml` and `.yaml` via the `YamlFormat` type, based on the
+  [yaml resource bundle library](https://github.com/akkinoc/yaml-resource-bundle).
+
+### Custom
+
+All custom file formats must extend the `FileFormat` interface, and they must be annotated with the `@ServiceProvider`
+annotation from sweet-spi.
+The `FileFormat` interface defines a set of APIs that you'll need to implement.
+
+<Doc.Container>
+  <Doc.Property name="identifiers" type="Set<String>" visibility="public" propType="val" abstract>
+    This is a set of identifiers that are unique to this file format.
+    Generally, this should be the file extensions used by this format, without the `.` prefix.
+  </Doc.Property>
+
+  <Doc.Property name="control" type="ResourceBundle.Control" visibility="public" propType="val" abstract>
+    The resource bundle control object used to load the translations from the given file type.
+
+    If you need to write your own, we suggest taking a look at
+    [how the yaml resource bundle library does it](https://github.com/akkinoc/yaml-resource-bundle/blob/main/src/main/kotlin/dev/akkinoc/util/YamlResourceBundle.kt).
+  </Doc.Property>
+</Doc.Container>
+
+If your file format is implemented as an `object`,
+you'll also need to include an `internal` function named `readResolve` that returns the object,
+otherwise you won't be able to use it in your Gradle scripts.
+For example:
+
+```kt
+@ServiceProvider
+object MyFormat : FileFormat {
+    override val identifiers: Set<String> = setOf("my")
+    override val control: ResourceBundle.Contol = MyControl
+
+    @Suppress("UnusedPrivateMember")
+    /** Required for Gradle support. **/
+    internal fun readResolve(): Any = MyFormat
+}
+```
+
+## Message Formats
+
+Message formats are represented by the `MessageFormat` type, and allow the framework to load and format translations
+using different message and placeholder syntaxes.
+
+### Bundled
+
+The framework comes with built-in support for the following message formats:
+
+- **ICU MessageFormat v1,** as documented
+  [on the ICU site](https://unicode-org.github.io/icu/userguide/format_parse/messages/).
+- **ICU MessageFormat v2,** as documented
+  [on the ICU site](https://unicode-org.github.io/icu/userguide/format_parse/messages/mf2.html).
+
+### Custom
+
+All custom message formats must extend the `MessageFormat` interface, and they must be annotated with the
+`@ServiceProvider` annotation from sweet-spi.
+The `MessageFormat` interface defines a set of APIs that you'll need to implement.
+
+<Doc.Container>
+  <Doc.Property name="identifier" type="Set<String>" visibility="public" propType="val" abstract>
+    This is an identifier that must be unique to this message format.
+  </Doc.Property>
+
+  <Doc.Function name="formatNamed" visibility="public" returns="String" abstract>
+    Format the incoming `string` with the given `locale` and named `placeholders`.
+
+    If your message format doesn't support named placeholders, use `error()` to throw an exception.
+
+    <Doc.Arguments>
+      <Doc.Arg name="string" type="String">
+        The incoming translation string to be formatted.
+      </Doc.Arg>
+
+      <Doc.Arg name="locale" type="Locale">
+        The locale used to retrieve the translation string, which should be used for formatting dates and other data.
+      </Doc.Arg>
+
+      <Doc.Arg name="placeholders" type="Map<String, Any?>">
+        A map representing the named placeholders to replace, where the keys represent the placeholder names.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+
+  <Doc.Function name="formatOrdinal" visibility="public" returns="String" abstract>
+    Format the incoming `string` with the given `locale` and ordinal `placeholders`.
+
+    If your message format doesn't support ordinal placeholders, use `error()` to throw an exception.
+
+    <Doc.Arguments>
+      <Doc.Arg name="string" type="String">
+        The incoming translation string to be formatted.
+      </Doc.Arg>
+
+      <Doc.Arg name="locale" type="Locale">
+        The locale used to retrieve the translation string, which should be used for formatting dates and other data.
+      </Doc.Arg>
+
+      <Doc.Arg name="placeholders" type="Array<Any?>">
+        An array representing the ordinal placeholders to replace, which should be referred to by their index numbers.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+</Doc.Container>
+
+If your message format is implemented as an `object`,
+you'll also need to include an `internal` function named `readResolve` that returns the object,
+otherwise you won't be able to use it in your Gradle scripts.
+For example:
+
+```kt
+@ServiceProvider
+object MyFormat : MessageFormat {
+    override val identifier: String = "my"
+
+    override fun formatNamed(
+        string: String, locale: Locale, placeholders: Map<String, Any?>
+    ): String = error("...")
+
+    override fun formatOrdinal(
+        string: String, locale: Locale, placeholders: Array<Any?>
+    ): String = error("...")
+
+    @Suppress("UnusedPrivateMember")
+    /** Required for Gradle support. **/
+    internal fun readResolve(): Any = MyFormat
+}
+```

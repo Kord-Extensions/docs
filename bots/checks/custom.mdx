@@ -1,0 +1,326 @@
+---
+description: "Learn how to write your own re-usable checks."
+sidebar_position: 3
+sidebar_custom_props:
+  card_group: "Customisation"
+  icon: "fluent:code-block-edit-24-filled"
+---
+
+import * as Doc from "/src/components/Doc";
+
+# Custom Checks
+
+You can create your own custom checks in one of several ways, using the [context API](#context-api)
+and [check utilities](/bots/checks/utilities).
+
+## Writing Checks
+
+### Inline
+
+If you don't need to re-use a check, you can define it inline in your `check {}` or `validate {}` builder.
+
+- `check {}` builders use a `CheckContext` receiver.
+- `validate {}` builders use a `ValidationContext` receiver, which extends `CheckContext` with some extra APIs.
+
+```kt
+check {
+    val channel = guildFor(event)
+
+    if (channel == null) {
+       fail(CoreTranslations.Checks.AnyGuild.failed)
+    }
+}
+```
+
+### Re-usable
+
+If you need a re-usable check, define an extension function against the `CheckContext` type.
+Checks written this way should be more in-depth and include logging.
+
+```kt
+suspend fun CheckContext<*>.anyGuild() {
+    if (!passed) {
+        return  // If the check context is already failing, we can skip this check.
+    }
+
+    // Create a logger with the containing package and function name.
+    val logger = KotlinLogging.logger("dev.kordex.core.checks.anyGuild")
+
+    if (guildFor(event) != null) {
+        logger.passed()  // Logging a pass is as important as logging a failure!
+
+        pass()
+    } else {
+        logger.failed("Event did not happen within a guild.")
+
+        fail(CoreTranslations.Checks.AnyGuild.failed)
+    }
+}
+```
+
+## Context API
+
+All `check {}` builders use `CheckContext` as their receiver type.
+
+<Doc.Container>
+  <Doc.Type name="CheckContext" type="class" extends="KordExKoinComponent" open>
+    Check context type, containing everything you need to write your own checks.
+
+    <Doc.Arguments type="type">
+      <Doc.Arg name="T" type="Event" variance="out">
+        Generic type representing the event being checked.
+      </Doc.Arg>
+    </Doc.Arguments>
+
+    <Doc.Arguments type="constructor">
+      <Doc.Arg name="event" type="T" propType="val">
+        Event object to be checked.
+      </Doc.Arg>
+
+      <Doc.Arg name="locale" type="Locale" propType="val">
+        Locale for the current event, retrieved via your bot's [locale resolvers](/bots/config/i18n).
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Type>
+</Doc.Container>
+
+### Builders
+
+<Doc.Container>
+  <Doc.Builder name="failIf" lambdaReturns="Boolean" functionReturns="Boolean">
+    Fail this check if the provided lambda returns `false`.
+    Calls `fail()` internally.
+
+    Returns `true` if the check is now failing, `false` otherwise.
+
+    <Doc.Arguments type="function">
+      <Doc.Arguments>
+        <Doc.Arg name="message" type={["Key?", "String"]}>
+          Message to respond with explaining why the check failed.
+        </Doc.Arg>
+      </Doc.Arguments>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <Doc.Builder name="failIfNot" lambdaReturns="Boolean" functionReturns="Boolean">
+    Fail this check if the provided lambda returns `true`.
+    Calls `fail()` internally.
+
+    Returns `true` if the check is now failing.
+
+    <Doc.Arguments type="function">
+      <Doc.Arguments>
+        <Doc.Arg name="message" type={["Key?", "String"]}>
+          Message to respond with explaining why the check failed.
+        </Doc.Arg>
+      </Doc.Arguments>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <hr className="clear" />
+  <hr className="clear" />
+
+  <Doc.Builder name="passIf" lambdaReturns="Boolean" functionReturns="Boolean">
+    Passes this check if the provided lambda returns `true`.
+    Calls `pass()` internally.
+
+    Returns `true` if the check is now passing.
+  </Doc.Builder>
+
+  <Doc.Builder name="passIfNot" lambdaReturns="Boolean" functionReturns="Boolean">
+    Passes this check if the provided lambda returns `false`.
+    Calls `pass()` internally.
+
+    Returns `true` if the check is now passing.
+  </Doc.Builder>
+
+  <hr className="clear" />
+  <hr className="clear" />
+
+  <Doc.Builder name="whenFalse" receiver="Boolean" lambdaReturns="T?">
+    Calls the provided lambda only if this boolean is `false`, returning whatever the lambda does.
+
+    If this boolean is `true`, simply returns `null`.
+  </Doc.Builder>
+
+  <Doc.Builder name="whenTrue" receiver="Boolean" lambdaReturns="T?">
+    Calls the provided lambda only if this boolean is `true`, returning whatever the lambda does.
+
+    If this boolean is `false`, simply returns `null`.
+  </Doc.Builder>
+</Doc.Container>
+
+### Functions
+
+<Doc.Container>
+  <Doc.Function name="fail">
+    Fails this check, setting `passed` to `true`.
+
+    <Doc.Arguments>
+      <Doc.Arg name="message" type={["Key?", "String"]}>
+        Message to respond with explaining why the check failed.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+
+  <Doc.Function name="failIf" functionReturns="Boolean">
+    Fails this check if the provided boolean is `true`.
+    Calls `fail()` internally.
+
+    Returns `true` if the check is now failing.
+
+    <Doc.Arguments>
+      <Doc.Arg name="value" type="Boolean">
+        Boolean value to check.
+      </Doc.Arg>
+
+      <Doc.Arg name="message" type={["Key?", "String"]}>
+        Message to respond with explaining why the check failed.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+
+  <Doc.Function name="failIfNot" functionReturns="Boolean">
+    Fails this check if the provided boolean is `false`.
+    Calls `fail()` internally.
+
+    Returns `true` if the check is now failing.
+
+    <Doc.Arguments>
+      <Doc.Arg name="value" type="Boolean">
+        Boolean value to check.
+      </Doc.Arg>
+
+      <Doc.Arg name="message" type={["Key?", "String"]}>
+        Message to respond with explaining why the check failed.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+
+  <hr className="clear" />
+  <hr className="clear" />
+
+  <Doc.Function name="pass">
+    Passes this check, setting `passed` to `true`.
+  </Doc.Function>
+
+  <Doc.Function name="passIf" functionReturns="Boolean">
+    Passes this check if the provided boolean is `true`.
+    Calls `pass()` internally.
+
+    Returns `true` if the check is now passing.
+
+    <Doc.Arguments>
+      <Doc.Arg name="value" type="Boolean">
+        Boolean value to check.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+
+  <Doc.Function name="passIfNot" functionReturns="Boolean">
+    Passes this check if the provided boolean is `false`.
+    Calls `pass()` internally.
+
+    Returns `true` if the check is now passing.
+
+    <Doc.Arguments>
+      <Doc.Arg name="value" type="Boolean">
+        Boolean value to check.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+</Doc.Container>
+
+<Doc.Container internal>
+  <Doc.Function name="getMessageKey" returns="Key?" internal>
+    Get a pre-translation `Key` representing the current failure message, provided the check is failing and a message
+    was set.
+
+    Otherwise, this function returns `null`.
+  </Doc.Function>
+
+  <Doc.Function name="getTranslatedMessage" returns="String?" internal>
+    Returns a translated string based on the value returned by `getMessageKey()`, returning `null` in the same
+    situations.
+  </Doc.Function>
+
+  <Doc.Function name="throwIfFailedWithMessage" internal>
+    Throws a [`DiscordRelayedException`](/bots/exceptions#discord-relayed) with the value returned by `getMessageKey()`,
+    if that value isn't `null`.
+  </Doc.Function>
+</Doc.Container>
+
+### Properties
+
+<Doc.Container>
+  <Doc.Property name="errorResponseKey" type="Key" default="CoreTranslations.Checks.responseTemplate">
+    Translation key used to construct an error message to display on Discord.
+
+    You can replace this with your own key if you need to.
+    Custom keys must support one ordinal placeholder, `{0}`, containing the error message.
+  </Doc.Property>
+
+  <Doc.Property name="message" type="String?" default="null">
+    Error message to respond with.
+
+    Usually set via the various `fail` builders and functions, and not used if `passed` is `true`.
+  </Doc.Property>
+
+  <Doc.Property name="passed" type="Boolean" default="true">
+    Whether this check is currently passing, which is also the default state.
+
+    Usually set via the various `pass` and `fail` builders and functions.
+  </Doc.Property>
+</Doc.Container>
+
+### Validation Contexts
+
+All `validate {}` builders use `ValidationContext` as their receiver type.
+This type provides [the same `CheckContext API surface`](#context-api), with some extras.
+
+<Doc.Container>
+  <Doc.Type name="ValidationContext" type="class" extends="CheckContext">
+    Validation context type, containing everything you need to write your own validators.
+
+    <Doc.Arguments type="type">
+      <Doc.Arg name="T" variance="out">
+        Generic type representing the type of the command argument's value.
+      </Doc.Arg>
+    </Doc.Arguments>
+
+    <Doc.Arguments type="constructor">
+      <Doc.Arg name="converter" type="Converter" propType="val">
+        Converter used to generate the current argument's value.
+      </Doc.Arg>
+
+      <Doc.Arg name="value" type="T" propType="val">
+        The current argument's value.
+      </Doc.Arg>
+
+      <Doc.Arg name="context" type="CommandContext" propType="val">
+        The [command context](/bots/commands/base-context) representing the command invocation triggering this
+        validator.
+      </Doc.Arg>
+
+      <Doc.Arg name="locale" type="Locale">
+        Locale for the current event, retrieved via your bot's [locale resolvers](/bots/config/i18n).
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Type>
+</Doc.Container>
+
+<Doc.Container internal>
+  <Doc.Function name="getMessageKey" internal>
+    Get a pre-translation `Key` representing the current failure message, provided the validator is failing.
+
+    If `message` is `null`, this returns a default error message.
+    Returns `null` if the validator is passing.
+  </Doc.Function>
+
+  <Doc.Function name="throwIfFailed" internal>
+    If this validator is failing, throws a [`DiscordRelayedException`](/bots/exceptions#discord-relayed) with the value
+    returned by `getMessageKey()`,.
+
+    If the value returned by `getMessageKey()` is `null`, this function throws an `IllegalStateException` instead.
+  </Doc.Function>
+</Doc.Container>

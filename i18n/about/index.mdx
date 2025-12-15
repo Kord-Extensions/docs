@@ -1,0 +1,105 @@
+---
+description: A different take on i18n frameworks.
+sidebar_position: 02
+---
+
+# About the Framework
+
+The Kord Extensions Internationalisation Framework (the i18n framework) was originally designed for
+[our bot framework](/bots) but ended up growing in scope,
+and we realised it could be useful for other projects to integrate.
+
+This framework follows a strict philosophy, which we've detailed below for context.
+
+We hope you find this framework useful, and we'd love to
+[hear how you've used it](/about/community/rules-and-reporting#giving-feedback)!
+
+## Philosophy
+
+We designed this project to uphold a few core ideals:
+
+1. Don't make the project feel "magical" (for example, via opaque annotation processors).
+2. Meet developers where they are, and allow them to adapt the framework as needed.
+3. Design flexible, easy-to-use APIs, written with readable and accessible code.
+4. Support advanced use-cases, where reasonable and possible to.
+5. Don't use the project to be predatory or problematic.
+6. Use the project's licence to protect and uphold all contributors' rights.
+
+## Mindset
+
+We believe that proper i18n tooling is a very important component for all types of software, and that every developer
+should strive to make their projects accessible to as many people as possible, regardless of where potential users
+are from or what languages they speak.
+
+We also believe that proper i18n tooling makes both development and contributions as easy and smooth as possible, and
+that the current tooling landscape does a poor job of meeting these goals.
+
+### Current Options
+
+Before getting stuck into writing our own framework, we looked into existing approaches to see whether they'd be
+suitable for us.
+
+#### GNU gettext
+
+[GNU gettext](https://www.gnu.org/software/gettext/) is a lightweight translations toolkit created by The GNU Project
+for their own purposes.
+
+Like most GNU projects, we feel that gettext suffers from usability problems:
+- Working with translations requires using multiple command-line tools, potentially including `xgettext`, `msgmerge`
+  and `msgfmt` depending on the project.
+  This is the standard way to do many tasks on Linux, but it is far from convenient or friendly to anyone without Linux
+  development experience.
+- Translations are keyed using the default, untranslated string content, which means you have to update both the key
+  and all of its usages whenever the default translation changes.
+- The PO file format isn't very easy to understand and, in particular, is rather unfriendly for non-developer
+  translators, containing a lot of technical metadata about each translation, including which language-specific
+  formatting syntax to use.
+
+#### Java Resource Bundles
+
+[Java Resource Bundles](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/ResourceBundle.html)
+provide a relatively simple approach to storing your translations, but we feel they fall short when used on their own:
+
+- As with many parts of the Java standard library, resource bundles require that developers write a lot of boilerplate
+  code to integrate them with their project, especially when it comes to loading translations from plugins or other
+  sources.
+- Resource bundles don't provide any message formatting options, and
+  [Java's MessageFormat](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/text/MessageFormat.html)
+  is too basic and is incompatible with standards like ICU message format v2.
+
+#### Pinterest L10nMessages
+
+[Pinterest L10nMessages](https://l10nmessages.io/) is another attempt at providing a batteries-included i18n toolkit.
+While it is a distinct improvement on the other options detailed above, we still feel it falls short:
+
+- It is designed around an annotation processor that generates a Java enum containing entries matching your
+  translation keys, with the bundle name defined directly in code.
+  Enums are known to make binary compatibility more difficult in Kotlin, and they don't work for several advanced
+  use-cases that we ran into.
+  This also only works for translation bundles using `.properties` files.
+- It defaults to using
+  [Java's MessageFormat](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/text/MessageFormat.html)
+  to format translations, and requires that you add ICU4J yourself if you want to use its v1 message format.
+  You can provide your own message formatter, but only by returning it from a lambda created when you set up the
+  message provider.
+- The API is very clunky and Java-enterprise-centric, and doesn't make for smooth development in Kotlin.
+
+### Our Approach
+
+We designed our framework to learn from the mistakes other projects have made, and this has resulted in a fairly
+different approach compared to other projects that try to fill the same niche:
+
+- We provide a fully object-oriented approach:
+  - Translation keys are represented by immutable `Key` objects that can be cloned with added contextual data,
+    including pre-filled placeholders, post-processors, target locales, and other pieces of data.
+  - Translation bundles are represented by immutable `Bundle` objects that refer to the correct resource bundle, but
+    also contain information on the bundle's file/message formats, and what classloader to load translations from.
+- We also provide [code generators](/i18n/generators), allowing you to easily generate the required objects in an easy,
+  developer-friendly manner, and providing built-in safety via the Kotlin compiler.
+  These generators don't rely on annotations (or, indeed, any of your code), instead reading your translations files
+  directly.
+- We support any arbitrary file/message formats, simply loaded via a service provider.
+  However, we also provide first-party support for Properties and YAML files, and ICU v1 and v2 messages.
+- We provide ICU4J as an `api` dependency, giving you direct access to its library of tools.
+  We consider ICU4J to be part of our project's API, and we're committed to keeping its tools available if we ever
+  [bring this project to Kotlin Multiplatform](/i18n/about/multiplatform).

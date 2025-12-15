@@ -1,0 +1,556 @@
+---
+description: "Write your own custom converters."
+sidebar_position: 3
+
+sidebar_custom_props:
+  card_group: "Converters"
+  icon: "fluent:collections-add-24-filled"
+---
+
+import CodeBlock from "@theme/CodeBlock";
+import EmbeddedVersion from "../../../src/components/EmbeddedVersion";
+import * as Doc from "/src/components/Doc";
+
+# Custom Converters
+
+When the bundled converters don't meet your needs, you can create your own.
+Kord Extensions provides utilities that make creating your own converters easier,
+generating converter builders functions automatically.
+
+## Build Configuration
+
+Before getting started, make sure you're
+[using our Gradle plugin](/bots/tutorials/setting-up),
+our [bot template](https://codeberg.org/Kord-Extensions/template) or
+[plugin template](https://codeberg.org/Kord-Extensions/template-plugin),
+or you
+[set your project up manually according to our tutorial](/bots/tutorials/setting-up-without-plugin).
+
+Our annotation processor uses these coordinates:
+<code>dev.kordex:annotation-processor:<EmbeddedVersion reference="kordEx" /></code>
+
+## Anatomy
+
+### Implementation
+
+All converters extend one of the converter base types:
+
+- `SingleConverter` - This is the type most converters should inherit.
+  Always pick this unless you have a specific reason not to.
+- `ChoiceConverter` - Type representing a choice-variant converter.
+  These converters are like single converters, but include a `choices` map.
+  They're meant primarily to be used with slash commands, but do still work with chat commands.
+- `CoalescingConverter` - Type representing a coalescing-variant converter.
+  These converters are separate from single converters, so pick this type if you're writing one.
+- `DefaultingConverter` - Type representing a defaulting-variant converter.
+  Most converters don't extend this directly, instead relying on the `CoaleascingToDefaultingConverter` and
+  `SingleToDefaultingConverter` wrapping types, generated via the `@Converter` annotation.
+- `ListConverter` - Type representing a list-variant converter.
+  Most converters don't extend this directly, instead relying on the `SingleToListConverter` wrapping type,
+  generated via the `@Converter` annotation.
+- `OptionalConverter` - Type representing an optional-variant converter.
+  Most converters don't extend this directly, instead relying on the `CoaleascingToOptionalConverter` and
+  `SingleToOptionalConverter` wrapping types, generated via the `@Converter` annotation.
+
+All converter base types take a generic type parameter, representing the final type your converter will transform values
+into.
+
+Once you've picked a base type, you'll need to create a class extending it and implement the required APIs.
+
+```kt
+@Converter(
+	"snowflake",
+
+	types = [ConverterType.DEFAULTING, ConverterType.LIST, ConverterType.OPTIONAL, ConverterType.SINGLE]
+)
+public class SnowflakeConverter(
+  override var validator: Validator<Snowflake> = null,
+) : SingleConverter<Snowflake>() {
+  override val signatureType: Key = CoreTranslations.Converters.Snowflake.signatureType
+
+  // ...
+}
+```
+
+<Doc.Container>
+  <Doc.Type name="MyConverter" type="class" extends={["Converter<OutputType>"]}>
+    Your converter must implement all of the APIs specified below, aside from any optional properties with a default
+    value.
+
+    <Doc.Function name="constructor">
+      <Doc.Arguments type="constructor">
+        <Doc.Arg name="validator" type="Validator<OutputType>" default="null" propType="override var">
+          Validator provided by other developers.
+        </Doc.Arg>
+      </Doc.Arguments>
+    </Doc.Function>
+
+    <Doc.Property name="signatureType" type="Key">
+      Translation key referring to a short, non-title-case name for the type of data your converter handles.
+      For example, `number`, `ID`, `regex`, `locale name/code`, etc.
+
+      This is used by the `help` command in your [help extension](/bots/config/extensions#help-extension),
+      and shown in error responses.
+    </Doc.Property>
+
+    <Doc.Property name="errorType" type="Key?" default="null">
+      Translation key referring to a longer description for the type of data your converter handles, if required.
+      For example, `yes or no` for `Boolean` converters.
+
+      If provided, this is used instead of `signatureType` in "invalid value" error messages.
+    </Doc.Property>
+
+    <Doc.Property name="showTypeInSignature" type="Boolean" default="true">
+      Whether the `signatureType` property should be shown by the `help` command in your
+      [help extension](/bots/config/extensions#help-extension).
+
+      Set this to `false` to hide it.
+    </Doc.Property>
+
+    <Doc.Function name="parse" returns={["Boolean", "Int"]}>
+      String parsing function used when handling chat command arguments, as explained below.
+
+      <Doc.Arguments>
+        <Doc.Arg name="parser" type="StringParser?">
+          Tokenising string parser containing this command invocation's string arguments.
+
+          May be `null` when the argument was provided using keyword syntax, or when values are provided by a wrapping
+          converter.
+        </Doc.Arg>
+
+        <Doc.Arg name="context" type="CommandContext">
+          Command context representing this command invocation.
+
+          **Do not try to cast this to a simpler type** - stick with the basic APIs available on this type.
+          This is important because Kord Extensions my pass unusual `CommandContext` subtypes into this function for
+          specific, niche use-cases.
+        </Doc.Arg>
+
+        <Doc.Arg name="named" type={["String?", "List<String>?"]}>
+          If the command invocation contains this argument as a keyword argument, this argument won't be `null` and you
+          should use it instead of trying to consume tokens from the `parser`.
+        </Doc.Arg>
+      </Doc.Arguments>
+    </Doc.Function>
+
+    <Doc.Function name="parseOption" returns="Boolean">
+      Discord option parsing function used when handling slash command arguments, as explained below.
+
+      <Doc.Arguments>
+        <Doc.Arg name="context" type="CommandContext">
+          Command context representing this command invocation.
+
+          **Do not try to cast this to a simpler type** - stick with the basic APIs available on this type.
+          This is important because Kord Extensions my pass unusual `CommandContext` subtypes into this function for
+          specific, niche use-cases.
+        </Doc.Arg>
+
+        <Doc.Arg name="option" type="OptionValue">
+          Discord option object, representing the data Discord provided for this argument's value.
+
+          You'll need to try to cast this to the type you expect, based on what your converter returns from
+          `toSlashOption`.
+        </Doc.Arg>
+      </Doc.Arguments>
+    </Doc.Function>
+
+    <Doc.Function name="toSlashOption" returns="OptionWrapper">
+      Conversion function that takes an `Argument` type, and converts it to a Discord option type, as explained below.
+
+      <Doc.Arguments>
+        <Doc.Arg name="arg" type="Argument">
+          The `Argument` object you'll need to convert to a Discord option.
+        </Doc.Arg>
+      </Doc.Arguments>
+    </Doc.Function>
+
+  </Doc.Type>
+</Doc.Container>
+
+### Parsing
+
+Your converter must implement parsing for both slash command and chat command arguments.
+
+#### Slash Commands
+
+Your bot will call the `parseOption` function to convert slash command arguments into the correct rich type,
+and `toSlashOption` to convert `Argument` objects to the correct slash command argument type that Discord should use.
+These functions together handle your converter's slash commands workflow, and they should follow this outline:
+
+- First, define `toSlashOption`, converting the `Argument` to the correct `OptionWrapper` type.
+  - We recommend starting with the return type, which should be `OptionWrapper<T>` where `T` is one of
+    [Kord's `OptionValue` subtypes](https://dokka.kord.dev/core/dev.kord.core.entity.interaction/-option-value/index.html).
+  - Then, call `wrapOption(name, description) { ... }`, setting `required = true` unless you're explicitly creating an
+    always-optional converter type.
+    Remember to return the resulting value from this function call!
+- Then, create the `parseOption` function, and note that the `option` argument must take an `OptionValue<*>` rather than
+  a more specific type.
+  - Start by casting this to the correct
+    [Kord `OptionValue` subtype](https://dokka.kord.dev/core/dev.kord.core.entity.interaction/-option-value/index.html)
+    using `as?`, and bail out via `return false` if this cast returns `null`.
+  - Attempt to parse the value, throwing a `DiscordRelayedException` if you need to return a specific error.
+    - Return `false` to signal that your converter couldn't parse any data, and respond with a generic error.
+  - Store the parsed value in `this.parsed`.
+    - Return `true` to signal that parsing was a success.
+
+When put together, your code should look something like this:
+
+```kt
+override suspend fun toSlashOption(arg: Argument<*>): OptionWrapper<StringChoiceBuilder> =
+  wrapOption(arg.displayName, arg.description) {
+    required = true
+  }
+
+override suspend fun parseOption(context: CommandContext, option: OptionValue<*>): Boolean {
+  val optionValue = (option as? StringOptionValue)?.value ?: return false
+
+  try {
+    this.parsed = Snowflake(optionValue)
+  } catch (_: NumberFormatException) {
+    throw DiscordRelayedException(
+      CoreTranslations.Converters.Snowflake.Error.invalid
+        .withContext(context)
+        .withOrdinalPlaceholders(optionValue)
+    )
+  }
+
+  return true
+}
+```
+
+#### Chat Commands
+
+Your bot will call the `parse` function to parse chat command arguments into the correct rich type.
+This function operates on a stream of string-based tokens, as provided by Kord Extensions'
+[tokenising string parser (TODO)](#).
+
+Your parsing workflow must follow this outline:
+
+- If `named != null`, use this as your parsing value.
+  - For single converters, call `parser.parseNext()` to retrieve the next value to parse.
+  - For list/coalescing converters, you can also use `parser.peekNext()` to retrieve the next value without advancing
+    the cursor.
+- Attempt to parse the value, throwing a `DiscordRelayedException` if you need to return a specific error.
+  - Return `false` (for single converters), or `0` (for list/coalescing converters), to signal that your converter
+    couldn't parse any data, and respond with a generic error.
+- Store the parsed value in `this.parsed`.
+  - Return `true` (for single converters`), or the number of arguments your converter parsed
+    (for list/coalescing converters), to signal that parsing was a success.
+
+When put together, your code should look something like this:
+
+```kt
+override suspend fun parse(parser: StringParser?, context: CommandContext, named: String?): Boolean {
+  val arg: String = named         // Try the keyword argument first.
+    ?: parser?.parseNext()?.data  // Try the string parser next.
+    ?: return false               // If both are null, bail out.
+
+  try {
+    this.parsed = Snowflake(arg)
+  } catch (_: NumberFormatException) {
+    throw DiscordRelayedException(
+      CoreTranslations.Converters.Snowflake.Error.invalid
+        .withContext(context)
+        .withOrdinalPlaceholders(arg)
+    )
+  }
+
+  return true
+}
+```
+
+### @Converter Annotation
+
+Now you've written your converter, it is time to generate all the builders and functions your users will need to define
+arguments with it.
+To do that, you'll need to annotate your class with `@Converter`, and provide the relevant arguments to it.
+
+<CodeBlock language="kotlin">
+  {`@Converter(
+    "snowflake",
+
+    types = [ConverterType.SINGLE, ConverterType.DEFAULTING, ConverterType.LIST, ConverterType.OPTIONAL]
+)
+`}
+</CodeBlock>
+
+<Doc.Container>
+  <p className="text-center text-l">
+    **Required Arguments**
+  </p>
+
+  <Doc.Background>
+    <Doc.Arg name="names" type={["String", "Array<String>"]} required>
+      Converter names, used to generate the corresponding builder functions.
+
+      You can specify multiple names here to generate multiple sets of builder functions, which might be useful when
+      dealing with names that may differ in different locales - for example, `colour` and `color`.
+    </Doc.Arg>
+
+    <Doc.Arg name="types" type="Array<ConverterType>" required>
+      Converter types to generate builders and builder functions for, following these rules:
+
+      - You must specify exactly one of `SINGLE` or `COALESCING` - not both.
+      - Choice converters must also specify `CHOICE`.
+      - You can also provide any combination of `DEFAULTING`, `LIST` and `OPTIONAL` to generate the corresponding wrapping
+        converters.
+    </Doc.Arg>
+  </Doc.Background>
+
+  <hr className="clear" />
+
+  <p className="text-center text-l">
+    **Optional Arguments**
+  </p>
+
+  <Doc.Background>
+    <Doc.Arg name="imports" type="Array<String>" default="[]">
+      Extra imports your converter requires, which will be included (along with the default ones) in all generated files.
+
+      ```kt
+      imports = [
+        "dev.kordex.core.commands.converters.impl.getEnum",
+        "dev.kordex.core.commands.application.slash.converters.ChoiceEnum",
+        "java.util.Locale",
+      ]
+      ```
+    </Doc.Arg>
+
+    <hr className="clear" />
+    <hr className="clear" />
+
+    <Doc.Arg name="builderConstructorArguments" type="Array<String>" default="[]">
+      Arguments added to the generated builder types' constructors, including name, type, visibility modifier and `val`/`var`.
+
+      By default, Kord Extensions will also pass these into your converter's constructor, but you can prefix them with
+      `!!` to prevent this.
+
+      <CodeBlock language="kotlin">
+        {`builderConstructorArguments = [
+    "public var getter: suspend (String, Locale) -> E?",
+    "!! argMap: Map<Key, E>",
+]
+`}
+      </CodeBlock>
+    </Doc.Arg>
+
+    <Doc.Arg name="builderGeneric" type="String" default='""'>
+      Generic type parameter used by the generated builder types.
+      This may either be full definitions including the names and type bounds, or just names if you provide the type
+      bounds via `builderSuffixedWhere`.
+
+      <CodeBlock language="kotlin">
+        {`// Full definition
+builderGeneric = "E: Enum<E>"
+
+// Name only
+builderGeneric = "E",
+builderSuffixedWhere = "E : Enum<E>, E : ChoiceEnum"
+`}
+      </CodeBlock>
+    </Doc.Arg>
+
+    <Doc.Arg name="builderFields" type="Array<String>" default="[]">
+      Extra properties defined within the generated builder types, including name, type, visibility modifier and
+      `val`/`var`.
+
+      Required properties should use `lateinit var`.
+      Otherwise, provide a reasonable default value.
+
+      ```kt
+      builderFields = [
+        // Required properties:
+        "public lateinit var radix: Int",
+
+        // Optional properties:
+        "public var maxLength: Int? = null",
+        "public var minLength: Int? = null",
+      ]
+      ```
+    </Doc.Arg>
+
+    <Doc.Arg name="builderSuffixedWhere" type="String" default='""'>
+      Extra type bounds for the generic type parameters defined via `builderGeneric`, provided after `where`.
+
+      <CodeBlock language="kotlin">
+        {`builderSuffixedWhere = "T: List<*>"`}
+      </CodeBlock>
+    </Doc.Arg>
+
+    <hr className="clear" />
+    <hr className="clear" />
+
+    <Doc.Arg name="builderBuildFunctionPreStatements" type="Array<String>" default="[]">
+      Extra lines of code added to generated builder types' `build` functions, **before** constructing the converter
+      object.
+    </Doc.Arg>
+
+    <Doc.Arg name="builderBuildFunctionStatements" type="Array<String>" default="[]">
+      Extra lines of code added to generated builder types' `build` functions, **after** constructing the converter
+      object.
+    </Doc.Arg>
+
+    <Doc.Arg name="builderInitStatements" type="Array<String>" default="[]">
+      Extra lines of code added to generated builder types' `init { }` blocks.
+
+      ```kt
+      builderInitStatements = [
+        "choices(argMap)",
+      ]
+      ```
+    </Doc.Arg>
+
+    <Doc.Arg name="builderExtraStatements" type="Array<String>" default="[]">
+      Extra lines of code added to generated builder types, after their `init { }` blocks and fields, but before their
+      functions.
+
+      <CodeBlock language="kotlin">
+    {`builderExtraStatements = [
+    "/** Add a channel type to the set of types the given channel must match. **/",
+    "public fun requireChannelType(type: ChannelType) {",
+    "    requiredChannelTypes.add(type)",
+    "}"
+]
+`}
+      </CodeBlock>
+    </Doc.Arg>
+
+    <hr className="clear" />
+    <hr className="clear" />
+
+    <Doc.Arg name="functionBuilderArguments" type="Array<String>" default="[]">
+      Arguments to add to the generated builder functions, passed into the generated builder types' constructors,
+      including name, and type.
+
+      ```kt
+      functionBuilderArguments = [
+        "getter = ::getEnum",
+      ]
+      ```
+    </Doc.Arg>
+
+    <Doc.Arg name="functionGeneric" type="String" default='""'>
+      Generic type parameter used by the generated builder types.
+      This may either be full definitions including the names and type bounds, or just names if you provide the type
+      bounds via `functionSuffixedWhere`.
+
+      <CodeBlock language="kotlin">
+        {`// Full definition
+functionGeneric = "E: Enum<E>"
+
+// Name only
+functionGeneric = "E",
+functionSuffixedWhere = "E : Enum<E>, E : ChoiceEnum"
+`}
+      </CodeBlock>
+    </Doc.Arg>
+
+    <Doc.Arg name="functionSuffixedWhere" type="String" default='""'>
+      Extra type bounds for the generic type parameters defined via `functionGeneric`, provided after `where`.
+
+      <CodeBlock language="kotlin">
+        {`functionSuffixedWhere = "T: List<*>"`}
+      </CodeBlock>
+    </Doc.Arg>
+  </Doc.Background>
+
+  <Doc.DetailsContainer>
+    <Doc.Details header="Generated Layout">
+      The code example below is what would normally be generated for the bundled `Boolean` converter, and it should give
+      you an idea of where each property inserts code into the generated files.
+
+      <CodeBlock language="kotlin">
+        {`package dev.kordex.core.commands.converters.impl
+
+// Original converter class, for safety
+import dev.kordex.core.commands.converters.impl.BooleanConverter
+
+// Imports that all converters need
+import dev.kordex.core.InvalidArgumentException
+import dev.kordex.core.annotations.UnexpectedFunctionBehaviour
+import dev.kordex.core.commands.Arguments
+import dev.kordex.core.commands.converters.*
+import dev.kordex.core.commands.converters.builders.*
+import dev.kordex.core.i18n.types.*
+import dev.kord.common.annotation.KordPreview
+
+// Converter type params
+import kotlin.Boolean
+
+/** @inject: imports **/
+
+/**
+ * Builder class for boolean converters. Used to construct a converter based on the given options.
+ *
+ * @see BooleanConverter
+ */
+public class BooleanConverterBuilder /** @inject: builderGeneric **/ (
+  /** @inject: builderConstructorArguments **/
+) : ConverterBuilder<Boolean>() /** @inject: builderSuffixedWhere **/ {
+    /** @inject: builderFields **/
+
+    init {
+        /** @inject: builderInitStatements **/
+    }
+
+    /** @inject: builderExtraStatements **/
+
+    public override fun build(arguments: Arguments): SingleConverter<Boolean> {
+        /** @inject: builderBuildFunctionPreStatements **/
+
+        val converter = BooleanConverter(
+            validator = validator,
+        )
+
+        /** @inject: builderBuildFunctionStatements **/
+
+        return arguments.arg(
+            displayName = name,
+            description = description,
+
+            converter = converter.withBuilder(this)
+        )
+    }
+}
+
+/**
+ * Converter creation function: boolean single converter
+ *
+ * @see BooleanConverterBuilder
+ */
+public fun /** @inject: functionGeneric **/ Arguments.boolean(
+    /** @inject: functionBuilderArguments **/
+    body: BooleanConverterBuilder.() -> Unit
+): SingleConverter<Boolean> /** @inject: functionSuffixedWhere **/ {
+    val builder = BooleanConverterBuilder( /** @inject: functionBuilderArguments **/ )
+
+    body(builder)
+
+    builder.validateArgument()
+
+    return builder.build(this)
+}
+`}
+      </CodeBlock>
+    </Doc.Details>
+  </Doc.DetailsContainer>
+</Doc.Container>
+
+<>
+The annotation processor generates code when you run the `build` task, placing it in your project's `build/` folder,
+under `generated/ksp/main/kotlin/`.
+Kord Extensions aims to generate well-formatted code, including comments explaining where it injects code, to try to
+make everything easier to understand.
+
+If you need more examples, please take a look at
+[the code for the bundled converters](https://github.com/Kord-Extensions/kord-extensions/tree/root/kord-extensions/src/main/kotlin/dev/kordex/core/commands/converters/impl).
+
+## Usage
+
+You can use your custom converters just like any of the bundled ones, as described on
+[the converter basics page](/bots/commands/converters/basics).
+Create an [Arguments subtype](/bots/commands/arguments), define arguments using the corresponding builder functions,
+and use it in your command definitions.
+
+If you're developing a library, your users will also be able to use any custom converters you develop for it.
+</>

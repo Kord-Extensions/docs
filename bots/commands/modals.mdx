@@ -1,0 +1,54 @@
+---
+description: "Modal forms - pop up and collect data."
+sidebar_position: 3
+
+sidebar_custom_props:
+  card_group: "Arguments"
+  divider_below: true
+  icon: "fluent:window-wrench-24-filled"
+---
+
+# Modals
+
+:::note Command Types
+
+While most command types support modals, [Chat Commands](/bots/commands/chat) don't.
+However, chat commands can handle multiple lines of text via [Coalescing Converters](/bots/commands/converters/basics#multiple-inputs).
+
+:::
+
+A [Discord Modal](https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-response-object-modal)
+is a pop-up modal window containing a set of form components, sent in response to any type of Discord Interaction.
+They allow your bot to collect information from users without asking them to type out a bunch of command arguments,
+and even support paragraph inputs with text spanning multiple lines.
+
+Kord Extensions represents modals using the `ModalForm` type, which you'll need to extend to define your own modals:
+
+```kt
+class MyModal : ModalForm() {
+    override var title: Key = Translations.Modals.myModal
+
+    val line = lineText {
+        label = "Line of Text"
+        placeholder = "Enter something..."
+    }
+}
+```
+
+Once you've created your modal class, provide it to your commands' builder functions.
+This will make the modal available via the `modal` argument to your command's `action { }` block.
+
+```kt
+publicSlashCommand(modal = ::MyModal) {
+    name = "my-command"
+
+    action { modal ->
+        respond {
+            content = "Text: ${modal.line.value}"
+        }
+    }
+}
+```
+
+This page is just a brief overview of how modals interact with commands.
+For more information, see [the relevant page in the Components section](/bots/components/modals).

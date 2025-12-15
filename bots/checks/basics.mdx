@@ -1,0 +1,48 @@
+---
+description: "Learn how the checks system works, and how to get started."
+sidebar_position: 1
+sidebar_custom_props:
+  card_group: "Basics"
+  icon: "fluent:new-24-filled"
+---
+
+import Link from "@docusaurus/Link";
+
+# Basics
+
+Checks are re-usable, generic predicates that you can apply to many Kord Extensions APIs, including:
+
+- [Argument validators](/bots/commands/converters/basics#shared-settings)
+- [Commands](/bots/commands/)
+- [Components](/bots/components/)
+- [Event handlers](/bots/events/)
+
+These predicates prevent code from running unless they pass.
+In a sense, they act like re-usable conditionals that you can use in any context triggered by an event.
+
+## Usage
+
+All check builders are receivers against the `CheckContext` or `ValidationContext` types.
+These types provide an API you can [learn more about here](/bots/checks/),
+but the extension functions that represent individual checks also use these types as a receiver.
+You apply a check by calling the relevant builders and functions in your check builders:
+
+```kt
+check {
+    // AND structure — all check functions must pass.
+    hasPermission(Permission.Administrator)
+    inGuild(CONTROL_GUILD)
+}
+
+check {
+    // OR structure — either check function must pass.
+    hasPermission(Permission.Administrator)
+
+    or {
+        hasRole(MOD_ROLE_ID)
+    }
+}
+```
+
+All check contexts default to a "passing" state, which check functions can update.
+They also support failure messages, which your bot will send to users if the check fails.

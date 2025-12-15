@@ -1,0 +1,65 @@
+---
+description: "Configure how errors are displayed."
+sidebar_position: 8
+
+sidebar_custom_props:
+  card_group: "Customisation"
+  icon: "fluent:comment-error-24-filled"
+
+# TODO: Link to other docs
+---
+
+import * as Doc from "/src/components/Doc";
+
+# Error Responses
+
+The default approach Kord Extensions takes when displaying errors to users is to send the message directly to the user,
+unformatted and without mentions/pings.
+The `errorResponse { }` builder allows you to change how Kord Extensions formats and displays errors to users on
+Discord.
+
+:::warning Empty Messages
+
+Remember that by using the `errorResponse { }` builder, you're replacing the builder Kord Extensions provides by
+default.
+Make sure your builder always adds to the message and never results in an empty message, otherwise your bot may throw
+strange, cryptic errors in some situations.
+
+:::
+
+```kt
+ExtensibleBot(TOKEN) {
+    // ...
+
+    errorResponse { message, type ->
+        allowedMentions { }  // Disable mentions/pings.
+
+        embed {
+            title = "Oopsie Woopsie!"
+            color = DISCORD_FUCHSIA
+
+            description = message.translate()
+        }
+    }
+}
+```
+
+## Builders
+
+<Doc.Container>
+  <Doc.Builder name="errorResponse" receiver="MessageCreateBuilder">
+    Replace the error response builder, allowing you to add extra formatting to error messages.
+
+    <Doc.Arguments type="lambda">
+      <Doc.Arg name="message" type="Key">
+        The error message to be sent to users.
+        Call `message.translate()` to get the corresponding `String`.
+      </Doc.Arg>
+
+      <Doc.Arg name="type" type="FailureReason">
+        Object representing what actually went wrong.
+        This is a sealed type, so you can check whether it's an instance of one of its subtypes.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+</Doc.Container>

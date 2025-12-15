@@ -1,0 +1,113 @@
+---
+description: "Manually-defined components, which work after restarts."
+sidebar_position: 3
+
+sidebar_custom_props:
+  card_group: "Usage"
+  icon: "fluent:settings-chat-24-filled"
+---
+
+import * as Doc from "/src/components/Doc";
+
+import {
+  MessageContainer,
+  Message,
+  ActionRow,
+  Button, SelectMenu,
+} from "/src/components/Messages"
+
+# Messages: Manual Handling
+
+Messages support a specific set of components, which you can read about
+[on the basics page](/bots/components/basics#types).
+For longer-lived message components, including those that must work after the bot restarts,
+it may be better to create your components manually,
+and write your own [Event Handlers](/bots/events/handlers).
+
+## Defining Components
+
+You can define components using Kord's built-in APIs in any message creation/editing builder.
+You'll need to define the action rows first, and then place components within them.
+
+:::note ID Parsing and Clashes
+
+If your extension creates multiple long-lived components, you should think about the IDs you use for them.
+
+Since you can parse the component ID when you receive an interaction event,
+it is a good idea to use a system of prefixed IDs containing additional contextual information.
+However, it is important to remember that your component IDs must not clash with the components
+defined in other extensions.
+
+Component IDs may be up to 100 characters long.
+
+:::
+
+```kt
+actionRow {
+	interactionButton(ButtonStyle.Success, "roles/add") {
+		label = "Add"
+	}
+
+	interactionButton(ButtonStyle.Danger, "roles/remove") {
+		label = "Remove"
+	}
+}
+```
+
+You may use the following functions to define components:
+
+- `channelSelect` - Create a channel select menu.
+- `interactionButton` - Create an interaction button.
+  Providing the `Link` button style will cause an error, so use the `linkButton` function for link buttons instead.
+- `linkButton` - Create a link button.
+- `premiumButton` - Create a premium button.
+- `mentionableSelect` - Create a mentionable select menu.
+- `roleSelect` - Create a role select menu.
+- `stringSelect` - Create a string select menu.
+- `userSelect` - Create a user select menu.
+
+For more information, see
+[the Kord docs](https://dokka.kord.dev/rest/dev.kord.rest.builder.component/-action-row-builder/index.html).
+
+## Defining Event Handlers
+
+Once you've created your components, you'll need to create some event handlers.
+Kord provides several suitable event types:
+- `ComponentInteractionCreateEvent`, fired when a user interacts with any of this bot's components.
+- `ButtonInteractionCreateEvent`, fired when a user interacts with any of this bot's buttons.
+- `SelectMenuInteractionCreateEvent`, fired when a user interacts with any of this bot's select menus.
+
+These events also come in global and guild variants.
+
+```kt
+val matchRegex = "role/\\w+".toRegex()
+
+event<GuildButtonInteractionCreateEvent> {
+	check {
+		failIf(!matchRegex.matches(event.interaction.componentId))
+	}
+
+	action {
+		val action = matchRegex
+			.matchEntire(event.interaction.componentId)!!
+			.groupValues[1]
+
+		when (action) {
+			"add" -> {
+				// Add the role
+			}
+
+			"remove" -> {
+				// Remove the role
+			}
+
+			else -> event.interaction.respondEphemeral {
+				content = "Unknown action: $action"
+			}
+		}
+	}
+}
+```
+
+For more information, see
+[the Kord docs](https://dokka.kord.dev/core/dev.kord.core.event.interaction/-component-interaction-create-event/index.html).

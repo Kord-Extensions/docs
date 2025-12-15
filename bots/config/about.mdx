@@ -1,0 +1,220 @@
+---
+description: 'Configure the default "about" command.'
+sidebar_position: 3
+
+sidebar_custom_props:
+  card_group: "Customisation"
+  icon: "fluent:info-24-filled"
+  tags:
+    - v-2
+---
+
+import * as Doc from "/src/components/Doc";
+
+# About Extension
+
+The `about { }` builder allows you to configure your bot's `about` command.
+
+:::warning Don't remove this command
+
+The `about` command includes a mandatory copyright section, mentioning Kord Extensions, and the libraries it uses.
+
+This section ensures that your bot contains the notice and source code link required by the EUPL, Kord Extensions'
+licence.
+**You must not work around this, regardless of how easy or difficult it may be.**
+
+If this is a big problem for you or your company, please contact us via
+[the Discord server](https://discord.gg/nYzQWcjAmK), and we'll help you figure something out.
+
+:::
+
+By default, Kord Extensions will create an `about` chat and slash command, with a `copyright` subcommand.
+You can configure this command using the `about { }` builder, adding your own sections and copyright notices as
+appropriate.
+
+```kotlin
+about {
+    ephemeral = true  // Global default setting
+
+    general {  // Standard "general" section
+        ephemeral = false  // Only applies to this section
+
+        message { locale ->
+            content = "General message content goes here!"
+        }
+    }
+
+    section(
+        Translations.About.Sections.Secondary.name,
+        Translations.About.Sections.Secondary.description
+    ) {
+        message { locale ->
+            content = "More content here!"
+
+            embed {
+                description = "Maybe even an embed?"
+            }
+        }
+    }
+}
+```
+
+## Configuration
+
+The `about { }` builder provides the following properties.
+
+<Doc.Container>
+  <Doc.Property name="ephemeral" type="boolean" default="true" propType="var">
+    Whether commands (including the copyright command) should respond to slash commands ephemerally.
+  </Doc.Property>
+</Doc.Container>
+
+## Copyright
+
+The contents of the `copyright` section are generated based on a list of copyright entries,
+provided via the `copyright` function.
+
+Kord Extensions will automatically populate this list with the following data:
+- The dependencies it uses, along with those used by any first-party modules included with your bot.
+- A list of loaded plugins, without versioning information.
+
+You can add copyright items by calling the copyright function with a name,
+[SPDX licence identifier](https://spdx.org/licenses/),
+item type (Framework, Library, Module, Plugin, or Tool),
+and optionally a URL.
+
+```kotlin
+copyright(
+    "Time4J",
+    "LGPL-2.1",
+    CopyrightType.Library,
+    "http://time4j.net/"
+)
+```
+
+### Modules
+
+If you're writing a module, library, or meta-framework,
+feel free to include whatever information you feel is relevant by default.
+
+A simple way to do this is by creating an extension function, checking a top-level boolean value,
+and calling this function in a setup function or class initialiser.
+For example:
+
+```kotlin
+private var copyrightAdded = false
+
+internal fun AboutBuilder.addCopyright() {
+    if (!copyrightAdded) {
+        copyright(
+            "Time4J",
+            "LGPL-2.1",
+            CopyrightType.Library,
+            "http://time4j.net/"
+        )
+    }
+
+    copyrightAdded = true
+}
+
+// ...
+
+class MyExtension : Extension() {
+    override fun setup() {
+        bot.settings.aboutBuilder.addCopyright()
+    }
+}
+```
+
+## Sections
+
+While Kord Extensions provides the `copyright` subcommand by default,
+you're free to add any other informational commands you wish.
+We refer to these commands as "sections", each represented by a subcommand on the `about` command.
+
+To create a section, use one of the builders.
+
+<Doc.Container>
+  <Doc.Builder name="general" receiver="Section">
+    Call this DSL function to create a "general" section, including an automatically translated name and description.
+  </Doc.Builder>
+
+  <Doc.Builder name="section" receiver="Section" hasArgs>
+    Call this DSL function to create a section, represented by a subcommand.
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="name" type="Key">
+        Translatable command name.
+      </Doc.Arg>
+
+      <Doc.Arg name="description" type="Key">
+        Translatable command description.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+</Doc.Container>
+
+### Section Configuration
+
+Configure your section via the APIs described below.
+
+#### Builders
+
+<Doc.Container>
+  <Doc.Builder name="message" receiver="MessageBuilder">
+    Call this DSL function to provide a message builder, used to construct the message returned to the user when
+    they access the current section.
+
+    <Doc.Arguments type="lambda">
+      <Doc.Arg name="locale" type="Locale">
+        Can be used to translate `Key` objects via the i18n system.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+</Doc.Container>
+
+#### Properties
+
+<Doc.Container>
+  <Doc.Property name="ephemeral" type="Boolean?" default="null" propType="var">
+    Whether this section should respond to slash commands ephemerally.
+    If not provided, defaults to the setting provided in the `about { }` builder.
+  </Doc.Property>
+</Doc.Container>
+
+## Full Example
+
+```kotlin
+about {
+    ephemeral = true
+
+    copyright(
+        "Time4J",
+        "LGPL-2.1",
+        CopyrightType.Library,
+        "http://time4j.net/"
+    )
+
+    section(  // Plain strings work if you don't want translations
+        Translations.About.Sections.Main.name,
+        Translations.About.Sections.Main.description
+    ) {
+        ephemeral = false
+
+        message { locale ->
+            embed {
+                title = "Embed Title"
+                description = translate("a.translation.key")
+            }
+        }
+    }
+
+    general {
+        ephemeral = false
+
+        message { locale ->
+            content = "..."
+        }
+    }
+}
+```

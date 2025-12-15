@@ -1,0 +1,102 @@
+.row {
+	display: flex;
+	flex-direction: row;
+	gap: 0.5em;
+}
+
+.col {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5em;
+}
+
+.col .col:not(:last-child) {
+	margin-bottom: 1em;
+}
+
+.head {
+	font-size: 1.25em;
+	font-weight: bold;
+}
+
+.headMed {
+	font-size: 1.125em;
+	font-weight: bold;
+}
+
+.menu {
+	display: flex;
+	flex-direction: row;
+}
+
+.menu select {
+	appearance: none;
+	background-color: var(--ifm-color-primary);;
+	color: var(--ifm-color-primary-text);
+	border: none;
+	border-radius: 5px;
+	padding: 0.5em;
+	margin: 0;
+	width: 100%;
+	font-family: inherit;
+	font-size: inherit;
+	cursor: inherit;
+	line-height: inherit;
+	outline: none;
+	grid-area: select
+}
+
+.darkener {
+	transition: opacity 0.3s;
+}
+
+.darken {
+	opacity: 50%;
+}
+
+.menu {
+	width: 100%;
+	max-width: 20em;
+	font-size: 1.25em;
+	color: var(--ifm-color-primary-text);
+	background-color: var(--ifm-color-primary);
+	border-radius: 5px;
+	border: none;
+	display: grid;
+	grid-template-areas: "select";
+	align-items: center;
+	position: relative;
+}
+
+.menu::after {
+	pointer-events: none;
+	content: "";
+	width: 0.5em;
+	height: 0.5em;
+	background-color: var(--ifm-color-primary-text);
+	clip-path: polygon(100% 0%, 0 0%, 50% 100%);
+	grid-area: select;
+	justify-self: end;
+	margin-right: 0.5em;
+	margin-top: 0.2em;
+}
+
+.focus {
+	pointer-events: none;
+}
+
+.menu select:focus + .focus {
+	position: absolute;
+	top: -1px;
+	left: -1px;
+	right: -1px;
+	bottom: -1px;
+	border: 2px solid var(--ifm-color-primary);
+	border-radius: inherit;
+}
+
+.menu.disabled, .menu.disabled select {
+	cursor: not-allowed;
+	color: var(--ifm-color-secondary-text) !important;
+	background-color: var(--ifm-color-secondary) !important;
+}

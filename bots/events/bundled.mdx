@@ -1,0 +1,164 @@
+---
+description: 'Built-in event types.'
+sidebar_position: 2
+
+sidebar_custom_props:
+  card_group: "Objects"
+  icon: "fluent:code-block-24-filled"
+---
+
+import * as Doc from "/src/components/Doc";
+
+# Bundled Events
+
+Kord Extensions provides a set of extra event types, representing things that were out of scope for Kord.
+You handle these events in your extensions [by writing event handlers](/bots/events/handlers).
+
+:::warning Brevity Warning
+
+Kord Extensions includes a huge number of extra events, especially those related to commands.
+For the sake of keeping this page shorter (and to protect the author's wrists), we've only included the base types
+and information on what their subtypes represent here.
+
+For more information on the specific structure for these events, use your IDE to inspect them, or take a look at
+[Dokka](https://dokka.kordex.dev/kord-extensions/dev.kordex.core.events/-kord-ex-event/).
+
+:::
+
+## Command Events
+
+Kord Extensions fires command events based on how [command](/bots/commands) executions go.
+These events all contain `command` and `event` properties representing the execution context,
+and all failure events include an extra property explaining what went wrong.
+
+More specific event types exist, based on the command type and, for application commands, the interaction flow.
+
+The base type tree looks like this:
+
+- `CommandEvent` - Base type extended by all command events.
+  - `CommandInvocationEvent` - Base type extended by all invocation events, fired when a user tries to invoke a command.
+  - `CommandSucceededEvent` - Base type extended by all success events, fired when a command executes without issues.
+  - `CommandFailedEvent` - Base type extended by all failure events, fired when a command fails to execute properly.
+    - `CommandFailedChecksEvent` - Base type extended by events representing command invocations with failing checks.
+      Includes a `reason` property containing the failure message.
+    - `CommandFailedParsingEvent` - Base type extended by events representing command invocations with argument parsing errors.
+      Includes an `exception` key containing the relevant `ArgumentParsingException`.
+    - `CommandFailedWithExceptionEvent` - Base type extended by events representing command invocations with thrown exceptions.
+      Includes a `throwable` key containing the relevant `Throwable`.
+
+### Application Commands
+
+Application command events extend the base types listed above:
+
+- Extra base types exist, prefixed with the command type - `Message`, `Slash` or `User`.
+- More specific events extend these base types, including class names prefixed with their interaction flow -
+  `Ephemeral` or `Public`.
+
+### Chat Commands
+
+Chat command events extend the base types listed above, including class names prefixed with `Chat`.
+No extra base event types exist.
+
+## Extension Events
+
+Kord Extensions fires extension state events based on the loading state of each registered [extension](/bots/extensions).
+This is particularly useful because your bot can load and unload extensions at runtime, including dynamically if
+they're part of a [plugin (TODO)](#).
+
+<Doc.Container>
+  <Doc.Type name="ExtensionStateEvent" extends={["KordExEvent"]} type="data class">
+    Extension state event, fired when an extension's loading state changes.
+
+    <Doc.Property name="extension" type="Extention">
+      The extension whose state changed.
+    </Doc.Property>
+
+    <Doc.Property name="state" type="ExtensionState">
+      The extension's new loading state.
+    </Doc.Property>
+  </Doc.Type>
+
+  <Doc.Type name="ExtensionState" type="enum class">
+    Enumeration representing the possible extension loading states.
+
+    <Doc.EnumMembers>
+      <Doc.Member name="FAILED_LOADING">
+        Your bot tried to load this extension, but encountered an error.
+        The extension may be in a partially-loaded state.
+      </Doc.Member>
+
+      <Doc.Member name="FAILED_UNLOADING">
+        Your bot tried to unload this extension, but encountered an error.
+        The extension is unloaded, but custom unloading steps defined in the `unload` function may be incomplete.
+      </Doc.Member>
+
+      <Doc.Member name="LOADED">
+        Your bot successfully loaded this extension.
+        The extension is loaded and operational.
+      </Doc.Member>
+
+      <Doc.Member name="LOADING">
+        Your bot requested to load this extension, and it's currently trying to do so.
+        The extension may be in a partially-loaded state.
+      </Doc.Member>
+
+      <Doc.Member name="UNLOADED">
+        Your bot successfully unloaded this extension, or it has never been loaded.
+        The extension is unloaded and non-functional.
+      </Doc.Member>
+
+      <Doc.Member name="UNLOADING">
+        Your bot requested to unload this extension, and it's currently trying to do so.
+        The extension may be in a partially-loaded state.
+      </Doc.Member>
+    </Doc.EnumMembers>
+  </Doc.Type>
+</Doc.Container>
+
+## Modal Events
+
+Kord Extensions fires a special state event when a [modal](/bots/commands/modals) interaction has completed,
+provided the corresponding `ModalForm` was registered correctly.
+Your bot uses this event to figure out when a user submits a modal, and it can continue processing your command or
+component actions.
+
+<Doc.Container>
+  <Doc.Type name="ModalInteractionCompleteEvent" extends={["KordExEvent"]} type="class">
+    Event fired when a user submits the modal for a specific `ModalForm`.
+
+    <Doc.Property name="id" type="String">
+      The modal's unique ID.
+    </Doc.Property>
+
+    <Doc.Property name="interaction" type="ModalSubmitInteraction">
+      Object representing the interaction received from Discord.
+    </Doc.Property>
+  </Doc.Type>
+</Doc.Container>
+
+## Other Discord Events
+
+As the Kord project tries to avoid implementing undocumented Discord APIs, sometimes Kord Extensions will include extra
+events representing those APIs.
+
+### Guild Join Requests
+
+:::warning Unmaintained Events
+
+We implemented these events a long time ago, during Discord's early closed testing period for the member screening
+feature.
+As the Kord Extensions team no longer uses these events, we may not notice when breakages happen.
+
+If you notice a problem, please submit a Pull Request.
+You can find these events
+[in this package](https://github.com/Kord-Extensions/kord-extensions/tree/root/kord-extensions/src/main/kotlin/dev/kordex/core/events/extra).
+
+:::
+
+Kord Extensions supports two extra events that may be of interest if your servers use the member screening feature.
+All these events extend `KordExEvent`, `Strategizable` and `MemberEvent`:
+
+- `GuildJoinRequestDeleteEvent` - Fired when Discord deletes an application.
+- `GuildJoinRequestUpdateEvent` - Fired when Discord updates an application.
+
+These are surprisingly complex events, and we recommend taking a look at them in your IDE if you need them.

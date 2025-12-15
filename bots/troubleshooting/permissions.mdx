@@ -1,0 +1,78 @@
+---
+description: 'Figuring out permissions errors.'
+sidebar_position: 2
+
+sidebar_custom_props:
+  card_group: "Sections"
+  icon: "fluent:chat-lock-24-filled"
+---
+
+import * as Doc from "/src/components/Doc";
+
+# Permissions
+
+:::warning Be careful!
+
+Discord, being as client-focused as it is, places some restrictions on permission management in the client that it
+doesn't enforce through the API.
+This is especially important to remember when working with bots, as you can end up in some very problematic situations,
+including:
+
+- Accidentally removing your bot's top role.
+- Setting permissions unsupported by some specific channel types.
+
+For more information on these situations, see the sections below.
+
+:::
+
+When working with Discord's guild APIs, you'll sometimes run into an error that looks like this:
+
+```
+Error during execution of event handler (...)
+dev.kord.rest.request.KtorRequestException: REST request returned an error: 403   Missing Access null
+    at dev.kord.rest.request.KtorRequestHandler.handle(KtorRequestHandler.kt:60)
+    at dev.kord.rest.request.KtorRequestHandler$handle$1.invokeSuspend(KtorRequestHandler.kt)
+    ...
+```
+
+Along with [the general troubleshooting page](/bots/troubleshooting/general), you may find the following sections
+helpful.
+
+## Channel Permissions
+
+:::danger This happens!
+
+We have spotted bots in the wild who set permissions they shouldn't, sometimes denying every possible permission to
+roles at a channel level.
+This may break permissions checks in your bot, so we recommend you stay aware of this problem and report this as a bug
+to any bots you find doing so.
+
+:::
+
+As mentioned in the warning above, Discord's API allows your bot to set channel permissions that don't make sense.
+While this doesn't change anything in the Discord client, it can affect your bot — and other
+bots — which need to do permissions checks.
+For example, it is entirely possible for your bots to set the "Administrator" or "Manage Guild Expressions"
+permissions at a channel level.
+
+For information on which permissions you should set (and avoid setting) on channels, see
+[the official Discord documentation](https://discord.com/developers/docs/topics/permissions).
+
+Additionally, some other notable client restrictions the API doesn't validate include:
+
+- Preventing users from accidentally removing the ability to speak in a channel when modifying permissions.
+
+**Discord won't stop your bots from doing these things.**
+
+## Role Management
+
+When you're managing and assigning roles to users, you should take note of each role's position among the others,
+and your bot's top role (the role it has with the highest position).
+Discord uses your bot's top role when calculating the users and roles your bot can modify.
+Specifically:
+
+- You can't moderate any users who have a top role higher than your bot's.
+- You can't assign/remove any roles above your bot's top role to/from any users.
+- You can't edit any roles above your bot's top role.
+
+If you're running into permissions errors when working with roles, check the order!
