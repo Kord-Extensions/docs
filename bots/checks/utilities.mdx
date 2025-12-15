@@ -1,0 +1,180 @@
+---
+description: "Learn about utilities that make writing checks easier."
+sidebar_position: 4
+sidebar_custom_props:
+  card_group: "Customisation"
+  icon: "fluent:code-text-edit-20-filled"
+---
+
+import * as Doc from "/src/components/Doc";
+
+# Utilities
+
+Kord Extensions provides many utilities that can make writing checks easier and simpler.
+
+## Event Entities
+
+You can use the following functions to retrieve entities contained within any generic event, which makes it much easier
+to write all kinds of code.
+These functions are essentially giant `when {}` blocks, checking against all possible basic event types.
+
+If you're writing [custom events](/bots/events/custom),
+remember to extend [the relevant generic event types](/bots/events/custom#writing-events)
+to make sure these functions work with your event.
+
+All the below functions take one argument — the event to retrieve an entity from.
+They all return `null` when the event doesn't contain the relevant entity type,
+and try to avoid making any REST requests.
+
+<Doc.Container>
+  <Doc.Function name="channelFor" returns="ChannelBehavior?">
+    **This function may make REST requests for `ThreadMemberUpdateEvent` events if the current thread isn't in the
+    cache!**
+  </Doc.Function>
+
+  <Doc.Function name="guildFor" returns="GuildBehavior?">
+    **Note:** This function can't retrieve a guild for `GuildAuditLogEntryCreateEvent` events, due to an oversight in
+    how both Kord and Discord treat this event.
+
+    **This function may make REST requests for `ThreadMemberUpdateEvent` events if the current thread isn't in the
+    cache!**
+  </Doc.Function>
+
+  <Doc.Function name="interactionFor" returns="Interaction?"></Doc.Function>
+
+  <Doc.Function name="memberFor" returns="MemberBehavior?">
+  </Doc.Function>
+
+  <Doc.Function name="messageFor" returns="MessageBehavior?">
+    **Note:** For `ThreadChannelCreateEvent` events, this function retrieves the last message in the thread.
+
+    **This function may make REST requests for `MessageUpdateEvent` events if the current message isn't in the cache,
+    or for `ThreadChannelCreateEvent` events if the current thread isn't in the cache!**
+  </Doc.Function>
+
+  <Doc.Function name="roleFor" returns="RoleBehavior?"></Doc.Function>
+
+  <Doc.Function name="threadFor" returns="ThreadChannelBehavior?">
+    **Note:** This uses `channelFor()`, returning `null` if the current channel isn't a thread.
+  </Doc.Function>
+
+  <Doc.Function name="topChannelFor" returns="ChannelBehavior?">
+    **Note:** This uses `channelFor()`, resolving to the parent channel if the current one is a thread.
+
+    **This function may make REST requests if the current channel isn't in the cache!**
+  </Doc.Function>
+
+  <Doc.Function name="userFor" returns="UserBehavior?">
+    **Note:** Bots can't be in group DMs, so this always uses the first recipient in all DM-specific events.
+
+    **This function may make REST requests for `MessageUpdateEvent` events if the current message isn't in the cache!**
+  </Doc.Function>
+</Doc.Container>
+
+## Logging
+
+The below functions are extension functions against the [Kotlin Logging](https://github.com/oshai/kotlin-logging)
+`KLogger` type.
+
+<Doc.Container>
+  <Doc.Function name="failed" receiver="KLogger">
+    Log that the current check failed, with the given reason.
+
+    <Doc.Arguments>
+      <Doc.Arg name="reason" type="String">
+        Reason the check failed.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+
+  <Doc.Function name="passed" receiver="KLogger">
+    Log that the current check passed, optionally with the given reason.
+
+    <Doc.Arguments>
+      <Doc.Arg name="reason" type="String">
+        Reason the check passed.
+        You can omit this if needed.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+
+  <hr className="clear" />
+  <hr className="clear" />
+
+  <Doc.Function name="noCategoryId" receiver="KLogger">
+    Log that the check failed because a category with the given doesn't exist.
+
+    <Doc.Arguments>
+      <Doc.Arg name="id" type="Snowflake">
+        Category ID.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+
+  <Doc.Function name="noChannelId" receiver="KLogger">
+    Log that the check failed because a channel with the given ID doesn't exist.
+
+    <Doc.Arguments>
+      <Doc.Arg name="id" type="Snowflake">
+        Channel ID.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+
+  <Doc.Function name="noGuildId" receiver="KLogger">
+    Log that the check failed because a guild with the given ID doesn't exist.
+
+    <Doc.Arguments>
+      <Doc.Arg name="id" type="Snowflake">
+        Guild ID.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+
+  <Doc.Function name="noRoleId" receiver="KLogger">
+    Log that the check failed because a role with the given ID doesn't exist.
+
+    <Doc.Arguments>
+      <Doc.Arg name="id" type="Snowflake">
+        Role ID.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+
+  <Doc.Function name="nullChannel" receiver="KLogger">
+    Log that the channel for the current event is `null`, and that it may not be supported by this check.
+  </Doc.Function>
+
+  <Doc.Function name="nullGuild" receiver="KLogger">
+    Log that the guild for the current event is `null`, and that it may not be supported by this check.
+  </Doc.Function>
+
+  <Doc.Function name="nullMember" receiver="KLogger">
+    Log that the member for the current event is `null`, and that it may not be supported by this check.
+  </Doc.Function>
+
+  <Doc.Function name="nullMessage" receiver="KLogger">
+    Log that the message for the current event is `null`, and that it may not be supported by this check.
+  </Doc.Function>
+</Doc.Container>
+
+## Misc
+
+The below functions can make combining checks easier.
+
+<Doc.Container>
+  <Doc.Builder name="or" receiver="CheckContext">
+    Acts as an "or" conditional, allowing the current check context to pass if the checks defined in this builder pass,
+    even if the current check context is failing.
+
+    If the current check context is still failing after the function runs the provided lambda, it will combine their
+    failure messages with a pipe character (`|`), assuming both failures generated a message.
+    If the current check context doesn't have a message set but the provided lambda sets one, it will use that instead.
+
+    If the current check context is passing, this builder does nothing.
+  </Doc.Builder>
+
+  <Doc.Function name="silence">
+    If the current check has a `message` set, clear it.
+  </Doc.Function>
+</Doc.Container>

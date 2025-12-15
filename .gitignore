@@ -126,4 +126,7 @@ docs/site
 
 style.css
 style.css.map
+/.docusaurus
+/build
 /image
+node_modules/

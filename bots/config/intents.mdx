@@ -1,0 +1,60 @@
+---
+description: "Manage your bot's gateway intents."
+sidebar_position: 11
+
+sidebar_custom_props:
+  card_group: "Basics"
+  icon: "fluent:data-usage-settings-24-filled"
+---
+
+import Link from "@docusaurus/Link";
+import * as Doc from "/src/components/Doc";
+
+# Intents
+
+The `intents { }` builder allows you to configure what
+[Discord gateway intents](https://discord.com/developers/docs/topics/gateway#gateway-intents) your bot requires.
+
+Intents define what events the Discord gateway sends to your bot and what data it has access to.
+Using a limited set of intents can be useful to cut down on event processing overhead or to help ensure your users'
+privacy by preventing your bot from processing data it doesn't strictly need.
+
+[Some intents are privileged](https://support-dev.discord.com/hc/en-us/articles/6207308062871-What-are-Privileged-Intents),
+and you'll need to enable them in Discord's developer console.
+Discord requires verification for any bot that reaches 100 servers, and you'll need to justify why you need these
+intents.
+If your bot uses chat commands, this may also include the Message Content intent — if you only use this intent for
+chat commands, Discord will require that you switch to slash commands, unless this is impossible then.
+
+```kt
+ExtensibleBot(TOKEN) {
+    // ...
+
+    intents {
+        +Intent.GuildMembers
+        +Intent.GuildPresences
+    }
+}
+```
+
+You can add and remove intents using the unary `+` and `-` operators.
+
+<Doc.Container>
+  <Doc.Builder name="intents" receiver="Intents.Builder" hasArgs>
+    Configure your bot's intents.
+
+    By default, all non-privileged intents are enabled, along with the message content intent if you're using chat
+    commands, and any intents your bot's extensions need, based on their event handlers.
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="addDefaultIntents" type="Boolean" default="true">
+        Whether to enable all non-privileged intents, as well as the message content intent if you're using chat
+        commands.
+      </Doc.Arg>
+
+      <Doc.Arg name="addExtensionIntents" type="Boolean" default="true">
+        Whether to automatically enable the intents required by your extensions, based on their event handlers.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+</Doc.Container>

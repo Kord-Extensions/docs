@@ -1,0 +1,358 @@
+---
+description: Gradle plugin integrating the translation class code generator.
+sidebar_position: 011
+
+# sidebar_custom_props:
+#   tags:
+#   - wip
+---
+
+import * as Doc from "/src/components/Doc";
+import * as Snippets from "/src/pageComponents/i18nPlugin";
+import EmbeddedVersion from "/src/components/EmbeddedVersion"
+import { CardWithTitle } from "/src/components/Card";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Gradle Plugin
+
+<CardWithTitle title="Plugin Information">
+  - **Coordinate:** `dev.kordex.gradle.i18n`
+  - **Version:** <EmbeddedVersion reference="i18n" />
+  - **Requires Gradle:** <EmbeddedVersion reference="gradle" />
+  - **Minimum JDK:** 17
+</CardWithTitle>
+
+The Kord Extensions i18n plugin is a Gradle plugin that automatically generates translations classes based on your
+bundles as part of your project's build process.
+This means that you won't need to integrate [the code generators](/i18n/generators) yourself.
+
+## Setting Up
+
+:::warning Gradle Version Requirements
+
+Because this Gradle plugin uses Gradle's problem reporting API, and the Gradle team has been dragging their
+heels on stabilising it, you'll need to use the same version of Gradle we build the plugin against.
+
+This means you'll need to use **Gradle <EmbeddedVersion reference="gradle" />** with the latest plugin version.
+
+We hope this API stabilises soon, and we can move on from this issue!
+
+:::
+
+<Tabs groupId="gradle-approach">
+  <TabItem value="basic" label="Basic">
+    First, add the required Maven repositories to your `settings.gradle.kts`:
+
+    ```kt
+    pluginManagement {
+        repositories {
+            gradlePluginPortal()
+            mavenCentral()
+
+            maven("https://snapshots-repo.kordex.dev")
+            maven("https://releases-repo.kordex.dev")
+        }
+    }
+    ```
+
+    Next, add the plugin to your project:
+
+    <Snippets.PluginBlock />
+  </TabItem>
+
+  <TabItem value="convention" label="Convention Plugin">
+    First, add the required Maven repositories to your `buildSrc/build.gradle.kts`:
+
+    ```kt
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+
+        maven("https://snapshots-repo.kordex.dev")
+        maven("https://releases-repo.kordex.dev")
+    }
+    ```
+
+    Next, add the plugin dependency:
+
+    <Snippets.ConventionDependency />
+
+    Then, add the plugin to any convention plugins or Gradle modules that need it:
+
+    ```kt
+    plugins {
+        id("dev.kordex.gradle.i18n")
+    }
+    ```
+  </TabItem>
+</Tabs>
+
+Finally, configure the plugin:
+
+```kt
+i18n {
+    // Settings go here.
+}
+```
+
+## Configuration
+
+You can configure the plugin using the `i18n { }` builder provided.
+
+### Adding Bundles
+
+You can add translation bundles using the `bundle(...) { }` function, padding in the bundle name and target package,
+and optionally providing extra settings via the builder.
+
+All builder settings have default values, which you can override by providing them directly.
+For more information on these defaults, and how you can change them globally, see
+[the Button Defaults section](#button-defaults).
+
+```kt
+i18n {
+    bundle("template.default", "template.i18n")
+
+    bundle("template.strings", "template.i18n") {
+        className = "InternalTranslations"
+    }
+}
+```
+
+<Doc.Container>
+  <Doc.Builder name="bundle" receiver="Bundle" hasArgs>
+    Register a translation bundle to generate code for, optionally with a configuration builder.
+    All function arguments are required.
+
+    You can call this function multiple times if you need to generate code for more than one bundle.
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="bundle" type="String">
+        Translation bundle, represented by its dotted package notation.
+
+        Your bundles must be placed within the `basePath` folder and in their own subfolder, represented by the first
+        part of the string, whereas the last part of the string represents the prefix shared by the files in the bundle.
+
+        For example, if the `basePath` is the default (`src/main/resources/translations/`) and your bundle's base file
+        is `template/default.yaml` or `template/default.properties`, you would provide `template.default` here.
+      </Doc.Arg>
+
+      <Doc.Arg name="classPackage" type="String">
+        Package to place the generated translation class within.
+
+        We recommend creating a dedicated `.i18n` subpackage for your translations.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <Doc.Type name="Bundle" type="class">
+    Class containing the bundle's optional settings.
+
+    All of these settings have default values, which are listed in [the Bundle Defaults section](#button-defaults).
+    You can override them for a single bundle by providing them in this builder, or you can see
+    [the Bundle Defaults section](#button-defaults) to learn how to change them globally.
+
+    <Doc.Property name="basePath" type="Property<File>">
+      The base path containing your project's translation bundles.
+    </Doc.Property>
+
+    <Doc.Property name="className" type="Property<String>">
+      The name to give to the bundle's generated translations class.
+    </Doc.Property>
+
+    <Doc.Property name="editorConfig" type="Property<File>">
+      Path to your project's `.editorconfig` file, which is used to format generated code.
+    </Doc.Property>
+
+    <Doc.Property name="fileFormat" type="Property<FileFormat>">
+      A `FileFormat` object representing the file format used by your bundle's files.
+
+      This object is used to parse your bundle's base translation file.
+      If you're using a format other than those provided by default with the framework, see
+      [the Extra Formats section](#extra-formats) to learn how to use them in your build script.
+    </Doc.Property>
+
+    <Doc.Property name="messageFormat" type="Property<String>">
+      String identifier representing the message format your bundle uses.
+      This refers to the `identifier` property on the corresponding `MessageFormat` subtype.
+
+      See the `messageFormat` function below for a more convenient way to set this property.
+    </Doc.Property>
+
+    <Doc.Property name="outputDirectory" type="Property<File>">
+      The directory to place the generated code within.
+      When the plugin generates translations classes, it will also create the intermediary package directory structure,
+      rather than directly placing the files in the output directory.
+    </Doc.Property>
+
+    <Doc.Property name="publicVisibility" type="Property<Boolean>">
+      Whether the generated classes and properties should be marked `public`.
+      Set this to `false` to use `internal` instead.
+    </Doc.Property>
+
+    <Doc.Property name="useClassClassLoader" type="Property<Boolean>">
+      Whether the generated `Bundle` object should use the translation class' class-loader.
+      Set this to `false` to use the system class-loader instead.
+    </Doc.Property>
+
+    <Doc.Function name="messageFormat">
+      Set the `messageFormat` property based on the provided argument.
+
+      <Doc.Arguments>
+        <Doc.Arg name="format" type={["MessageFormat", "String"]}>
+          The message format to use.
+          This can either be the identifier string, or the `MessageFormat` subtype you wish to use.
+        </Doc.Arg>
+      </Doc.Arguments>
+    </Doc.Function>
+  </Doc.Type>
+</Doc.Container>
+
+### Bundle Defaults
+
+You can set the global defaults used by all bundles via the `defaults { }` builder.
+
+```kt
+i18n {
+    defaults {
+        publicVisibility = false
+    }
+}
+```
+
+<Doc.Container>
+  <Doc.Type name="Defaults" type="class">
+    Class containing the global defaults used by each bundle.
+
+    <Doc.Property name="basePath" type="Property<File>" default="src/main/resources/translations/">
+      The base path containing your project's translation bundles.
+    </Doc.Property>
+
+    <Doc.Property name="className" type="Property<String>" default="Translations">
+      The name to give to the bundle's generated translations class.
+    </Doc.Property>
+
+    <Doc.Property name="editorConfig" type="Property<File>" default="/.editorconfig">
+      Path to your project's `.editorconfig` file, which is used to format generated code.
+
+      The default value refers to the `.editorconfig` in your project's root directory, rather than the current
+      Gradle module's directory.
+    </Doc.Property>
+
+    <Doc.Property name="fileFormat" type="Property<FileFormat>" default="PropertiesFormat">
+      A `FileFormat` object representing the file format used by your bundle's files.
+
+      This object is used to parse your bundle's base translation file.
+      If you're using a format other than those provided by default with the framework, see
+      [the Extra Formats section](#extra-formats) to learn how to use them in your build script.
+    </Doc.Property>
+
+    <Doc.Property name="messageFormat" type="Property<String>" default="icu-v1">
+      String identifier representing the message format your bundle uses.
+      This refers to the `identifier` property on the corresponding `MessageFormat` subtype.
+
+      See the `messageFormat` function below for a more convenient way to set this property.
+    </Doc.Property>
+
+    <Doc.Property name="outputDirectory" type="Property<File>" default="build/generated/kordex/main/kotlin/">
+      The directory to place the generated code within.
+      When the plugin generates translations classes, it will also create the intermediary package directory structure,
+      rather than directly placing the files in the output directory.
+    </Doc.Property>
+
+    <Doc.Property name="publicVisibility" type="Property<Boolean>" default="true">
+      Whether the generated classes and properties should be marked `public`.
+      Set this to `false` to use `internal` instead.
+    </Doc.Property>
+
+    <Doc.Property name="useClassClassLoader" type="Property<Boolean>" default="true">
+      Whether the generated `Bundle` object should use the translation class' class-loader.
+      Set this to `false` to use the system class-loader instead.
+    </Doc.Property>
+
+    <Doc.Function name="messageFormat">
+      Set the `messageFormat` property based on the provided argument.
+
+      <Doc.Arguments>
+        <Doc.Arg name="format" type={["MessageFormat", "String"]}>
+          The message format to use.
+          This can either be the identifier string, or the `MessageFormat` subtype you wish to use.
+        </Doc.Arg>
+      </Doc.Arguments>
+    </Doc.Function>
+  </Doc.Type>
+</Doc.Container>
+
+### Other Settings
+
+You can further configure this plugin using these extra settings, which you can set within the `i18n { }` builder.
+
+```kt
+i18n {
+    configureSourceSet = true
+}
+```
+
+<Doc.Container>
+  <Doc.Property name="configureSourceSet" type="Property<Boolean>" default="true">
+    When `true`, the plugin will automatically add the `basePath` provided for all configured bundles to your project's
+    source-sets.
+
+    Set this to `false` if you'd rather configure this yourself.
+  </Doc.Property>
+</Doc.Container>
+
+## Extra Formats
+
+If you need to work with file/message formats other than those the framework provides support for, you'll need to
+make sure they're available to use in your scripts.
+Third-party file formats are provided by external libraries, so you'll need to add some dependencies to get this
+working.
+
+You can approach this in one of two ways.
+
+<Tabs groupId="gradle-approach">
+  <TabItem value="basic" label="Basic">
+    Add the required Maven repositories and dependencies to your `settings.gradle.kts`:
+
+    ```kt
+    buildscript {
+        repositories {
+            maven("...")
+        }
+
+        dependencies {
+            classpath("group:name:version")
+        }
+    }
+    ```
+  </TabItem>
+
+  <TabItem value="convention" label="Convention Plugin">
+    Add the required Maven repositories and dependencies to your `buildSrc/build.gradle.kts`:
+
+    ```kt
+    repositories {
+        maven("...")
+    }
+
+    dependencies {
+        implementation("group:name:version")
+    }
+    ```
+  </TabItem>
+</Tabs>
+
+You should now be able to import and use any extra formats you need in your build scripts.
+
+```kt
+import com.example.MyFileFormat
+
+// ...
+
+i18n {
+    defaults {
+        fileFormat = MyFileFormat
+    }
+}
+```

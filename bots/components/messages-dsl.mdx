@@ -1,0 +1,927 @@
+---
+description: "Message component DSL, for short-lived components."
+sidebar_position: 2
+
+sidebar_custom_props:
+  card_group: "Usage"
+  icon: "fluent:hand-left-chat-24-filled"
+---
+
+import * as Doc from "/src/components/Doc";
+
+import {
+  MessageContainer,
+  Message,
+  ActionRow,
+  Button, SelectMenu,
+} from "/src/components/Messages"
+
+# Messages: Easy DSL
+
+Messages support a specific set of components, which you can read about
+[on the basics page](/bots/components/basics#types).
+
+The components DSL (based on the `ComponentContainer` class) is a convenient API for working with short-lived message
+components.
+
+If you need your components to work after your bot restarts, we recommend [using the manual handling approach](#).
+
+:::tip No Atomic API
+
+Kord Extensions doesn't provide an atomic API for modifying your components after you've sent them to Discord.
+This is mostly due to technical limitations within Kotlin's type system,
+and it is unlikely this will change any time soon.
+
+If you wish to edit components, we suggest keeping a reference to the `ComponentContainer` returned by the `components`
+builder, and any relevant components that you create.
+The components within any given `ComponentContainer` may be applied to any message creation/editing builder via the
+`applyComponents` extension function.
+
+:::
+
+## Usage
+
+To get started, use the `components` builder in any message creation or editing builder.
+This builder will automatically add the defined components to the message, and set up the code necessary for your bot
+to respond to them.
+
+```kt
+respond {
+	components {
+		publicButton {
+			label = "Button"
+			style = ButtonStyle.Primary
+
+			action {
+				respond {
+					content = "Clicked button."
+				}
+			}
+		}
+	}
+}
+```
+
+The above example produces a message like the following:
+
+<MessageContainer>
+  <Message>
+    <ActionRow>
+      <Button label="Button" style="primary"/>
+    </ActionRow>
+  </Message>
+</MessageContainer>
+
+For more information on what components you can add with this DSL, see the builder API section below.
+
+## Packing
+
+The `components` DSL automatically packs its defined components as tightly as possible, while retaining the order you
+defined them in.
+
+As an example, let's say you provided a select menu, six buttons, and another select menu.
+The resulting message would look like this:
+
+<MessageContainer>
+  <Message>
+    <ActionRow>
+      <SelectMenu label="Select Menu"/>
+    </ActionRow>
+
+    <ActionRow>
+      <Button label="Button" style="primary"/>
+      <Button label="Button" style="primary"/>
+      <Button label="Button" style="primary"/>
+      <Button label="Button" style="primary"/>
+      <Button label="Button" style="primary"/>
+    </ActionRow>
+
+    <ActionRow>
+      <Button label="Button" style="primary"/>
+    </ActionRow>
+
+    <ActionRow>
+      <SelectMenu label="Select Menu"/>
+    </ActionRow>
+  </Message>
+</MessageContainer>
+
+You can prevent this for specific components by specifying the row to add your component to — just pass an integer
+representing the row to the corresponding component builder function.
+This will add that component to the specified row immediately, and the builder will pack any components without defined
+rows around it before your bot finishes creating the message.
+
+As an example, let's say you provided a select menu on row 2, six buttons without row numbers, and another select
+menu on row 3.
+The resulting message would look like this:
+
+<MessageContainer>
+  <Message>
+    <ActionRow>
+      <Button label="Button" style="primary"/>
+      <Button label="Button" style="primary"/>
+      <Button label="Button" style="primary"/>
+      <Button label="Button" style="primary"/>
+      <Button label="Button" style="primary"/>
+    </ActionRow>
+
+    <ActionRow>
+      <SelectMenu label="Select Menu"/>
+    </ActionRow>
+
+    <ActionRow>
+      <SelectMenu label="Select Menu"/>
+    </ActionRow>
+
+    <ActionRow>
+      <Button label="Button" style="primary"/>
+    </ActionRow>
+  </Message>
+</MessageContainer>
+
+## Builder Functions
+
+<Doc.Container>
+  <p className="text-center text-l">
+    **Entrypoint**
+  </p>
+
+  <Doc.Builder name="components" receiver="MessageBuilder" functionReturns="ComponentContainer" hasArgs>
+    Convenience function for creating a `ComponentContainer` with components, and applying it to the message you're creating/editing.
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="timeout" type="Duration?" default="null">
+        Optional component interaction timeout.
+        When nobody interacts with the components for the length of the timeout, Kord Extensions will unregister them and they'll stop working.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <hr className="clear" />
+
+  <p className="text-center text-l">
+    **Buttons**
+  </p>
+
+  <Doc.Builder name="disabledButton" receiver="DisabledInteractionButton" functionReturns="DisabledInteractionButton" hasArgs>
+    Create a disabled button.
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="row" type="Int?" default="null">
+        Optional action row the component should be placed into, if you don't want it to be packed automatically.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <Doc.Builder name="ephemeralButton" receiver="EphemeralInteractionButton" functionReturns="EphemeralInteractionButton" hasArgs>
+    Create an interactable button based on an ephemeral interaction flow.
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="modal" type="(() -> ModalForm)?" default="null">
+        Optional callable returning the [Modal form](/bots/commands/modals) to present users with when they interact
+        with this component.
+      </Doc.Arg>
+
+      <Doc.Arg name="row" type="Int?" default="null">
+        Optional action row the component should be placed into, if you don't want it to be packed automatically.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <Doc.Builder name="linkButton" receiver="LinkInteractionButton" functionReturns="LinkInteractionButton" hasArgs>
+    Create a link button.
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="row" type="Int?" default="null">
+        Optional action row the component should be placed into, if you don't want it to be packed automatically.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <Doc.Builder name="publicButton" receiver="PublicInteractionButton" functionReturns="PublicInteractionButton" hasArgs>
+    Create an interactable button based on a public interaction flow.
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="modal" type="(() -> ModalForm)?" default="null">
+        Optional callable returning the [Modal form](/bots/commands/modals) to present users with when they interact
+        with this component.
+      </Doc.Arg>
+
+      <Doc.Arg name="row" type="Int?" default="null">
+        Optional action row the component should be placed into, if you don't want it to be packed automatically.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <hr className="clear" />
+
+  <p className="text-center text-l">
+    **Select Menu (Channels)**
+  </p>
+
+  <Doc.Builder name="ephemeralChannelSelectMenu" receiver="EphemeralChannelSelectMenu" functionReturns="EphemeralChannelSelectMenu" hasArgs>
+    Create an channel select menu based on an ephemeral interaction flow.
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="modal" type="(() -> ModalForm)?" default="null">
+        Optional callable returning the [Modal form](/bots/commands/modals) to present users with when they interact
+        with this component.
+      </Doc.Arg>
+
+      <Doc.Arg name="row" type="Int?" default="null">
+        Optional action row the component should be placed into, if you don't want it to be packed automatically.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <Doc.Builder name="publicChannelSelectMenu" receiver="PublicChannelSelectMenu" functionReturns="PublicChannelSelectMenu" hasArgs>
+    Create an channel select menu based on a public interaction flow.
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="modal" type="(() -> ModalForm)?" default="null">
+        Optional callable returning the [Modal form](/bots/commands/modals) to present users with when they interact
+        with this component.
+      </Doc.Arg>
+
+      <Doc.Arg name="row" type="Int?" default="null">
+        Optional action row the component should be placed into, if you don't want it to be packed automatically.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <hr className="clear" />
+
+  <p className="text-center text-l">
+    **Select Menu (Mentionables)**
+  </p>
+
+  <Doc.Builder name="ephemeralMentionableSelectMenu" receiver="EphemeralMentionableSelectMenu" functionReturns="EphemeralMentionableSelectMenu" hasArgs>
+    Create a mentionable select menu based on an ephemeral interaction flow.
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="modal" type="(() -> ModalForm)?" default="null">
+        Optional callable returning the [Modal form](/bots/commands/modals) to present users with when they interact
+        with this component.
+      </Doc.Arg>
+
+      <Doc.Arg name="row" type="Int?" default="null">
+        Optional action row the component should be placed into, if you don't want it to be packed automatically.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <Doc.Builder name="publicMentionableSelectMenu" receiver="PublicMentionableSelectMenu" functionReturns="PublicMentionableSelectMenu" hasArgs>
+    Create a mentionable select menu based on a public interaction flow.
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="modal" type="(() -> ModalForm)?" default="null">
+        Optional callable returning the [Modal form](/bots/commands/modals) to present users with when they interact
+        with this component.
+      </Doc.Arg>
+
+      <Doc.Arg name="row" type="Int?" default="null">
+        Optional action row the component should be placed into, if you don't want it to be packed automatically.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <hr className="clear" />
+
+  <p className="text-center text-l">
+    **Select Menu (Roles)**
+  </p>
+
+  <Doc.Builder name="ephemeralRoleSelectMenu" receiver="EphemeralRoleSelectMenu" functionReturns="EphemeralRoleSelectMenu" hasArgs>
+    Create a role select menu based on an ephemeral interaction flow.
+
+    <Doc.Arg name="modal" type="(() -> ModalForm)?" default="null">
+      Optional callable returning the [Modal form](/bots/commands/modals) to present users with when they interact
+        with this component.
+    </Doc.Arg>
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="row" type="Int?" default="null">
+        Optional action row the component should be placed into, if you don't want it to be packed automatically.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <Doc.Builder name="publicRoleSelectMenu" receiver="PublicRoleSelectMenu" functionReturns="PublicRoleSelectMenu" hasArgs>
+    Create a role select menu based on a public interaction flow.
+
+    <Doc.Arg name="modal" type="(() -> ModalForm)?" default="null">
+      Optional callable returning the [Modal form](/bots/commands/modals) to present users with when they interact
+        with this component.
+    </Doc.Arg>
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="row" type="Int?" default="null">
+        Optional action row the component should be placed into, if you don't want it to be packed automatically.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <hr className="clear" />
+
+  <p className="text-center text-l">
+    **Select Menu (Strings)**
+  </p>
+
+  <Doc.Builder name="ephemeralStringSelectMenu" receiver="EphemeralStringSelectMenu" functionReturns="EphemeralStringSelectMenu" hasArgs>
+    Create a string select menu based on an ephemeral interaction flow.
+
+    <Doc.Arg name="modal" type="(() -> ModalForm)?" default="null">
+      Optional callable returning the [Modal form](/bots/commands/modals) to present users with when they interact
+        with this component.
+    </Doc.Arg>
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="row" type="Int?" default="null">
+        Optional action row the component should be placed into, if you don't want it to be packed automatically.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <Doc.Builder name="publicStringSelectMenu" receiver="PublicStringSelectMenu" functionReturns="PublicStringSelectMenu" hasArgs>
+    Create a string select menu based on a public interaction flow.
+
+    <Doc.Arg name="modal" type="(() -> ModalForm)?" default="null">
+      Optional callable returning the [Modal form](/bots/commands/modals) to present users with when they interact
+        with this component.
+    </Doc.Arg>
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="row" type="Int?" default="null">
+        Optional action row the component should be placed into, if you don't want it to be packed automatically.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <hr className="clear" />
+
+  <p className="text-center text-l">
+    **Select Menu (Users)**
+  </p>
+
+  <Doc.Builder name="ephemeralUserSelectMenu" receiver="EphemeralUserSelectMenu" functionReturns="EphemeralUserSelectMenu" hasArgs>
+    Create a user select menu based on an ephemeral interaction flow.
+
+    <Doc.Arg name="modal" type="(() -> ModalForm)?" default="null">
+      Optional callable returning the [Modal form](/bots/commands/modals) to present users with when they interact
+        with this component.
+    </Doc.Arg>
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="row" type="Int?" default="null">
+        Optional action row the component should be placed into, if you don't want it to be packed automatically.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <Doc.Builder name="publicUserSelectMenu" receiver="PublicUserSelectMenu" functionReturns="PublicUserSelectMenu" hasArgs>
+    Create a user select menu based on a public interaction flow.
+
+    <Doc.Arg name="modal" type="(() -> ModalForm)?" default="null">
+      Optional callable returning the [Modal form](/bots/commands/modals) to present users with when they interact
+      with this component.
+    </Doc.Arg>
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="row" type="Int?" default="null">
+        Optional action row the component should be placed into, if you don't want it to be packed automatically.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+</Doc.Container>
+
+## Container API
+
+<Doc.Container>
+  <Doc.Type name="ComponentContainer" type="class" extends="KordExKoinComponent" open>
+    Class representing a single set of components to apply to any message.
+
+    <Doc.Arguments type="constructor">
+      <Doc.Arg name="timeout" type="Duration?" default="null" propType="val">
+        Optional timeout, after which all registered components will be unregistered and won't work anymore.
+        This timeout is reset whenever a user interacts with a registered component.
+      </Doc.Arg>
+
+      <Doc.Arg name="startNow" type="Boolean" default="false">
+        Whether to start the timeout immediately.
+        This is usually set to `true` by the `components { }` DSL, but you can call `timeoutTask.start()` yourself
+        in other situations.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Type>
+</Doc.Container>
+
+### Builders
+
+<Doc.Container>
+  <Doc.Builder name="onTimeout" receiver="ComponentContainer" open>
+    Register a callback to be run when the `timeout` expires, if one was provided.
+
+    Component containers can only have one registered callback.
+    Calling this function twice will overwrite the previous one.
+  </Doc.Builder>
+</Doc.Container>
+
+### Functions
+
+<Doc.Container>
+  <Doc.Function name="cancel" open suspend>
+    Cancel the timeout task and remove all stored components, unregistering them.
+
+    This behaviour is similar to letting the timeout expire, but **it won't run the extra `timeoutCallback` provided by
+    the `onTimeout { }` builder.**
+  </Doc.Function>
+
+  <Doc.Function name="remove" open suspend>
+    Remove a component from this container, and unregister it.
+
+    <Doc.Arguments>
+      <Doc.Arg name="component" type="Component">
+        Component to remove.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+
+  <Doc.Function name="removeAll" open suspend>
+    Remove all components from this container, and unregister them.
+  </Doc.Function>
+
+  <Doc.Function name="replace" open suspend>
+    Remove a component from this container, replacing it with a new one and likewise handling un/registration.
+
+    <Doc.Arguments>
+      <Doc.Arg name="old" type={["Component", "String"]}>
+        The component to remove.
+        You can provide the component object, or a `String` representing its ID.
+      </Doc.Arg>
+
+      <Doc.Arg name="new" type="Component">
+        The component to replace with.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+
+  <Doc.Function name="sort" open suspend>
+    Sort any unsorted components into `rows`, by packing them as tightly as possible.
+  </Doc.Function>
+</Doc.Container>
+
+<Doc.Container internal>
+  <Doc.Function name="add" open suspend internal>
+    Add a component to this container, and register it.
+
+    This is usually called by the [builder functions](#builder-functions).
+
+    <Doc.Arguments>
+      <Doc.Arg name="component" type="Component">
+        Component to add.
+      </Doc.Arg>
+
+      <Doc.Arg name="rowNum" type="Int?" default="null">
+        Optional row to pack the component into.
+
+        If you provide a row number, the component will immediately be packed into the corresponding list in `rows`.
+        Otherwise, it'll be added to `unsortedComponents` for the `sort()` function to handle later.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+</Doc.Container>
+
+### Properties
+
+<Doc.Container>
+  <Doc.Property name="timeoutTask" type="Task?" propType="val" visibility="public" open>
+    Timeout task, responsible for enforcing the provided `timeout`.
+    This will be `null` if no `timeout` was provided.
+  </Doc.Property>
+</Doc.Container>
+
+<Doc.Container internal>
+  <Doc.Property name="rows" type="Array<MutableList<Component>>" propType="val" visibility="public" open internal>
+    Array representing up to five rows of sorted and packed components.
+
+    This array always contains five mutable lists, which are filled by the `sort()` function.
+  </Doc.Property>
+
+  <Doc.Property name="timeoutCallback" type="(suspend (ComponentContainer).() -> Unit)?" default="null" propType="var" visibility="public" open internal>
+    Extra callback to run when the `timeout` expires, if one was provided.
+
+    Usually set via the `onTimeout { }` builder.
+  </Doc.Property>
+
+  <Doc.Property name="unsortedComponents" type="MutableList<Component>" propType="val" visibility="public" open internal>
+    List containing all components without an explicitly defined `row`, to be packed into `rows` before adding the
+    components to a message.
+  </Doc.Property>
+</Doc.Container>
+
+## Component API
+
+<Doc.Container>
+  <Doc.Type name="Component" type="abstract class" extends="KordExKoinComponent">
+    Abstract class representing a Discord component.
+
+    <Doc.Property name="unitWidth" type="Int" default="1" propType="val" open>
+      How many units this component will take up.
+    </Doc.Property>
+
+    <Doc.Function name="apply" abstract>
+      Apply this component to a Kord action row.
+
+      <Doc.Arg name="builder" type="ActionRowBuilder">
+      </Doc.Arg>
+    </Doc.Function>
+
+    <Doc.Function name="validate" abstract>
+      Throws exceptions if this component isn't valid.
+    </Doc.Function>
+  </Doc.Type>
+
+  <Doc.Type name="ComponentWithID" type="abstract class" extends="Component">
+    Abstract class representing a Discord component with an ID.
+
+    <Doc.Property name="id" type="String" default="UUID.randomUUID()" propType="var" open>
+      Component's ID.
+      Defaults to a random UUID, but you can overwrite this in your component builders.
+    </Doc.Property>
+  </Doc.Type>
+
+  <Doc.Type name="ComponentWithAction" type="abstract class" extends={["ComponentWithID", "Lockable"]}>
+    Abstract class representing a Discord component which can respond to an interaction.
+
+    <Doc.Arguments type="type">
+      <Doc.Arg name="E" type="ComponentInteractionCreateEvent">
+        Generic type representing the event type corresponding with the interactions this component can respond to.
+      </Doc.Arg>
+
+      <Doc.Arg name="C" type="ComponentContext">
+        Generic type representing the context object type that will be created when handling interactions for this
+        component.
+      </Doc.Arg>
+
+      <Doc.Arg name="M" type="ModalForm">
+        Generic type representing the [modal form](/bots/commands/modals) type that will be sent in response to
+        interactions for this component.
+      </Doc.Arg>
+    </Doc.Arguments>
+
+    <Doc.Arguments type="constructor">
+      <Doc.Arg name="timeoutTask" type="Task?">
+        Timeout task, passed down from the component container.
+        Will be `null` if no timeout was provided.
+      </Doc.Arg>
+
+      <Doc.Arg name="modal" type="(() -> M)?" default="null">
+        Callback returning a `ModalForm` object, as explained [here](/bots/commands/modals).
+      </Doc.Arg>
+    </Doc.Arguments>
+
+    <Doc.Builder name="action" receiver="C">
+      Call this builder to register an action block, which will be run in response to a component interaction.
+
+      <Doc.Arguments type="lambda">
+        <Doc.Arg name="modal" type="M?">
+          Modal form object, if a `modal` callback was provided when registering this component.
+          Will be `null` if you don't provide that callback, or if the user doesn't submit the modal quickly enough.
+        </Doc.Arg>
+      </Doc.Arguments>
+    </Doc.Builder>
+
+    <Doc.Function name="check">
+      Register a [check](/bots/checks/) that must pass before the `action` can be run.
+
+      <Doc.Arguments>
+        <Doc.Arg name="vararg checks" type="Check">
+          Checks to add.
+        </Doc.Arg>
+      </Doc.Arguments>
+    </Doc.Function>
+
+    <Doc.Function name="requireBotPermissions">
+      Register a set of permissions the bot will need to respond successfully to an interaction.
+
+      <Doc.Arguments>
+        <Doc.Arg name="vararg perms" type="Permission">
+          Permissions to add.
+        </Doc.Arg>
+      </Doc.Arguments>
+    </Doc.Function>
+
+    <Doc.Property name="deferredAck" type="Boolean" default="true" propType="var" open>
+      Whether to use a deferred ack when responding to interactions.
+      This will prevent Discord from showing a "Thinking..." message.
+    </Doc.Property>
+  </Doc.Type>
+</Doc.Container>
+
+### Buttons
+
+<Doc.Container>
+  <Doc.Type name="InteractionButton" type="abstract class" extends={["Component", "HasPartialEmoji"]}>
+    Class representing a button component.
+
+    <Doc.Property name="label" type="Key?" default="null" propType="var">
+      Translated button label, for display on Discord.
+      Optional if you provide an emoji.
+    </Doc.Property>
+  </Doc.Type>
+
+  <Doc.Type name="InteractionButtonWithID" type="abstract class" extends={["ComponentWithID", "HasPartialEmoji"]}>
+    Class representing a button component that has an ID.
+
+    <Doc.Property name="label" type="Key?" default="null" propType="var">
+      Translated button label, for display on Discord.
+      Optional if you provide an emoji.
+    </Doc.Property>
+  </Doc.Type>
+
+  <Doc.Type name="InteractionButtonWithAction" type="abstract class" extends={["ComponentWithAction", "HasPartialEmoji"]}>
+    Class representing a button component that can respond to interactions.
+
+    <Doc.Property name="disabled" type="Boolean" default="false" propType="var">
+      Whether this button is disabled.
+    </Doc.Property>
+
+    <Doc.Property name="label" type="Key?" default="null" propType="var">
+      Translated button label, for display on Discord.
+      Optional if you provide an emoji.
+    </Doc.Property>
+
+    <Doc.Function name="disable">
+      Disable this button by setting `disabled` to `true`.
+    </Doc.Function>
+
+    <Doc.Function name="enable">
+      Enable this button by setting `disabled` to `false`.
+    </Doc.Function>
+  </Doc.Type>
+</Doc.Container>
+
+#### Interaction Buttons
+
+Ephemeral and public interaction buttons extend `InteractionButtonWithAction`, and provide some additional APIs.
+
+<Doc.Container>
+  <Doc.Property name="style" type="ButtonStyle" default="Primary" propType="var" open>
+    This button's style.
+    Anything other than `Link` or `Premium` is valid here.
+  </Doc.Property>
+
+  <Doc.Builder name="initialResponse" receiver="(suspend InteractionResponseCreateBuilder.(ButtonInteractionCreateEvent) -> Unit)?">
+    Use this builder to respond to interactions with a message immediately, instead of using an empty acknowledgement.
+  </Doc.Builder>
+</Doc.Container>
+
+#### Disabled Buttons
+
+Disabled buttons extend `InteractionButtonWithID`, and provide some additional APIs.
+
+<Doc.Container>
+  <Doc.Property name="style" type="ButtonStyle" default="Primary" propType="var" open>
+    This button's style.
+    Anything other than `Link` or `Premium` is valid here.
+  </Doc.Property>
+</Doc.Container>
+
+#### Link Buttons
+
+Link buttons extend `InteractionButton`, and provide some additional APIs.
+
+<Doc.Container>
+  <Doc.Property name="url" type="String" propType="var" open>
+    URL to send the user to when they click/tap this button.
+  </Doc.Property>
+</Doc.Container>
+
+### Select Menus
+
+All ephemeral and public select menus extend the `SelectMenu` type below, along with an interface representing the
+type of data they handle.
+
+<Doc.Container>
+  <Doc.Type name="SelectMenu" type="abstract class" extends="ComponentWithAction">
+    Class representing a select menu component.
+
+    <Doc.Property name="disabled" type="Boolean?" default="null" propType="var" open>
+      Whether this select menu is disabled.
+
+      A `true` value here will disable the component.
+      To enable the component, the value must be `null` instead, not `false`.
+      We don't know why this is, unfortunately.
+
+      Consider using the `disable()` and `enable()` functions instead of setting this directly.
+    </Doc.Property>
+
+    <Doc.Property name="maximumChoices" type="Int?" default="1" propType="var">
+      The maximum number of selections a user can choose.
+      Set to `null` for no maximum.
+    </Doc.Property>
+
+    <Doc.Property name="minimumChoices" type="Int" default="1" propType="var">
+      The minimum number of selections a user can choose.
+    </Doc.Property>
+
+    <Doc.Property name="placeholder" type="Key?" default="null" propType="var">
+      Placeholder text to show when the user hasn't made a selection.
+    </Doc.Property>
+
+    <Doc.Function name="disable">
+      Disable this select menu by setting `disabled` to `true`.
+    </Doc.Function>
+
+    <Doc.Function name="enable">
+      Enable this select menu by setting `disabled` to `null`.
+    </Doc.Function>
+  </Doc.Type>
+</Doc.Container>
+
+#### Channel Menus
+
+<Doc.Container>
+  <Doc.Type name="ChannelSelectMenu" type="interface">
+    <Doc.Function name="channelType">
+      Add one or more channel types to this select menu.
+      This will limit which channels the user can select.
+
+      <Doc.Arguments>
+        <Doc.Arg name="vararg types" type="ChannelType">
+          Channel types to add.
+        </Doc.Arg>
+      </Doc.Arguments>
+    </Doc.Function>
+
+    <Doc.Function name="defaultChannel" type={["ChannelBehavior", "Snowflake"]} supportsCollections>
+      Add one or more pre-selected channels to this select menu.
+      These channels will be selected by default.
+    </Doc.Function>
+  </Doc.Type>
+</Doc.Container>
+
+#### Mentionable Menus
+
+<Doc.Container>
+  <Doc.Type name="MentionableSelectMenu" type="interface">
+    <Doc.Function name="defaultRole" type={["RoleBehavior", "Snowflake"]} supportsCollections>
+      Add one or more pre-selected roles to this select menu.
+      These roles will be selected by default.
+    </Doc.Function>
+
+    <Doc.Function name="defaultUser" type={["UserBehavior", "Snowflake"]} supportsCollections>
+      Add one or more pre-selected users to this select menu.
+      These users will be selected by default.
+    </Doc.Function>
+  </Doc.Type>
+</Doc.Container>
+
+#### Role Menus
+
+<Doc.Container>
+  <Doc.Type name="RoleSelectMenu" type="interface">
+    <Doc.Function name="defaultRole" type={["RoleBehavior", "Snowflake"]} supportsCollections>
+      Add one or more pre-selected roles to this select menu.
+      These roles will be selected by default.
+    </Doc.Function>
+  </Doc.Type>
+</Doc.Container>
+
+#### String Menus
+
+<Doc.Container>
+  <Doc.Type name="StringSelectMenu" type="interface">
+    <Doc.Builder name="option" receiver="StringSelectOption" suspend>
+      Add an option to this select menu.
+
+      <Doc.Arguments type="function">
+        <Doc.Arg name="label" type="Key">
+          Translatable option label, shown to users on Discord.
+        </Doc.Arg>
+
+        <Doc.Arg name="value" type="String">
+          String value, which is what you'll actually receive when users interact with the select menu.
+        </Doc.Arg>
+      </Doc.Arguments>
+    </Doc.Builder>
+  </Doc.Type>
+
+  <Doc.Type name="StringSelectOption" type="class" extends="HasPartialEmoji">
+    <Doc.Property name="description" type="Key?" default="null">
+      Translatable additional option description, shown to users on Discord.
+    </Doc.Property>
+
+    <Doc.Property name="default" type="Boolean" default="false">
+      Whether this option should be selected by default.
+    </Doc.Property>
+  </Doc.Type>
+</Doc.Container>
+
+#### User Menus
+
+<Doc.Container>
+  <Doc.Type name="UserSelectMenu" type="interface">
+    <Doc.Function name="defaultUser" type={["UserBehavior", "Snowflake"]} supportsCollections>
+      Add one or more pre-selected users to this select menu.
+      These users will be selected by default.
+    </Doc.Function>
+  </Doc.Type>
+</Doc.Container>
+
+## Component Contexts
+
+All component `action { }` blocks use a corresponding context object as the receiver, allowing you to retrieve any
+relevant data and respond to component interactions.
+
+<Doc.Container>
+  <Doc.Type name="ComponentContext" type="abstract class" extends={["KordExKoinComponent", "TranslatableContext"]}>
+    Class representing a basic component context, with functionality common to all contexts.
+
+    <Doc.Arguments type="type">
+      <Doc.Arg name="E" type="ComoponentInteractionCreateEvent">
+        Generic type representing the event that triggered this interaction.
+      </Doc.Arg>
+    </Doc.Arguments>
+
+    <Doc.Arguments type="constructor">
+      <Doc.Arg name="component" type="Component">
+        Component object corresponding with this interaction.
+      </Doc.Arg>
+
+      <Doc.Arg name="event" type="E">
+        Object representing the event that triggered this interaction.
+      </Doc.Arg>
+
+      <Doc.Arg name="cache" type="MutableMap<String, Any>">
+        Data cache map shared with this command's [checks](/bots/checks).
+      </Doc.Arg>
+    </Doc.Arguments>
+
+    <Doc.Property name="channel" type="MessageChannelBehavior" propType="var" open>
+      The channel this component interaction happened in.
+    </Doc.Property>
+
+    <Doc.Property name="guild" type="GuildBehavior?" propType="var" open>
+      The guild this component interaction happened in, or `null` if it happened in a DM.
+    </Doc.Property>
+
+    <Doc.Property name="member" type="MemberBehavior?" propType="var" open>
+      The guild member that caused this component interaction, or `null` if
+      this component interaction happened in a DM.
+    </Doc.Property>
+
+    <Doc.Property name="message" type="Message" propType="var" open>
+      The Discord message this component belongs to.
+    </Doc.Property>
+
+    <Doc.Property name="user" type="UserBehavior" propType="var" open>
+      The Discord user that caused this component interaction.
+    </Doc.Property>
+  </Doc.Type>
+</Doc.Container>
+
+### Select Menus
+
+Select menus use a context type extending the above, with some small additions:
+
+- **Channel Menus:**
+  - A `selected` property containing the selected channels.
+- **Mentionable Menus:**
+  - A `selected` property containing the IDs of all selected users and roles.
+  - A `selectedRoles` property containing the selected roles.
+  - A `selectedUsers` property containing the selected users.
+- **Role Menus:**
+  - A `selected` property containing the selected roles.
+- **String Menus:**
+  - A `selected` property containing the selected option strings.
+- **String Menus:**
+  - A `selected` property containing the selected users.
+
+## Utilities
+
+<Doc.Container>
+  <Doc.Type name="HasPartialEmoji" type="interface">
+    Interface representing components that support emojis.
+
+    <Doc.Function name="emoji">
+      Set this component's emoji.
+
+      <Doc.Arguments>
+        <Doc.Arg name="emoji" type={["String", "GuildEmoji", "ReactionEmoji"]}>
+          Emoji to set.
+        </Doc.Arg>
+      </Doc.Arguments>
+    </Doc.Function>
+  </Doc.Type>
+
+  <Doc.Function name="applyComponents" receiver="MessageBuilder">
+    Convenience function for applying an arbitrary `ComponentContainer` to the message you're currently creating/editing.
+
+    <Doc.Arguments>
+      <Doc.Arg name="components" type="ComponentContainer">
+        `ComponentContainer` to apply.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+</Doc.Container>

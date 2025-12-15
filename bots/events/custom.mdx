@@ -1,0 +1,112 @@
+---
+description: 'Create your own custom events.'
+sidebar_position: 3
+
+sidebar_custom_props:
+  card_group: "Objects"
+  icon: "fluent:code-block-edit-24-filled"
+---
+
+import * as Doc from "/src/components/Doc";
+
+# Custom Events
+
+While Kord and Kord Extensions both provide a rich library of event types, it is often useful to be able to create your
+own, especially when writing modules for other folks to use.
+
+Custom events work just like other events, and you can react to them using
+[a normal event handler](/bots/events/handlers).
+
+## Writing Events
+
+Before getting started, think about whether your events are gateway-relevant.
+This will define the base type you can use:
+
+- [Kord's `Event` type](https://dokka.kord.dev/core/dev.kord.core.event/-event/index.html) —
+  If your events are gateway-relevant, use this type, as it allows you to specify the correct shard number.
+- `KordExEvent` — If a fixed shard number of `-1` is fine for your event, use this type.
+  Along with Kord's `Event` type, it additionally extends `KordExKoinComponent`, making it easier to inject values.
+
+If your events refer to Discord entities, you must also implement the relevant [rich base types](#rich-base-types).
+This is important, as it ensures your custom events will work with the [built-in checks](/bots/checks/bundled).
+
+Once you've decided on your base types, create an event class:
+
+```kt
+class MyGeneralEvent(
+    val data: String
+) : KordExEvent
+
+class MyGatewayEvent(
+    override val shard: Int,
+    val data: String
+) : Event {
+    override val kord: Kord get() = getKoin().get()
+}
+```
+
+## Firing Events
+
+To fire your event, use the `send` function defined against your bot's `ExtensibleBot`.
+You can use [Koin (TODO)](#) if you need to get a reference.
+
+```kt
+class MyClass : KordExKoinComponent {
+    val bot: ExtensibleBot by inject()
+
+    fun myFunction() {
+        bot.send(
+            MyGeneralEvent("data")
+        )
+    }
+}
+```
+
+## Rich Base Types
+
+If your events refer to Discord entities, you must also implement the relevant rich base types.
+This is important, as it ensures your custom events will work with the [built-in checks](/bots/checks/bundled).
+
+These rich base types come with the API surface you'd expect from Kord events, but since they are interfaces, you will
+need to implement some basic functions yourself.
+
+<Doc.Container>
+  <Doc.Type name="ChannelEvent" type="interface">
+    Interface representing events that may contain channels.
+
+    This type includes a `channel` property, as well as some API functions and utility extension functions.
+  </Doc.Type>
+
+  <Doc.Type name="GuildEvent" type="interface">
+    Interface representing events that may contain guilds.
+
+    This type includes a `guild` property, as well as some API functions.
+  </Doc.Type>
+
+  <Doc.Type name="MemberEvent" type="interface" extends={["GuildEvent", "UserEvent"]}>
+    Interface representing events that may contain guild members.
+
+    This type includes a `member` property, as well as some API functions.
+  </Doc.Type>
+
+  <Doc.Type name="MessageEvent" type="interface">
+    Interface representing events that may contain messages.
+
+    This type includes a `message` property, as well as some API functions.
+  </Doc.Type>
+
+  <Doc.Type name="RoleEvent" type="interface">
+    Interface representing events that may contain roles.
+
+    This type includes a `role` property, as well as some API functions.
+
+    **Note:** Some Discord events contain role information and no guild information, so this event doesn't extend
+    `GuildEvent`.
+  </Doc.Type>
+
+  <Doc.Type name="UserEvent" type="interface">
+    Interface representing events that may contain users.
+
+    This type includes a `user` property, as well as some API functions.
+  </Doc.Type>
+</Doc.Container>

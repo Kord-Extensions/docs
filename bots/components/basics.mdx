@@ -1,0 +1,222 @@
+---
+description: "Component basics, limitations, and general information."
+sidebar_position: 1
+
+sidebar_custom_props:
+  card_group: "Basics"
+  icon: "fluent:new-24-filled"
+  divider_below: true
+---
+
+import {
+  MessageContainer,
+  Message,
+  ActionRow,
+  Button,
+  SelectMenu,
+  Modal,
+  ModalRow,
+  LineInput, ParagraphInput
+} from "/src/components/Messages"
+
+# Basics
+
+Discord components allow for more advanced user interactions, by adding interactive components to your bot's messages.
+Kord Extensions exposes these via its components systems.
+
+:::info Components v1
+
+Kord only supports Components v1, so Kord Extensions also only supports Components v1.
+If you'd like to use Components v2, please test and review
+[this Kord pull request](https://github.com/kordlib/kord/pull/1009).
+
+:::
+
+## Understanding Components
+
+Each Discord message and modal supports up to five rows of components, with each row spanning up to five units.
+
+<MessageContainer>
+  <Message>
+    Message showing the maximum area you can fill with components.
+
+    <ActionRow>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+    </ActionRow>
+
+    <ActionRow>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+    </ActionRow>
+
+    <ActionRow>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+    </ActionRow>
+
+    <ActionRow>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+    </ActionRow>
+
+    <ActionRow>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+    </ActionRow>
+  </Message>
+</MessageContainer>
+
+### Types
+
+Multiple component types exist, each with their own number of units taken up, and differing compatibility with messages
+and modals.
+
+- **Action Row:** Five-unit container for other components, with up to five rows supported per message or modal.
+  All components must be placed within an action row.
+- **Button:** One-unit clickable button.
+  Buttons only support messages, and can't be added to modals.
+- **Select Menu:** Five-unit dropdown menu for selecting from sets of items.
+  Select menus support both messages and modals, and can be string-based or limited to specific Discord entity types.
+- **Text Input:** Five-unit line or paragraph text input.
+  Text inputs only support modals, and can't be added to messages.
+
+### Action Rows
+
+Action rows act as containers for other components.
+Your bot must always place other components inside an action row.
+Messages and modals may contain up to five action rows.
+
+<MessageContainer>
+  <Message>
+    Message with a single, empty action row.
+
+    <ActionRow>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+    </ActionRow>
+  </Message>
+</MessageContainer>
+
+### Buttons
+
+Buttons are clickable/tappable components, triggering an action or opening a link when interacted with.
+They take up one unit, and can only be added to messages.
+
+<MessageContainer>
+  <Message>
+    Message with a single button.
+
+    <ActionRow>
+      <Button label="Button" style="primary"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+    </ActionRow>
+  </Message>
+</MessageContainer>
+
+Buttons exist in various types:
+
+- **Action buttons:** Trigger an interaction your bot can respond to.
+  These buttons come in several styles: primary, secondary, success, and danger.
+  They can also be disabled if needed.
+- **Link buttons:** Open a link in the user's preferred browser app.
+- **Premium buttons:** Opens a purchase dialog for the given SKU.
+  [See here for more info.](https://discord.com/developers/docs/monetization/overview)
+
+<MessageContainer>
+  <Message>
+    Message with all button types.
+
+    <ActionRow>
+      <Button label="Primary" style="primary"/>
+      <Button label="Secondary" style="secondary"/>
+      <Button label="Success" style="success"/>
+      <Button label="Danger" style="danger"/>
+      <Button label="Link" style="link"/>
+    </ActionRow>
+
+    <ActionRow>
+      <Button label="Buy - $4.99" style="premium"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+    </ActionRow>
+  </Message>
+</MessageContainer>
+
+### Select Menus
+
+Select menus are clickable/tappable components, allowing users to select zero or more items from a dropdown menu
+containing up to 25 items.
+They take up five units (an entire action row), and support both messages and modals.
+
+Select menus support arbitrary string items, but you can also use them to select from sets of Discord entities taken
+from the current server, including:
+
+- Channels
+- Mentionables (any combination of channels, roles, and users)
+- Roles
+- Users
+
+<MessageContainer>
+  <Message>
+    Message with a select menu and "Save" button.
+
+    <ActionRow>
+      <SelectMenu label="Select Menu" />
+    </ActionRow>
+
+    <ActionRow>
+      <Button label="Save" style="success"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+      <Button label="Unit" style="cutout"/>
+    </ActionRow>
+  </Message>
+</MessageContainer>
+
+### Text Inputs
+
+Text inputs allow users to type text into your modals.
+They take up five units (an entire action row), and can't be added to messages.
+
+Text inputs accept a limited number of characters, and exist in various types:
+
+- **Line inputs:** Accept only one line of text.
+- **Paragraph inputs:** Accept multiple lines of text.
+
+<MessageContainer>
+  <Modal title="Bug Report">
+    <ModalRow label="What's your favourite bug?" required>
+      <LineInput label="Name your bug..." />
+    </ModalRow>
+
+    <ModalRow label="Why is it your favourite?" description="Please provide as much detail as possible!" required>
+      <ParagraphInput label="Write your explanation here..." />
+    </ModalRow>
+  </Modal>
+</MessageContainer>
+

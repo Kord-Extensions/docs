@@ -1,0 +1,545 @@
+---
+description: "Converters provided by Kord Extensions."
+sidebar_position: 2
+
+sidebar_custom_props:
+  card_group: "Converters"
+  icon: "fluent:collections-empty-24-filled"
+---
+
+import * as Doc from "/src/components/Doc";
+
+# Bundled Converters
+
+Kord Extensions includes many built-in converters.
+They cover the most common use-cases (and some uncommon ones),
+but you can always [make your own](/bots/commands/converters/custom) if needed.
+
+## General
+
+<Doc.Container>
+  <Doc.Converter name="Boolean" codeName="boolean" valueType="Boolean"
+                 types={["single", "defaulting", "list", "optional"]}
+  >
+    Boolean converter, with support for translated values.
+
+    <Doc.DetailsContainer>
+      <Doc.Details header="Supported Values">
+        This converter supports the following values, specified below in English.
+        You can also use names in your own language, provided Kord Extensions has translations for it.
+
+        - True: `1`, `y`, `yes`, `t`, `true`
+        - False: `0`, `n`, `no`, `f` `false`
+      </Doc.Details>
+    </Doc.DetailsContainer>
+  </Doc.Converter>
+
+  <Doc.Converter name="Colour" codeName={["colour", "color"]}
+                 valueType="dev.kord.common.Color"
+                 types={["single", "defaulting", "list", "optional"]}
+  >
+    Colour converter, supporting hex codes prefixed with `#` or `0x`, plain RGB integers, or colour names matching
+    Discord's historical branding colours.
+
+    This converter returns [Kord Color objects](https://dokka.kord.dev/common/dev.kord.common/-color/index.html).
+
+    <Doc.DetailsContainer>
+      <Doc.Details header="Discord Colours">
+        This converter supports the following values, specified below in English.
+        You can also use names in your own language, provided Kord Extensions has translations for it.
+
+        - Black: `black`, `blck`, `blk`
+        - Blurple: `blurple`, `purple`, `purp`, `prpl`, `prp`
+        - Fuchsia: `fuchsia`, `pink`, `pnk`
+        - Green: `green`, `grn`
+        - Light Blurple: `light blurple`, `lblurple`, `light blurp`, `lblurp`, `light purple`, `lpurple`, `light purp`,
+          `lpurp`, `light prpl`, `lprpl`, `light prp`, `lprp`
+        - Red: `red`, `rd`
+        - White: `white`, `wht`
+        - Yellow: `yellow`, `ylw`
+      </Doc.Details>
+    </Doc.DetailsContainer>
+  </Doc.Converter>
+
+  <Doc.Converter name="Decimal" codeName="decimal" valueType="Double"
+                 types={["single", "defaulting", "list", "optional"]}
+  >
+    Decimal converter, parsing the provided value into a `Double`.
+
+    This converter supports some extra settings:
+
+    <Doc.Property name="maxValue" type="Double?" default="null" propType="var">
+      The maximum allowed input value.
+    </Doc.Property>
+
+    <Doc.Property name="minValue" type="Double?" default="null" propType="var">
+      The minimum allowed input value.
+    </Doc.Property>
+  </Doc.Converter>
+
+  <Doc.Converter name="Duration" codeName="duration"
+                 valueType="kotlinx.datetime.DateTimePeriod"
+                 types={["single", "defaulting", "optional", "coalescing"]}>
+    Duration converter, using a complex parsing strategy to parse arguments into
+    [DateTimePeriod objects](https://kotlinlang.org/api/kotlinx-datetime/kotlinx-datetime/kotlinx.datetime/-date-time-period/).
+    These objects are timezone-agnostic, and you may need to normalise them against a specific timezone.
+
+    If you're writing a [chat command](/bots/commands/chat), consider using the coalescing variant for this converter, allowing
+    users to supply spaces in their input.
+
+    This converter supports some extra settings:
+
+    <Doc.Property name="longHelp" type="Boolean" default="true" propType="var">
+      Whether to respond with a long help message on parsing failures, explaining exactly how to specify durations
+      and what time units are supported.
+
+      Set this to `false` if you only want to tell the user that they provided an invalid time unit.
+    </Doc.Property>
+
+    <Doc.Property name="positiveOnly" type="Boolean" default="true" propType="var">
+      Whether the converter should only accept a positive duration.
+
+      Set this to `false` if you also want to accept negative durations.
+    </Doc.Property>
+
+    Along with [Discord-formatted timestamps](https://discord.com/developers/docs/reference#message-formatting), this
+    converter supports specifying durations as a series of units and numbers.
+
+    <Doc.DetailsContainer>
+      <Doc.Details header="Parsing Specification">
+        Users can specify durations as pairs containing both a unit and a numeric value,
+        including prefixing numbers with a minus sign (`-`) to make them negative..
+        The parser removes commas, spaces, and the plus character (`+`) before parsing.
+
+        Pairs work when specified in any order, and duplicates are added/subtracted.
+        The parser supports both ordered forms to allow for natural input in right-to-left languages:
+
+        - Value first: `12 days`
+        - Unit first: `d12`
+
+        Users can prefix numbers with a minus sign (`-`) to make them negative.
+        The parser only supports base-10 ASCII integers.
+      </Doc.Details>
+
+      <Doc.Details header="Supported Units">
+        The parser supports the following units, which are listed below with their English names.
+        You can also use names in your own language, provided Kord Extensions has translations for it.
+
+        -   Seconds: `s`, `sec`, `secs`, `second`, `seconds`
+        -   Minutes: `m`, `mi`, `min`, `mins`, `minute`, `minutes`
+        -   Hours: `h`, `hr`, `hour`, `hours`
+        -   Days: `d`, `day`, `days`
+        -   Weeks: `w`, `wk`, `week`, `weeks`
+        -   Months: `mo`, `mth`, `month`, `months`
+        -   Years: `y`, `yr`, `year`, `years`
+      </Doc.Details>
+
+      <Doc.Details header="Examples">
+        The following examples are valid duration strings:
+
+        - `12d 4h 30m` - 12 days, 4 hours and 30 minutes.
+        - `12d 4h 30m -1 w` - 5 days (12 - 7), 4 hours and 30 minutes.
+        - `-2d 1w 6h -2h` - 5 days (7 - 2) and 4 hours (6 - 2).
+        - `周3 日2 分30` - in Simplified Chinese, 23 days (3 \* 7 + 2) and 30 minutes.
+
+        The following examples are invalid:
+
+        - `12` - bare numbers are not supported, a unit is required.
+        - `12m d w` - all units require a numerical value.
+        - `-5 days` with `positiveOnly = true` - the current converter only accepts positive durations.
+      </Doc.Details>
+    </Doc.DetailsContainer>
+  </Doc.Converter
+  >
+
+  <Doc.Converter name="Email" codeName="email" valueType="String"
+                 types={["single", "defaulting", "list", "optional"]}
+  >
+    Email converter, validating that the provided input is a well-formatted email address, according to
+    [Apache Commons' email validator](https://commons.apache.org/proper/commons-validator/apidocs/org/apache/commons/validator/routines/EmailValidator.html).
+  </Doc.Converter>
+
+  <Doc.Converter name="Enumeration" codeName="enum" valueType="ChoiceEnum<T>" types={[]}>
+    Arbitrary `enum` converter, converting arguments based on a defined getter.
+
+    Your enum must extend `ChoiceEnum` and implement the `readableName` property, which is a translation key
+    representing a human-readable name to show on Discord for each enum entry.
+
+    This converter has some **required extra settings**:
+
+    <Doc.Property name="typeName" type="Key" propType="var" required>
+      Translation key representing a short (one or two word) lower-case name for whatever the enum represents to the
+      user.
+
+      For example, if your enum is named `IssueStatuses` and contains `open`, `closed` and `invalid` entries, your
+      translation key should, in English, resolve to `status` or `issue status`.
+    </Doc.Property>
+
+    It also supports some other settings:
+
+    <Doc.Property name="getter" type="suspend (String, Locale) -> E?" default="::getEnum" propType="var">
+      Getter used to resolve the correct enum entry.
+      The default strategy (named `getEnum`) searches through the possible enum entries, returning the first one that
+      matches one of the following, case-insensitively:
+
+      - The translated string referred to by `readableName`.
+      - The string translation key referred to by `readableName`.
+      - The literal name of the enum entry as written in code.
+    </Doc.Property>
+  </Doc.Converter>
+
+  <Doc.Converter name="Integer" codeName="int" valueType="Int"
+                 types={["single", "defaulting", "list", "optional"]}
+  >
+    Integer converter, parsing the provided value into an `Int`.
+
+    This converter supports some extra settings:
+
+    <Doc.Property name="maxValue" type="Double?" default="null" propType="var">
+      The maximum allowed input value.
+    </Doc.Property>
+
+    <Doc.Property name="minValue" type="Double?" default="null" propType="var">
+      The minimum allowed input value.
+    </Doc.Property>
+
+    <Doc.Property name="radix " type="Int" default="10" propType="var">
+      The radix (base) used when parsing.
+    </Doc.Property>
+  </Doc.Converter>
+
+  <Doc.Converter name="Long" codeName="long" valueType="Long"
+                 types={["single", "defaulting", "list", "optional"]}
+  >
+    Long converter, parsing the provided value into a `Long`.
+
+    This converter supports some extra settings:
+
+    <Doc.Property name="maxValue" type="Int?" default="null" propType="var">
+      The maximum allowed input value.
+    </Doc.Property>
+
+    <Doc.Property name="minValue" type="Int?" default="null" propType="var">
+      The minimum allowed input value.
+    </Doc.Property>
+
+    <Doc.Property name="radix " type="Int" default="10" propType="var">
+      The radix (base) used when parsing.
+    </Doc.Property>
+  </Doc.Converter>
+
+  <Doc.Converter name="String" codeName="string" valueType="String"
+                 types={["single", "defaulting", "list", "optional", "coalescing"]}
+  >
+    String converter, returning the argument's value verbatim.
+
+    This converter supports some extra settings:
+
+    <Doc.Property name="maxLength " type="Int?" default="null" propType="var">
+      The maximum allowable input length.
+    </Doc.Property>
+
+    <Doc.Property name="minLength " type="Int?" default="null" propType="var">
+      The minimum allowable input length.
+    </Doc.Property>
+  </Doc.Converter>
+
+  <Doc.Converter name="Supported Locale" codeName="supportedLocale" valueType="Locale"
+                 types={["single", "defaulting", "list", "optional"]}
+  >
+    Supported locale converter, converting arguments into `Locale` objects representing the locales Kord Extensions
+    supports.
+
+    Supported locales are defined
+    [here](https://github.com/Kord-Extensions/kord-extensions/blob/root/kord-extensions/src/main/kotlin/dev/kordex/core/i18n/SupportedLocales.kt).
+    If a locale you need isn't supported, please feel free to
+    [contribute translations for it](https://hosted.weblate.org/projects/kord-extensions/).
+  </Doc.Converter>
+</Doc.Container>
+
+## Discord Entities
+
+<Doc.Container>
+  <Doc.Converter name="Channel" codeName="channel" valueType="dev.kord.core.entity.channel.Channel"
+                 types={["single", "optional", "list"]}
+  >
+    Discord channel converter, converting the input to a resolved
+    [Kord Channel object](https://dokka.kord.dev/core/dev.kord.core.entity.channel/-channel/index.html).
+    This converter behaves differently depending on command type:
+
+    - [Chat commands](/bots/commands/chat): Supports mentions, IDs, names, and `this` to refer to the current channel.
+    - [Slash commands](/bots/commands/application/slash): Uses the resolved object Discord provides,
+      and can't do its own parsing or resolution.
+
+    This converter supports some extra settings:
+
+    <Doc.Function name="requireChannelType">
+      Add a channel type to the set of acceptable types.
+
+      By default, this converter doesn't limit the acceptable channel types.
+      Providing at least one turns on this requirement.
+
+      <Doc.Arguments>
+        <Doc.Arg name="type" type="ChannelType">
+        </Doc.Arg>
+      </Doc.Arguments>
+    </Doc.Function>
+
+    <Doc.Property name="requiredChannelTypes" type="MutableSet<ChannelType>" default="mutableSetOf()" propType="var">
+      The set of acceptable channel types, usually mutated by `requireChannelType(type)`, but you can set it yourself if
+      you prefer.
+
+      By default, this converter doesn't limit the acceptable channel types.
+      Providing at least one turns on this requirement.
+    </Doc.Property>
+
+    <Doc.Property name="requiredGuild" type="(suspend () -> Snowflake)?" default="null" propType="var">
+      **For chat commands:** Callback that returns a `Snowflake` representing a predefined guild the supplied channel
+      must exist on.
+
+      Channels passed to slash commands are already limited to the same guild the command was executed on, so this
+      setting does nothing in that case.
+    </Doc.Property>
+
+    <Doc.Property name="requireSameGuild" type="Boolean" default="true" propType="var">
+      **For chat commands:** Whether the provided channel must exist on the same guild used to execute the command.
+      If the command was executed in DMs, the argument will always be considered invalid.
+
+      Channels passed to slash commands are already limited to the same guild the command was executed on, so this
+      setting does nothing in that case.
+    </Doc.Property>
+  </Doc.Converter>
+
+  <Doc.Converter name="Emoji" codeName="emoji" intents={["GuildEmojis"]}
+                 valueType="dev.kord.core.entity.Emoji"
+                 types={["single", "list", "optional"]}
+  >
+    Emoji converter, parsing the input into a
+    [Kord Emoji object](https://dokka.kord.dev/core/dev.kord.core.entity/-emoji/index.html).
+
+    **Note:** Your bot must have the `GuildEmojis` intent for custom/guild emojis.
+
+    This converter supports the following input styles:
+
+    - Unicode emojis.
+    - Discord custom/guild emojis.
+    - Custom/guild emoji IDs, with or without surrounding colons (`:`).
+    - Custom/guild emoji names, with or without surrounding colons (`:`), resolved using the first matching emoji your
+      bot can find on any of its guilds.
+    - Unicode emoji names, as used in Discord's emoji picker.
+  </Doc.Converter>
+
+  <Doc.Converter name="Guild" codeName="guild" valueType="dev.kord.core.entity.Guild"
+                 types={["single", "optional", "list"]}
+  >
+    Discord guild converter, converting the input to a resolved
+    [Kord Guild object](https://dokka.kord.dev/core/dev.kord.core.entity/-guild/index.html).
+    This converter supports IDs, names, and `this` to refer to the current guild.
+  </Doc.Converter>
+
+  <Doc.Converter name="Member" codeName="member" valueType="dev.kord.core.entity.Member"
+                 types={["single", "optional", "list"]}
+  >
+    Discord member converter, converting the input to a resolved
+    [Kord Guild Member object](https://dokka.kord.dev/core/dev.kord.core.entity/-member/index.html).
+    This converter behaves differently depending on command type:
+
+    - [Chat commands](/bots/commands/chat): Supports mentions, IDs, names, `you` to refer to the bot,
+      and `me` to refer to the user executing the command.
+    - [Slash commands](/bots/commands/application/slash): Uses the resolved object Discord provides,
+      and can't do its own parsing or resolution.
+
+    This converter supports some extra settings:
+
+    <Doc.Property name="requiredGuild" type="(suspend () -> Snowflake)?" default="null" propType="var">
+      Callback that returns a `Snowflake` representing a predefined guild the supplied member must exist on.
+      This will also limit command executions to that guild.
+    </Doc.Property>
+
+    <Doc.Property name="requireSameGuild" type="Boolean" default="true" propType="var">
+      Whether the provided member must exist on the same guild used to execute the command.
+      If the command was executed in DMs, the argument will always be considered invalid.
+    </Doc.Property>
+
+    <Doc.Property name="useReply" type="Boolean" default="true" propType="var">
+      **For chat commands:** Whether to use the author of the replied-to message, when there is one.
+      If the command was executed in DMs, the argument will always be considered invalid.
+    </Doc.Property>
+  </Doc.Converter>
+
+  <Doc.Converter name="Message" codeName="message" valueType="dev.kord.core.entity.Message"
+                 types={["single", "optional", "list"]}
+  >
+    Discord message converter, converting the input to a resolved
+    [Kord Message object](https://dokka.kord.dev/core/dev.kord.core.entity/-message/index.html).
+    This converter supports jump URLs and IDs, and the converter assumes that provided IDs refer to messages in the
+    current channel.
+
+    Messages will be retrieved if they're not already in Kord's cache, which requires the bot to be able to see the
+    message in question.
+    Your bot cannot resolve jump URLs referring to messages in DMs.
+
+    This converter supports some extra settings:
+
+    <Doc.Property name="requiredGuild" type="(suspend () -> Snowflake)?" default="null" propType="var">
+      Callback that returns a `Snowflake` representing a predefined guild the supplied message must exist on.
+      This will also limit command executions to that guild.
+    </Doc.Property>
+
+    <Doc.Property name="requireSameGuild" type="Boolean" default="true" propType="var">
+      When `requiredGuild` is specified, whether the message must exist on guild returned by that callback.
+      Otherwise, whether the provided message must exist on the same guild used to execute the command.
+
+      If the command was executed in DMs and this setting is `true`, the argument will always be considered invalid.
+    </Doc.Property>
+
+    <Doc.Property name="useReply" type="Boolean" default="true" propType="var">
+      Whether to use the author of the replied-to message, when there is one.
+    </Doc.Property>
+  </Doc.Converter>
+
+  <Doc.Converter name="Role" codeName="role" valueType="dev.kord.core.entity.Role"
+                 types={["single", "optional", "list"]}
+  >
+    Discord role converter, converting the input to a resolved
+    [Kord Role object](https://dokka.kord.dev/core/dev.kord.core.entity/-role/index.html).
+
+    This converter doesn't support resolving roles via commands run in DMs.
+    It also behaves differently depending on command type:
+
+    - [Chat commands](/bots/commands/chat): Supports mentions, IDs and names.
+    - [Slash commands](/bots/commands/application/slash): Uses the resolved object Discord provides, and can't do its own parsing or resolution.
+
+    This converter supports some extra settings:
+
+    <Doc.Property name="requiredGuild" type="(suspend () -> Snowflake)?" default="null" propType="var">
+      **For chat commands:** Callback that returns a `Snowflake` representing a predefined guild the supplied role
+      must exist on.
+
+      Roles passed to slash commands are already limited to the same guild the command was executed on, so this
+      setting does nothing in that case.
+    </Doc.Property>
+  </Doc.Converter>
+
+  <Doc.Converter name="Snowflake" codeName="snowflake" valueType="dev.kord.common.entity.Snowflake"
+                 types={["single", "optional", "list", "defaulting"]}
+  >
+    Discord snowflake converter, converting the input to a
+    [Kord Snowflake object](https://dokka.kord.dev/common/dev.kord.common.entity/-snowflake/index.html).
+  </Doc.Converter>
+
+  <Doc.Converter name="Tag" codeName="tag" valueType="dev.kord.common.entity.ForumTag"
+                 types={["single", "optional", "list"]}
+  >
+    Discord tag converter, converting the input to a resolved
+    [Kord ForumTag object](https://dokka.kord.dev/common/dev.kord.common.entity/-forum-tag/index.html).
+
+    This converter supports tag names, supplied via the built-in auto-completion based on its settings:
+    - **Default:** Use the parent channel for the current forum thread, if the command is being run within one.
+    - **With Channel Getter:** Always use the forum channel returned by the getter.
+
+    If you don't provide a channel getter and a user runs this command outside of a forum thread, your bot won't be able
+    to resolve any tags.
+
+    <Doc.Property name="channelGetter " type="(suspend () -> ForumChannel?)?" default="null" propType="var">
+      Callback that returns a `ForumChannel` representing a predefined forum channel the supplied tag must exist on.
+    </Doc.Property>
+  </Doc.Converter>
+
+  <Doc.Converter name="Timestamp" codeName="timestamp"
+                 valueType="dev.kordex.core.commands.converters.impl.FormattedTimestamp"
+                 types={["single", "optional", "list", "defaulting"]}
+  >
+    [Discord-formatted timestamp](https://discord.com/developers/docs/reference#message-formatting) converter,
+    converting the input to a `FormattedTimestamp` object, which includes the corresponding `Instant` and
+    `TimestampType`.
+
+    This converter only supports Discord-formatted timestamps.
+    For duration parsing (which includes Discord-formatted timestamps), see the `Duration` converter above.
+  </Doc.Converter>
+
+  <Doc.Converter name="User" codeName="user" valueType="dev.kord.core.entity.User"
+                 types={["single", "optional", "list"]}
+  >
+    Discord user converter, converting the input to a resolved
+    [Kord User object](https://dokka.kord.dev/core/dev.kord.core.entity/-user/index.htm).
+    This converter behaves differently depending on command type:
+
+    - [Chat commands](/bots/commands/chat): Supports mentions, IDs, usernames, tags, `you` to refer to the bot, and `me` to refer to the user
+      executing the command.
+    - [Slash commands](/bots/commands/application/slash): Uses the resolved object Discord provides, and can't do its own parsing or resolution.
+
+    This converter supports some extra settings:
+
+    <Doc.Property name="useReply" type="Boolean" default="true" propType="var">
+      **For chat commands:** Whether to use the author of the replied-to message, when there is one.
+    </Doc.Property>
+  </Doc.Converter>
+</Doc.Container>
+
+## Slash Commands
+
+<Doc.Container>
+  <Doc.Converter name="Attachment" codeName="attachment" valueType="dev.kord.core.entity.Attachment"
+                 types={["single", "optional"]}
+  >
+    Discord attachment converter, supplied as a file when invoking a slash command.
+    Discord provides a drop target for this type of argument.
+
+    This converter doesn't support chat commands.
+  </Doc.Converter>
+</Doc.Container>
+
+## Unsafe
+
+:::danger These converters are dangerous!
+
+We included these converters because they are useful in limited situations, but they can be dangerous if not used
+correctly, with their access limited to trusted users.
+
+These converters may slow down or crash your bot, or result in data exposure problems when used incorrectly.
+Use them at your own risk!
+
+:::
+
+<Doc.Container>
+  <Doc.Converter name="Regular Expression" codeName="regex" valueType="Regex"
+                 types={["single", "defaulting", "list", "optional", "coalescing"]}
+  >
+    Regular expression converter, allowing users to supply a regular expression.
+
+    **Remember that untrusted regular expressions are dangerous, and executing them carries risks (such as
+    [catastrophic backtracking](https://www.regular-expressions.info/catastrophic.html)) that this converter isn't
+    designed to prevent.**
+    If you need to execute untrusted regular expressions, consider writing
+    [a custom converter](/bots/commands/converters/custom) using
+    [Google's RE2/J library](https://github.com/google/re2j).
+
+    This converter supports some extra settings:
+
+    <Doc.Property name="options " type="MutableSet<RegexOption>" default="setOf()" propType="var">
+      Regular expression options used to create the `Regex` object.
+    </Doc.Property>
+  </Doc.Converter>
+
+  <Doc.Converter name="Serialized" codeName="serialized" valueType="T"
+                 types={["single", "defaulting", "list", "optional",]}
+  >
+    Serialised value converter, converting argument values to the given type using `kotlinx.serialization`.
+
+    **This isn't how `kotlinx.serialization` is supposed to be used.**
+    **This converter is a best-effort attempt to support new argument types without writing a
+    [custom converter](/bots/commands/converters/custom),
+    and it's important to thoroughly test any code using this before deploying it.**
+
+    This converter has some **required extra settings**:
+
+    <Doc.Property name="typeName" type="Key" propType="var" required>
+      Translation key representing a short (one or two word) lower-case name for whatever the value type represents to
+      the user.
+
+      For example, if your type is named `IssueStatus` and contains `OpenStatus`, `ClosedStatus` and `InvalidStatus`
+      values, your translation key should, in English, resolve to `status` or `issue status`.
+    </Doc.Property>
+  </Doc.Converter>
+</Doc.Container>

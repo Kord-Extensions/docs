@@ -1,0 +1,119 @@
+---
+description: "Set up your bot, and configure basic and general settings."
+sidebar_position: 2
+sidebar_custom_props:
+  divider_below: true
+  card_group: "Basics"
+  icon: "fluent:settings-cog-multiple-24-filled"
+---
+
+import Link from "@docusaurus/Link";
+import * as Doc from "/src/components/Doc";
+
+# General Settings
+
+Configure your bot using the provided `ExtensibleBot` builder.
+This is Kord Extensions' entry point, and you should provide all of your bot's settings in this builder — including
+the settings explained by <Link to="/bots/config">the other pages in this section</Link>.
+
+<Doc.Container>
+  <Doc.Builder hasArgs name="ExtensibleBot" receiver="ExtensibleBotBuilder" functionReturns="ExtensibleBot">
+    Create and set up your bot, represented by the object returned by this function.
+    **Note:** The bot won't start until you call the `.start()` or `.startAsync()` function.
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="token" type="String">
+        Your bot's token, obtained from [the developer dashboard](https://discord.com/developers/applications/).
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+</Doc.Container>
+
+## General
+
+<Doc.Container>
+  <Doc.Property name="botVersion" type="String?" default="null" propType="var">
+    Your bot's version.
+
+    Usually provided by the Gradle plugin, but you can also set it manually here.
+  </Doc.Property>
+
+  <Doc.Property name="devMode" type="Boolean" default="false" propType="var">
+    Whether your bot is currently running in development mode.
+
+    Usually provided by the Gradle plugin, the `devMode` system property, the `DEV_MODE` environmental variable,
+    or by setting the `ENVIRONMENT` environmental variable to `dev` or `development`.
+    However, you can also set this manually here.
+  </Doc.Property>
+
+  <Doc.Property name="dataCollectionMode" type="DataCollection" default="Standard" propType="var">
+    Your bot's data collection mode.
+
+    Usually provided by the Gradle plugin, the `dataCollection` system property, or the `DATA_COLLECTION` environmental
+    variable.
+    However, you can also set this manually here.
+
+    For more information, see <Link to="/bots/about/data-collection">the data collection page</Link>.
+  </Doc.Property>
+</Doc.Container>
+
+## Kord
+
+<Doc.Container>
+  <Doc.Builder name="customKordBuilder" receiver="KordBuilder" lambdaReturns="Kord">
+    Replace Kord Extensions' default Kord object factory function.
+
+    This can be useful if you need to provide a customised Kord instance, but this won't be necessary for most bots.
+
+    <Doc.Arguments type="lambda">
+      <Doc.Arg name="token" type="String">
+        Your bot's token, as configured previously.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+</Doc.Container>
+
+## Miscellaneous
+
+<Doc.Container>
+  <Doc.Property name="addDefaultHealthChecks" type="Boolean" default="true" propType="var">
+    Whether to add Kord Extensions' default health-checks to the health-check registry.
+  </Doc.Property>
+
+  <Doc.Property name="koinLogLevel" type="Level" default="ERROR" propType="var">
+    The logging level used by Koin.
+    You shouldn't need to change this unless you need to debug Koin's internals.
+  </Doc.Property>
+</Doc.Container>
+
+## Performance
+
+<Doc.Container>
+  <Doc.Property name="autoCompleteContextThreads" type="Int" default="Runtime.availableProcessors()" propType="var">
+    Size of the thread-pool used to dispatch `AutoCompleteInteractionCreateEvent`s to their corresponding registries.
+  </Doc.Property>
+
+  <Doc.Property name="interactionContextThreads" type="Int" default="Runtime.availableProcessors() * 2" propType="var">
+    Size of the thread-pool used to dispatch all `InteractionCreateEvent`s to their corresponding registries.
+  </Doc.Property>
+
+  <Doc.Builder name="kordEventFilter" receiver="Event" lambdaReturns="Boolean">
+    Set your bot's event-filtering predicate for events created by Kord.
+    Returning `false` from your predicate will prevent Kord Extensions from processing that event, which may help with
+    performance in some situations.
+
+    This won't filter events created by Kord Extensions, or any loaded extensions.
+    Your bot may only have one Kord event predicate registered at once --- this function will overwrite the
+    previously registered predicate, if one was set.
+  </Doc.Builder>
+
+  <Doc.Builder name="kordExEventFilter" receiver="Event" lambdaReturns="Boolean">
+    Set your bot's event-filtering predicate for events created by Kord Extensions.
+    Returning `false` from your predicate will prevent Kord Extensions from processing that event, which may help with
+    performance in some situations.
+
+    This won't filter events created by Kord.
+    Your bot may only have one Kord Extensions event predicate registered at once --- this function will overwrite the
+    previously registered predicate, if one was set.
+  </Doc.Builder>
+</Doc.Container>

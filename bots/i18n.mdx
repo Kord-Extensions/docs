@@ -1,0 +1,32 @@
+---
+description: Learn about writing translations and locale-specific formatting.
+sidebar_position: 37
+---
+
+# Internationalisation (i18n)
+
+The bulk of this documentation has been moved to [the section for the dedicated i18n framework](/i18n).
+Kord Extensions will move to this framework soon, but most of the documentation present on that page still applies.
+
+However, please take note of the following points,
+as Kord Extensions requires you to do some things a little differently:
+
+- You should **configure the framework [using your bot's i18n settings](/bots/config/i18n)**, rather than
+  [the i18n framework's configuration guide](/i18n/configuration).
+- Because of how complex the class-path work is, you may find that custom formats defined in your plugins don't work
+  correctly.
+  If you're writing plugins for other users and developers, stick with [the bundled formats](/i18n/formats).
+- The [KordEx Gradle plugin](/bots/gradle-plugin) still handles translation bundle code generation.
+  You should continue using this until we remove it from that plugin.
+
+We've decided not to bring over the old guides we wrote that explained precisely how to use ICU Message Format v1, as
+this was out of scope of our documentation.
+Instead, consider looking at these guides, which are much better references:
+
+- [Message Format v1 Documentation](https://unicode-org.github.io/icu/userguide/format_parse/messages/)
+- [Message Format v2 Translator Guide](https://messageformat.unicode.org/docs/translators/)
+
+## ICU MFv2: Markup
+
+Kord Extensions doesn't add any markup tags that ICU Message Format v2 can use, but we plan on looking into this later
+down the line.

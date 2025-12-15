@@ -1,0 +1,15 @@
+{
+	"extends": "@docusaurus/tsconfig",
+	"compilerOptions": {
+		"baseUrl": ".",
+		"moduleResolution": "Node16",
+	},
+	"exclude": [
+		".docusaurus",
+		"build"
+	],
+
+	"references": [
+		{"path":  "./src/theme"}
+	]
+}

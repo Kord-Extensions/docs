@@ -1,0 +1,199 @@
+---
+description: 'Commands run via the "Apps" menu in the client.'
+sidebar_position: 3
+
+sidebar_custom_props:
+  card_group: "Commands"
+  icon: "fluent:apps-list-detail-24-filled"
+---
+
+import * as Doc from "/src/components/Doc";
+
+# Context Commands
+
+Context commands are a special type of [application command](/bots/commands/application/),
+invoked by users via a right-click or tap-and-hold "Apps" menu in their Discord client.
+Instead of arguments, context commands receive whatever the user was targeting when they opened the menu.
+
+![Screenshot showing a Discord client, showcasing how context commands show to users.](/img/bots/commands/application-commands.png)
+
+Two types of context commands exist: `message` and `user`.
+They have identical APIs, aside from the type of data Discord supplies to them.
+
+:::tip Dynamic Registration
+
+You should register context commands as part of your bot's startup process, by calling the relevant builder functions in
+your extension's `setup` function.
+However, if necessary, you can also register them dynamically by calling the same functions after your bot connects to
+Discord.
+**If you do this, your bot will immediately register the command with Discord,
+so be aware of Discord's strict rate limits.**
+
+:::
+
+## Extension API
+
+<Doc.Container>
+  <Doc.Builder name="ephemeralMessageCommand" receiver="EphemeralMessageCommand" hasArgs>
+    Use this builder to register a message command based on an ephemeral interaction flow.
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="modal" type="() -> M">
+        Optional callable returning an instance of your `ModalForm` subtype,
+        as explained on [the modals page](/bots/commands/modals).
+        You'll usually want to pass a constructor here.
+      </Doc.Arg>
+    </Doc.Arguments>
+
+    <Doc.Arguments type="type">
+      <Doc.Arg name="M" type="ModalForm" default="ModalForm">
+        Optional generic type referring to your `ModalForm` subtype, as explained on
+        [the modals page](/bots/commands/modals).
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <Doc.Builder name="ephemeralUserCommand" receiver="EphemeralUserCommand" hasArgs>
+    Use this builder to register a user command based on an ephemeral interaction flow.
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="modal" type="() -> M">
+        Optional callable returning an instance of your `ModalForm` subtype,
+        as explained on [the modals page](/bots/commands/modals).
+        You'll usually want to pass a constructor here.
+      </Doc.Arg>
+    </Doc.Arguments>
+
+    <Doc.Arguments type="type">
+      <Doc.Arg name="M" type="ModalForm" default="ModalForm">
+        Optional generic type referring to your `ModalForm` subtype, as explained on
+        [the modals page](/bots/commands/modals).
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <Doc.Builder name="publicMessageCommand" receiver="PublicMessageCommand" hasArgs>
+    Use this builder to register a message command based on a public interaction flow.
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="modal" type="() -> M">
+        Optional callable returning an instance of your `ModalForm` subtype,
+        as explained on [the modals page](/bots/commands/modals).
+        You'll usually want to pass a constructor here.
+      </Doc.Arg>
+    </Doc.Arguments>
+
+    <Doc.Arguments type="type">
+      <Doc.Arg name="M" type="ModalForm" default="ModalForm">
+        Optional generic type referring to your `ModalForm` subtype, as explained on
+        [the modals page](/bots/commands/modals).
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <Doc.Builder name="publicUserCommand" receiver="PublicUserCommand" hasArgs>
+    Use this builder to register a user command based on a public interaction flow.
+
+    <Doc.Arguments type="function">
+      <Doc.Arg name="modal" type="() -> M">
+        Optional callable returning an instance of your `ModalForm` subtype,
+        as explained on [the modals page](/bots/commands/modals).
+        You'll usually want to pass a constructor here.
+      </Doc.Arg>
+    </Doc.Arguments>
+
+    <Doc.Arguments type="type">
+      <Doc.Arg name="M" type="ModalForm" default="ModalForm">
+        Optional generic type referring to your `ModalForm` subtype, as explained on
+        [the modals page](/bots/commands/modals).
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <hr className="clear" />
+  <hr className="clear" />
+
+  <Doc.Builder name="messageCommandCheck" receiver="CheckContext<MessageCommandInteractionCreateEvent>">
+    Register a [check](/bots/checks) that must pass for any of the message commands in this extension to run.
+  </Doc.Builder>
+
+  <Doc.Builder name="userCommandCheck" receiver="CheckContext<UserCommandInteractionCreateEvent>">
+    Register a [check](/bots/checks) that must pass for any of the user commands in this extension to run.
+  </Doc.Builder>
+</Doc.Container>
+
+## Message Commands
+
+You can register a message command using the corresponding builder functions explained above.
+All message commands must define a `name` and `action`.
+
+Message commands don't support arguments, but you can still provide [a ModalForm subtype](/bots/commands/modals)
+to prompt the user with a modal, similarly to how [slash commands](/bots/commands/application/slash) work.
+
+```kt
+publicMessageCommand {
+    name = Translations.Commands.GetMessage.name
+
+    action {
+        val target = targetMessages.first()
+
+        respond {
+            content = "Target: ${target.getJumpUrl()}"
+        }
+    }
+}
+```
+
+Message commands don't expose any extra APIs, aside from an `action { }` builder and those provided by the
+[base application command type](/bots/commands/application/base-command) they extend.
+However, along with [the basic context APIs](/bots/commands/application/base-context),
+the message command context provides a `targetMessages` property containing a list of targeted messages.
+
+:::note List of Targets
+
+While Discord provides a list of target messages, it is impossible for users to target more than one message in the
+Discord client — at least, as of this writing.
+We think Discord intended to make it possible to specify multiple messages, but this never made it into the client.
+
+We decided to mirror Discord's choice, as this might become possible at some point in the future.
+
+:::
+
+## User Commands
+
+You can register a user command using the corresponding builder functions explained above.
+All user commands must define a `name` and `action`.
+
+User commands don't support arguments, but you can still provide [a ModalForm subtype](/bots/commands/modals) to
+prompt the user with a modal, similarly to how [slash commands](/bots/commands/application/slash) work.
+
+```kt
+publicUserCommand(::GreetModal) {
+    name = Translations.Commands.GreetUser.name
+
+    action { modal ->
+        modal ?: return@action
+
+        val target = targetUsers.first()
+
+        respond {
+            content = "${modal.greeting.value} ${target.mention}"
+        }
+    }
+}
+```
+
+User commands don't expose any extra APIs, aside from an `action { }` builder and those provided by the
+[base application command type](/bots/commands/application/base-command) they extend.
+However, along with [the basic context APIs](/bots/commands/application/base-context),
+the user command context provides a `targetUsers` property containing a list of targeted user.
+
+:::note List of Targets
+
+While Discord provides a list of target users, it is impossible for users to target more than one user in the
+Discord client — at least, as of this writing.
+We think Discord intended to make it possible to specify multiple users, but this never made it into the client.
+
+We decided to mirror Discord's choice, as this might become possible at some point in the future.
+
+:::

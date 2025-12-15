@@ -1,0 +1,58 @@
+---
+sidebar_position: 6
+---
+
+import { DocCardListWithDescriptions } from "/src/theme/DocCardList"
+
+# Application Commands
+
+Discord provides several rich command types, and Kord Extensions provides its own abstractions for them.
+We split these abstractions between each command type, and further divide them into ephemeral and public interaction
+flows.
+
+:::warning User Apps
+
+Discord recently created a new type of bot:
+[user-installable apps](https://discord.com/developers/docs/tutorials/developing-a-user-installable-app).
+These bots have commands and activities meant to be run by users in group DMs or guilds, rather than requiring them
+to add the bot to a server.
+
+As of this writing, Kord doesn't support user-installable apps, so we don't either.
+If you need this feature,
+please [review this pull request](https://github.com/kordlib/kord/pull/970) and provide feedback, which will hopefully
+let the Kord team know there's demand for it.
+
+:::
+
+## Philosophy
+
+We often see users asking us why we decided to explicitly divide our command types into ephemeral and public
+interaction types.
+
+When we originally designed this command system, the abstractions were pretty barebones.
+You would register an application command and handle all interaction logic on your own.
+However, we found that this was not a very user-friendly approach, for several reasons:
+
+- Discord only gives your bot 5 seconds to respond to an interaction event, and some command action blocks need more
+  time.
+- Discord's interaction API can be confusing, and automatically responding to interaction events makes our API
+  significantly easier to understand and work with.
+- Discord expects your commands to stick with either public or ephemeral, rather than mixing them — doing so can
+  give you some very unexpected behaviours.
+- Ephemeral interactions have limitations that public interactions don't, and we wanted to represent this in a
+  type-safe way.
+
+This philosophy also applies to [our component abstractions](/bots/components).
+
+**Note:** Our abstractions do have some limitations, especially when it comes to handling
+[modals](/bots/commands/modals).
+If you need more control, take a look at the [unsafe module (TODO)](#).
+
+## Pages
+
+See the following pages for more information on each application command type, and how you can use them.
+
+<DocCardListWithDescriptions descriptions={{
+  "Base APIs": "Learn about the APIs available on the base types extended by each command type.",
+  "Commands": "Learn about the different command types, and how to use them.",
+}} />

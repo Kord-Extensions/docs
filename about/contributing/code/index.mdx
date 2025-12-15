@@ -1,0 +1,91 @@
+---
+sidebar_position: 1
+---
+
+import Link from "@docusaurus/Link";
+
+# Code
+
+If you're a software developer, and you'd like to contribute to one of our projects, you're in the right place!
+
+All our libraries and tools are open-source, and we're happy to accept contributions.
+However, we have some standards you'll need to meet before we can accept your work.
+
+## Getting Started
+
+Before contributing to our projects, please make sure you've already done the following:
+
+- [ ] Look for relevant GitHub issues and check <Link to="/about/community">our community spaces</Link> to make sure
+      nobody's already working on your idea.
+      - If someone is already working on your idea, **do not create a separate contribution.**
+        Instead, if possible, work together to create a better, combined contribution.
+      - If you see a claimed issue that nobody has worked on for a long time, let us know and we'll assign it to you.
+- [ ] If nobody's working on it, present your idea to the project maintainers by opening a GitHub issue or using
+      <Link to="/about/community">our community spaces</Link> to float it.
+- [ ] Once discussions have concluded, and we've approved your idea, fork the relevant GitHub repository.
+- [ ] Immediately create a new branch for your changes and begin working on your idea.
+- [ ] As soon as you push your first commit, open your pull request.
+      Remember to tag it as a work-in-progress!
+- [ ] Once you're happy your changes are ready, remove the work-in-progress tag from your pull request and leave a
+      comment to let us know that you're ready for reviews.
+- [ ] When we review your changes, address them.
+      Try not to let your pull request go stale by failing to address our reviews.
+
+Once we're happy with your changes, we'll merge them into our repository.
+Thanks for your help!
+
+## General Guidelines
+
+When you're working on our projects, you should keep the following points in mind:
+
+- **Follow our Policies:** Adhere to our <Link to="/about/community/code-of-conduct">Code of Conduct</Link> and
+  <Link to="/about/community/rules-and-reporting">Community Rules</Link> when creating a contribution.
+  This applies both to your conduct and your code!
+
+- **Don't fight the framework:** If a project is using a specific framework or
+  toolset, then we expect you to stick with it.
+  If you feel like there's a better option,
+  *please open an issue instead of trying to contribute the necessary changes.*
+
+  We've picked the tools we're using for a reason, and the project is probably too far ahead
+  to make a rewrite in another framework reasonable.
+  For that reason, it is important to open an issue — otherwise,
+  you may be working on code that ultimately never gets used.
+
+- **Adhere to the prevailing style:** To keep things readable and maintainable, we enforce a
+  set of style guidelines using a linter (for Kotlin, this is a combination of
+  Detekt and KtLint).
+
+  If your code doesn't lint, then it will fail to build, and we won't merge your contribution
+  until the build passes.
+
+  Additionally, individual projects and project types may have their own prevailing styles.
+  For more information, please read the specific guidelines below.
+
+  Finally, prioritise readability in your code.
+  Don't [golf your code](https://en.wikipedia.org/wiki/Code_golf),
+  and try to add whitespace where it makes things more readable.
+
+- **Avoid feature creep:** When authoring a pull request, ensure that it addresses a
+  well-defined issue.
+  Do not submit solutions for more than one problem in a single PR, unless they're all related.
+  Instead, create multiple branches and submit a separate PR for each one.
+
+  If your pull request is blocking another pull request that you wish to work on, we
+  recommend you hold back and wait for us to review and merge the current PR.
+  While it is possible to work on both, it can be a heavier workload — especially if the
+  blocking PR requires a lot of changes.
+
+- **Avoid trivial contributions:** We will be unlikely to accept PRs that address tiny
+  issues, such as a single-line comment or documentation edit, spelling corrections,
+  and so on.
+  Instead, please open an issue or contact a staff member directly.
+
+  We will accept PRs that address many trivial changes, however.
+
+## Specific Guidelines
+
+Please read the following pages for specific information on our expectations for each type of project.
+
+- <Link to="/about/contributing/code/gradle-plugins">Gradle plugins</Link>
+- <Link to="/about/contributing/code/kotlin">Kotlin projects</Link>

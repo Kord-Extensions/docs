@@ -1,0 +1,85 @@
+---
+description: "Hook into your bot's lifecycle."
+sidebar_position: 11
+
+sidebar_custom_props:
+  card_group: "Technical Settings"
+  icon: "fluent:code-24-filled"
+---
+
+import Link from "@docusaurus/Link";
+import * as Doc from "/src/components/Doc";
+
+# Hooks
+
+The `hooks { }` builder allows you to register blocks of code to be run at various stages of your bot's lifecycle.
+
+## Hooks
+
+### Bot-Related Hooks
+
+<Doc.Container>
+  <Doc.Builder name="beforeStart" receiver="ExtensibleBot">
+    Run during startup, just before the bot's `ExtensibleBot` object tires to connect to Discord.
+
+    This hook will run again if you stop and restart the `ExtensibleBot` object using the relevant functions.
+  </Doc.Builder>
+
+  <Doc.Builder name="created" receiver="ExtensibleBot">
+    Run during startup, right after the bot's `ExtensibleBot` object has created, and before it has been set up.
+  </Doc.Builder>
+
+  <Doc.Builder name="setup" receiver="ExtensibleBot">
+    Run during startup, right after the bot's `ExtensibleBot` object has been set up.
+  </Doc.Builder>
+</Doc.Container>
+
+### Extension-Related Hooks
+
+<Doc.Container>
+  <Doc.Builder name="afterExtensionsAdded" receiver="ExtensibleBot">
+    Run during startup, **after** the bot loads any registered extensions.
+  </Doc.Builder>
+
+  <Doc.Builder name="beforeExtensionsAdded" receiver="ExtensibleBot">
+    Run during startup, **before** the bot loads any registered extensions.
+  </Doc.Builder>
+
+  <Doc.Builder name="extensionAdded" receiver="ExtensibleBot">
+    Run **after** an extension is loaded, regardless of where the bot is in its lifecycle.
+
+    <Doc.Arguments type="lambda">
+      <Doc.Arg name="extension" type="Extension">
+        The extension that was just loaded.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+</Doc.Container>
+
+### Koin-Related Hooks
+
+These builders relate to Koin and how Kord Extensions manages it.
+For more information about Koin (and what we do differently with it), please see [the Koin page].
+
+<Doc.Container>
+  <Doc.Builder name="afterKoinSetup">
+    Run during startup, after the default Koin modules have been registered.
+
+    This is a great place to register any extra Koin modules your bot needs.
+  </Doc.Builder>
+
+  <Doc.Builder name="beforeKoinSetup">
+    Run during startup, after Kord Extensions starts Koin, but before the default Koin modules have been registered.
+  </Doc.Builder>
+</Doc.Container>
+
+## Settings
+
+<Doc.Container>
+  <Doc.Property name="kordShutdownHook" type="Boolean" default="true" propType="var">
+    Whether to register Kord's shutdown hook.
+
+    This hook formally disconnects your bot from Discord's gateway when the bot's process shuts down.
+    We don't recommend disabling this unless you run into a serious, related problem.
+  </Doc.Property>
+</Doc.Container>

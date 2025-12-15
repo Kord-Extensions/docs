@@ -1,0 +1,1032 @@
+---
+sidebar_position: 2
+---
+
+import Link from "@docusaurus/Link";
+
+# Changelog
+
+This page contains historical changelogs for the Kord Extensions Discord Bot Framework, taken from GitHub, Discord, and
+this documentation site, slightly edited for better grammar and more sensible styling.
+
+:::note
+
+Please note that changelogs taken from Discord will have a more conversational tone.
+
+:::
+
+## v2.3.1-SNAPSHOT
+
+_Published to Discord on October 28th, 2024._
+
+I've gone ahead and pushed a new KordEx version in line with several dependency updates, including Kord:
+
+- **Gradle:** 8.8 → 8.10.2
+- **ICU4J:** 75.1 → 76.1
+- **JUnit:** 5.11.2 → 5.11.3
+- **Kord:** 0.15.0-SNAPSHOT → 0.16.0-SNAPSHOT
+- **KSP:** 2.0.20-1.0.25 → 2.0.21-1.0.26
+- **Logback:** 1.5.9 → 1.5.12
+- **PF4J:** 3.12.0 → 3.12.1
+- **Sentry:** 7.15.0 → 7.16.0
+
+As always, if you directly depend on anything KordEx needs, remember to update your dependencies!
+
+## v2.3.0-SNAPSHOT
+
+_Published to Discord on October 20th, 2024._
+
+It's here, y'all! This version brings a huge number of internal and external changes.
+
+I apologise in advance for the upcoming work, but Kotlin's type system prevents me from implementing a deprecation
+process.
+**This version will require a large one-time refactor of much of your bots' code,**
+replacing translatable strings with `Key` objects.
+
+Before getting started, I recommend reading [the new i18n documentation page (TODO)](#),
+which will introduce you to the new translation system and explain how everything works.
+
+**If you absolutely need to be on the bleeding edge but don't have time to translate your project,**
+feel free to use the `String.toKey(bundle)` extension function temporarily.
+
+### Gradle Plugin Users
+
+If you're using the KordEx Gradle plugin, start by **updating to version 1.5.0,** which will be released shortly.
+
+- If you haven't created a translation bundle, you'll want to create one
+  [as described here](https://docs.kordex.dev/internationalization.html#basic-concepts-bundles).
+- After that, configure the new `i18n` builder in the Gradle plugin, providing values for at least the `classPackage`
+  and `translationBundle` properties.
+- Next, run the `generateTranslationsClass` Gradle task, which will generate a new `Translations` object containing
+  references to the keys in your translation bundle.
+
+- Finally, replace references to translatable strings with the `Key` objects in your generated `Translations` object.
+
+
+### Other Users
+
+If you can't (or don't want to) use the KordEx Gradle plugin, you'll need to create the `Key` objects yourself.
+This can be done in one of the following ways:
+
+- **Recommended:** Take a look at [the i18n tools repo](https://github.com/Kord-Extensions/i18n) and use the API or
+  CLI tool to integrate the generator, then follow the other steps as if you were using the Gradle plugin.
+
+- Alternatively, create `Key` objects yourself, storing them in a central location and being sure to provide them with
+  the `bundle` constructor parameter.
+
+
+### Changes
+
+Here's an overview of what's changed:
+
+- All translatable strings now take `Key` objects instead.
+  - This allows us to provide a much more human-friendly API and covers many advanced use-cases that simply aren't
+    possible when you can only pass a string.
+
+- All `bundle` properties have been removed.
+  - Instead, the required translation bundle should be stored in your `Key` objects. This is the default behavior when
+    using the generator, as explained above.
+
+- All `translate` convenience functions have been removed.
+  - Instead, use the `with` functions on `Key` objects to create a newly configured object, and then use the
+    corresponding `translate` functions to translate that `Key` in place.
+
+- The translation provider API has been updated to support translating `Key` objects instead of strings.
+  String-based functions have been deprecated.
+- Component labels, placeholders, and initial values may now be translated as required.
+- All modules have been translated and [added to Weblate](https://hosted.weblate.org/engage/kord-extensions).
+
+This is a **huge** update, and a lot of work has gone into it. While it is true this may be a painful update for
+those of you maintaining large bots, using a custom type means that no such refactors should be required going forward.
+
+I truly believe that this update will be a huge benefit to most of you, and I hope you enjoy working with the new tools.
+**As this is such a huge update, it is possible I may have missed something in my testing,** so please let me know how
+you get on!
+
+If you're curious about my mindset while designing this system,
+[I wrote a blog post about it!](https://blog.gareth-coles.dev/a-better-i18n-api)
+
+As always, thanks for sticking with Kord Extensions, and I hope you're all having a good spooky season!
+
+## v2.2.1-SNAPSHOT
+
+_Published to Discord on August 31st, 2024._
+
+**KordEx 2.2.1-SNAPSHOT** has been pushed and will be published in about 15 minutes. It includes these changes:
+
+- Clean up the translation provider `translate` functions, which were a tricky mess to navigate at times.
+- Make the default translations provider scan through loaded plugins (if the plugin system is enabled) to locate
+  bundles provided by them.
+  - This also comes with some extra debug-level logging to help you figure out what's going on.
+  - If you're unfamiliar with the translations system,
+    [the plugin template repo](https://github.com/Kord-Extensions/template-plugin) now contains some bundled
+    translations to help you figure out how things work.
+
+As always, let me know how you get on!
+
+## v2.2.0-SNAPSHOT
+
+_Published to Discord on August 23rd, 2024._
+
+It is time for another version bump, specifically to `2.2.0-SNAPSHOT`. That was fast, huh?
+
+This release contains the following changes:
+
+- Update to Kotlin `2.0.20`. Finally, a stable release with the fixes we needed!
+
+- Move all the nested builders out of the `ExtensibleBotBuilder` class, and into their own separate class files,
+  including their corresponding nested types.
+  Naturally, if you've written any extension functions using one of these classes as a receiver, you'll need to update
+  them.
+  I tried to make this deprecate cleanly, but unfortunately, I couldn't — you can't place type aliases anywhere other
+  than the top-level of a file!
+
+- Rewrite the `about { }` builder for the corresponding extension.
+  This removes the default "general" information command (and mandatory footer), instead allowing you to create your
+  own fully custom commands while providing a default, configurable "copyright" subcommand.
+  For more information on this, please [read the new docs](/bots/config/about).
+  I feel like it is a lot less obnoxious, personally!
+
+- [#324](https://github.com/Kord-Extensions/kord-extensions/issues/324) — Fix an error thrown by the data collection
+  system when the plugin system was disabled.
+  Instead of simply not creating a plugin manager, KordEx will now always create one but won't try to load any plugins
+  if the plugin system is disabled.
+
+As always, this release will be available once GitHub builds it, in about 15 minutes. Let me know how you get on!
+
+## v2.1.0-SNAPSHOT
+
+_Published to Discord on August 20th, 2024._
+
+I've gone ahead and pushed an update to KordEx v2, which will be released as `2.1.0-SNAPSHOT`. This version provides the following updates:
+
+- **Kotlin:** `2.0.20-Beta1` → `2.0.20-RC2`
+- **JEmoji:** `1.4.1` → `1.5.1`
+- **KAML:** `0.60.0` → `0.61.0`
+- **KSP:** `2.0.20-Beta1-1.0.22` → `2.0.20-RC2-1.0.24`
+- **Logback:** `1.5.6` → `1.5.7`
+- **MongoDB:** `5.1.2` → `5.1.3`
+- **OSHI:** `6.6.2` → `6.6.3`
+- **Sentry:** `7.12.0` → `7.14.0`
+- **SLF4J:** `2.0.13` → `2.0.16`
+
+I didn't update Gradle to 8.10 as the licencing plugin we're using runs into a StackOverflowError with that version.
+
+If you're using the KordEx Gradle plugin, there's nothing you need to do other than to update your Kotlin version to
+`2.0.20-RC2` (or set it to ignore the Kotlin version if this isn't possible for you).
+
+## v2.0.0-SNAPSHOT
+
+_Published to the docs on August 13th, 2024._
+
+This update's summary <Link to="/bots/about#version-2">was published on this page</Link>.
+
+## v1.9.0-SNAPSHOT
+
+_Published to Discord on July 1st, 2024._
+
+This release targets **Kotlin `2.0.20-Beta1`** and **Kord `0.15.0-SNAPSHOT`.**
+Due to our distribution model and Kord updating `kotlinx.serialization`, you must update to Kotlin 2.0.20-Beta1 or
+later to use this release!
+
+Additionally, as we're forced to use a beta version of Kotlin 2, please note that IDEA's Kotlin plugin will erroneously
+display compiler errors that were caused by bugs in earlier versions of Kotlin 2.
+To be specific, expect errors regarding broken typing for generic types explicitly defined using `T & Any`.
+If you're working with the KordEx code directly, please rely on build output rather than IDE hints for the time being.
+
+Thanks are due in particular to LustigerLurch for helping with the K2 porting work.
+Cheers!
+
+This release is available _right now!_ Have at it, and let me know how you get on!
+
+#### Other Changes
+
+- Checks have been updated to support more of Kord's built-in events and now support more data from previously supported events, including:
+  - `AutoModerationActionExecutionEvent`
+  - `AutoModerationEvent`
+  - `GuildAuditLogEntryCreateEvent`
+    - **Note:** Kord doesn't support the `guildId` field on audit log entries.
+
+  - `GuildScheduledEventEvent`
+  - `InviteCreateEvent`
+  - `PresenceUpdateEvent`
+  - `ThreadChannelDeleteEvent`
+  - `ThreadMembersUpdateEvent`
+  - `ThreadUpdateEvent`
+
+- A new `FixedLengthQueue<T>` container type. If you need this, please read the KDoc comments!
+
+#### Dependency Updates
+
+- **Apache Commons Validator:** `1.9.0`
+- **Groovy:** `3.0.22`
+- **JUnit:** `5.10.3`
+- **KAML:** `0.60.0`
+- **Kord:** `0.15.0-SNAPSHOT`
+- **KSP:** `2.0.20-Beta1-1.0.22`
+- **Ktor:** `2.3.12`
+- **Kotlin:** `2.0.20-Beta1`
+- **Kotlin Logging:** `7.0.0`
+- **kotlinx.serialization:** `1.7.1`
+- **MongoDB:** `5.1.1`
+- **Sentry Java:** `7.10.0`
+
+## v1.8.1-SNAPSHOT
+
+_Published to Discord on June 3rd, 2024._
+
+It is time for a new snapshot - `1.8.1-SNAPSHOT` to be precise.
+
+This snapshot cycle begins with a change to choice converters. Specifically:
+
+- Choice converters now support chat commands.
+  ([#137](https://github.com/Kord-Extensions/kord-extensions/issues/137))
+  - When used with chat commands, choice converters will accept either keys (case-insensitively) or values
+    (case-insensitively where appropriate), in that order.
+  - When used with chat commands and provided with an invalid value, choice converters will provide an error message
+    along with a list of possible options.
+
+This is a new snapshot cycle because I want to be sure it doesn't break your existing bots.
+If this is some functionality you've been waiting for, please thoroughly test your bots before updating!
+
+This should be available in around 15 minutes, as usual.
+
+And sorry for keeping you all waiting!
+
+## v1.8.0-SNAPSHOT
+
+_Published to Discord on February 21st, 2024._
+
+I've just pushed a new version of KordEx, to update dependencies and align with Kord's new `0.14.0-SNAPSHOT` releases.
+
+- `jemoji`: 1.3.3 → 1.3.4
+- `junit`: 5.10.1 → 5.10.2
+- `kaml`: 0.56.0 → 0.57.0
+- `kotlin-logging`: 6.0.2 → 6.0.3
+- `kord`: 0.13.0-SNAPSHOT → 0.14.0-SNAPSHOT
+- `ktor`: 2.3.7 → 2.3.8
+- `kotlinx-coroutines`: 1.7.3 → 1.8.0
+- `kotlinx-serialization`: 1.6.2 → 1.6.3
+- `logback`: 1.4.14 → 1.5.0
+- `sentry`: 7.1.0 → 7.3.0
+- `slf4j`: 2.0.11 → 2.0.12
+- `time4j`: 5.9.3 → 5.9.4
+
+This release will be available under `1.8.0-SNAPSHOT` once it's been built, in about 10–15 minutes.
+
+## v1.7.2-SNAPSHOT
+
+_Published to Discord on February 21st, 2024._
+
+A new paginator feature!
+
+This is a quick message to announce the release of KordEx `1.7.2-SNAPSHOT`,
+which includes some breaking changes to the paginator API for those of you with custom paginators.
+
+This also brings a new user-facing change — paginator chunking! Requested by @beerpsi, this allows you to specify a
+chunkedPages property in your paginator builders, which will cause the paginator to display its pages in chunks of the
+given size.
+This may be useful for paginators with a lot of small embeds.
+
+When `chunkedPages` is set to `1` (the default), the paginator will behave as it always has.
+Set it to any value up to 9, however, and that many pages will be displayed to your users at once.
+When you do this, an extra embed will be generated at the bottom, containing information about the current/total pages,
+switchable groups, and so on — instead of placing this at the bottom of each page embed.
+
+As always, `1.7.2-SNAPSHOT` is building and will be available in 10–15 minutes.
+Math is hard, so please let me know how you get on!
+
+## v1.7.1-SNAPSHOT
+
+_Published to Discord on November 30th, 2023._
+
+Hello! Today's update is potentially exciting for those of you using the Sentry integration, bringing a few long-overdue changes.
+
+Today's changes are part of [issue #260](https://github.com/Kord-Extensions/kord-extensions/issues/260),
+submitted by @Pyrrha yesterday.
+
+It is worth noting that **these are breaking changes for anyone using the Sentry integration!**
+Please review your integration usage before pushing any updates!
+
+- The Sentry `Scope` and `Breadcrumb` objects are no longer exposed.
+  Instead, a set of classes based on the new `SentryCapture` type have been added,
+  and these have replaced the previously mentioned Sentry objects in all builders and functions.
+
+- It is now possible to define what types of data may be submitted to Sentry via the new `defaultDataTypes` builder,
+  which you can find in the extensions → sentry builder.
+  Use the following properties to change what can be submitted: `arguments`, `channels`, `guilds`, `roles`, and `users`.
+  - For chat commands, command arguments and message content are both considered `arguments`.
+    This is also true for Mappings Extension query strings.
+    Slash command arguments aren't currently submitted.
+
+- The Sentry builder now also provides the `dataTypeTransformer` and `predicate` builders,
+  to further customize what can be submitted to Sentry based on an individual `SentryCapture` subtype.
+
+- The new `SentryCapture` types expose more of the Sentry APIs than before,
+  allowing you to provide scope hints and severity levels, among other things.
+
+- When adding data to the `data`, `hints`, and `tags` maps defined in the `SentryCapture` subtypes,
+  you can now define how the integration should filter the values within based on their keys, using one of two methods:
+  - Prefix the key with the type and a dot (e.g. `channel.key`) — the key will not be modified if it's submitted.
+  - Suffix the key with the type and two colons (e.g. `key::channel`) — the colons and type will be removed from the key
+    if it's submitted.
+
+**Note:** Key-based filtering does not support nested container types, as this doesn't appear to be possible within
+Kotlin's type system. However, it is generally best not to nest data too far regardless.
+
+The [configuration docs](https://docs.kordex.dev/sentry.html) have already been updated if you need them.
+
+As always, please give things a try and let me know how you get on!
+
+:::danger Disclaimer
+
+While these new changes are designed to make it easier for you to follow data protection laws (such as the GDPR),
+please note that I'm not a lawyer.
+I'm also not qualified to make privacy-related decisions about your bots on your behalf.
+
+I'm happy to fix any data leakage issues or improve the above systems,
+but it is your responsibility to ensure that your usage of Sentry complies with any relevant privacy laws.
+
+:::
+
+## v1.7.0-SNAPSHOT
+
+_Published to Discord on November 24th, 2023._
+
+The new KordEx snapshot cycle begins with `1.7.0-SNAPSHOT` targeting Kord `0.13.0-SNAPSHOT`.
+This release contains breaking deprecations, so remember to rebuild your code before pushing an update!
+
+As always, feel free to give things a try, and let us know if you run into any issues!
+
+## v1.6.0
+
+_Published to GitHub on November 24th, 2023._
+
+This release targets Kord `0.12.0`, the latest stable release for Kord.
+Hot off the presses for those of you who rely on stable releases!
+
+**Highlights from this release:**
+
+- Transitioned to a new Discord server.
+  You can also now [support development via Ko-fi!](https://ko-fi.com/gsc)
+
+- Began work on [a new documentation site with Writerside.](https://docs.kordex.dev/)
+  You can find the source [in its own repository.](https://github.com/kord-extensions/docs)
+
+- We now use Kotlin 1.9.20 and Java 17, and you should too.
+- We've updated a bunch of dependencies. Read more in the `libs.versions.toml` file.
+- Created an experimental `ChangeSet` type, used to compare voice states. We need feedback on this!
+- Introduced extra first-party data adapters, such as the MongoDB data adapter.
+- An in-development custom plugin system to better meet KordEx's needs.
+- A generic interaction context type to support more generalised code.
+- A paginator mutation system, allowing for changes to pages, paginators, and paginator components.
+- New checks that match the bot application's owner and team roles.
+- New supported locale: Korean by @Penta0308.
+- Many small fixes, quality-of-life features and updates that aren't large enough to detail here.
+
+**Community Contributions:**
+
+- `#200` by @DeDiamondPro — More select menu types.
+- `#201` by @NoComment and @sschr15 — Convert mappings extension configuration to storage units.
+- `#211` by @Lukellmann — Fix breaking changes from Kord Kotlin/JS support.
+- `#212` by @Lukellmann — Fix compilation error caused by source-incompatible Kord change.
+- `#222` by @ADudeCalledLeo — Allow slash command groups and subcommands at the same level.
+- `#243` by @sschr15 — Update Linkie and add three new namespaces.
+
+As always, if you run into any problems, please let us know!
+
+## v1.6.0-SNAPSHOT
+
+_Published to Discord on October 27th, 2023._
+
+I've just gone ahead and pushed KordEx version `1.6.0-SNAPSHOT`.
+
+This release was pushed in part to address [#216,](https://github.com/Kord-Extensions/kord-extensions/issues/216)
+which required breaking structural changes.
+
+- `EphemeralInteractionContext` and `PublicInteractionContext` now both extend the new `InteractionContext` interface,
+  which provides a common base type exposing the functionality present in both subtypes.
+
+- As the interaction context functions have been moved to a base interface, they're no longer inline.
+  You'll find them directly within their respective types, and you will need to remove the imports you were using.
+
+- `respondPublic` and `respondEphemeral`, which were used to deliberately send Discord the wrong follow-up type,
+  have been moved to a single base function named `respondOpposite`.
+
+- New opt-in annotations have been added to warn you when a function call may result in unexpected behavior.
+  For the time being, this is only being used for some interaction context functions, but they may be used more widely
+  later.
+
+- \[[#214](https://github.com/Kord-Extensions/kord-extensions/issues/214)\] `ArgumentParsingException` now includes the
+  relevant `locale` and `bundle` properties, which can be used for further customisation of error messages.
+
+As always, let me know if you run into any issues.
+
+## v1.5.12-SNAPSHOT
+
+_Published to Discord on October 27th, 2023._
+
+Another quick update, KordEx version `1.5.11-SNAPSHOT`.
+
+This version tracks Kord `0.12.0-SNAPSHOT`, and contains the following dependency updates:
+
+- `jansi` 2.4.1
+- `jsoup` 1.16.2
+- `kord` 0.12.0-SNAPSHOT
+- `ktor` 2.3.5
+- `mongodb` 4.11.0
+- `sentry` 6.32.0
+
+I've also begun rewriting the documentation using Writerside — you can keep an eye on that progress
+[here.](https://github.com/Kord-Extensions/docs)
+
+As always, let me know if you run into any issues.
+
+## v1.5.10-SNAPSHOT
+
+_Published to Discord on October 5th, 2023._
+
+Quick notification to announce the release of KordEx version `1.5.10-SNAPSHOT`.
+
+- Work has begun on a new plugin system, supporting proper constraints, and a more reasonable class-loading pattern.
+  This system is self-contained, and you'll be able to use it in any project if you wish to — but there's more work to
+  be done on it right now.
+  **If you have any feedback or information on what might be useful from a plugin system, please let me know!**
+
+- KordEx now requires **at least Java 13** as it now uses APIs only available since that version.
+- KordEx has been updated to Kord version `0.11.1`.
+
+As always, let me know if you run into any issues.
+
+## v1.5.9-SNAPSHOT
+
+_Published to Discord on August 9th, 2023._
+
+I've just pushed KordEx `1.5.9-SNAPSHOT` to GitHub, and it should be available on Maven in 15-20 minutes.
+
+This is a dependency update version — KordEx is now built against Kord 0.11.0-SNAPSHOT and makes use of Kotlin 1.9.0.
+As always, please let me know if you run into any issues!
+
+## v1.5.8-SNAPSHOT
+
+_Published to Discord on June 18th, 2023._
+
+`1.5.8-SNAPSHOT` has been released, to follow Kord's new snapshot policy (and track Kord `0.10.0-SNAPSHOT`).
+As usual, it should be available on Sonatype Snapshots in about 15 minutes.
+
+I've also added a small util - `User.tagOrUsername()` - which returns a username with or without a discriminator,
+depending on whether a user has migrated to the new username system.
+
+This will be removed pretty quickly once Discord has fully migrated everyone, so be warned.
+
+## v1.5.7-SNAPSHOT
+
+_Published to Discord on March 25th, 2023._
+
+`1.5.7-SNAPSHOT` (based on Kord `0.9.x-SNAPSHOT`) has been published, and that'll be the working version for now.
+
+## v1.5.6
+
+_Published to GitHub on March 25th, 2023._
+
+This release targets Kord `0.8.0`, the latest stable release for Kord.
+It has been over a year since the previous stable Kord release,
+so it has also been a year since the previous stable KordEx release.
+How time flies, right?
+
+Please note that as of this release, the `develop` branch is going away.
+Please re-parent your PRs to target the `root` branch.
+
+**A note about Maven repos:**
+
+Please be aware that as of this release, KordEx is now being deployed to these Maven servers:
+
+- **Releases:** Maven Central
+- **Snapshots:** Sonatype Snapshots
+
+KordEx releases will no longer be published to the Kotlin Discord maven repo.
+
+**Highlights of this release:**
+
+- We now use Kotlin 1.8.0, and you should too.
+- Support for Modal forms has been added,
+  which function similarly to argument classes and can be provided to your commands and components in the same way.
+
+- KordEx is now capable of intercepting unknown Kord events and submitting its own events in their place.
+  Initially, this just includes the experimental member screening events available on a handful of servers,
+  but PRs will be accepted for other event types that Kord doesn't plan on supporting.
+
+- A data adapter and storage unit system have been added, allowing extensions to more easily store data,
+  with the ability for individual bots to define how that data should be stored.
+  Note, however, that this is an early version of that system, and it will likely be changed significantly later.
+
+- A module, `extra-pluralkit`, has been created to make things easier for bots that wish to support PluralKit,
+  a widespread accessibility tool on Discord mainly used by plural systems.
+
+- Additional checks have been added that allow you to test for NSFW channels and guild NSFW levels, among other things.
+
+- A cache map object with an extra typed API has been added, allowing you to cache data between checks and use it in
+  the body of your commands.
+  This also allows you to cache data between task runs and provide extra event context for Kord events.
+
+- Commands were given their own translation bundles, which fall back to their extension's if missing.
+- Slash commands may be fully localised.
+- Many misc utils have been added, and fixes and additions have been made for existing utils.
+- Individual converts have been updated with new features and fixes.
+- The test bot has been moved to its own module, which makes it easier to look over and modify.
+
+As always, if you run into any problems, please let us know!
+
+## v1.5.6-SNAPSHOT
+
+_Published to Discord on December 15th, 2022._
+
+I've been hard at work, finally bringing an abstraction for Discord's modals to KordEx.
+As of this message, `1.5.6-SNAPSHOT` has been pushed, which includes my first attempt at getting an abstraction together.
+
+To use modals, create a class that extends `ModalForm`, and pass the constructor into your command and component
+functions — just how you would with your argument classes.
+If you're using this with a command that already has arguments, then this should go **after** your `Arguments` class
+constructor reference — `ephemeralSlashCommand(::MyArgs, MyModal) { ...`.
+
+Within your new class, you can create variables that store widgets, which can be created by using the `lineText` and
+`paragraphText` builder functions.
+Remember to provide a label for all of your widgets!
+
+This introduces a (nullable due to Kotlin's type system) parameter to your `action` blocks — which you can get at like
+this: `action { modal → ...`.
+You can access the input data provided by the user by accessing the `value` property on each widget.
+
+Modal titles, widget labels, etc. are translatable and will inherit the bundle you're using in the definition
+context — so, the bundle your component or command is using.
+You can also define the bundle in your `ModalForm` subtype instead if you prefer.
+
+## v1.5.5-SNAPSHOT
+
+_Published to Discord on July 8th, 2022._
+
+I've just pushed up `1.5.5-SNAPSHOT`, which uses Kotlin `1.7.10` and is based on Kord's `0.8.x-SNAPSHOT` versions again.
+
+Please note that all KordEx dependencies have been updated — as usual, you'll find them in the `libs.versions.toml`
+
+Let me know if you run into any issues!
+
+## v1.5.3-SNAPSHOT
+
+_Published to Discord on April 17th, 2022._
+
+KordEx 1.5.3-SNAPSHOT has been pushed to GitHub and is building now.
+However, there's several things to be aware of:
+
+- Support for Java versions older than Java 11 had to be dropped, due to dependencies also dropping support.
+- This version of KordEx **was not built with Kotlin 1.6.20;** however, everything else has been updated.
+
+That last point is particularly notable because it turns out that Kotlin 1.6.20 is causing a lot of problems for several
+projects.
+
+- There's a compiler bug that breaks compilation for classes containing functions that take a suspending callable
+  argument with a default value.
+
+- KSP has a number of serious problems on 1.6.20 which entirely break our annotation processor.
+
+- Both KSP and the Kotlin compiler have developed issues which don't show up unless you're doing a clean build, which
+  makes me worry that there are serious consistency issues in build output.
+
+In short, Kotlin 1.6.20 has showstopping issues that make me feel like it should never have been pushed as a stable
+release.
+The same goes for KSP 1.0.5, which only supports Kotlin 1.6.20.
+
+While it's possible that your bots may build just fine with Kotlin 1.6.20, and it's true that Kord has managed to move
+to Kotlin 1.6.20, **I do not recommend moving to it for your bots.**
+I'd advise that you stick with Kotlin 1.6.10 until these issues are fixed, which may require another Kotlin compiler
+release cycle.
+
+## v1.5.2-RC1
+
+_Published to GitHub on February 6th, 2022._
+
+This release targets Kord `0.8.0-M9`, the latest stable release for Kord.
+We've been waiting for this one for some time — it is nice to get something new out there for you!
+
+**A note about Maven repos:**
+
+Please be aware: As of this release, the following Maven repos are no longer being mirrored by the Kotlin Discord Maven
+server:
+
+- Bintray: Exposed, Kord, KTor
+- Google
+- Maven Central
+- Sonatype Snapshots
+
+You'll need to update your buildscripts to correspond with these changes.
+If you run into any trouble, you can always take a look at the KordEx template project again.
+
+**Highlights of this release:**
+
+- KordEx is now licensed under the Mozilla Public License.
+  It previously used The MIT License, but I felt that this was a little too weak.
+
+- Rewritten converter function syntax, which now uses a DSL instead of a function call.
+  This makes things overall much cleaner and allows us to add additional features to the argument system easily. Speaking of which...
+
+- Command arguments now support `mutate { }` and `autoComplete { }` (for slash commands) options.
+  Additionally, validation now uses `validate { }`, which uses an API that's much closer to how checks work elsewhere.
+
+- Improvements to application command registration, including not trying to remove commands that were already removed via a batch update.
+
+- Easier disabling of components, optional locking for guild member requests, Sentry support for scheduled tasks,
+  and the removal of the requirement for paginator page groups to have the same number of pages.
+
+- Extra utilities, such as better names for timeout-related fields, an async start function that launches,
+  convenience single-action functions for modifying Members quickly, easy functions for supplying maps to autocomplete
+  interactions, and more!
+
+- An early version of a dynamic plugin loading system. Because you can't get at classes from loaded plugins, this
+  isn't as useful as it could be, but we'll be expanding upon it later.
+
+- A myriad of bug fixes and new translations.
+
+- **Mappings Extension:** Support for Quilt Mappings, Hashed Mojmap and slash command autocomplete for MC versions.
+- **Phishing Extension:** Better filtering, redirect support, and usage of the Sinking Yachts websocket for instant domain list updates.
+
+At the moment, the wiki hasn't been updated for these changes.
+Unfortunately, I lack the time to update them quickly, but they'll get there!
+
+As always, if you run into any problems, please let us know!
+
+## v1.5.2-SNAPSHOT
+
+_Published to Discord on January 16th, 2022._
+
+I've just merged KordEx 1.5.2-SNAPSHOT.
+This new version of KordEx contains the new DSL-style converter builder system,
+which additionally requires that your custom converters make use of KSP and the `@Converter` annotation.
+It also adds check-style `validate {}` builders for validation (eg via `failIf()`) and a `mutate {}`
+function allowing you to return a changed final value.
+
+This system is _not_ documented yet and may not be for some time.
+However, I encourage you to try this out with bots that don't have custom converters just to see how things work.
+For the most part, it should be easy to figure things out — let's say you have a converter like this:
+
+```kt
+val username by string("username", "Username to delete from the universe")
+```
+
+You would update this by switching to the new syntax:
+
+```kt
+val username by string {
+    name = "username"
+    description = "Username to delete from the universe"
+}
+```
+
+Of course, your IDE autocomplete will help you out here.
+Additionally, please note that all coalescing converter functions have been renamed,
+replacing `coalesced` with `coalescing` in the function name.
+
+## v1.5.1-RC1
+
+_Published to GitHub on October 12th, 2021._
+
+This release is our first "stable" release in a long time, targeting Kord `0.8.0-M7`.
+The reason is largely due to Kord's long snapshot cycle, which itself was caused by many changes to Discord's APIs.
+In turn, this means that this release contains a mind-boggling number of internal changes.
+
+We've done our best to keep things as compatible as possible, API-wise.
+Despite this, though, we've had no choice but to break a few things.
+
+Highlights of this release:
+
+- With a lot of help from @ByteAlex, we've been able to eliminate many, many unnecessary cache hits,
+using Behaviors rather than entities wherever possible.
+This makes KordEx far more suitable for large bots with different caching requirements.
+
+- Full support for message and user commands have been added,
+which comes with a full rewrite of the application commands system.
+Application commands now always require a `public` or `ephemeral` type, to help keep things safe.
+Additionally, our old message commands are now named chat commands and have their functions prefixed with `chat`.
+
+- The components system has been fully rewritten, including a similar typing requirement to application commands.
+  It comes with a `ComponentContainer` type which makes it easier to re-use components,
+  as well as a callback registry for advanced use-cases (such as components that need to work after a restart).
+
+- The Sentry integration has been rewritten, and you'll find a `SentryContext` provided everywhere you'd expect to be
+  able to use Sentry, instead of a plain list of breadcrumbs.
+  This, along with several other improvements, should make Sentry much more pleasant to work with.
+
+- Our translation platform [has been switched to Weblate](https://hosted.weblate.org/engage/kord-extensions/).
+  If you're a translator (or would like to help with translations), please head over there!
+
+- Lots of deprecated things have now been removed.
+  If you were still using them, well, you were warned!
+
+There are far too many changes to list here.
+The existing pages on the wiki have been rewritten for this release,
+and we'd suggest taking a look at them to refresh your knowledge.
+There's still documentation work which needs doing, but we'll get there!
+
+As always, if you run into any problems, please let us know!
+
+## v1.5.1-SNAPSHOT
+
+_Published to Discord on October 7th, 2021._
+
+**KordEx 1.5.1-SNAPSHOT is now live!**
+
+I decided to bump the version in line with the update to Kord `0.8.0-M6`.
+This release beings a bunch of underlying changes that people have been waiting for in Kord,
+and it also brings the following fixes on top of the current snapshot work:
+
+- Fix for `deferredAck` being inverted for ephemeral components.
+- Load order has now returned to what it was before the automatic intent generation feature was added,
+  so the `Kord` instance is once again created a lot earlier.
+
+## v1.5.0-SNAPSHOT
+
+_Published to Discord on September 6th, 2021._
+
+As of the latest push, **KordEx 1.5.0-SNAPSHOT is ready for testing!**
+
+A lot of things have changed in this release. For an overview, take a look at
+[the tracking issue](https://github.com/Kord-Extensions/kord-extensions/issues/72) —
+I'll list some things you may be wondering below.
+
+- Every single command function has been replaced:
+
+  - Message commands are now chat commands, with the `command` DSL function being renamed to `chatCommand` - and
+    they're disabled by default, in line with Discord's requirements for larger bots.
+
+  - Slash commands have been split into `publicSlashCommand` and `ephemeralSlashCommand`.
+  - Message and user commands have been added, with `public*` and `ephemeral*` DSL functions.
+
+- Interaction-based commands/components no longer have `autoAck`, but you can use the `initialResponse` DSL to ack
+  with response or call the `edit` function in your `action` to edit the acknowledged response.
+
+- Components have been completely revamped, and everything is typed similarly to how the interaction-based commands are
+  now — though, since components are centralized now, no timeout mechanism has been provided for them.
+
+- Scheduled tasks for the `Scheduler` now have an easy `restart` function.
+
+- Paginators have been split out into four types (chat, public followup, public response, and ephemeral response),
+  matching the contexts you'd use them in.
+  This means you can have an ephemeral interaction, and the paginator will edit its initial response, finally!
+
+There are many, many other changes, big and small.
+We'd massively appreciate it if people could start testing this release and provide us with feedback on what's not
+working properly — and what needs changing.
+
+If something is missing, please leave a comment on [the tracking issue](https://github.com/Kord-Extensions/kord-extensions/issues/72)
+
+## v1.4.4-RC4
+
+_Published to GitHub on August 21st, 2021._ **Changes since v1.4.4-RC3:**
+
+- Fix an error when you have paginator pages with empty footer text.
+- Add suspending paginator DSL functions in both types of command context.
+- Set up VSC Web for medium-complexity PRs — head to the `develop` branch on GitHub and hit `.` on your keyboard!
+- Make translation debug logging less verbose by moving it to `trace` logging.
+- Allow for enabling the Sentry integration without adding the Sentry extension.
+- Allow for customising the KordBuilder during setup.
+- **Mappings module:** Fix a bad Linkie dependency.
+
+The following issues were solved in this release:
+
+- [#69 (Nice!)](https://github.com/Kord-Extensions/kord-extensions/issues/69):
+  Allow selecting a custom HTTP engine for Kord (niche request!)
+
+- [#70](https://github.com/Kord-Extensions/kord-extensions/issues/70):
+  Less verbose translation logging.
+
+- [#71](https://github.com/Kord-Extensions/kord-extensions/issues/69):
+  Allow disabling feedback command when using sentry extension.
+
+## v1.4.4-RC3
+
+_Published to GitHub on August 9th, 2021._ **Changes since v1.4.4-RC2:**
+
+- Update to Kord 0.8.0-M4
+- Checks are now consistent in behavior regarding events that they don't support — negating checks
+  (containing the word `not`) will always pass in this situation, and all other checks will always fail in this situation.
+
+- Paginator `Page` objects are now backed by a Kord `EmbedBuilder`, and should be constructed using the builder syntax.
+  For example: `Page(bundle) { description = "This is a page." }`.
+
+- The `ExtensionEvent` class now extends Kord's `Event` type, with a shard number of `-1`.
+
+- The `guildFor()` function for `InteractionCreateEvent` was changed to manually get the guild from the interaction
+  data, as it can otherwise be missing in some situations.
+
+
+Documentation work is still ongoing, and KordEx will see more changes as things are documented - the documentation
+process makes it easy to see (and change) things that don't make intuitive sense.
+
+The following issues were solved in this release:
+
+- [#65](https://github.com/Kord-Extensions/kord-extensions/issues/65):
+  Make ActionableComponentBuilder's ID customizable.
+
+- [#66](https://github.com/Kord-Extensions/kord-extensions/issues/66):
+  Add the addition emoji helpers from `ButtonBuilder` to `SelectOptionBuilder`.
+
+- [#67](https://github.com/Kord-Extensions/kord-extensions/issues/67):
+  Paginators, pages do no support embed fields.
+
+
+## v1.4.4-RC2
+
+_Published to GitHub on August 5th, 2021._ **Changes since v1.4.4-RC1:**
+- Update to Kord 0.8.0-M3
+
+This is a release to match Kord's hotfix, which fixes a regression that broke interaction acknowledgements.
+
+## v1.4.4-RC1
+
+_Published to GitHub on August 4th, 2021._
+
+:::note
+
+This release contains breaking changes for the checks system.
+**All custom checks must be rewritten!**
+If you need help figuring this out, please let us know on Discord.
+
+:::
+
+**Changes since v1.4.2:**
+
+- Update to Kord `0.8.0-M1`.
+- Default to rest-aware caching and allow configuration of caching strategy.
+- Add kotlinx.datetime converters and utils.
+- Add support for select menus in the `Components` builder.
+- Add support for Discord's slash command perms, including enforcing them at the framework level.
+- Add support for threads, including extra checks that only operate on threads or flatten them to top channels.
+- Trim slash command arguments to workaround inconsistent data from Discord.
+
+- Redo the checks system, requiring calls to one of the `fail` functions to fail a check.
+  - **This is breaking, checks must be redone.**
+  - Checks may now also return a failure message for commands.
+
+This release includes commits that address the following issues:
+
+- [#58](https://github.com/Kord-Extensions/kord-extensions/issues/58) — Checks overhaul
+- [#62](https://github.com/Kord-Extensions/kord-extensions/issues/62) —
+  Make automatic acknowledge type naming more consistent
+
+
+The following PRs were merged:
+- [#61](https://github.com/Kord-Extensions/kord-extensions/pull/61) —
+  Use epochSeconds for toDiscord timestamp extension function
+
+- [#64](https://github.com/Kord-Extensions/kord-extensions/pull/64) — insert semicolon in Lclass;method for mixin target
+
+
+## v1.4.1
+
+_Published to GitHub on July 2nd, 2021._
+
+This is a huge release, and a massive milestone for KordEx.
+There have been far too many changes to detail in this changelog — nearly 210 commits in total. Some highlights include:
+
+- Support for slash commands.
+- A completely rewritten argument parser.
+- Support for button components and new paginators that use them.
+- Decoupling of KordEx classes using Koin.
+- An annotation processor for generating converter functions.
+- Full support for i18n, including translations.
+
+... and much, much more!
+
+If you're migrating from the previous stable version, there's a slightly more in-depth overview of the changes in the
+docs.
+Otherwise, we suggest treating this release version as an entirely new iteration of the KordEx concept —
+most things have been changed, and almost everything will need at least a minor tweak to get things to work.
+
+As always, if you need help, contact us on Discord!
+
+## v1.4.0-RC7
+
+_Published to GitHub on March 2nd, 2021._
+
+Chances since KordEx 1.4.0-RC6:
+
+- Slash command support!
+  As we now have two types of command, the old `Command` class has been renamed to `MessageCommand`.
+  Additionally, `CommandContext` is now `MessageCommandContext`.
+  You'll find similar classes that relate to slash commands as well.
+
+- All arguments specified in `Arguments` objects now require a description.
+
+- Command arguments classes (and just classes in general) are now nicer to pass around,
+  as they're treated like builders and received in more logical places.
+
+- The help extension and sentry functionality have both been updated to support command argument descriptions and
+  slash commands for feedback.
+
+- The paginator has been completely rewritten (and documented), with support for switchable page sets!
+- Far, far, far too many other changes to simply list here.
+
+This release has tons of improvements, deprecations, new features and breaking changes.
+Some of them are listed above, but you should read the migration guide instead of simply relying on this release description.
+
+**Note:** This release targets Kord's latest snapshots as of the time of this release.
+As they aren't formal releases, there's no way to link to release notes.
+This release mostly exists to provide an anchor point for users that wish to stick to stable versions while still
+existing within the middle of Kord's extensive snapshot cycle.
+Hopefully, Discord starts making their API more stable soon!
+
+## v1.4.0-RC6
+
+_Published to GitHub on January 3rd, 2021._
+
+Chances since KordEx 1.4.0-RC5:
+
+- **BREAKING:** Rewrote the `bot.start()` function.
+  If you wish to supply an intent builder or presence builder, this function now takes a single builder lambda
+  (and is thus a DSL function) instead of taking two separate lambdas.
+  It was not possible to deprecate the old version of this function due to conflicting parameter lists,
+  so you'll have to update your bots. For more information, please see the bot object documentation.
+
+- **DEPRECATION:** Rewrote the `bot.addExtension()` function.
+  The old function is still there and has been deprecated, while the new function takes a builder function instead of
+  a reflection-based class object.
+  Functionally, this just means changing `bot.addExtension(ExtensionClass::class)` to
+  `bot.addExtension(::ExtensionClass)` in most cases.
+
+- Added extra checks regarding member permissions on guilds — although, please note that these only look at guild
+  permissions and ignore channel overwrites.
+  For more information, please see the checks documentation.
+
+This release targets Kord `0.7.0-RC`.
+
+## v1.4.0-RC5
+
+_Published to GitHub on December 29th, 2020._
+
+Chances since KordEx 1.4.0-RC4:
+
+- Added Koin integration for those that need it. For more information, please read the docs!
+
+This release targets Kord 0.7.0-RC.
+
+## v1.4.0-RC4
+
+_Published to GitHub on December 23rd, 2020._
+
+Chances since KordEx 1.4.0-RC3:
+
+- Completely rewrote the paginator, allowing for switchable page groups and full customization of page embeds,
+  among other things.
+  There's a lot to this, so I recommend you read over the docs and integration test and take it out for a spin.
+
+This release targets Kord 0.7.0-RC.
+
+## v1.4.0-RC3
+
+_Published to GitHub on December 19th, 2020._
+
+Chances since KordEx 1.4.0-RC2:
+
+- Add `outputError` property to `OptionalConverter` (but not coalescing variants — that wouldn't make sense)
+  and expose it in `Arguments` extension functions.
+
+This will make optional converters still output parse errors and fail command parsing if `true` is provided
+(`false` is the default), if that's something you end up needing in your command parsing logic.
+
+This release targets Kord `0.7.0-RC`.
+
+## v1.4.0-RC2
+
+_Published to GitHub on December 16th, 2020._
+
+Chances since KordEx 1.4.0-RC1:
+
+- Add `commandName` to `CommandContext` objects, allowing you to get the (lowered) name the user gave for invocation.
+- Fix `breadcrumb()` not actually adding the breadcrumb to the `MutableList` in both `CommandContext` and
+  `EventContext`.
+
+This release targets Kord `0.7.0-RC`.
+
+## v1.4.0-RC1
+
+_Published to GitHub on December 12th, 2020._
+
+This is our very first properly versioned release!
+
+KordEx 1.4.0 brings Kord 0.7.x support (but we'll only release RCs until Kord releases a stable version).
+Some changes:
+
+- Completely reworked command argument parsing system, with a fully documented argument conversion system.
+- First-class integration with Sentry.
+- Actual documentation, finally.
+
+As this is our first real release, this changelog will be a little lacking — it does encompass **174 commits**,
+after all.
+Future releases will be more detailed!
+
+This release targets Kord `0.7.0-RC`.
+
+## v1.0
+
+_Published to GitHub on June 22nd, 2020._
+
+This is the final version of Kord Extensions for Kord `0.4.x`.

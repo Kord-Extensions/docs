@@ -1,0 +1,40 @@
+---
+description: "Set your bot's initial presence."
+sidebar_position: 15
+
+sidebar_custom_props:
+  card_group: "Customisation"
+  icon: "fluent:status-24-filled"
+---
+
+import Link from "@docusaurus/Link";
+import * as Doc from "/src/components/Doc";
+
+# Presence
+
+The `presence { }` builder allows you to configure your bot's initial presence.
+This builder provides direct access to
+[Kord's `PresenceBuilder` API](https://dokka.kord.dev/gateway/dev.kord.gateway.builder/-presence-builder/index.html).
+
+```kt
+ExtensibleBot(TOKEN) {
+    // ...
+
+    presence {
+        status = PresenceStatus.DoNotDisturb
+
+        competing("the Uptime League")
+    }
+}
+```
+
+By default, Kord Extensions will simply mark your bot as online.
+Call the builder to change this behaviour.
+You can always update your bot's presence later, via the `Kord` object.
+
+<Doc.Container>
+  <Doc.Builder name="presence" receiver="PresenceBuilder">
+    Set your bot's initial presence
+    [via the receiver](https://dokka.kord.dev/gateway/dev.kord.gateway.builder/-presence-builder/index.html).
+  </Doc.Builder>
+</Doc.Container>

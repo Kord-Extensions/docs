@@ -1,0 +1,54 @@
+---
+description: Getting started with the i18n framework.
+sidebar_position: 03
+
+sidebar_custom_props:
+  divider_below: true
+---
+
+import * as Doc from "/src/components/Doc";
+import EmbeddedVersion from "/src/components/EmbeddedVersion"
+import { CardWithTitle } from "/src/components/Card";
+
+# Getting Started
+
+<CardWithTitle title="CLI Information">
+  - **Coordinate:** `dev.kordex.i18n:i18n`
+  - **Current Version:** <EmbeddedVersion reference="i18n" code />
+  - **Minimum Java:** `17`
+  - **Repo:** `https://releases-repo.kordex.dev`
+</CardWithTitle>
+
+:::tip Code Generation
+
+This framework is a lot more convenient when you use our code generators.
+The easiest way to set one up is via [our Gradle plugin](/i18n/plugin), but if you're not using Gradle or
+can't use the plugin for some reason, you can integrate [our code generators](/i18n/generators) yourself.
+
+:::
+
+## Project Setup
+
+First, follow these basic setup steps:
+
+1. Ensure you have a JDK installed, version 17 or later.
+   If you don't already have one, we recommend [Eclipse Temurin](https://adoptium.net/temurin/releases).
+2. Add the i18n framework to your project's
+   dependencies:
+   <EmbeddedVersion reference="i18n" template="dev.kordex.i18n:i18n:(VERSION)" code />
+
+## Next Steps
+
+Once you've set up the dependency, you'll need to configure the framework and set up your translation bundles:
+
+- Learn how to [configure the framework](/i18n/configuration).
+- Learn about [translation bundles](/i18n/bundles), and how to use them.
+- Learn about [translation keys](/i18n/keys), and how to use them.
+- Learn about [the various registries](/i18n/registries), including the class-loader registry.
+- Set up a code generator, either by using [our Gradle plugin](/i18n/plugin), or manually integrating
+  [our API or CLI](/i18n/generators).
+
+## Licencing
+
+The i18n framework is licenced under the Mozilla Public License.
+For more information on this licence and why we picked it, [see this page](/about/licencing/mpl).

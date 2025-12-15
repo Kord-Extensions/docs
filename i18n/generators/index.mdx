@@ -1,0 +1,23 @@
+---
+description: Automatic translation class generator.
+sidebar_position: 09
+---
+
+
+import { DocCardListWithDescriptions } from "/src/theme/DocCardList"
+
+# Code Generators
+
+The i18n framework includes a code generator, used to generate what we call "translations classes".
+Each class is actually an `object` containing a nested tree of `Key` objects representing your translations,
+and a `Bundle` object referencing the bundle that contains those translations.
+
+This provides a completely type-safe translations API — the Kotlin compiler can handle checking whether translation keys
+exist, rather than copying and pasting keys, which can make for an error-prone and difficult-to-maintain codebase.
+
+For more information on using this generator, see the pages below.
+
+<DocCardListWithDescriptions descriptions={{
+  "Usage": "Learn how to generate code yourself.",
+  "Output": "See what the generated code looks like.",
+}} />

@@ -1,0 +1,405 @@
+---
+description: Everything you need to know about the KordEx Gradle plugin.
+sidebar_position: 03
+
+sidebar_custom_props:
+  icon: "fluent:prohibited-24-filled"
+---
+
+import * as Doc from "/src/components/Doc";
+import * as Snippets from "/src/pageComponents/gradlePlugin";
+import {CardWithTitle} from "/src/components/Card";
+import EmbeddedVersion from "/src/components/EmbeddedVersion"
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Gradle Plugin
+
+<CardWithTitle title="Plugin Information">
+  - **Coordinate:** `dev.kordex.gradle.kordex`
+  - **Version:** <EmbeddedVersion reference="plugin" />
+  - **Requires Gradle:** <EmbeddedVersion reference="gradle" />
+  - **Minimum JDK:** <EmbeddedVersion reference="java" />
+</CardWithTitle>
+
+The Kord Extensions Gradle Plugin (the KordEx Plugin) is an optional Gradle plugin that
+[makes it easier to develop most Discord bots and plugins using Kord Extensions](/bots/tutorials/setting-up).
+We designed this plugin to be flexible and easy-to-use, and it is the preferred way to work with Kord Extensions.
+
+## Features
+
+The KordEx Plugin handles the following automatically:
+
+- Miscellaneous project configuration tasks:
+  - Data collection settings.
+  - Dependency metadata storage.
+  - Run configurations for testing your bot.
+- Adding relevant dependencies:
+  - Kord Extensions and the correct version of Kord, with or without voice support.
+  - Dependencies required by any specified first-party modules.
+- Optional validations, which help to avoid less-obvious issues:
+  - Checking for outdated Kotlin versions.
+- Configuring required Maven repositories:
+  - Repositories required to resolve Kord Extensions and its dependencies.
+  - The Kord Extensions third-party repository, for approved community projects.
+- Applying and configuring several Gradle plugins:
+  - **Application:** Configuring and adding thee `dev` run configuration.
+  - **Distribution:** Configuring for bots or plugins, as required by your project.
+  - **Java:** Setting the Java source/target compatibility settings.
+  - **Kotlin:** Setting the JVM target and required compiler arguments.
+  - **KSP:** Adding the Kord Extensions annotation processor.
+- Internationalisation preparation work:
+  - Generating translations classes based on your translation bundle and keys.
+
+## Setting Up
+
+:::warning Gradle Version Requirements
+
+Because this Gradle plugin uses Gradle's problem reporting API, and the Gradle team has been dragging their
+heels on stabilising it, you'll need to use the same version of Gradle we build the plugin against.
+
+This means you'll need to use **Gradle <EmbeddedVersion reference="gradle" />** with the latest plugin version.
+
+We hope this API stabilises soon, and we can move on from this issue!
+
+:::
+
+:::tip Included Dependencies
+
+Kord Extensions includes the API dependencies listed on [the version picker page](/bots/versions).
+If you need to use them, remember not to depend on them directly.
+
+:::
+
+<Tabs groupId="gradle-approach">
+  <TabItem value="basic" label="Basic">
+    First, add the required Maven repositories to your `settings.gradle.kts`:
+
+    ```kt
+    pluginManagement {
+        repositories {
+            gradlePluginPortal()
+            mavenCentral()
+
+            maven("https://snapshots-repo.kordex.dev")
+            maven("https://releases-repo.kordex.dev")
+        }
+    }
+    ```
+
+    Next, add the plugin to your project:
+
+    <Snippets.PluginBlock />
+  </TabItem>
+
+  <TabItem value="convention" label="Convention Plugin">
+    First, add the required Maven repositories to your `buildSrc/build.gradle.kts`:
+
+    ```kt
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+
+        maven("https://snapshots-repo.kordex.dev")
+        maven("https://releases-repo.kordex.dev")
+    }
+    ```
+
+    Next, add the plugin dependency:
+
+    <Snippets.ConventionDependency />
+
+    Then, add the plugin to any convention plugins or Gradle modules that need it:
+
+    ```kt
+    plugins {
+        id("dev.kordex.gradle.kordex")
+    }
+    ```
+  </TabItem>
+</Tabs>
+
+Finally, configure the plugin:
+
+```kt
+kordEx {
+    // Settings go here.
+}
+```
+
+### Configuration
+
+You can configure the plugin using the `kordEx { }` builder provided.
+Please remember to configure the plugin for either bots or plugins, or it won't do anything!
+
+#### General
+
+The following settings are at root level, placed directly within the `kordEx { }` builder.
+
+<Doc.Container>
+  <p className="text-center">
+    **Properties**
+  </p>
+
+  <Doc.Property name="addDependencies" type="Boolean" default="true">
+    Whether to automatically add any dependencies required by Kord Extensions and any specified modules.
+  </Doc.Property>
+
+  <Doc.Property name="addRepositories" type="Boolean" default="true">
+    Whether to automatically add any Maven repositories required by Kord Extensions and any specified modules.
+  </Doc.Property>
+
+  <Doc.Property name="addThirdPartyRepositories" type="Boolean" default="true">
+    Whether to add a special Maven repository used by vetted third-party modules.
+  </Doc.Property>
+
+  <Doc.Property name="configurations" type="List<String>" default="emptyList()">
+    Dependency configurations to add dependencies to, if `addDependencies` is `true`.
+
+    If you don't add anything to this:
+    - **Bots:** Defaults to `implementation`.
+    - **Plugins:** Defaults to `compileOnly`.
+  </Doc.Property>
+
+  <Doc.Property name="ignoreIncompatibleKotlinVersion" type="Boolean" default="false">
+    Whether to stop the build from failing if you're using a potentially incompatible Kotlin version.
+  </Doc.Property>
+
+  <Doc.Property name="jvmTarget" type="Int">
+    JVM version to use as the project target, if you don't want to match the version Kord Extensions was built with.
+  </Doc.Property>
+
+  <Doc.Property name="kordExVersion" type="String">
+    The Kord Extensions version to use.
+    Defaults to the latest version, <EmbeddedVersion reference="kordEx" code />.
+  </Doc.Property>
+
+  <Doc.Property name="kordVersion" type="String">
+    The Kord version to use.
+    Defaults to whatever version was used to build the version of Kord Extensions you're using.
+  </Doc.Property>
+
+  <p className="text-center">
+    **Functions**
+  </p>
+
+  <Doc.Function name="module">
+    Call this function to add a dependency on a
+    [Kord Extensions module](https://github.com/Kord-Extensions/kord-extensions/tree/root/modules),
+    using the names provided in the linked README.
+    This will automatically set up any required dependencies and repositories, assuming `addDependencies` and
+    `addRepositories` are `true`.
+  </Doc.Function>
+</Doc.Container>
+
+#### Bots
+
+To configure the plugin to build bots, add the `bot { }` builder within the `kordEx { }` builder,
+and configure it as explained below.
+
+<Doc.Container>
+  <p className="text-center">
+    **Required Settings**
+  </p>
+
+  <Doc.Property name="mainClass" type="String" required>
+    Your bot's main class, including the `Kt` suffix.
+
+    This matches
+    [the configuration for the application plugin](https://docs.gradle.org/current/userguide/application_plugin.html#ex-configure-the-application-main-class),
+    and it will be used to configure that plugin automatically.
+  </Doc.Property>
+
+  <p className="text-center">
+    **Optional Settings**
+  </p>
+
+  <Doc.Function name="dataCollection">
+    Set your bot's default [data collection level](/bots/about/data-collection#collection-levels).
+  </Doc.Function>
+
+  <Doc.Property name="processDotEnv" type="Boolean" default="true">
+    Whether to process `.env` files containing environment variables, when you run the `dev` task.
+
+    If enabled, this will traverse your project's file tree, parsing `.env` files from the current Gradle module's
+    directory, and adding values from any further `.env` files in containing directories,
+    until it reaches the root module's directory.
+  </Doc.Property>
+
+  <Doc.Property name="version" type="String" default="project.version">
+    Your bot's version.
+
+    Defaults to the current project's version.
+  </Doc.Property>
+
+  <Doc.Property name="voice" type="Boolean" default="true">
+    Whether to depend on a version of Kord that supports Discord voice communication.
+
+    If you don't need to support voice, setting this to `false` will reduce the size of your bot's distribution.
+  </Doc.Property>
+</Doc.Container>
+
+#### Plugins
+
+To configure the plugin to build plugins, add the `plugin { }` builder within the `kordEx { }` builder,
+and configure it as explained below.
+
+<Doc.Container>
+  <p className="text-center">
+    **Required Settings**
+  </p>
+
+  <Doc.Property name="pluginClass" type="String" required>
+    Coordinates for your plugin's class.
+    The class you provide must extend `KordExPlugin`.
+  </Doc.Property>
+
+  <Doc.Property name="id" type="String" required>
+    Your plugin's unique ID.
+  </Doc.Property>
+
+  <Doc.Property name="version" type="String" required>
+    Your plugin's version, which must be [a SemVer version](https://devhints.io/semver).
+    You need to set this manually, as plugin versions can't contain specifiers like `-SNAPSHOT`.
+  </Doc.Property>
+
+  <p className="text-center">
+    **Compatibility Data**
+  </p>
+
+  <Doc.Function name="dependency">
+    Add a dependency on another plugin.
+    Kord Extensions will try to load these plugins before your one, and will fail to load your plugin if any
+    non-optional dependencies aren't found.
+
+    <Doc.Arguments>
+      <Doc.Arg name="id" type="String">
+        The unique ID for the plugin you want to depend on.
+      </Doc.Arg>
+
+      <Doc.Arg name="versionSpecifier" type="String?" default="null">
+        Optional version specifier, which must be [a SemVer range](https://devhints.io/semver).
+      </Doc.Arg>
+
+      <Doc.Arg name="optional" type="Boolean" default="false">
+        Whether this is an optional dependency.
+        Optional dependencies will be loaded before your plugin, but a missing optional dependency won't stop your
+        plugin from loading.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+
+  <Doc.Function name="kordExVersion">
+    Specify which versions of Kord Extensions your plugin supports.
+
+    **Note:** Do not include `-SNAPSHOT` in your version specifier.
+    Instead, just use the version number without it.
+
+    <Doc.Arguments>
+      <Doc.Arg name="versionSpecifier" type="String">
+        Version specifier, which must be [a SemVer range](https://devhints.io/semver).
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+
+  <p className="text-center">
+    **Plugin Metadata**
+  </p>
+
+  <Doc.Property name="author" type="String">
+    Who developed this plugin.
+    This is a freeform string input, but we suggest using this format:
+    `Full Name (username), Full Name (username), ...`.
+
+    Please avoid including email addresses unless you want random bot users to email you!
+  </Doc.Property>
+
+  <Doc.Property name="description" type="String">
+    A short description of what this plugin does.
+    This is a freeform string input, but we suggest using a short, one-line description,
+    optionally followed by two newlines (`\n`) and a longer, multi-line description.
+  </Doc.Property>
+</Doc.Container>
+
+#### Internationalisation (i18n)
+
+:::note This is moving!
+
+Please note that we will be moving the i18n generator into a separate plugin.
+When this happens, you'll need to migrate your buildscript.
+
+:::
+
+To configure the plugin to generate a translation class based on your project's translations,
+add the `i18n { }` builder within the `kordEx { }` builder, and configure it as explained below.
+
+<Doc.Container>
+  <p className="text-center">
+    **Required Settings**
+  </p>
+
+  <Doc.Property name="classPackage" type="String" required>
+    Package to place the generated translation class into.
+    You should use a package within your bot's base package.
+  </Doc.Property>
+
+  <Doc.Property name="translationBundle" type="String" required>
+    The name of your translation bundle.
+    This must match the name of the directory you created for your bundle, in `src/main/resources/translations/`.
+
+    If your bundle filenames start with a string other than `strings`, specify it in the bundle name, splitting with
+    a `.`.
+    For example, for `bot/text.properties`, specify `bot.text`.
+  </Doc.Property>
+
+  <p className="text-center">
+    **Optional Settings**
+  </p>
+
+  <Doc.Property name="className" type="String" default="Translations">
+    The name to use for the generated translations class.
+  </Doc.Property>
+
+  <Doc.Property name="configureSourceSet" type="Boolean" default="true">
+    Whether to automatically configure a Java source-set for the generated translations class.
+
+    If you disable this, you'll need to configure one manually, so Gradle will include the generated class when it
+    builds your project.
+  </Doc.Property>
+
+  <Doc.Property name="outputDirectory" type="File" default="build/generated/kordex/main/kotlin/">
+    Where to place generated source files.
+  </Doc.Property>
+
+  <Doc.Property name="messageFormatVersion" type="Int" default="1">
+    Which ICU message format to use for your bundle:
+
+    - **Version 1:** [The older, current message format](https://unicode-org.github.io/icu/userguide/format_parse/messages/).
+    - **Version  2:** [The new, in-development message format](https://unicode-org.github.io/icu/userguide/format_parse/messages/mf2.html).
+
+    We recommend using version 2 for all new translation bundles, as it will eventually become the standard.
+  </Doc.Property>
+
+  <Doc.Property name="publicVisibility" type="Boolean" default="true">
+    Whether the generated translations class should be marked `public`.
+
+    Setting this to `false` will use `internal` instead.
+  </Doc.Property>
+</Doc.Container>
+
+## Usage
+
+Once you've finished configuring the plugin, you can continue to use the normal Gradle tasks you always would:
+
+- `build` will assemble and build your project, as usual.
+- `distTar` and `distZip` will create self-contained distributions:
+  - **Bots:** The distributions will contain your bot, its dependencies, and startup scripts you can use to run it.
+    These are also ideal for unpacking into a Docker container.
+  - **Plugins:** `distZip` will create a plugin zip that you can use in any Kord Extensions bot.
+
+The plugin also adds extra tasks, depending on how you configure it:
+
+- `dev` will run your bot in development mode, automatically loading environment variables from `.env` files.
+  We recommend using this task when testing your bot.
+- `generateTranslationsClass` is usually run automatically, but you can run it to manually regenerate your
+  translations class.

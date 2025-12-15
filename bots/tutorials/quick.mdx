@@ -1,0 +1,100 @@
+---
+description: Get started quickly with a template project.
+sidebar_position: 2
+
+sidebar_custom_props:
+  card_group: "Getting Started"
+  icon: "fluent:fast-acceleration-24-filled"
+---
+
+# Quickstart
+
+If you already know what you're doing and just want to get started quickly, we recommend using our template projects.
+We created these projects with a typical setup in mind, and they're a great jumping-off point for your own work.
+
+## Template Projects
+
+- If you're writing a Discord bot, use [the bot template](https://codeberg.org/Kord-Extensions/template).
+  - Git URL: `https://codeberg.org/Kord-Extensions/template.git`
+- If you're writing a plugin, use [the plugin template](https://codeberg.org/Kord-Extensions/template-plugin).
+  - Git URL: `https://codeberg.org/Kord-Extensions/template-plugin.git`
+
+## Using Templates
+
+Each template contains a basic, working project that's ready for you to customise.
+If you're new to project templates, please feel free to follow one of the guides below.
+
+### Use With GitHub
+
+GitHub makes it easy to create a new project based on a template.
+Click on the "Use this template" button towards the top-right corner of the page and follow the prompts to get started.
+
+![Screenshot showing the location of the "Use this template" button on GitHub.](/img/bots/quick-start-template-github.png)
+
+### Use With Another Host
+
+If you're using a different Git host, we recommend cloning the template project locally, updating the remotes, and
+pushing it up to your host.
+You can do this using the Git CLI as follows, replacing `[Template Git URL]`, `[Project Folder]` and `[Project Git URL]`
+as appropriate:
+
+```sh
+git clone [Template Git URL] [Project Folder]
+cd [Project Folder]
+
+git remote set-url origin [Project Git URL]
+git push
+```
+
+:::warning Merging Changes
+
+We strongly recommend against merging in changes made to our template projects, but it is possible if you need:
+
+```sh
+git remote add upstream [Template Git URL]
+
+git fetch upstream root
+git merge upstream/root
+```
+:::
+
+## Recommended Changes
+
+Each template project includes a `README.md` file that you should take a look at.
+This file details the project's contents, as well as things you'll likely need to change.
+
+However, generally you'll want to think about the following before getting started:
+
+- The licence you want to use for your project, if any.
+  - Our template projects include a copy of The Unlicense, a public domain dedication.
+  - Removing the `LICENSE` file effectively makes your project All Rights Reserved, but we recommend being explicit
+    and mentioning that in the file instead of simply removing it.
+  - If you need help picking an open-source licence, take a look at [Choose a License](https://choosealicense.com/),
+    [the ÚFAL License Selector](https://ufal.github.io/public-license-selector/), or
+    [The OSI's list of approved licences](https://opensource.org/licenses).
+    However, please note that these tools don't provide a comprehensive list of possible licences, and you don't need
+    to use an open-source licence if you don't want to.
+- How you should identify and version your project.
+  The template project's `README.md` explains how to configure things appropriately.
+  - You will need to give your project a name.
+  - You will need to decide on your project's base group.
+    - If you own a relevant website, you should use that in reversed DNS order.
+      For example, if you own `project.ext`, your project's base group could be `ext.project.projectname`.
+    - If you're using GitHub and don't own a relevant website, you can use your username with `github.io`.
+      For example, if your username is `username`, your project's base group could be `io.github.username.reponame`.
+      You can use a GitHub organisation name instead if your project belongs to one.
+  - You will need to think about how you version your project.
+    - If your project is a small bot, and you don't expect other people to run it, this isn't very important.
+    - If your project is a library, or a bot for other people to run,
+      [we recommend following semver](https://foojay.io/today/semantic-versioning-your-java-libraries/).
+- Whether and how you want to lint and format your code.
+  - Our template projects include the same [Detekt](https://detekt.dev/) configuration we use for everything else.
+    This is fairly strict, and you can configure it via the provided `detekt.yml` file.
+  - Our template projects include a `.editorconfig` file that mandates a newline at the end of each file,
+    trimming whitespace from the end of lines, and using tabs for indentation.
+    We chose these settings to keep our code accessible to blind and visually impaired developers and to help keep
+    our git commits a little cleaner, but you can change these settings if you have no other choice.
+
+These are general recommendations for all our template projects, but each is slightly different, and you'll need to
+change other things.
+For more information, see the `README.md` included with each template project.

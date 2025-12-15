@@ -1,0 +1,275 @@
+---
+description: "Add extensions and configure bundled ones."
+sidebar_position: 9
+
+sidebar_custom_props:
+  card_group: "Functionality"
+  icon: "fluent:plug-connected-add-24-filled"
+---
+
+import Link from "@docusaurus/Link";
+import * as Doc from "/src/components/Doc";
+
+# Extensions
+
+The `extensions { }` builder allows you to register extensions, and configure the bundled extensions.
+Third-party extensions often also add extension functions here.
+
+## Adding Extensions
+
+```kt
+ExtensibleBot(TOKEN) {
+    // ...
+
+    extensions {
+        add(::MyExtension)
+    }
+}
+```
+
+<Doc.Container>
+  <Doc.Function name="add">
+    Register an extension to be loaded.
+
+    <Doc.Arguments>
+      <Doc.Arg name="builder" type="() -> Extension">
+        Callable object returning an `Extension` subtype.
+        Usually, you'd pass a constructor here.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+</Doc.Container>
+
+## Help Extension
+
+The `help { }` builder lets you configure the chat command help extension.
+This extension provides a general `help` chat command, which lists the commands a user can execute
+and gives them usage information.
+
+:::info Replacing The Extension
+
+While Kord Extensions provides a standard help extension, you can build your own one implementing `HelpProvider`.
+Remember to disable the bundled extension if you decide to do this!
+
+If you're developing a help extension meant for external use, you should disable the bundled extension in your
+configuration function:
+
+```kt
+fun ExtensionsBuilder.myHelpExtension() {
+    help {
+        enableBundledExtension = false
+    }
+
+    add(::MyHelpExtension)
+}
+```
+
+:::
+
+### Builders
+
+<Doc.Container>
+  <Doc.Builder name="check" receiver="Check<MessageCreateEvent>">
+    Register a check that will apply to the help command and its subcommands.
+  </Doc.Builder>
+
+  <Doc.Builder name="colour" receiver="MessageCreateEvent" lambdaReturns="Color">
+    Set the callback that defines what `Color` to use for help embeds.
+    The help command calls this on every execution, and the return value doesn't need to be consistent.
+  </Doc.Builder>
+
+  <Doc.Builder name="color" receiver="MessageCreateEvent" lambdaReturns="Color">
+    Like `colour`, but American.
+  </Doc.Builder>
+</Doc.Container>
+
+### Properties
+
+<Doc.Container>
+  <Doc.Property name="deleteInvocationOnPaginatorTimeout" type="Boolean" default="false" propType="var">
+    Whether to delete the message that executed the help command when the paginator timeout expires.
+  </Doc.Property>
+
+  <Doc.Property name="deletePaginatorOnTimeout" type="Boolean" default="false" propType="var">
+    Whether to delete the help command's output message when the paginator timeout expires.
+  </Doc.Property>
+
+  <Doc.Property name="enableBundledExtension" type="Boolean" default="true" propType="var">
+    Whether to enable the bundled help extension
+  </Doc.Property>
+
+  <Doc.Property name="paginatorTimeout" type="Long" default="60" propType="var">
+    How long since the user's last button press (or the command invocation) to wait before the help command's paginator
+    times out and stops working, in seconds.
+  </Doc.Property>
+
+  <Doc.Property name="pingInReply" type="Boolean" default="true" propType="var">
+    Whether to mention/ping the user that ran the help command when responding.
+  </Doc.Property>
+</Doc.Container>
+
+## Sentry Extension
+
+The `sentry { }` builder lets you configure the Sentry integration, as well as the bundled feedback extension.
+
+### GDPR & Privacy
+
+It is important to consider the privacy implications of submitting data to a third party.
+While Kord Extensions is not responsible if you decide to use this extension and something goes wrong, we understand
+how critical it is to get this right.
+
+If you want to take the absolute safest route and prevent any personal data from being submitted to Sentry, you should
+use the `predicate` builder below to register a predicate that always returns `false`.
+Otherwise, we provide several best-effort options to help you avoid sending unnecessary data to Sentry.
+
+For more information, see the [Sentry Integration page].
+
+### Builders
+
+<Doc.Container>
+  <Doc.Builder name="builder" lambdaReturns="SentryAdapter">
+    Register a callback that constructs and returns an alternative implementation of the `SentryAdapter`
+    type, if needed.
+  </Doc.Builder>
+
+  <Doc.Builder name="dataTypeTransformer" receiver="SentryDataTypeBuilder">
+    Register a Sentry data type transformer, allowing you to change the types of data that may be submitted to Sentry
+    based on the given `SentryCapture` object.
+
+    Data type transformers are run before Kord Extensions adds the data defined in the `SentryCapture` object's
+    properties to the relevant Sentry object.
+
+    <Doc.Arguments type="lambda">
+      <Doc.Arg name="capture" type="SentryCapture">
+        The Sentry data capture object to operate on.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Builder>
+
+  <Doc.Builder name="defaultDataTypes" receiver="SentryDataTypeBuilder">
+    Configure the default data types that Kord Extensions is allowed to send to Sentry in breadcrumbs and exception
+    reports.
+
+    For more information, see the **GDPR & Privacy** section above.
+  </Doc.Builder>
+
+  <Doc.Builder name="predicate" receiver="SentryCapture" lambdaReturns="Boolean">
+    Register a Sentry submission predicate, letting you filter what captured sets of data will be submitted to
+    Sentry by returning `false`.
+
+    Kord Extensions runs these predicates before it submits the `SentryCapture` to Sentry.
+    This the predicate runs after the relevant data is already sanitised and processed.
+  </Doc.Builder>
+
+  <Doc.Builder name="setup" receiver="SentryAdapter">
+    Replace the bundled setup callback, which configures the `SentryAdapter` by calling its `init` function.
+
+    This should only be used if you need to precisely customise what data is passed to that function.
+  </Doc.Builder>
+</Doc.Container>
+
+### Functions
+
+<Doc.Container>
+  <Doc.Function name="enableIfDSN">
+    Convenience function to conditionally set the Sentry DSN and enable the Sentry integration.
+    This function is useful when combined with `envOrNull` to load the DSN from your bot's environment variables.
+
+    <Doc.Arguments>
+      <Doc.Arg name="sentryDSN" type="String?">
+        Your Sentry DSN, or `null`.
+        - If a `String`, enable and configure the Sentry integration with it.
+        - If `null`, do nothing.
+      </Doc.Arg>
+    </Doc.Arguments>
+  </Doc.Function>
+
+</Doc.Container>
+
+### Properties
+
+Kord Extensions uses the following properties to configure its Sentry intgration, rather than the Sentry API.
+
+<Doc.Container>
+  <Doc.Property name="enable" type="Boolean" default="false" propType="var">
+    Whether to enable the Sentry integration.
+  </Doc.Property>
+
+  <Doc.Property name="feedbackExtension" type="Boolean" default="false" propType="var">
+    Whether to enable the Sentry feedback extension, which adds a `feedback` chat and slash command, and displays error
+    IDs when your bot submits errors to Sentry.
+
+    Users can use the `feedback` command with these IDs to explain what they were doing.
+  </Doc.Property>
+
+  <Doc.Property name="pingInReply" type="Boolean" default="true" propType="var">
+    Whether to ping users in response to their `feedback` chat command uses.
+  </Doc.Property>
+
+  <Doc.Property name="sampleRate" type="Double" default="1.0" propType="var">
+    Portion of Sentry captures to submit to Sentry, as a percentage represented by a portion of one.
+
+    For example, `1.0` means everything, `0.1` means 10%, and so on.
+  </Doc.Property>
+</Doc.Container>
+
+Kord Extensions uses the following properties to configure the Sentry API directly.
+We only expose the most common options here, but you can use the `setup` builder to configure other options.
+For more information, [see Sentry's documentation](https://docs.sentry.io/platforms/java/configuration/options/).
+
+<Doc.Container>
+  <Doc.Property name="debug" type="Boolean" default="devMode" propType="var">
+    Whether to enable [Sentry's debug mode](https://docs.sentry.io/platforms/java/configuration/options/#debug).
+
+    Defaults to your bot's `devMode` setting, as defined in
+    <Link to="/bots/config/general#general">the general settings</Link>.
+  </Doc.Property>
+
+  <Doc.Property name="dsn" type="String?" default="null" propType="var">
+    Your [Sentry DSN](https://docs.sentry.io/platforms/java/configuration/options/#dsn),
+    required to enable the integration.
+  </Doc.Property>
+
+  <Doc.Property name="distribution" type="String?" default="null" propType="var">
+    Sentry's [Distribution](https://docs.sentry.io/platforms/java/configuration/options/#dist) option.
+  </Doc.Property>
+
+  <Doc.Property name="environment" type="String?" default="null" propType="var">
+    Sentry's [Environment](https://docs.sentry.io/platforms/java/configuration/options/#environment) option.
+  </Doc.Property>
+
+  <Doc.Property name="release" type="String?" default="null" propType="var">
+    Sentry's [Release](https://docs.sentry.io/platforms/java/configuration/options/#release) option.
+  </Doc.Property>
+
+  <Doc.Property name="serverName" type="String?" default="null" propType="var">
+    Sentry's [Server Name](https://docs.sentry.io/platforms/java/configuration/options/#server-name) option.
+  </Doc.Property>
+
+</Doc.Container>
+
+## Developing Extensions
+
+If you're developing an extension for others to use, we strongly recommend [writing a plugin].
+If you'd rather not do that, you should write an extension function to configure your extension:
+
+```kt
+fun ExtensionsBuilder.extMyExtension(/* args */) {
+    // ...any extra configuration...
+
+    add(::MyExtension)
+}
+```
+
+Using `ExtensionsBuilder` as the receiver means users can configure your extension directly in the `extensions { }`
+builder:
+
+```kt
+ExtensibleBot(TOKEN) {
+    extensions {
+        extMyExtension {
+            // ...
+        }
+    }
+}
+```
