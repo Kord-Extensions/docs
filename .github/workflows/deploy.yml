@@ -66,12 +66,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: docs
-
-      - name: Check files
-        run: |
-          pwd
-          ls
-          ls */
+          path: "./downloaded-docs/"
 
       - uses: montudor/action-zip@v1
         with:
@@ -86,9 +81,9 @@ jobs:
 
           sudo rm -rf .docusaurus .github .idea about bots build diagrams i18n misc node_modules src static .editorconfig .gitignore ./*.*
 
-          cp -r docs/* .
+          cp -r downloaded-docs/* .
 
-          sudo rm -rf docs/
+          sudo rm -rf downloaded-docs/
 
           git add .
           git commit -am "Automatic deployment"
