@@ -90,7 +90,7 @@ The `MessageFormat` interface defines a set of APIs that you'll need to implemen
   <Doc.Function name="formatNamed" visibility="public" returns="String" abstract>
     Format the incoming `string` with the given `locale` and named `placeholders`.
 
-    If your message format doesn't support named placeholders, use `error()` to throw an exception.
+    If your message format doesn't support named placeholders, throw an `UnsupportedFormatException`.
 
     <Doc.Arguments>
       <Doc.Arg name="string" type="String">
@@ -110,7 +110,7 @@ The `MessageFormat` interface defines a set of APIs that you'll need to implemen
   <Doc.Function name="formatOrdinal" visibility="public" returns="String" abstract>
     Format the incoming `string` with the given `locale` and ordinal `placeholders`.
 
-    If your message format doesn't support ordinal placeholders, use `error()` to throw an exception.
+    If your message format doesn't support ordinal placeholders, throw an `UnsupportedFormatException`.
 
     <Doc.Arguments>
       <Doc.Arg name="string" type="String">
@@ -140,11 +140,11 @@ object MyFormat : MessageFormat {
 
     override fun formatNamed(
         string: String, locale: Locale, placeholders: Map<String, Any?>
-    ): String = error("...")
+    ): String = throw UnsupportedFormatException("...")
 
     override fun formatOrdinal(
         string: String, locale: Locale, placeholders: Array<Any?>
-    ): String = error("...")
+    ): String = throw UnsupportedFormatException("...")
 
     @Suppress("UnusedPrivateMember")
     /** Required for Gradle support. **/
