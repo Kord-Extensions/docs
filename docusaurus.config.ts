@@ -121,7 +121,7 @@ const config: Config = {
 
 		algolia: {
 			appId: "M02COLVI8J",
-			apiKey: "588814eabdec644a7039452755b4b621",
+			apiKey: "bd0493ec3a68c8015d6036f87fdc58bf",
 			indexName: "kordex",
 		},
 
