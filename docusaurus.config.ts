@@ -122,7 +122,7 @@ const config: Config = {
 		algolia: {
 			appId: "M02COLVI8J",
 			apiKey: "bd0493ec3a68c8015d6036f87fdc58bf",
-			indexName: "kordex",
+			indexName: "kordex-docusaurus",
 		},
 
 		prism: {
