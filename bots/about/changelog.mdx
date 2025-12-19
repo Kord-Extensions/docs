@@ -54,7 +54,7 @@ feel free to use the `String.toKey(bundle)` extension function temporarily.
 If you're using the KordEx Gradle plugin, start by **updating to version 1.5.0,** which will be released shortly.
 
 - If you haven't created a translation bundle, you'll want to create one
-  [as described here](https://docs.kordex.dev/internationalization.html#basic-concepts-bundles).
+  [as described here](/i18n/bundles).
 - After that, configure the new `i18n` builder in the Gradle plugin, providing values for at least the `classPackage`
   and `translationBundle` properties.
 - Next, run the `generateTranslationsClass` Gradle task, which will generate a new `Translations` object containing
@@ -334,7 +334,7 @@ Please review your integration usage before pushing any updates!
 **Note:** Key-based filtering does not support nested container types, as this doesn't appear to be possible within
 Kotlin's type system. However, it is generally best not to nest data too far regardless.
 
-The [configuration docs](https://docs.kordex.dev/sentry.html) have already been updated if you need them.
+The [configuration docs](/bots/config/extensions#sentry-extension) have already been updated if you need them.
 
 As always, please give things a try and let me know how you get on!
 
