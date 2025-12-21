@@ -323,69 +323,78 @@ and configure it as explained below.
 
 #### Internationalisation (i18n)
 
-:::note This is moving!
+:::warning Moved to dedicated plugin!
 
-Please note that we will be moving the i18n generator into a separate plugin.
-When this happens, you'll need to migrate your buildscript.
+As of Gradle plugin version 1.9.0, we've removed i18n class generation feature in favour of
+[the new, more flexible dedicated i18n framework plugin](/i18n/plugin).
+
+As the new framework's types are in a different package from those we shipped with Kord Extensions versions earlier
+than `2.4.0-SNAPSHOT`, this new plugin won't work with older versions.
+If you're still using an older version of Kord Extensions, stick with version `1.8.1` of this plugin, and read the
+below section for more information.
 
 :::
 
-To configure the plugin to generate a translation class based on your project's translations,
-add the `i18n { }` builder within the `kordEx { }` builder, and configure it as explained below.
+<details>
+  <summary>**Information for plugin version `1.8.1` and older.**</summary>
 
-<Doc.Container>
-  <p className="text-center">
-    **Required Settings**
-  </p>
+  To configure the plugin to generate a translation class based on your project's translations,
+  add the `i18n { }` builder within the `kordEx { }` builder, and configure it as explained below.
 
-  <Doc.Property name="classPackage" type="String" required>
-    Package to place the generated translation class into.
-    You should use a package within your bot's base package.
-  </Doc.Property>
+  <Doc.Container>
+    <p className="text-center">
+      **Required Settings**
+    </p>
 
-  <Doc.Property name="translationBundle" type="String" required>
-    The name of your translation bundle.
-    This must match the name of the directory you created for your bundle, in `src/main/resources/translations/`.
+    <Doc.Property name="classPackage" type="String" required>
+      Package to place the generated translation class into.
+      You should use a package within your bot's base package.
+    </Doc.Property>
 
-    If your bundle filenames start with a string other than `strings`, specify it in the bundle name, splitting with
-    a `.`.
-    For example, for `bot/text.properties`, specify `bot.text`.
-  </Doc.Property>
+    <Doc.Property name="translationBundle" type="String" required>
+      The name of your translation bundle.
+      This must match the name of the directory you created for your bundle, in `src/main/resources/translations/`.
 
-  <p className="text-center">
-    **Optional Settings**
-  </p>
+      If your bundle filenames start with a string other than `strings`, specify it in the bundle name, splitting with
+      a `.`.
+      For example, for `bot/text.properties`, specify `bot.text`.
+    </Doc.Property>
 
-  <Doc.Property name="className" type="String" default="Translations">
-    The name to use for the generated translations class.
-  </Doc.Property>
+    <p className="text-center">
+      **Optional Settings**
+    </p>
 
-  <Doc.Property name="configureSourceSet" type="Boolean" default="true">
-    Whether to automatically configure a Java source-set for the generated translations class.
+    <Doc.Property name="className" type="String" default="Translations">
+      The name to use for the generated translations class.
+    </Doc.Property>
 
-    If you disable this, you'll need to configure one manually, so Gradle will include the generated class when it
-    builds your project.
-  </Doc.Property>
+    <Doc.Property name="configureSourceSet" type="Boolean" default="true">
+      Whether to automatically configure a Java source-set for the generated translations class.
 
-  <Doc.Property name="outputDirectory" type="File" default="build/generated/kordex/main/kotlin/">
-    Where to place generated source files.
-  </Doc.Property>
+      If you disable this, you'll need to configure one manually, so Gradle will include the generated class when it
+      builds your project.
+    </Doc.Property>
 
-  <Doc.Property name="messageFormatVersion" type="Int" default="1">
-    Which ICU message format to use for your bundle:
+    <Doc.Property name="outputDirectory" type="File" default="build/generated/kordex/main/kotlin/">
+      Where to place generated source files.
+    </Doc.Property>
 
-    - **Version 1:** [The older, current message format](https://unicode-org.github.io/icu/userguide/format_parse/messages/).
-    - **Version  2:** [The new, in-development message format](https://unicode-org.github.io/icu/userguide/format_parse/messages/mf2.html).
+    <Doc.Property name="messageFormatVersion" type="Int" default="1">
+      Which ICU message format to use for your bundle:
 
-    We recommend using version 2 for all new translation bundles, as it will eventually become the standard.
-  </Doc.Property>
+      - **Version 1:** [The older, current message format](https://unicode-org.github.io/icu/userguide/format_parse/messages/).
+      - **Version  2:** [The new, in-development message format](https://unicode-org.github.io/icu/userguide/format_parse/messages/mf2.html).
 
-  <Doc.Property name="publicVisibility" type="Boolean" default="true">
-    Whether the generated translations class should be marked `public`.
+      We recommend using version 2 for all new translation bundles, as it will eventually become the standard.
+    </Doc.Property>
 
-    Setting this to `false` will use `internal` instead.
-  </Doc.Property>
-</Doc.Container>
+    <Doc.Property name="publicVisibility" type="Boolean" default="true">
+      Whether the generated translations class should be marked `public`.
+
+      Setting this to `false` will use `internal` instead.
+    </Doc.Property>
+  </Doc.Container>
+</details>
 
 ## Usage
 
