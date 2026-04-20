@@ -77,7 +77,7 @@ export function SettingsKTS() : ReactNode {
 		callback={() => (
 			<CodeBlock language="kotlin">
 {`plugins {
-  kotlin("jvm") version "${getVersion("java")}"
+  kotlin("jvm") version "${getVersion("kotlin")}"
   kotlin("plugin.serialization") version "${getVersion("kotlin")}"
 
   id("com.google.devtools.ksp") version "${getVersion("ksp")}"
