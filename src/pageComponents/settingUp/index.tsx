@@ -13,7 +13,9 @@ export function BuildGroovy() : ReactNode {
 	return <WaitForVersions
 		callback={() => (
 			<CodeBlock language="groovy">
-{`// ...
+{`import dev.kordex.gradle.plugins.kordex.DataCollection
+
+// ...
 
 kordEx {
   kordExVersion = "${getVersion("kordEx")}"
@@ -53,7 +55,9 @@ export function BuildKTS() : ReactNode {
 	return <WaitForVersions
 		callback={() => (
 			<CodeBlock language="kotlin">
-{`// ...
+{`import dev.kordex.gradle.plugins.kordex.DataCollection
+
+// ...
 
 kordEx {
   kordExVersion = "${getVersion("kordEx")}"
