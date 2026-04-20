@@ -38,12 +38,14 @@ export function SettingsGroovy() : ReactNode {
 	return <WaitForVersions
 		callback={() => (
 			<CodeBlock language="groovy">
-{`plugins {
-  id "org.jetbrains.kotlin.jvm" version "${getVersion("kotlin")}"
-  id "org.jetbrains.kotlin.plugin.serialization" version "${getVersion("kotlin")}"
+{`pluginManagement {
+  plugins {
+    id "org.jetbrains.kotlin.jvm" version "${getVersion("kotlin")}"
+    id "org.jetbrains.kotlin.plugin.serialization" version "${getVersion("kotlin")}"
 
-  id "com.google.devtools.ksp" version "${getVersion("ksp")}"
-  id "dev.kordex.gradle.kordex" version "${getVersion("plugin")}"
+    id "com.google.devtools.ksp" version "${getVersion("ksp")}"
+    id "dev.kordex.gradle.kordex" version "${getVersion("plugin")}"
+  }
 }
 `}
 			</CodeBlock>
@@ -80,12 +82,14 @@ export function SettingsKTS() : ReactNode {
 	return <WaitForVersions
 		callback={() => (
 			<CodeBlock language="kotlin">
-{`plugins {
-  kotlin("jvm") version "${getVersion("kotlin")}"
-  kotlin("plugin.serialization") version "${getVersion("kotlin")}"
+{`pluginManagement {
+  plugins {
+    kotlin("jvm") version "${getVersion("kotlin")}"
+    kotlin("plugin.serialization") version "${getVersion("kotlin")}"
 
-  id("com.google.devtools.ksp") version "${getVersion("ksp")}"
-  id("dev.kordex.gradle.kordex") version "${getVersion("plugin")}"
+    id("com.google.devtools.ksp") version "${getVersion("ksp")}"
+    id("dev.kordex.gradle.kordex") version "${getVersion("plugin")}"
+  }
 }
 `}
 			</CodeBlock>
