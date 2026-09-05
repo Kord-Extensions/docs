@@ -17,7 +17,7 @@ const GRADLE_PLUGIN_RELEASES = "https://api.github.com/repos/kord-extensions/gra
 const I18N_RELEASES = "https://codeberg.org/api/v1/repos/kord-extensions/i18n/tags"
 const GRADLE_WRAPPER_PROPS = "https://codeberg.org/Kord-Extensions/kord-extensions/raw/branch/root/gradle/libs.versions.toml"
 
-const VERSION_CATALOGUE = "https://raw.githubusercontent.com/Kord-Extensions/kord-extensions/refs/heads/root/gradle/libs.versions.toml"
+const VERSION_CATALOGUE = "https://codeberg.org/Kord-Extensions/kord-extensions/raw/branch/root/gradle/libs.versions.toml"
 
 function kordExReleasesUrlv1(path: string) {
 	return `${KORDEX_RELEASES_BASE_V1}/${path}`
