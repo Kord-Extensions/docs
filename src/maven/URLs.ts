@@ -15,7 +15,7 @@ const KORD_SNAPSHOTS_BASE = `${KORD_SNAPSHOTS}/dev/kord/kord-core`
 
 const GRADLE_PLUGIN_RELEASES = "https://api.github.com/repos/kord-extensions/gradle-plugins/tags"
 const I18N_RELEASES = "https://codeberg.org/api/v1/repos/kord-extensions/i18n/tags"
-const GRADLE_WRAPPER_PROPS = "https://raw.githubusercontent.com/Kord-Extensions/gradle-plugins/refs/heads/root/gradle/wrapper/gradle-wrapper.properties"
+const GRADLE_WRAPPER_PROPS = "https://codeberg.org/Kord-Extensions/kord-extensions/raw/branch/root/gradle/libs.versions.toml"
 
 const VERSION_CATALOGUE = "https://raw.githubusercontent.com/Kord-Extensions/kord-extensions/refs/heads/root/gradle/libs.versions.toml"
 
