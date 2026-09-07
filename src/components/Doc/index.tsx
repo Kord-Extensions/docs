@@ -659,10 +659,9 @@ export function Converter(props: PropsWithChildren<ConverterProps>): ReactNode {
 								{intents
 									.sort()
 									.map((it) => {
-										return <div
-											className={clsx(styles.likeCode, "shadow--lw", "code", "text-capitalize")}>
+										return <code className={clsx("shadow--lw", "text-capitalize")}>
 											{it}
-										</div>
+										</code>
 									})}
 							</Tag>
 					}
@@ -672,9 +671,9 @@ export function Converter(props: PropsWithChildren<ConverterProps>): ReactNode {
 						props.types
 							.sort()
 							.map((it) => {
-								return <div className={clsx(styles.likeCode, "shadow--lw", "code", "text-capitalize")}>
+								return <code className={clsx("shadow--lw", "text-capitalize")}>
 									{it}
-								</div>
+								</code>
 							})
 					}
 					</Tag>
