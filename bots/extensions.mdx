@@ -153,6 +153,12 @@ For more information, see the following:
     May be overridden individually by each command.
   </Doc.Property>
 
+  <Doc.Property name="defaultScope" type="ApplicationCommandScope" default="true" propType="val" open>
+    The default application command scope, which defaults to the scope defined in [the bot's global application commands configuration](/bots/config/commands#properties).
+
+    For more information on how this works, see [the base application commands page](/bots/commands/application/base-command).
+  </Doc.Property>
+
   <Doc.Property name="intents" type="MutableSet<Intent>" default="emptySet()" propType="val" open>
     Intents this extension requires, according to the event handlers it registers.
 

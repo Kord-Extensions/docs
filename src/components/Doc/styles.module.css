@@ -138,7 +138,7 @@
 	flex-direction: row;
 	gap: 0.5em;
 
-	overflow-x: scroll;;
+	overflow-x: auto;
 
 	code, span {
 		white-space: nowrap;
@@ -211,7 +211,7 @@ div.head, div.headMed, div.likeCode {
 	.head, .headMed {
 		width: 100%;
 		flex-grow: 1;
-		overflow-x: scroll;
+		overflow-x: auto;
 		white-space: nowrap
 	}
 

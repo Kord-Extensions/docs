@@ -41,6 +41,68 @@ For more information on the APIs common to all commands, see [the basic command 
   <Doc.Builder name="check" receiver="CheckContext<E>" open>
     Register a [check](/bots/checks), which must pass for the command to execute when invoked.
   </Doc.Builder>
+
+  <Doc.Builder name="scope" receiver="ApplicationCommandScope" id="scope">
+    Define this command's registration and execution scope.
+
+    <Doc.Indent>
+      ### Builders
+
+      ### Functions
+
+      <Doc.Function name="clearContexts">
+        Clear this scope's list of allowed contexts.
+      </Doc.Function>
+
+      <Doc.Function name="clearIntegrationTypes">
+        Clear this scope's list of allowed integration types, as configured by `userInstalable { ... }`.
+      </Doc.Function>
+
+      <Doc.Function name="copy">
+        Return a copy of this scope.
+      </Doc.Function>
+
+      <Doc.Function name="guildInstallable">
+        Mark this scope as available to bots installed to guilds.
+      </Doc.Function>
+
+      <Doc.Function name="isModified">
+        Check whether this scope has been modified from the bot's configured default settings.
+      </Doc.Function>
+
+      <Doc.Function name="limitToGuild">
+        For guild-installable scopes, limit this command to a specific guild.
+      </Doc.Function>
+
+      <Doc.Builder name="userInstallable">
+        Mark this scope as available to bots installed to users.
+
+        Use the following functions in the builder to pick the allowed contexts:
+        - `allowinDirectDMs`
+        - `allowInGroupDMs`
+        - `allowInGuilds`
+        - `clear`
+        - `disallowInAllDMs`
+        - `disallowInDirectDMs`
+        - `disallowInGroupDMs`
+        - `disallowInGuilds`
+      </Doc.Builder>
+
+      ### Properties
+
+      <Doc.Property name="isAllowedInDirectDMs" type="Boolean" propType="val" visibility="public">
+        Whether users can run this command in one-on-one DMs.
+      </Doc.Property>
+
+      <Doc.Property name="isAllowedInGroupDMs" type="Boolean" propType="val" visibility="public">
+        Whether users can run this command in group DMs.
+      </Doc.Property>
+
+      <Doc.Property name="isAllowedInGuilds" type="Boolean" propType="val" visibility="public">
+        Whether users can run this command in guilds.
+      </Doc.Property>
+    </Doc.Indent>
+  </Doc.Builder>
 </Doc.Container>
 
 ## Functions

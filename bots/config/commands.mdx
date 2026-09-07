@@ -68,26 +68,15 @@ ExtensibleBot(TOKEN) {
   </Doc.Builder>
 </Doc.Container>
 
-### Functions
-
-<Doc.Container>
-  <Doc.Function name="defaultGuild">
-    Specify a guild to register all global application commands to.
-    This will apply to all application commands that don't have a default guild specified.
-
-    This function sets the `defaultGuild` property, which you can set manually instead if you prefer.
-
-    <Doc.Arguments>
-      <Doc.Arg name="id" type={["Snowflake?", "String?", "ULong?"]}>
-        ID representing the required default guild.
-      </Doc.Arg>
-    </Doc.Arguments>
-  </Doc.Function>
-</Doc.Container>
-
 ### Properties
 
 <Doc.Container>
+  <Doc.Property name="defaultScope" type="ApplicationCommandScope" default="true" propType="var">
+    The default application command scope, which is normally configured to expose commands to bots installed to guilds.
+
+    For more information on how this works, see [the base application commands page](/bots/commands/application/base-command).
+  </Doc.Property>
+
   <Doc.Property name="enabled" type="Boolean" default="true" propType="var">
     Whether application commands should be enabled.
 

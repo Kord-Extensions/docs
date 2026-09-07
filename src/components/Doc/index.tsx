@@ -542,7 +542,7 @@ export function Check(props: PropsWithChildren<CheckProps>): ReactNode {
 type CliArgProps = {
 	name: string | string[],
 	arg?: string | string[],
-	reqiured?: boolean,
+	required?: boolean,
 	default?: string
 } & CommonProps
 
@@ -895,7 +895,7 @@ type TypeProps = {
 } & CommonProps
 
 export function Type(props: PropsWithChildren<TypeProps>): ReactNode {
-	let ext: string[];
+	let ext: string[] | undefined;
 
 	if (typeof(props.extends) === "string") {
 		ext = [props.extends]
@@ -932,7 +932,7 @@ export function Type(props: PropsWithChildren<TypeProps>): ReactNode {
 						&nbsp;{props.name} {
 						props.extends === null || props.extends === undefined ?
 							<></> :
-							" : " + ext.join(", ")
+							" : " + ext!!.join(", ")
 					}
 					</code>
 				</Tags>
@@ -964,7 +964,7 @@ function splitLast(str: string, delimiter: string): string[] {
 	}
 
 	const parts = str.split(delimiter)
-	const last = parts.pop()
+	const last = parts.pop()!!
 
 	return [parts.join(delimiter), last]
 }
