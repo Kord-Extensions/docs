@@ -1,0 +1,1032 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-bots docs-version-current docs-doc-page docs-doc-id-about/changelog" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.2">
+<title data-rh="true">Changelog | Kord Extensions Docs</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://docs.kordex.dev/img/social-card.png"><meta data-rh="true" name="twitter:image" content="https://docs.kordex.dev/img/social-card.png"><meta data-rh="true" property="og:url" content="https://docs.kordex.dev/bots/about/changelog"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-bots-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-bots-current"><meta data-rh="true" property="og:title" content="Changelog | Kord Extensions Docs"><meta data-rh="true" name="description" content="This page contains historical changelogs for the Kord Extensions Discord Bot Framework, taken from GitHub, Discord, and"><meta data-rh="true" property="og:description" content="This page contains historical changelogs for the Kord Extensions Discord Bot Framework, taken from GitHub, Discord, and"><link data-rh="true" rel="icon" href="/img/logo.png"><link data-rh="true" rel="canonical" href="https://docs.kordex.dev/bots/about/changelog"><link data-rh="true" rel="alternate" href="https://docs.kordex.dev/bots/about/changelog" hreflang="en"><link data-rh="true" rel="alternate" href="https://docs.kordex.dev/bots/about/changelog" hreflang="x-default"><link data-rh="true" rel="preconnect" href="https://M02COLVI8J-dsn.algolia.net" crossorigin="anonymous"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"About the Framework","item":"https://docs.kordex.dev/bots/about/"},{"@type":"ListItem","position":2,"name":"Changelog","item":"https://docs.kordex.dev/bots/about/changelog"}]}</script><link rel="search" type="application/opensearchdescription+xml" title="Kord Extensions Docs" href="/opensearch.xml"><link rel="stylesheet" href="/assets/css/styles.86233ea0.css">
+<script src="/assets/js/runtime~main.3f814880.js" defer="defer"></script>
+<script src="/assets/js/main.f220cc17.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")),document.documentElement.setAttribute("data-theme-choice",t||"system")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><link rel="preload" as="image" href="/img/logo.svg"><div role="region" aria-label="Skip to main content"><a class="skipToContent_v7Hj" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/"><div class="navbar__logo"><img src="/img/logo.svg" alt="Kord Extensions Logo" class="themedComponent_v9m8 themedComponent--light_ej9Z"><img src="/img/logo.svg" alt="Kord Extensions Logo" class="themedComponent_v9m8 themedComponent--dark_vSno"></div><b class="navbar__title text--truncate">Kord Extensions</b></a><a class="navbar__item navbar__link" href="/about">About</a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/bots">Bots</a><a class="navbar__item navbar__link" href="/i18n">i18n</a><a class="navbar__item navbar__link" href="/misc">Misc.</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><div class="toggle_CgqN colorModeToggle_AfYl"><button class="clean-btn toggleButton_mUXK toggleButtonDisabled_v0RL" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_X4kJ lightToggleIcon_cYAB"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_X4kJ darkToggleIcon_yu8D"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_X4kJ systemToggleIcon_dhQX"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_p6X5"><button type="button" class="DocSearch DocSearch-Button" aria-label="Search (Command+K)"><span class="DocSearch-Button-Container"><svg width="20" height="20" class="DocSearch-Search-Icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M14.386 14.386l4.0877 4.0877-4.0877-4.0877c-2.9418 2.9419-7.7115 2.9419-10.6533 0-2.9419-2.9418-2.9419-7.7115 0-10.6533 2.9418-2.9419 7.7115-2.9419 10.6533 0 2.9419 2.9418 2.9419 7.7115 0 10.6533z" stroke="currentColor" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path></svg><span class="DocSearch-Button-Placeholder">Search</span></span><span class="DocSearch-Button-Keys"></span></button></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_sVSO"><div class="docsWrapper_W21X"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_ftWe" type="button"></button><div class="docRoot_Qz9R"><aside class="theme-doc-sidebar-container docSidebarContainer_r_9P"><div class="sidebarViewport_ouXs"><div class="sidebar_kviv"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_q6sM"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/bots/"><span style="height:1.3em;white-space:nowrap;max-width:90%;overflow-y:visible;overflow-x:visible">Home</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/bots/versions"><span style="height:1.3em;white-space:nowrap;max-width:90%;overflow-y:visible;overflow-x:visible">Version Picker</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/bots/gradle-plugin"><span style="height:1.3em;white-space:nowrap;max-width:90%;overflow-y:visible;overflow-x:visible">Gradle Plugin</span></a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item-divider-below_3 menu__list-item-divider-below_3 menu__list-item-divider-below_3"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist menu__link--active" href="/bots/about/"><span style="height:1.3em;white-space:nowrap;max-width:90%;overflow-y:visible;overflow-x:visible">About the Framework</span></a><button aria-label="Collapse sidebar category &#x27;About the Framework&#x27;" aria-expanded="true" type="button" class="clean-btn menu__caret"></button></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/bots/about/changelog"><span style="height:1.3em;white-space:nowrap;max-width:90%;overflow-y:visible;overflow-x:visible">Changelog</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/bots/about/data-collection"><span style="height:1.3em;white-space:nowrap;max-width:90%;overflow-y:visible;overflow-x:visible">Data Collection</span><span class="tags grow inline right"><span style="flex-grow:1"></span><span data-tooltip-id="generic-tooltip" data-tooltip-content="New in version 2.x" data-tooltip-place="left" class="text-info">2.x</span></span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/bots/about/comparison"><span style="height:1.3em;white-space:nowrap;max-width:90%;overflow-y:visible;overflow-x:visible">Framework Comparison</span><span class="tags grow inline right"><span style="flex-grow:1"></span><span></span></span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/bots/about/faq"><span style="height:1.3em;white-space:nowrap;max-width:90%;overflow-y:visible;overflow-x:visible">Questions (FAQ)</span><span class="tags grow inline right"><span style="flex-grow:1"></span><span></span></span></a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist" href="/bots/anatomy/"><span style="height:1.3em;white-space:nowrap;max-width:90%;overflow-y:visible;overflow-x:visible">Anatomy</span></a><button aria-label="Expand sidebar category &#x27;Anatomy&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist" href="/bots/tutorials/"><span style="height:1.3em;white-space:nowrap;max-width:90%;overflow-y:visible;overflow-x:visible">Tutorials</span></a><button aria-label="Expand sidebar category &#x27;Tutorials&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed menu__list-item-divider-below_6 menu__list-item-divider-below_6 menu__list-item-divider-below_6"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist" href="/bots/troubleshooting/"><span style="height:1.3em;white-space:nowrap;max-width:90%;overflow-y:visible;overflow-x:visible">Troubleshooting</span></a><button aria-label="Expand sidebar category &#x27;Troubleshooting&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist" href="/bots/config/"><span style="height:1.3em;white-space:nowrap;max-width:90%;overflow-y:visible;overflow-x:visible">Configuration</span></a><button aria-label="Expand sidebar category &#x27;Configuration&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/bots/extensions"><span style="height:1.3em;white-space:nowrap;max-width:90%;overflow-y:visible;overflow-x:visible">Extensions</span></a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist" href="/bots/commands/"><span style="height:1.3em;white-space:nowrap;max-width:90%;overflow-y:visible;overflow-x:visible">Commands</span></a><button aria-label="Expand sidebar category &#x27;Commands&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist" href="/bots/events/"><span style="height:1.3em;white-space:nowrap;max-width:90%;overflow-y:visible;overflow-x:visible">Events</span></a><button aria-label="Expand sidebar category &#x27;Events&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist" href="/bots/checks/"><span style="height:1.3em;white-space:nowrap;max-width:90%;overflow-y:visible;overflow-x:visible">Checks</span></a><button aria-label="Expand sidebar category &#x27;Checks&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist" href="/bots/components/"><span style="height:1.3em;white-space:nowrap;max-width:90%;overflow-y:visible;overflow-x:visible">Components</span></a><button aria-label="Expand sidebar category &#x27;Components&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/bots/exceptions"><span style="height:1.3em;white-space:nowrap;max-width:90%;overflow-y:visible;overflow-x:visible">Exceptions</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/bots/i18n"><span style="height:1.3em;white-space:nowrap;max-width:90%;overflow-y:visible;overflow-x:visible">Internationalisation (i18n)</span></a></li></ul></nav></div></div></aside><main class="docMainContainer_nwtG"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_J0IA"><div class="docItemContainer_Ffzj"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_WImV" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_l0pX"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/bots/about/"><span>About the Framework</span></a></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">Changelog</span></li></ul></nav><div class="tocCollapsible_m2sw theme-doc-toc-mobile tocMobile_FEEv"><button type="button" class="clean-btn tocCollapsibleButton_SGZa">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1>Changelog</h1></header>
+<p>This page contains historical changelogs for the Kord Extensions Discord Bot Framework, taken from GitHub, Discord, and
+this documentation site, slightly edited for better grammar and more sensible styling.</p>
+<div class="theme-admonition theme-admonition-note admonition_FJjA alert alert--secondary"><div class="admonitionHeading_D2up"><span class="admonitionIcon_haX4"><svg viewBox="0 0 14 16"><path fill-rule="evenodd" d="M6.3 5.69a.942.942 0 0 1-.28-.7c0-.28.09-.52.28-.7.19-.18.42-.28.7-.28.28 0 .52.09.7.28.18.19.28.42.28.7 0 .28-.09.52-.28.7a1 1 0 0 1-.7.3c-.28 0-.52-.11-.7-.3zM8 7.99c-.02-.25-.11-.48-.31-.69-.2-.19-.42-.3-.69-.31H6c-.27.02-.48.13-.69.31-.2.2-.3.44-.31.69h1v3c.02.27.11.5.31.69.2.2.42.31.69.31h1c.27 0 .48-.11.69-.31.2-.19.3-.42.31-.69H8V7.98v.01zM7 2.3c-3.14 0-5.7 2.54-5.7 5.68 0 3.14 2.56 5.7 5.7 5.7s5.7-2.55 5.7-5.7c0-3.15-2.56-5.69-5.7-5.69v.01zM7 .98c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.12-7-7 3.14-7 7-7z"></path></svg></span>note</div><div class="admonitionContent_TnMm"><p>Please note that changelogs taken from Discord will have a more conversational tone.</p></div></div>
+<h2 class="anchor anchorTargetStickyNavbar_dUmZ" id="v231-snapshot">v2.3.1-SNAPSHOT<a href="#v231-snapshot" class="hash-link" aria-label="Direct link to v2.3.1-SNAPSHOT" title="Direct link to v2.3.1-SNAPSHOT" translate="no">​</a></h2>
+<p><em>Published to Discord on October 28th, 2024.</em></p>
+<p>I&#x27;ve gone ahead and pushed a new KordEx version in line with several dependency updates, including Kord:</p>
+<ul>
+<li class=""><strong>Gradle:</strong> 8.8 → 8.10.2</li>
+<li class=""><strong>ICU4J:</strong> 75.1 → 76.1</li>
+<li class=""><strong>JUnit:</strong> 5.11.2 → 5.11.3</li>
+<li class=""><strong>Kord:</strong> 0.15.0-SNAPSHOT → 0.16.0-SNAPSHOT</li>
+<li class=""><strong>KSP:</strong> 2.0.20-1.0.25 → 2.0.21-1.0.26</li>
+<li class=""><strong>Logback:</strong> 1.5.9 → 1.5.12</li>
+<li class=""><strong>PF4J:</strong> 3.12.0 → 3.12.1</li>
+<li class=""><strong>Sentry:</strong> 7.15.0 → 7.16.0</li>
+</ul>
+<p>As always, if you directly depend on anything KordEx needs, remember to update your dependencies!</p>
+<h2 class="anchor anchorTargetStickyNavbar_dUmZ" id="v230-snapshot">v2.3.0-SNAPSHOT<a href="#v230-snapshot" class="hash-link" aria-label="Direct link to v2.3.0-SNAPSHOT" title="Direct link to v2.3.0-SNAPSHOT" translate="no">​</a></h2>
+<p><em>Published to Discord on October 20th, 2024.</em></p>
+<p>It&#x27;s here, y&#x27;all! This version brings a huge number of internal and external changes.</p>
+<p>I apologise in advance for the upcoming work, but Kotlin&#x27;s type system prevents me from implementing a deprecation
+process.
+<strong>This version will require a large one-time refactor of much of your bots&#x27; code,</strong>
+replacing translatable strings with <code>Key</code> objects.</p>
+<p>Before getting started, I recommend reading <a href="#" class="">the new i18n documentation page (TODO)</a>,
+which will introduce you to the new translation system and explain how everything works.</p>
+<p><strong>If you absolutely need to be on the bleeding edge but don&#x27;t have time to translate your project,</strong>
+feel free to use the <code>String.toKey(bundle)</code> extension function temporarily.</p>
+<h3 class="anchor anchorTargetStickyNavbar_dUmZ" id="gradle-plugin-users">Gradle Plugin Users<a href="#gradle-plugin-users" class="hash-link" aria-label="Direct link to Gradle Plugin Users" title="Direct link to Gradle Plugin Users" translate="no">​</a></h3>
+<p>If you&#x27;re using the KordEx Gradle plugin, start by <strong>updating to version 1.5.0,</strong> which will be released shortly.</p>
+<ul>
+<li class="">
+<p>If you haven&#x27;t created a translation bundle, you&#x27;ll want to create one
+<a class="" href="/i18n/bundles">as described here</a>.</p>
+</li>
+<li class="">
+<p>After that, configure the new <code>i18n</code> builder in the Gradle plugin, providing values for at least the <code>classPackage</code>
+and <code>translationBundle</code> properties.</p>
+</li>
+<li class="">
+<p>Next, run the <code>generateTranslationsClass</code> Gradle task, which will generate a new <code>Translations</code> object containing
+references to the keys in your translation bundle.</p>
+</li>
+<li class="">
+<p>Finally, replace references to translatable strings with the <code>Key</code> objects in your generated <code>Translations</code> object.</p>
+</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_dUmZ" id="other-users">Other Users<a href="#other-users" class="hash-link" aria-label="Direct link to Other Users" title="Direct link to Other Users" translate="no">​</a></h3>
+<p>If you can&#x27;t (or don&#x27;t want to) use the KordEx Gradle plugin, you&#x27;ll need to create the <code>Key</code> objects yourself.
+This can be done in one of the following ways:</p>
+<ul>
+<li class="">
+<p><strong>Recommended:</strong> Take a look at <a href="https://github.com/Kord-Extensions/i18n" target="_blank" rel="noopener noreferrer" class="">the i18n tools repo</a> and use the API or
+CLI tool to integrate the generator, then follow the other steps as if you were using the Gradle plugin.</p>
+</li>
+<li class="">
+<p>Alternatively, create <code>Key</code> objects yourself, storing them in a central location and being sure to provide them with
+the <code>bundle</code> constructor parameter.</p>
+</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_dUmZ" id="changes">Changes<a href="#changes" class="hash-link" aria-label="Direct link to Changes" title="Direct link to Changes" translate="no">​</a></h3>
+<p>Here&#x27;s an overview of what&#x27;s changed:</p>
+<ul>
+<li class="">
+<p>All translatable strings now take <code>Key</code> objects instead.</p>
+<ul>
+<li class="">This allows us to provide a much more human-friendly API and covers many advanced use-cases that simply aren&#x27;t
+possible when you can only pass a string.</li>
+</ul>
+</li>
+<li class="">
+<p>All <code>bundle</code> properties have been removed.</p>
+<ul>
+<li class="">Instead, the required translation bundle should be stored in your <code>Key</code> objects. This is the default behavior when
+using the generator, as explained above.</li>
+</ul>
+</li>
+<li class="">
+<p>All <code>translate</code> convenience functions have been removed.</p>
+<ul>
+<li class="">Instead, use the <code>with</code> functions on <code>Key</code> objects to create a newly configured object, and then use the
+corresponding <code>translate</code> functions to translate that <code>Key</code> in place.</li>
+</ul>
+</li>
+<li class="">
+<p>The translation provider API has been updated to support translating <code>Key</code> objects instead of strings.
+String-based functions have been deprecated.</p>
+</li>
+<li class="">
+<p>Component labels, placeholders, and initial values may now be translated as required.</p>
+</li>
+<li class="">
+<p>All modules have been translated and <a href="https://hosted.weblate.org/engage/kord-extensions" target="_blank" rel="noopener noreferrer" class="">added to Weblate</a>.</p>
+</li>
+</ul>
+<p>This is a <strong>huge</strong> update, and a lot of work has gone into it. While it is true this may be a painful update for
+those of you maintaining large bots, using a custom type means that no such refactors should be required going forward.</p>
+<p>I truly believe that this update will be a huge benefit to most of you, and I hope you enjoy working with the new tools.
+<strong>As this is such a huge update, it is possible I may have missed something in my testing,</strong> so please let me know how
+you get on!</p>
+<p>If you&#x27;re curious about my mindset while designing this system,
+<a href="https://blog.gareth-coles.dev/a-better-i18n-api" target="_blank" rel="noopener noreferrer" class="">I wrote a blog post about it!</a></p>
+<p>As always, thanks for sticking with Kord Extensions, and I hope you&#x27;re all having a good spooky season!</p>
+<h2 class="anchor anchorTargetStickyNavbar_dUmZ" id="v221-snapshot">v2.2.1-SNAPSHOT<a href="#v221-snapshot" class="hash-link" aria-label="Direct link to v2.2.1-SNAPSHOT" title="Direct link to v2.2.1-SNAPSHOT" translate="no">​</a></h2>
+<p><em>Published to Discord on August 31st, 2024.</em></p>
+<p><strong>KordEx 2.2.1-SNAPSHOT</strong> has been pushed and will be published in about 15 minutes. It includes these changes:</p>
+<ul>
+<li class="">Clean up the translation provider <code>translate</code> functions, which were a tricky mess to navigate at times.</li>
+<li class="">Make the default translations provider scan through loaded plugins (if the plugin system is enabled) to locate
+bundles provided by them.<!-- -->
+<ul>
+<li class="">This also comes with some extra debug-level logging to help you figure out what&#x27;s going on.</li>
+<li class="">If you&#x27;re unfamiliar with the translations system,
+<a href="https://github.com/Kord-Extensions/template-plugin" target="_blank" rel="noopener noreferrer" class="">the plugin template repo</a> now contains some bundled
+translations to help you figure out how things work.</li>
+</ul>
+</li>
+</ul>
+<p>As always, let me know how you get on!</p>
+<h2 class="anchor anchorTargetStickyNavbar_dUmZ" id="v220-snapshot">v2.2.0-SNAPSHOT<a href="#v220-snapshot" class="hash-link" aria-label="Direct link to v2.2.0-SNAPSHOT" title="Direct link to v2.2.0-SNAPSHOT" translate="no">​</a></h2>
+<p><em>Published to Discord on August 23rd, 2024.</em></p>
+<p>It is time for another version bump, specifically to <code>2.2.0-SNAPSHOT</code>. That was fast, huh?</p>
+<p>This release contains the following changes:</p>
+<ul>
+<li class="">
+<p>Update to Kotlin <code>2.0.20</code>. Finally, a stable release with the fixes we needed!</p>
+</li>
+<li class="">
+<p>Move all the nested builders out of the <code>ExtensibleBotBuilder</code> class, and into their own separate class files,
+including their corresponding nested types.
+Naturally, if you&#x27;ve written any extension functions using one of these classes as a receiver, you&#x27;ll need to update
+them.
+I tried to make this deprecate cleanly, but unfortunately, I couldn&#x27;t — you can&#x27;t place type aliases anywhere other
+than the top-level of a file!</p>
+</li>
+<li class="">
+<p>Rewrite the <code>about { }</code> builder for the corresponding extension.
+This removes the default &quot;general&quot; information command (and mandatory footer), instead allowing you to create your
+own fully custom commands while providing a default, configurable &quot;copyright&quot; subcommand.
+For more information on this, please <a class="" href="/bots/config/about">read the new docs</a>.
+I feel like it is a lot less obnoxious, personally!</p>
+</li>
+<li class="">
+<p><a href="https://github.com/Kord-Extensions/kord-extensions/issues/324" target="_blank" rel="noopener noreferrer" class="">#324</a> — Fix an error thrown by the data collection
+system when the plugin system was disabled.
+Instead of simply not creating a plugin manager, KordEx will now always create one but won&#x27;t try to load any plugins
+if the plugin system is disabled.</p>
+</li>
+</ul>
+<p>As always, this release will be available once GitHub builds it, in about 15 minutes. Let me know how you get on!</p>
+<h2 class="anchor anchorTargetStickyNavbar_dUmZ" id="v210-snapshot">v2.1.0-SNAPSHOT<a href="#v210-snapshot" class="hash-link" aria-label="Direct link to v2.1.0-SNAPSHOT" title="Direct link to v2.1.0-SNAPSHOT" translate="no">​</a></h2>
+<p><em>Published to Discord on August 20th, 2024.</em></p>
+<p>I&#x27;ve gone ahead and pushed an update to KordEx v2, which will be released as <code>2.1.0-SNAPSHOT</code>. This version provides the following updates:</p>
+<ul>
+<li class=""><strong>Kotlin:</strong> <code>2.0.20-Beta1</code> → <code>2.0.20-RC2</code></li>
+<li class=""><strong>JEmoji:</strong> <code>1.4.1</code> → <code>1.5.1</code></li>
+<li class=""><strong>KAML:</strong> <code>0.60.0</code> → <code>0.61.0</code></li>
+<li class=""><strong>KSP:</strong> <code>2.0.20-Beta1-1.0.22</code> → <code>2.0.20-RC2-1.0.24</code></li>
+<li class=""><strong>Logback:</strong> <code>1.5.6</code> → <code>1.5.7</code></li>
+<li class=""><strong>MongoDB:</strong> <code>5.1.2</code> → <code>5.1.3</code></li>
+<li class=""><strong>OSHI:</strong> <code>6.6.2</code> → <code>6.6.3</code></li>
+<li class=""><strong>Sentry:</strong> <code>7.12.0</code> → <code>7.14.0</code></li>
+<li class=""><strong>SLF4J:</strong> <code>2.0.13</code> → <code>2.0.16</code></li>
+</ul>
+<p>I didn&#x27;t update Gradle to 8.10 as the licencing plugin we&#x27;re using runs into a StackOverflowError with that version.</p>
+<p>If you&#x27;re using the KordEx Gradle plugin, there&#x27;s nothing you need to do other than to update your Kotlin version to
+<code>2.0.20-RC2</code> (or set it to ignore the Kotlin version if this isn&#x27;t possible for you).</p>
+<h2 class="anchor anchorTargetStickyNavbar_dUmZ" id="v200-snapshot">v2.0.0-SNAPSHOT<a href="#v200-snapshot" class="hash-link" aria-label="Direct link to v2.0.0-SNAPSHOT" title="Direct link to v2.0.0-SNAPSHOT" translate="no">​</a></h2>
+<p><em>Published to the docs on August 13th, 2024.</em></p>
+<p>This update&#x27;s summary <a href="/bots/about#version-2">was published on this page</a>.</p>
+<h2 class="anchor anchorTargetStickyNavbar_dUmZ" id="v190-snapshot">v1.9.0-SNAPSHOT<a href="#v190-snapshot" class="hash-link" aria-label="Direct link to v1.9.0-SNAPSHOT" title="Direct link to v1.9.0-SNAPSHOT" translate="no">​</a></h2>
+<p><em>Published to Discord on July 1st, 2024.</em></p>
+<p>This release targets <strong>Kotlin <code>2.0.20-Beta1</code></strong> and <strong>Kord <code>0.15.0-SNAPSHOT</code>.</strong>
+Due to our distribution model and Kord updating <code>kotlinx.serialization</code>, you must update to Kotlin 2.0.20-Beta1 or
+later to use this release!</p>
+<p>Additionally, as we&#x27;re forced to use a beta version of Kotlin 2, please note that IDEA&#x27;s Kotlin plugin will erroneously
+display compiler errors that were caused by bugs in earlier versions of Kotlin 2.
+To be specific, expect errors regarding broken typing for generic types explicitly defined using <code>T &amp; Any</code>.
+If you&#x27;re working with the KordEx code directly, please rely on build output rather than IDE hints for the time being.</p>
+<p>Thanks are due in particular to LustigerLurch for helping with the K2 porting work.
+Cheers!</p>
+<p>This release is available <em>right now!</em> Have at it, and let me know how you get on!</p>
+<h4 class="anchor anchorTargetStickyNavbar_dUmZ" id="other-changes">Other Changes<a href="#other-changes" class="hash-link" aria-label="Direct link to Other Changes" title="Direct link to Other Changes" translate="no">​</a></h4>
+<ul>
+<li class="">
+<p>Checks have been updated to support more of Kord&#x27;s built-in events and now support more data from previously supported events, including:</p>
+<ul>
+<li class="">
+<p><code>AutoModerationActionExecutionEvent</code></p>
+</li>
+<li class="">
+<p><code>AutoModerationEvent</code></p>
+</li>
+<li class="">
+<p><code>GuildAuditLogEntryCreateEvent</code></p>
+<ul>
+<li class=""><strong>Note:</strong> Kord doesn&#x27;t support the <code>guildId</code> field on audit log entries.</li>
+</ul>
+</li>
+<li class="">
+<p><code>GuildScheduledEventEvent</code></p>
+</li>
+<li class="">
+<p><code>InviteCreateEvent</code></p>
+</li>
+<li class="">
+<p><code>PresenceUpdateEvent</code></p>
+</li>
+<li class="">
+<p><code>ThreadChannelDeleteEvent</code></p>
+</li>
+<li class="">
+<p><code>ThreadMembersUpdateEvent</code></p>
+</li>
+<li class="">
+<p><code>ThreadUpdateEvent</code></p>
+</li>
+</ul>
+</li>
+<li class="">
+<p>A new <code>FixedLengthQueue&lt;T&gt;</code> container type. If you need this, please read the KDoc comments!</p>
+</li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_dUmZ" id="dependency-updates">Dependency Updates<a href="#dependency-updates" class="hash-link" aria-label="Direct link to Dependency Updates" title="Direct link to Dependency Updates" translate="no">​</a></h4>
+<ul>
+<li class=""><strong>Apache Commons Validator:</strong> <code>1.9.0</code></li>
+<li class=""><strong>Groovy:</strong> <code>3.0.22</code></li>
+<li class=""><strong>JUnit:</strong> <code>5.10.3</code></li>
+<li class=""><strong>KAML:</strong> <code>0.60.0</code></li>
+<li class=""><strong>Kord:</strong> <code>0.15.0-SNAPSHOT</code></li>
+<li class=""><strong>KSP:</strong> <code>2.0.20-Beta1-1.0.22</code></li>
+<li class=""><strong>Ktor:</strong> <code>2.3.12</code></li>
+<li class=""><strong>Kotlin:</strong> <code>2.0.20-Beta1</code></li>
+<li class=""><strong>Kotlin Logging:</strong> <code>7.0.0</code></li>
+<li class=""><strong>kotlinx.serialization:</strong> <code>1.7.1</code></li>
+<li class=""><strong>MongoDB:</strong> <code>5.1.1</code></li>
+<li class=""><strong>Sentry Java:</strong> <code>7.10.0</code></li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_dUmZ" id="v181-snapshot">v1.8.1-SNAPSHOT<a href="#v181-snapshot" class="hash-link" aria-label="Direct link to v1.8.1-SNAPSHOT" title="Direct link to v1.8.1-SNAPSHOT" translate="no">​</a></h2>
+<p><em>Published to Discord on June 3rd, 2024.</em></p>
+<p>It is time for a new snapshot - <code>1.8.1-SNAPSHOT</code> to be precise.</p>
+<p>This snapshot cycle begins with a change to choice converters. Specifically:</p>
+<ul>
+<li class="">Choice converters now support chat commands.
+(<a href="https://github.com/Kord-Extensions/kord-extensions/issues/137" target="_blank" rel="noopener noreferrer" class="">#137</a>)<!-- -->
+<ul>
+<li class="">When used with chat commands, choice converters will accept either keys (case-insensitively) or values
+(case-insensitively where appropriate), in that order.</li>
+<li class="">When used with chat commands and provided with an invalid value, choice converters will provide an error message
+along with a list of possible options.</li>
+</ul>
+</li>
+</ul>
+<p>This is a new snapshot cycle because I want to be sure it doesn&#x27;t break your existing bots.
+If this is some functionality you&#x27;ve been waiting for, please thoroughly test your bots before updating!</p>
+<p>This should be available in around 15 minutes, as usual.</p>
+<p>And sorry for keeping you all waiting!</p>
+<h2 class="anchor anchorTargetStickyNavbar_dUmZ" id="v180-snapshot">v1.8.0-SNAPSHOT<a href="#v180-snapshot" class="hash-link" aria-label="Direct link to v1.8.0-SNAPSHOT" title="Direct link to v1.8.0-SNAPSHOT" translate="no">​</a></h2>
+<p><em>Published to Discord on February 21st, 2024.</em></p>
+<p>I&#x27;ve just pushed a new version of KordEx, to update dependencies and align with Kord&#x27;s new <code>0.14.0-SNAPSHOT</code> releases.</p>
+<ul>
+<li class=""><code>jemoji</code>: 1.3.3 → 1.3.4</li>
+<li class=""><code>junit</code>: 5.10.1 → 5.10.2</li>
+<li class=""><code>kaml</code>: 0.56.0 → 0.57.0</li>
+<li class=""><code>kotlin-logging</code>: 6.0.2 → 6.0.3</li>
+<li class=""><code>kord</code>: 0.13.0-SNAPSHOT → 0.14.0-SNAPSHOT</li>
+<li class=""><code>ktor</code>: 2.3.7 → 2.3.8</li>
+<li class=""><code>kotlinx-coroutines</code>: 1.7.3 → 1.8.0</li>
+<li class=""><code>kotlinx-serialization</code>: 1.6.2 → 1.6.3</li>
+<li class=""><code>logback</code>: 1.4.14 → 1.5.0</li>
+<li class=""><code>sentry</code>: 7.1.0 → 7.3.0</li>
+<li class=""><code>slf4j</code>: 2.0.11 → 2.0.12</li>
+<li class=""><code>time4j</code>: 5.9.3 → 5.9.4</li>
+</ul>
+<p>This release will be available under <code>1.8.0-SNAPSHOT</code> once it&#x27;s been built, in about 10–15 minutes.</p>
+<h2 class="anchor anchorTargetStickyNavbar_dUmZ" id="v172-snapshot">v1.7.2-SNAPSHOT<a href="#v172-snapshot" class="hash-link" aria-label="Direct link to v1.7.2-SNAPSHOT" title="Direct link to v1.7.2-SNAPSHOT" translate="no">​</a></h2>
+<p><em>Published to Discord on February 21st, 2024.</em></p>
+<p>A new paginator feature!</p>
+<p>This is a quick message to announce the release of KordEx <code>1.7.2-SNAPSHOT</code>,
+which includes some breaking changes to the paginator API for those of you with custom paginators.</p>
+<p>This also brings a new user-facing change — paginator chunking! Requested by @beerpsi, this allows you to specify a
+chunkedPages property in your paginator builders, which will cause the paginator to display its pages in chunks of the
+given size.
+This may be useful for paginators with a lot of small embeds.</p>
+<p>When <code>chunkedPages</code> is set to <code>1</code> (the default), the paginator will behave as it always has.
+Set it to any value up to 9, however, and that many pages will be displayed to your users at once.
+When you do this, an extra embed will be generated at the bottom, containing information about the current/total pages,
+switchable groups, and so on — instead of placing this at the bottom of each page embed.</p>
+<p>As always, <code>1.7.2-SNAPSHOT</code> is building and will be available in 10–15 minutes.
+Math is hard, so please let me know how you get on!</p>
+<h2 class="anchor anchorTargetStickyNavbar_dUmZ" id="v171-snapshot">v1.7.1-SNAPSHOT<a href="#v171-snapshot" class="hash-link" aria-label="Direct link to v1.7.1-SNAPSHOT" title="Direct link to v1.7.1-SNAPSHOT" translate="no">​</a></h2>
+<p><em>Published to Discord on November 30th, 2023.</em></p>
+<p>Hello! Today&#x27;s update is potentially exciting for those of you using the Sentry integration, bringing a few long-overdue changes.</p>
+<p>Today&#x27;s changes are part of <a href="https://github.com/Kord-Extensions/kord-extensions/issues/260" target="_blank" rel="noopener noreferrer" class="">issue #260</a>,
+submitted by @Pyrrha yesterday.</p>
+<p>It is worth noting that <strong>these are breaking changes for anyone using the Sentry integration!</strong>
+Please review your integration usage before pushing any updates!</p>
+<ul>
+<li class="">
+<p>The Sentry <code>Scope</code> and <code>Breadcrumb</code> objects are no longer exposed.
+Instead, a set of classes based on the new <code>SentryCapture</code> type have been added,
+and these have replaced the previously mentioned Sentry objects in all builders and functions.</p>
+</li>
+<li class="">
+<p>It is now possible to define what types of data may be submitted to Sentry via the new <code>defaultDataTypes</code> builder,
+which you can find in the extensions → sentry builder.
+Use the following properties to change what can be submitted: <code>arguments</code>, <code>channels</code>, <code>guilds</code>, <code>roles</code>, and <code>users</code>.</p>
+<ul>
+<li class="">For chat commands, command arguments and message content are both considered <code>arguments</code>.
+This is also true for Mappings Extension query strings.
+Slash command arguments aren&#x27;t currently submitted.</li>
+</ul>
+</li>
+<li class="">
+<p>The Sentry builder now also provides the <code>dataTypeTransformer</code> and <code>predicate</code> builders,
+to further customize what can be submitted to Sentry based on an individual <code>SentryCapture</code> subtype.</p>
+</li>
+<li class="">
+<p>The new <code>SentryCapture</code> types expose more of the Sentry APIs than before,
+allowing you to provide scope hints and severity levels, among other things.</p>
+</li>
+<li class="">
+<p>When adding data to the <code>data</code>, <code>hints</code>, and <code>tags</code> maps defined in the <code>SentryCapture</code> subtypes,
+you can now define how the integration should filter the values within based on their keys, using one of two methods:</p>
+<ul>
+<li class="">Prefix the key with the type and a dot (e.g. <code>channel.key</code>) — the key will not be modified if it&#x27;s submitted.</li>
+<li class="">Suffix the key with the type and two colons (e.g. <code>key::channel</code>) — the colons and type will be removed from the key
+if it&#x27;s submitted.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Note:</strong> Key-based filtering does not support nested container types, as this doesn&#x27;t appear to be possible within
+Kotlin&#x27;s type system. However, it is generally best not to nest data too far regardless.</p>
+<p>The <a class="" href="/bots/config/extensions#sentry-extension">configuration docs</a> have already been updated if you need them.</p>
+<p>As always, please give things a try and let me know how you get on!</p>
+<div class="theme-admonition theme-admonition-danger admonition_FJjA alert alert--danger"><div class="admonitionHeading_D2up"><span class="admonitionIcon_haX4"><svg viewBox="0 0 12 16"><path fill-rule="evenodd" d="M5.05.31c.81 2.17.41 3.38-.52 4.31C3.55 5.67 1.98 6.45.9 7.98c-1.45 2.05-1.7 6.53 3.53 7.7-2.2-1.16-2.67-4.52-.3-6.61-.61 2.03.53 3.33 1.94 2.86 1.39-.47 2.3.53 2.27 1.67-.02.78-.31 1.44-1.13 1.81 3.42-.59 4.78-3.42 4.78-5.56 0-2.84-2.53-3.22-1.25-5.61-1.52.13-2.03 1.13-1.89 2.75.09 1.08-1.02 1.8-1.86 1.33-.67-.41-.66-1.19-.06-1.78C8.18 5.31 8.68 2.45 5.05.32L5.03.3l.02.01z"></path></svg></span>Disclaimer</div><div class="admonitionContent_TnMm"><p>While these new changes are designed to make it easier for you to follow data protection laws (such as the GDPR),
+please note that I&#x27;m not a lawyer.
+I&#x27;m also not qualified to make privacy-related decisions about your bots on your behalf.</p><p>I&#x27;m happy to fix any data leakage issues or improve the above systems,
+but it is your responsibility to ensure that your usage of Sentry complies with any relevant privacy laws.</p></div></div>
+<h2 class="anchor anchorTargetStickyNavbar_dUmZ" id="v170-snapshot">v1.7.0-SNAPSHOT<a href="#v170-snapshot" class="hash-link" aria-label="Direct link to v1.7.0-SNAPSHOT" title="Direct link to v1.7.0-SNAPSHOT" translate="no">​</a></h2>
+<p><em>Published to Discord on November 24th, 2023.</em></p>
+<p>The new KordEx snapshot cycle begins with <code>1.7.0-SNAPSHOT</code> targeting Kord <code>0.13.0-SNAPSHOT</code>.
+This release contains breaking deprecations, so remember to rebuild your code before pushing an update!</p>
+<p>As always, feel free to give things a try, and let us know if you run into any issues!</p>
+<h2 class="anchor anchorTargetStickyNavbar_dUmZ" id="v160">v1.6.0<a href="#v160" class="hash-link" aria-label="Direct link to v1.6.0" title="Direct link to v1.6.0" translate="no">​</a></h2>
+<p><em>Published to GitHub on November 24th, 2023.</em></p>
+<p>This release targets Kord <code>0.12.0</code>, the latest stable release for Kord.
+Hot off the presses for those of you who rely on stable releases!</p>
+<p><strong>Highlights from this release:</strong></p>
+<ul>
+<li class="">
+<p>Transitioned to a new Discord server.
+You can also now <a href="https://ko-fi.com/gsc" target="_blank" rel="noopener noreferrer" class="">support development via Ko-fi!</a></p>
+</li>
+<li class="">
+<p>Began work on <a href="https://docs.kordex.dev/" target="_blank" rel="noopener noreferrer" class="">a new documentation site with Writerside.</a>
+You can find the source <a href="https://github.com/kord-extensions/docs" target="_blank" rel="noopener noreferrer" class="">in its own repository.</a></p>
+</li>
+<li class="">
+<p>We now use Kotlin 1.9.20 and Java 17, and you should too.</p>
+</li>
+<li class="">
+<p>We&#x27;ve updated a bunch of dependencies. Read more in the <code>libs.versions.toml</code> file.</p>
+</li>
+<li class="">
+<p>Created an experimental <code>ChangeSet</code> type, used to compare voice states. We need feedback on this!</p>
+</li>
+<li class="">
+<p>Introduced extra first-party data adapters, such as the MongoDB data adapter.</p>
+</li>
+<li class="">
+<p>An in-development custom plugin system to better meet KordEx&#x27;s needs.</p>
+</li>
+<li class="">
+<p>A generic interaction context type to support more generalised code.</p>
+</li>
+<li class="">
+<p>A paginator mutation system, allowing for changes to pages, paginators, and paginator components.</p>
+</li>
+<li class="">
+<p>New checks that match the bot application&#x27;s owner and team roles.</p>
+</li>
+<li class="">
+<p>New supported locale: Korean by @Penta0308.</p>
+</li>
+<li class="">
+<p>Many small fixes, quality-of-life features and updates that aren&#x27;t large enough to detail here.</p>
+</li>
+</ul>
+<p><strong>Community Contributions:</strong></p>
+<ul>
+<li class=""><code>#200</code> by @DeDiamondPro — More select menu types.</li>
+<li class=""><code>#201</code> by @NoComment and @sschr15 — Convert mappings extension configuration to storage units.</li>
+<li class=""><code>#211</code> by @Lukellmann — Fix breaking changes from Kord Kotlin/JS support.</li>
+<li class=""><code>#212</code> by @Lukellmann — Fix compilation error caused by source-incompatible Kord change.</li>
+<li class=""><code>#222</code> by @ADudeCalledLeo — Allow slash command groups and subcommands at the same level.</li>
+<li class=""><code>#243</code> by @sschr15 — Update Linkie and add three new namespaces.</li>
+</ul>
+<p>As always, if you run into any problems, please let us know!</p>
+<h2 class="anchor anchorTargetStickyNavbar_dUmZ" id="v160-snapshot">v1.6.0-SNAPSHOT<a href="#v160-snapshot" class="hash-link" aria-label="Direct link to v1.6.0-SNAPSHOT" title="Direct link to v1.6.0-SNAPSHOT" translate="no">​</a></h2>
+<p><em>Published to Discord on October 27th, 2023.</em></p>
+<p>I&#x27;ve just gone ahead and pushed KordEx version <code>1.6.0-SNAPSHOT</code>.</p>
+<p>This release was pushed in part to address <a href="https://github.com/Kord-Extensions/kord-extensions/issues/216" target="_blank" rel="noopener noreferrer" class="">#216,</a>
+which required breaking structural changes.</p>
+<ul>
+<li class="">
+<p><code>EphemeralInteractionContext</code> and <code>PublicInteractionContext</code> now both extend the new <code>InteractionContext</code> interface,
+which provides a common base type exposing the functionality present in both subtypes.</p>
+</li>
+<li class="">
+<p>As the interaction context functions have been moved to a base interface, they&#x27;re no longer inline.
+You&#x27;ll find them directly within their respective types, and you will need to remove the imports you were using.</p>
+</li>
+<li class="">
+<p><code>respondPublic</code> and <code>respondEphemeral</code>, which were used to deliberately send Discord the wrong follow-up type,
+have been moved to a single base function named <code>respondOpposite</code>.</p>
+</li>
+<li class="">
+<p>New opt-in annotations have been added to warn you when a function call may result in unexpected behavior.
+For the time being, this is only being used for some interaction context functions, but they may be used more widely
+later.</p>
+</li>
+<li class="">
+<p>[<a href="https://github.com/Kord-Extensions/kord-extensions/issues/214" target="_blank" rel="noopener noreferrer" class="">#214</a>] <code>ArgumentParsingException</code> now includes the
+relevant <code>locale</code> and <code>bundle</code> properties, which can be used for further customisation of error messages.</p>
+</li>
+</ul>
+<p>As always, let me know if you run into any issues.</p>
+<h2 class="anchor anchorTargetStickyNavbar_dUmZ" id="v1512-snapshot">v1.5.12-SNAPSHOT<a href="#v1512-snapshot" class="hash-link" aria-label="Direct link to v1.5.12-SNAPSHOT" title="Direct link to v1.5.12-SNAPSHOT" translate="no">​</a></h2>
+<p><em>Published to Discord on October 27th, 2023.</em></p>
+<p>Another quick update, KordEx version <code>1.5.11-SNAPSHOT</code>.</p>
+<p>This version tracks Kord <code>0.12.0-SNAPSHOT</code>, and contains the following dependency updates:</p>
+<ul>
+<li class=""><code>jansi</code> 2.4.1</li>
+<li class=""><code>jsoup</code> 1.16.2</li>
+<li class=""><code>kord</code> 0.12.0-SNAPSHOT</li>
+<li class=""><code>ktor</code> 2.3.5</li>
+<li class=""><code>mongodb</code> 4.11.0</li>
+<li class=""><code>sentry</code> 6.32.0</li>
+</ul>
+<p>I&#x27;ve also begun rewriting the documentation using Writerside — you can keep an eye on that progress
+<a href="https://github.com/Kord-Extensions/docs" target="_blank" rel="noopener noreferrer" class="">here.</a></p>
+<p>As always, let me know if you run into any issues.</p>
+<h2 class="anchor anchorTargetStickyNavbar_dUmZ" id="v1510-snapshot">v1.5.10-SNAPSHOT<a href="#v1510-snapshot" class="hash-link" aria-label="Direct link to v1.5.10-SNAPSHOT" title="Direct link to v1.5.10-SNAPSHOT" translate="no">​</a></h2>
+<p><em>Published to Discord on October 5th, 2023.</em></p>
+<p>Quick notification to announce the release of KordEx version <code>1.5.10-SNAPSHOT</code>.</p>
+<ul>
+<li class="">
+<p>Work has begun on a new plugin system, supporting proper constraints, and a more reasonable class-loading pattern.
+This system is self-contained, and you&#x27;ll be able to use it in any project if you wish to — but there&#x27;s more work to
+be done on it right now.
+<strong>If you have any feedback or information on what might be useful from a plugin system, please let me know!</strong></p>
+</li>
+<li class="">
+<p>KordEx now requires <strong>at least Java 13</strong> as it now uses APIs only available since that version.</p>
+</li>
+<li class="">
+<p>KordEx has been updated to Kord version <code>0.11.1</code>.</p>
+</li>
+</ul>
+<p>As always, let me know if you run into any issues.</p>
+<h2 class="anchor anchorTargetStickyNavbar_dUmZ" id="v159-snapshot">v1.5.9-SNAPSHOT<a href="#v159-snapshot" class="hash-link" aria-label="Direct link to v1.5.9-SNAPSHOT" title="Direct link to v1.5.9-SNAPSHOT" translate="no">​</a></h2>
+<p><em>Published to Discord on August 9th, 2023.</em></p>
+<p>I&#x27;ve just pushed KordEx <code>1.5.9-SNAPSHOT</code> to GitHub, and it should be available on Maven in 15-20 minutes.</p>
+<p>This is a dependency update version — KordEx is now built against Kord 0.11.0-SNAPSHOT and makes use of Kotlin 1.9.0.
+As always, please let me know if you run into any issues!</p>
+<h2 class="anchor anchorTargetStickyNavbar_dUmZ" id="v158-snapshot">v1.5.8-SNAPSHOT<a href="#v158-snapshot" class="hash-link" aria-label="Direct link to v1.5.8-SNAPSHOT" title="Direct link to v1.5.8-SNAPSHOT" translate="no">​</a></h2>
+<p><em>Published to Discord on June 18th, 2023.</em></p>
+<p><code>1.5.8-SNAPSHOT</code> has been released, to follow Kord&#x27;s new snapshot policy (and track Kord <code>0.10.0-SNAPSHOT</code>).
+As usual, it should be available on Sonatype Snapshots in about 15 minutes.</p>
+<p>I&#x27;ve also added a small util - <code>User.tagOrUsername()</code> - which returns a username with or without a discriminator,
+depending on whether a user has migrated to the new username system.</p>
+<p>This will be removed pretty quickly once Discord has fully migrated everyone, so be warned.</p>
+<h2 class="anchor anchorTargetStickyNavbar_dUmZ" id="v157-snapshot">v1.5.7-SNAPSHOT<a href="#v157-snapshot" class="hash-link" aria-label="Direct link to v1.5.7-SNAPSHOT" title="Direct link to v1.5.7-SNAPSHOT" translate="no">​</a></h2>
+<p><em>Published to Discord on March 25th, 2023.</em></p>
+<p><code>1.5.7-SNAPSHOT</code> (based on Kord <code>0.9.x-SNAPSHOT</code>) has been published, and that&#x27;ll be the working version for now.</p>
+<h2 class="anchor anchorTargetStickyNavbar_dUmZ" id="v156">v1.5.6<a href="#v156" class="hash-link" aria-label="Direct link to v1.5.6" title="Direct link to v1.5.6" translate="no">​</a></h2>
+<p><em>Published to GitHub on March 25th, 2023.</em></p>
+<p>This release targets Kord <code>0.8.0</code>, the latest stable release for Kord.
+It has been over a year since the previous stable Kord release,
+so it has also been a year since the previous stable KordEx release.
+How time flies, right?</p>
+<p>Please note that as of this release, the <code>develop</code> branch is going away.
+Please re-parent your PRs to target the <code>root</code> branch.</p>
+<p><strong>A note about Maven repos:</strong></p>
+<p>Please be aware that as of this release, KordEx is now being deployed to these Maven servers:</p>
+<ul>
+<li class=""><strong>Releases:</strong> Maven Central</li>
+<li class=""><strong>Snapshots:</strong> Sonatype Snapshots</li>
+</ul>
+<p>KordEx releases will no longer be published to the Kotlin Discord maven repo.</p>
+<p><strong>Highlights of this release:</strong></p>
+<ul>
+<li class="">
+<p>We now use Kotlin 1.8.0, and you should too.</p>
+</li>
+<li class="">
+<p>Support for Modal forms has been added,
+which function similarly to argument classes and can be provided to your commands and components in the same way.</p>
+</li>
+<li class="">
+<p>KordEx is now capable of intercepting unknown Kord events and submitting its own events in their place.
+Initially, this just includes the experimental member screening events available on a handful of servers,
+but PRs will be accepted for other event types that Kord doesn&#x27;t plan on supporting.</p>
+</li>
+<li class="">
+<p>A data adapter and storage unit system have been added, allowing extensions to more easily store data,
+with the ability for individual bots to define how that data should be stored.
+Note, however, that this is an early version of that system, and it will likely be changed significantly later.</p>
+</li>
+<li class="">
+<p>A module, <code>extra-pluralkit</code>, has been created to make things easier for bots that wish to support PluralKit,
+a widespread accessibility tool on Discord mainly used by plural systems.</p>
+</li>
+<li class="">
+<p>Additional checks have been added that allow you to test for NSFW channels and guild NSFW levels, among other things.</p>
+</li>
+<li class="">
+<p>A cache map object with an extra typed API has been added, allowing you to cache data between checks and use it in
+the body of your commands.
+This also allows you to cache data between task runs and provide extra event context for Kord events.</p>
+</li>
+<li class="">
+<p>Commands were given their own translation bundles, which fall back to their extension&#x27;s if missing.</p>
+</li>
+<li class="">
+<p>Slash commands may be fully localised.</p>
+</li>
+<li class="">
+<p>Many misc utils have been added, and fixes and additions have been made for existing utils.</p>
+</li>
+<li class="">
+<p>Individual converts have been updated with new features and fixes.</p>
+</li>
+<li class="">
+<p>The test bot has been moved to its own module, which makes it easier to look over and modify.</p>
+</li>
+</ul>
+<p>As always, if you run into any problems, please let us know!</p>
+<h2 class="anchor anchorTargetStickyNavbar_dUmZ" id="v156-snapshot">v1.5.6-SNAPSHOT<a href="#v156-snapshot" class="hash-link" aria-label="Direct link to v1.5.6-SNAPSHOT" title="Direct link to v1.5.6-SNAPSHOT" translate="no">​</a></h2>
+<p><em>Published to Discord on December 15th, 2022.</em></p>
+<p>I&#x27;ve been hard at work, finally bringing an abstraction for Discord&#x27;s modals to KordEx.
+As of this message, <code>1.5.6-SNAPSHOT</code> has been pushed, which includes my first attempt at getting an abstraction together.</p>
+<p>To use modals, create a class that extends <code>ModalForm</code>, and pass the constructor into your command and component
+functions — just how you would with your argument classes.
+If you&#x27;re using this with a command that already has arguments, then this should go <strong>after</strong> your <code>Arguments</code> class
+constructor reference — <code>ephemeralSlashCommand(::MyArgs, MyModal) { ...</code>.</p>
+<p>Within your new class, you can create variables that store widgets, which can be created by using the <code>lineText</code> and
+<code>paragraphText</code> builder functions.
+Remember to provide a label for all of your widgets!</p>
+<p>This introduces a (nullable due to Kotlin&#x27;s type system) parameter to your <code>action</code> blocks — which you can get at like
+this: <code>action { modal → ...</code>.
+You can access the input data provided by the user by accessing the <code>value</code> property on each widget.</p>
+<p>Modal titles, widget labels, etc. are translatable and will inherit the bundle you&#x27;re using in the definition
+context — so, the bundle your component or command is using.
+You can also define the bundle in your <code>ModalForm</code> subtype instead if you prefer.</p>
+<h2 class="anchor anchorTargetStickyNavbar_dUmZ" id="v155-snapshot">v1.5.5-SNAPSHOT<a href="#v155-snapshot" class="hash-link" aria-label="Direct link to v1.5.5-SNAPSHOT" title="Direct link to v1.5.5-SNAPSHOT" translate="no">​</a></h2>
+<p><em>Published to Discord on July 8th, 2022.</em></p>
+<p>I&#x27;ve just pushed up <code>1.5.5-SNAPSHOT</code>, which uses Kotlin <code>1.7.10</code> and is based on Kord&#x27;s <code>0.8.x-SNAPSHOT</code> versions again.</p>
+<p>Please note that all KordEx dependencies have been updated — as usual, you&#x27;ll find them in the <code>libs.versions.toml</code></p>
+<p>Let me know if you run into any issues!</p>
+<h2 class="anchor anchorTargetStickyNavbar_dUmZ" id="v153-snapshot">v1.5.3-SNAPSHOT<a href="#v153-snapshot" class="hash-link" aria-label="Direct link to v1.5.3-SNAPSHOT" title="Direct link to v1.5.3-SNAPSHOT" translate="no">​</a></h2>
+<p><em>Published to Discord on April 17th, 2022.</em></p>
+<p>KordEx 1.5.3-SNAPSHOT has been pushed to GitHub and is building now.
+However, there&#x27;s several things to be aware of:</p>
+<ul>
+<li class="">Support for Java versions older than Java 11 had to be dropped, due to dependencies also dropping support.</li>
+<li class="">This version of KordEx <strong>was not built with Kotlin 1.6.20;</strong> however, everything else has been updated.</li>
+</ul>
+<p>That last point is particularly notable because it turns out that Kotlin 1.6.20 is causing a lot of problems for several
+projects.</p>
+<ul>
+<li class="">
+<p>There&#x27;s a compiler bug that breaks compilation for classes containing functions that take a suspending callable
+argument with a default value.</p>
+</li>
+<li class="">
+<p>KSP has a number of serious problems on 1.6.20 which entirely break our annotation processor.</p>
+</li>
+<li class="">
+<p>Both KSP and the Kotlin compiler have developed issues which don&#x27;t show up unless you&#x27;re doing a clean build, which
+makes me worry that there are serious consistency issues in build output.</p>
+</li>
+</ul>
+<p>In short, Kotlin 1.6.20 has showstopping issues that make me feel like it should never have been pushed as a stable
+release.
+The same goes for KSP 1.0.5, which only supports Kotlin 1.6.20.</p>
+<p>While it&#x27;s possible that your bots may build just fine with Kotlin 1.6.20, and it&#x27;s true that Kord has managed to move
+to Kotlin 1.6.20, <strong>I do not recommend moving to it for your bots.</strong>
+I&#x27;d advise that you stick with Kotlin 1.6.10 until these issues are fixed, which may require another Kotlin compiler
+release cycle.</p>
+<h2 class="anchor anchorTargetStickyNavbar_dUmZ" id="v152-rc1">v1.5.2-RC1<a href="#v152-rc1" class="hash-link" aria-label="Direct link to v1.5.2-RC1" title="Direct link to v1.5.2-RC1" translate="no">​</a></h2>
+<p><em>Published to GitHub on February 6th, 2022.</em></p>
+<p>This release targets Kord <code>0.8.0-M9</code>, the latest stable release for Kord.
+We&#x27;ve been waiting for this one for some time — it is nice to get something new out there for you!</p>
+<p><strong>A note about Maven repos:</strong></p>
+<p>Please be aware: As of this release, the following Maven repos are no longer being mirrored by the Kotlin Discord Maven
+server:</p>
+<ul>
+<li class="">Bintray: Exposed, Kord, KTor</li>
+<li class="">Google</li>
+<li class="">Maven Central</li>
+<li class="">Sonatype Snapshots</li>
+</ul>
+<p>You&#x27;ll need to update your buildscripts to correspond with these changes.
+If you run into any trouble, you can always take a look at the KordEx template project again.</p>
+<p><strong>Highlights of this release:</strong></p>
+<ul>
+<li class="">
+<p>KordEx is now licensed under the Mozilla Public License.
+It previously used The MIT License, but I felt that this was a little too weak.</p>
+</li>
+<li class="">
+<p>Rewritten converter function syntax, which now uses a DSL instead of a function call.
+This makes things overall much cleaner and allows us to add additional features to the argument system easily. Speaking of which...</p>
+</li>
+<li class="">
+<p>Command arguments now support <code>mutate { }</code> and <code>autoComplete { }</code> (for slash commands) options.
+Additionally, validation now uses <code>validate { }</code>, which uses an API that&#x27;s much closer to how checks work elsewhere.</p>
+</li>
+<li class="">
+<p>Improvements to application command registration, including not trying to remove commands that were already removed via a batch update.</p>
+</li>
+<li class="">
+<p>Easier disabling of components, optional locking for guild member requests, Sentry support for scheduled tasks,
+and the removal of the requirement for paginator page groups to have the same number of pages.</p>
+</li>
+<li class="">
+<p>Extra utilities, such as better names for timeout-related fields, an async start function that launches,
+convenience single-action functions for modifying Members quickly, easy functions for supplying maps to autocomplete
+interactions, and more!</p>
+</li>
+<li class="">
+<p>An early version of a dynamic plugin loading system. Because you can&#x27;t get at classes from loaded plugins, this
+isn&#x27;t as useful as it could be, but we&#x27;ll be expanding upon it later.</p>
+</li>
+<li class="">
+<p>A myriad of bug fixes and new translations.</p>
+</li>
+<li class="">
+<p><strong>Mappings Extension:</strong> Support for Quilt Mappings, Hashed Mojmap and slash command autocomplete for MC versions.</p>
+</li>
+<li class="">
+<p><strong>Phishing Extension:</strong> Better filtering, redirect support, and usage of the Sinking Yachts websocket for instant domain list updates.</p>
+</li>
+</ul>
+<p>At the moment, the wiki hasn&#x27;t been updated for these changes.
+Unfortunately, I lack the time to update them quickly, but they&#x27;ll get there!</p>
+<p>As always, if you run into any problems, please let us know!</p>
+<h2 class="anchor anchorTargetStickyNavbar_dUmZ" id="v152-snapshot">v1.5.2-SNAPSHOT<a href="#v152-snapshot" class="hash-link" aria-label="Direct link to v1.5.2-SNAPSHOT" title="Direct link to v1.5.2-SNAPSHOT" translate="no">​</a></h2>
+<p><em>Published to Discord on January 16th, 2022.</em></p>
+<p>I&#x27;ve just merged KordEx 1.5.2-SNAPSHOT.
+This new version of KordEx contains the new DSL-style converter builder system,
+which additionally requires that your custom converters make use of KSP and the <code>@Converter</code> annotation.
+It also adds check-style <code>validate {}</code> builders for validation (eg via <code>failIf()</code>) and a <code>mutate {}</code>
+function allowing you to return a changed final value.</p>
+<p>This system is <em>not</em> documented yet and may not be for some time.
+However, I encourage you to try this out with bots that don&#x27;t have custom converters just to see how things work.
+For the most part, it should be easy to figure things out — let&#x27;s say you have a converter like this:</p>
+<div class="language-kt codeBlockContainer_xyhh theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_nTGz"><pre tabindex="0" class="prism-code language-kt codeBlock_JSjI thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_ax65"><span class="token-line" style="color:#393A34"><span class="token keyword" style="color:#00009f">val</span><span class="token plain"> username </span><span class="token keyword" style="color:#00009f">by</span><span class="token plain"> </span><span class="token function" style="color:#d73a49">string</span><span class="token punctuation" style="color:#393A34">(</span><span class="token string-literal singleline string" style="color:#e3116c">&quot;username&quot;</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"> </span><span class="token string-literal singleline string" style="color:#e3116c">&quot;Username to delete from the universe&quot;</span><span class="token punctuation" style="color:#393A34">)</span><br></span></code></pre></div></div>
+<p>You would update this by switching to the new syntax:</p>
+<div class="language-kt codeBlockContainer_xyhh theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_nTGz"><pre tabindex="0" class="prism-code language-kt codeBlock_JSjI thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_ax65"><span class="token-line" style="color:#393A34"><span class="token keyword" style="color:#00009f">val</span><span class="token plain"> username </span><span class="token keyword" style="color:#00009f">by</span><span class="token plain"> string </span><span class="token punctuation" style="color:#393A34">{</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    name </span><span class="token operator" style="color:#393A34">=</span><span class="token plain"> </span><span class="token string-literal singleline string" style="color:#e3116c">&quot;username&quot;</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    description </span><span class="token operator" style="color:#393A34">=</span><span class="token plain"> </span><span class="token string-literal singleline string" style="color:#e3116c">&quot;Username to delete from the universe&quot;</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token punctuation" style="color:#393A34">}</span><br></span></code></pre></div></div>
+<p>Of course, your IDE autocomplete will help you out here.
+Additionally, please note that all coalescing converter functions have been renamed,
+replacing <code>coalesced</code> with <code>coalescing</code> in the function name.</p>
+<h2 class="anchor anchorTargetStickyNavbar_dUmZ" id="v151-rc1">v1.5.1-RC1<a href="#v151-rc1" class="hash-link" aria-label="Direct link to v1.5.1-RC1" title="Direct link to v1.5.1-RC1" translate="no">​</a></h2>
+<p><em>Published to GitHub on October 12th, 2021.</em></p>
+<p>This release is our first &quot;stable&quot; release in a long time, targeting Kord <code>0.8.0-M7</code>.
+The reason is largely due to Kord&#x27;s long snapshot cycle, which itself was caused by many changes to Discord&#x27;s APIs.
+In turn, this means that this release contains a mind-boggling number of internal changes.</p>
+<p>We&#x27;ve done our best to keep things as compatible as possible, API-wise.
+Despite this, though, we&#x27;ve had no choice but to break a few things.</p>
+<p>Highlights of this release:</p>
+<ul>
+<li class="">
+<p>With a lot of help from @ByteAlex, we&#x27;ve been able to eliminate many, many unnecessary cache hits,
+using Behaviors rather than entities wherever possible.
+This makes KordEx far more suitable for large bots with different caching requirements.</p>
+</li>
+<li class="">
+<p>Full support for message and user commands have been added,
+which comes with a full rewrite of the application commands system.
+Application commands now always require a <code>public</code> or <code>ephemeral</code> type, to help keep things safe.
+Additionally, our old message commands are now named chat commands and have their functions prefixed with <code>chat</code>.</p>
+</li>
+<li class="">
+<p>The components system has been fully rewritten, including a similar typing requirement to application commands.
+It comes with a <code>ComponentContainer</code> type which makes it easier to re-use components,
+as well as a callback registry for advanced use-cases (such as components that need to work after a restart).</p>
+</li>
+<li class="">
+<p>The Sentry integration has been rewritten, and you&#x27;ll find a <code>SentryContext</code> provided everywhere you&#x27;d expect to be
+able to use Sentry, instead of a plain list of breadcrumbs.
+This, along with several other improvements, should make Sentry much more pleasant to work with.</p>
+</li>
+<li class="">
+<p>Our translation platform <a href="https://hosted.weblate.org/engage/kord-extensions/" target="_blank" rel="noopener noreferrer" class="">has been switched to Weblate</a>.
+If you&#x27;re a translator (or would like to help with translations), please head over there!</p>
+</li>
+<li class="">
+<p>Lots of deprecated things have now been removed.
+If you were still using them, well, you were warned!</p>
+</li>
+</ul>
+<p>There are far too many changes to list here.
+The existing pages on the wiki have been rewritten for this release,
+and we&#x27;d suggest taking a look at them to refresh your knowledge.
+There&#x27;s still documentation work which needs doing, but we&#x27;ll get there!</p>
+<p>As always, if you run into any problems, please let us know!</p>
+<h2 class="anchor anchorTargetStickyNavbar_dUmZ" id="v151-snapshot">v1.5.1-SNAPSHOT<a href="#v151-snapshot" class="hash-link" aria-label="Direct link to v1.5.1-SNAPSHOT" title="Direct link to v1.5.1-SNAPSHOT" translate="no">​</a></h2>
+<p><em>Published to Discord on October 7th, 2021.</em></p>
+<p><strong>KordEx 1.5.1-SNAPSHOT is now live!</strong></p>
+<p>I decided to bump the version in line with the update to Kord <code>0.8.0-M6</code>.
+This release beings a bunch of underlying changes that people have been waiting for in Kord,
+and it also brings the following fixes on top of the current snapshot work:</p>
+<ul>
+<li class="">Fix for <code>deferredAck</code> being inverted for ephemeral components.</li>
+<li class="">Load order has now returned to what it was before the automatic intent generation feature was added,
+so the <code>Kord</code> instance is once again created a lot earlier.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_dUmZ" id="v150-snapshot">v1.5.0-SNAPSHOT<a href="#v150-snapshot" class="hash-link" aria-label="Direct link to v1.5.0-SNAPSHOT" title="Direct link to v1.5.0-SNAPSHOT" translate="no">​</a></h2>
+<p><em>Published to Discord on September 6th, 2021.</em></p>
+<p>As of the latest push, <strong>KordEx 1.5.0-SNAPSHOT is ready for testing!</strong></p>
+<p>A lot of things have changed in this release. For an overview, take a look at
+<a href="https://github.com/Kord-Extensions/kord-extensions/issues/72" target="_blank" rel="noopener noreferrer" class="">the tracking issue</a> —
+I&#x27;ll list some things you may be wondering below.</p>
+<ul>
+<li class="">
+<p>Every single command function has been replaced:</p>
+<ul>
+<li class="">
+<p>Message commands are now chat commands, with the <code>command</code> DSL function being renamed to <code>chatCommand</code> - and
+they&#x27;re disabled by default, in line with Discord&#x27;s requirements for larger bots.</p>
+</li>
+<li class="">
+<p>Slash commands have been split into <code>publicSlashCommand</code> and <code>ephemeralSlashCommand</code>.</p>
+</li>
+<li class="">
+<p>Message and user commands have been added, with <code>public*</code> and <code>ephemeral*</code> DSL functions.</p>
+</li>
+</ul>
+</li>
+<li class="">
+<p>Interaction-based commands/components no longer have <code>autoAck</code>, but you can use the <code>initialResponse</code> DSL to ack
+with response or call the <code>edit</code> function in your <code>action</code> to edit the acknowledged response.</p>
+</li>
+<li class="">
+<p>Components have been completely revamped, and everything is typed similarly to how the interaction-based commands are
+now — though, since components are centralized now, no timeout mechanism has been provided for them.</p>
+</li>
+<li class="">
+<p>Scheduled tasks for the <code>Scheduler</code> now have an easy <code>restart</code> function.</p>
+</li>
+<li class="">
+<p>Paginators have been split out into four types (chat, public followup, public response, and ephemeral response),
+matching the contexts you&#x27;d use them in.
+This means you can have an ephemeral interaction, and the paginator will edit its initial response, finally!</p>
+</li>
+</ul>
+<p>There are many, many other changes, big and small.
+We&#x27;d massively appreciate it if people could start testing this release and provide us with feedback on what&#x27;s not
+working properly — and what needs changing.</p>
+<p>If something is missing, please leave a comment on <a href="https://github.com/Kord-Extensions/kord-extensions/issues/72" target="_blank" rel="noopener noreferrer" class="">the tracking issue</a></p>
+<h2 class="anchor anchorTargetStickyNavbar_dUmZ" id="v144-rc4">v1.4.4-RC4<a href="#v144-rc4" class="hash-link" aria-label="Direct link to v1.4.4-RC4" title="Direct link to v1.4.4-RC4" translate="no">​</a></h2>
+<p><em>Published to GitHub on August 21st, 2021.</em> <strong>Changes since v1.4.4-RC3:</strong></p>
+<ul>
+<li class="">Fix an error when you have paginator pages with empty footer text.</li>
+<li class="">Add suspending paginator DSL functions in both types of command context.</li>
+<li class="">Set up VSC Web for medium-complexity PRs — head to the <code>develop</code> branch on GitHub and hit <code>.</code> on your keyboard!</li>
+<li class="">Make translation debug logging less verbose by moving it to <code>trace</code> logging.</li>
+<li class="">Allow for enabling the Sentry integration without adding the Sentry extension.</li>
+<li class="">Allow for customising the KordBuilder during setup.</li>
+<li class=""><strong>Mappings module:</strong> Fix a bad Linkie dependency.</li>
+</ul>
+<p>The following issues were solved in this release:</p>
+<ul>
+<li class="">
+<p><a href="https://github.com/Kord-Extensions/kord-extensions/issues/69" target="_blank" rel="noopener noreferrer" class="">#69 (Nice!)</a>:
+Allow selecting a custom HTTP engine for Kord (niche request!)</p>
+</li>
+<li class="">
+<p><a href="https://github.com/Kord-Extensions/kord-extensions/issues/70" target="_blank" rel="noopener noreferrer" class="">#70</a>:
+Less verbose translation logging.</p>
+</li>
+<li class="">
+<p><a href="https://github.com/Kord-Extensions/kord-extensions/issues/69" target="_blank" rel="noopener noreferrer" class="">#71</a>:
+Allow disabling feedback command when using sentry extension.</p>
+</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_dUmZ" id="v144-rc3">v1.4.4-RC3<a href="#v144-rc3" class="hash-link" aria-label="Direct link to v1.4.4-RC3" title="Direct link to v1.4.4-RC3" translate="no">​</a></h2>
+<p><em>Published to GitHub on August 9th, 2021.</em> <strong>Changes since v1.4.4-RC2:</strong></p>
+<ul>
+<li class="">
+<p>Update to Kord 0.8.0-M4</p>
+</li>
+<li class="">
+<p>Checks are now consistent in behavior regarding events that they don&#x27;t support — negating checks
+(containing the word <code>not</code>) will always pass in this situation, and all other checks will always fail in this situation.</p>
+</li>
+<li class="">
+<p>Paginator <code>Page</code> objects are now backed by a Kord <code>EmbedBuilder</code>, and should be constructed using the builder syntax.
+For example: <code>Page(bundle) { description = &quot;This is a page.&quot; }</code>.</p>
+</li>
+<li class="">
+<p>The <code>ExtensionEvent</code> class now extends Kord&#x27;s <code>Event</code> type, with a shard number of <code>-1</code>.</p>
+</li>
+<li class="">
+<p>The <code>guildFor()</code> function for <code>InteractionCreateEvent</code> was changed to manually get the guild from the interaction
+data, as it can otherwise be missing in some situations.</p>
+</li>
+</ul>
+<p>Documentation work is still ongoing, and KordEx will see more changes as things are documented - the documentation
+process makes it easy to see (and change) things that don&#x27;t make intuitive sense.</p>
+<p>The following issues were solved in this release:</p>
+<ul>
+<li class="">
+<p><a href="https://github.com/Kord-Extensions/kord-extensions/issues/65" target="_blank" rel="noopener noreferrer" class="">#65</a>:
+Make ActionableComponentBuilder&#x27;s ID customizable.</p>
+</li>
+<li class="">
+<p><a href="https://github.com/Kord-Extensions/kord-extensions/issues/66" target="_blank" rel="noopener noreferrer" class="">#66</a>:
+Add the addition emoji helpers from <code>ButtonBuilder</code> to <code>SelectOptionBuilder</code>.</p>
+</li>
+<li class="">
+<p><a href="https://github.com/Kord-Extensions/kord-extensions/issues/67" target="_blank" rel="noopener noreferrer" class="">#67</a>:
+Paginators, pages do no support embed fields.</p>
+</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_dUmZ" id="v144-rc2">v1.4.4-RC2<a href="#v144-rc2" class="hash-link" aria-label="Direct link to v1.4.4-RC2" title="Direct link to v1.4.4-RC2" translate="no">​</a></h2>
+<p><em>Published to GitHub on August 5th, 2021.</em> <strong>Changes since v1.4.4-RC1:</strong></p>
+<ul>
+<li class="">Update to Kord 0.8.0-M3</li>
+</ul>
+<p>This is a release to match Kord&#x27;s hotfix, which fixes a regression that broke interaction acknowledgements.</p>
+<h2 class="anchor anchorTargetStickyNavbar_dUmZ" id="v144-rc1">v1.4.4-RC1<a href="#v144-rc1" class="hash-link" aria-label="Direct link to v1.4.4-RC1" title="Direct link to v1.4.4-RC1" translate="no">​</a></h2>
+<p><em>Published to GitHub on August 4th, 2021.</em></p>
+<div class="theme-admonition theme-admonition-note admonition_FJjA alert alert--secondary"><div class="admonitionHeading_D2up"><span class="admonitionIcon_haX4"><svg viewBox="0 0 14 16"><path fill-rule="evenodd" d="M6.3 5.69a.942.942 0 0 1-.28-.7c0-.28.09-.52.28-.7.19-.18.42-.28.7-.28.28 0 .52.09.7.28.18.19.28.42.28.7 0 .28-.09.52-.28.7a1 1 0 0 1-.7.3c-.28 0-.52-.11-.7-.3zM8 7.99c-.02-.25-.11-.48-.31-.69-.2-.19-.42-.3-.69-.31H6c-.27.02-.48.13-.69.31-.2.2-.3.44-.31.69h1v3c.02.27.11.5.31.69.2.2.42.31.69.31h1c.27 0 .48-.11.69-.31.2-.19.3-.42.31-.69H8V7.98v.01zM7 2.3c-3.14 0-5.7 2.54-5.7 5.68 0 3.14 2.56 5.7 5.7 5.7s5.7-2.55 5.7-5.7c0-3.15-2.56-5.69-5.7-5.69v.01zM7 .98c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.12-7-7 3.14-7 7-7z"></path></svg></span>note</div><div class="admonitionContent_TnMm"><p>This release contains breaking changes for the checks system.
+<strong>All custom checks must be rewritten!</strong>
+If you need help figuring this out, please let us know on Discord.</p></div></div>
+<p><strong>Changes since v1.4.2:</strong></p>
+<ul>
+<li class="">
+<p>Update to Kord <code>0.8.0-M1</code>.</p>
+</li>
+<li class="">
+<p>Default to rest-aware caching and allow configuration of caching strategy.</p>
+</li>
+<li class="">
+<p>Add kotlinx.datetime converters and utils.</p>
+</li>
+<li class="">
+<p>Add support for select menus in the <code>Components</code> builder.</p>
+</li>
+<li class="">
+<p>Add support for Discord&#x27;s slash command perms, including enforcing them at the framework level.</p>
+</li>
+<li class="">
+<p>Add support for threads, including extra checks that only operate on threads or flatten them to top channels.</p>
+</li>
+<li class="">
+<p>Trim slash command arguments to workaround inconsistent data from Discord.</p>
+</li>
+<li class="">
+<p>Redo the checks system, requiring calls to one of the <code>fail</code> functions to fail a check.</p>
+<ul>
+<li class=""><strong>This is breaking, checks must be redone.</strong></li>
+<li class="">Checks may now also return a failure message for commands.</li>
+</ul>
+</li>
+</ul>
+<p>This release includes commits that address the following issues:</p>
+<ul>
+<li class=""><a href="https://github.com/Kord-Extensions/kord-extensions/issues/58" target="_blank" rel="noopener noreferrer" class="">#58</a> — Checks overhaul</li>
+<li class=""><a href="https://github.com/Kord-Extensions/kord-extensions/issues/62" target="_blank" rel="noopener noreferrer" class="">#62</a> —
+Make automatic acknowledge type naming more consistent</li>
+</ul>
+<p>The following PRs were merged:</p>
+<ul>
+<li class="">
+<p><a href="https://github.com/Kord-Extensions/kord-extensions/pull/61" target="_blank" rel="noopener noreferrer" class="">#61</a> —
+Use epochSeconds for toDiscord timestamp extension function</p>
+</li>
+<li class="">
+<p><a href="https://github.com/Kord-Extensions/kord-extensions/pull/64" target="_blank" rel="noopener noreferrer" class="">#64</a> — insert semicolon in Lclass;method for mixin target</p>
+</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_dUmZ" id="v141">v1.4.1<a href="#v141" class="hash-link" aria-label="Direct link to v1.4.1" title="Direct link to v1.4.1" translate="no">​</a></h2>
+<p><em>Published to GitHub on July 2nd, 2021.</em></p>
+<p>This is a huge release, and a massive milestone for KordEx.
+There have been far too many changes to detail in this changelog — nearly 210 commits in total. Some highlights include:</p>
+<ul>
+<li class="">Support for slash commands.</li>
+<li class="">A completely rewritten argument parser.</li>
+<li class="">Support for button components and new paginators that use them.</li>
+<li class="">Decoupling of KordEx classes using Koin.</li>
+<li class="">An annotation processor for generating converter functions.</li>
+<li class="">Full support for i18n, including translations.</li>
+</ul>
+<p>... and much, much more!</p>
+<p>If you&#x27;re migrating from the previous stable version, there&#x27;s a slightly more in-depth overview of the changes in the
+docs.
+Otherwise, we suggest treating this release version as an entirely new iteration of the KordEx concept —
+most things have been changed, and almost everything will need at least a minor tweak to get things to work.</p>
+<p>As always, if you need help, contact us on Discord!</p>
+<h2 class="anchor anchorTargetStickyNavbar_dUmZ" id="v140-rc7">v1.4.0-RC7<a href="#v140-rc7" class="hash-link" aria-label="Direct link to v1.4.0-RC7" title="Direct link to v1.4.0-RC7" translate="no">​</a></h2>
+<p><em>Published to GitHub on March 2nd, 2021.</em></p>
+<p>Chances since KordEx 1.4.0-RC6:</p>
+<ul>
+<li class="">
+<p>Slash command support!
+As we now have two types of command, the old <code>Command</code> class has been renamed to <code>MessageCommand</code>.
+Additionally, <code>CommandContext</code> is now <code>MessageCommandContext</code>.
+You&#x27;ll find similar classes that relate to slash commands as well.</p>
+</li>
+<li class="">
+<p>All arguments specified in <code>Arguments</code> objects now require a description.</p>
+</li>
+<li class="">
+<p>Command arguments classes (and just classes in general) are now nicer to pass around,
+as they&#x27;re treated like builders and received in more logical places.</p>
+</li>
+<li class="">
+<p>The help extension and sentry functionality have both been updated to support command argument descriptions and
+slash commands for feedback.</p>
+</li>
+<li class="">
+<p>The paginator has been completely rewritten (and documented), with support for switchable page sets!</p>
+</li>
+<li class="">
+<p>Far, far, far too many other changes to simply list here.</p>
+</li>
+</ul>
+<p>This release has tons of improvements, deprecations, new features and breaking changes.
+Some of them are listed above, but you should read the migration guide instead of simply relying on this release description.</p>
+<p><strong>Note:</strong> This release targets Kord&#x27;s latest snapshots as of the time of this release.
+As they aren&#x27;t formal releases, there&#x27;s no way to link to release notes.
+This release mostly exists to provide an anchor point for users that wish to stick to stable versions while still
+existing within the middle of Kord&#x27;s extensive snapshot cycle.
+Hopefully, Discord starts making their API more stable soon!</p>
+<h2 class="anchor anchorTargetStickyNavbar_dUmZ" id="v140-rc6">v1.4.0-RC6<a href="#v140-rc6" class="hash-link" aria-label="Direct link to v1.4.0-RC6" title="Direct link to v1.4.0-RC6" translate="no">​</a></h2>
+<p><em>Published to GitHub on January 3rd, 2021.</em></p>
+<p>Chances since KordEx 1.4.0-RC5:</p>
+<ul>
+<li class="">
+<p><strong>BREAKING:</strong> Rewrote the <code>bot.start()</code> function.
+If you wish to supply an intent builder or presence builder, this function now takes a single builder lambda
+(and is thus a DSL function) instead of taking two separate lambdas.
+It was not possible to deprecate the old version of this function due to conflicting parameter lists,
+so you&#x27;ll have to update your bots. For more information, please see the bot object documentation.</p>
+</li>
+<li class="">
+<p><strong>DEPRECATION:</strong> Rewrote the <code>bot.addExtension()</code> function.
+The old function is still there and has been deprecated, while the new function takes a builder function instead of
+a reflection-based class object.
+Functionally, this just means changing <code>bot.addExtension(ExtensionClass::class)</code> to
+<code>bot.addExtension(::ExtensionClass)</code> in most cases.</p>
+</li>
+<li class="">
+<p>Added extra checks regarding member permissions on guilds — although, please note that these only look at guild
+permissions and ignore channel overwrites.
+For more information, please see the checks documentation.</p>
+</li>
+</ul>
+<p>This release targets Kord <code>0.7.0-RC</code>.</p>
+<h2 class="anchor anchorTargetStickyNavbar_dUmZ" id="v140-rc5">v1.4.0-RC5<a href="#v140-rc5" class="hash-link" aria-label="Direct link to v1.4.0-RC5" title="Direct link to v1.4.0-RC5" translate="no">​</a></h2>
+<p><em>Published to GitHub on December 29th, 2020.</em></p>
+<p>Chances since KordEx 1.4.0-RC4:</p>
+<ul>
+<li class="">Added Koin integration for those that need it. For more information, please read the docs!</li>
+</ul>
+<p>This release targets Kord 0.7.0-RC.</p>
+<h2 class="anchor anchorTargetStickyNavbar_dUmZ" id="v140-rc4">v1.4.0-RC4<a href="#v140-rc4" class="hash-link" aria-label="Direct link to v1.4.0-RC4" title="Direct link to v1.4.0-RC4" translate="no">​</a></h2>
+<p><em>Published to GitHub on December 23rd, 2020.</em></p>
+<p>Chances since KordEx 1.4.0-RC3:</p>
+<ul>
+<li class="">Completely rewrote the paginator, allowing for switchable page groups and full customization of page embeds,
+among other things.
+There&#x27;s a lot to this, so I recommend you read over the docs and integration test and take it out for a spin.</li>
+</ul>
+<p>This release targets Kord 0.7.0-RC.</p>
+<h2 class="anchor anchorTargetStickyNavbar_dUmZ" id="v140-rc3">v1.4.0-RC3<a href="#v140-rc3" class="hash-link" aria-label="Direct link to v1.4.0-RC3" title="Direct link to v1.4.0-RC3" translate="no">​</a></h2>
+<p><em>Published to GitHub on December 19th, 2020.</em></p>
+<p>Chances since KordEx 1.4.0-RC2:</p>
+<ul>
+<li class="">Add <code>outputError</code> property to <code>OptionalConverter</code> (but not coalescing variants — that wouldn&#x27;t make sense)
+and expose it in <code>Arguments</code> extension functions.</li>
+</ul>
+<p>This will make optional converters still output parse errors and fail command parsing if <code>true</code> is provided
+(<code>false</code> is the default), if that&#x27;s something you end up needing in your command parsing logic.</p>
+<p>This release targets Kord <code>0.7.0-RC</code>.</p>
+<h2 class="anchor anchorTargetStickyNavbar_dUmZ" id="v140-rc2">v1.4.0-RC2<a href="#v140-rc2" class="hash-link" aria-label="Direct link to v1.4.0-RC2" title="Direct link to v1.4.0-RC2" translate="no">​</a></h2>
+<p><em>Published to GitHub on December 16th, 2020.</em></p>
+<p>Chances since KordEx 1.4.0-RC1:</p>
+<ul>
+<li class="">Add <code>commandName</code> to <code>CommandContext</code> objects, allowing you to get the (lowered) name the user gave for invocation.</li>
+<li class="">Fix <code>breadcrumb()</code> not actually adding the breadcrumb to the <code>MutableList</code> in both <code>CommandContext</code> and
+<code>EventContext</code>.</li>
+</ul>
+<p>This release targets Kord <code>0.7.0-RC</code>.</p>
+<h2 class="anchor anchorTargetStickyNavbar_dUmZ" id="v140-rc1">v1.4.0-RC1<a href="#v140-rc1" class="hash-link" aria-label="Direct link to v1.4.0-RC1" title="Direct link to v1.4.0-RC1" translate="no">​</a></h2>
+<p><em>Published to GitHub on December 12th, 2020.</em></p>
+<p>This is our very first properly versioned release!</p>
+<p>KordEx 1.4.0 brings Kord 0.7.x support (but we&#x27;ll only release RCs until Kord releases a stable version).
+Some changes:</p>
+<ul>
+<li class="">Completely reworked command argument parsing system, with a fully documented argument conversion system.</li>
+<li class="">First-class integration with Sentry.</li>
+<li class="">Actual documentation, finally.</li>
+</ul>
+<p>As this is our first real release, this changelog will be a little lacking — it does encompass <strong>174 commits</strong>,
+after all.
+Future releases will be more detailed!</p>
+<p>This release targets Kord <code>0.7.0-RC</code>.</p>
+<h2 class="anchor anchorTargetStickyNavbar_dUmZ" id="v10">v1.0<a href="#v10" class="hash-link" aria-label="Direct link to v1.0" title="Direct link to v1.0" translate="no">​</a></h2>
+<p><em>Published to GitHub on June 22nd, 2020.</em></p>
+<p>This is the final version of Kord Extensions for Kord <code>0.4.x</code>.</p></div></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/bots/about/"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">About the Framework</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/bots/about/data-collection"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Data Collection</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_SPqG thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#v231-snapshot" class="table-of-contents__link toc-highlight">v2.3.1-SNAPSHOT</a></li><li><a href="#v230-snapshot" class="table-of-contents__link toc-highlight">v2.3.0-SNAPSHOT</a><ul><li><a href="#gradle-plugin-users" class="table-of-contents__link toc-highlight">Gradle Plugin Users</a></li><li><a href="#other-users" class="table-of-contents__link toc-highlight">Other Users</a></li><li><a href="#changes" class="table-of-contents__link toc-highlight">Changes</a></li></ul></li><li><a href="#v221-snapshot" class="table-of-contents__link toc-highlight">v2.2.1-SNAPSHOT</a></li><li><a href="#v220-snapshot" class="table-of-contents__link toc-highlight">v2.2.0-SNAPSHOT</a></li><li><a href="#v210-snapshot" class="table-of-contents__link toc-highlight">v2.1.0-SNAPSHOT</a></li><li><a href="#v200-snapshot" class="table-of-contents__link toc-highlight">v2.0.0-SNAPSHOT</a></li><li><a href="#v190-snapshot" class="table-of-contents__link toc-highlight">v1.9.0-SNAPSHOT</a><ul><li><a href="#other-changes" class="table-of-contents__link toc-highlight">Other Changes</a></li><li><a href="#dependency-updates" class="table-of-contents__link toc-highlight">Dependency Updates</a></li></ul></li><li><a href="#v181-snapshot" class="table-of-contents__link toc-highlight">v1.8.1-SNAPSHOT</a></li><li><a href="#v180-snapshot" class="table-of-contents__link toc-highlight">v1.8.0-SNAPSHOT</a></li><li><a href="#v172-snapshot" class="table-of-contents__link toc-highlight">v1.7.2-SNAPSHOT</a></li><li><a href="#v171-snapshot" class="table-of-contents__link toc-highlight">v1.7.1-SNAPSHOT</a></li><li><a href="#v170-snapshot" class="table-of-contents__link toc-highlight">v1.7.0-SNAPSHOT</a></li><li><a href="#v160" class="table-of-contents__link toc-highlight">v1.6.0</a></li><li><a href="#v160-snapshot" class="table-of-contents__link toc-highlight">v1.6.0-SNAPSHOT</a></li><li><a href="#v1512-snapshot" class="table-of-contents__link toc-highlight">v1.5.12-SNAPSHOT</a></li><li><a href="#v1510-snapshot" class="table-of-contents__link toc-highlight">v1.5.10-SNAPSHOT</a></li><li><a href="#v159-snapshot" class="table-of-contents__link toc-highlight">v1.5.9-SNAPSHOT</a></li><li><a href="#v158-snapshot" class="table-of-contents__link toc-highlight">v1.5.8-SNAPSHOT</a></li><li><a href="#v157-snapshot" class="table-of-contents__link toc-highlight">v1.5.7-SNAPSHOT</a></li><li><a href="#v156" class="table-of-contents__link toc-highlight">v1.5.6</a></li><li><a href="#v156-snapshot" class="table-of-contents__link toc-highlight">v1.5.6-SNAPSHOT</a></li><li><a href="#v155-snapshot" class="table-of-contents__link toc-highlight">v1.5.5-SNAPSHOT</a></li><li><a href="#v153-snapshot" class="table-of-contents__link toc-highlight">v1.5.3-SNAPSHOT</a></li><li><a href="#v152-rc1" class="table-of-contents__link toc-highlight">v1.5.2-RC1</a></li><li><a href="#v152-snapshot" class="table-of-contents__link toc-highlight">v1.5.2-SNAPSHOT</a></li><li><a href="#v151-rc1" class="table-of-contents__link toc-highlight">v1.5.1-RC1</a></li><li><a href="#v151-snapshot" class="table-of-contents__link toc-highlight">v1.5.1-SNAPSHOT</a></li><li><a href="#v150-snapshot" class="table-of-contents__link toc-highlight">v1.5.0-SNAPSHOT</a></li><li><a href="#v144-rc4" class="table-of-contents__link toc-highlight">v1.4.4-RC4</a></li><li><a href="#v144-rc3" class="table-of-contents__link toc-highlight">v1.4.4-RC3</a></li><li><a href="#v144-rc2" class="table-of-contents__link toc-highlight">v1.4.4-RC2</a></li><li><a href="#v144-rc1" class="table-of-contents__link toc-highlight">v1.4.4-RC1</a></li><li><a href="#v141" class="table-of-contents__link toc-highlight">v1.4.1</a></li><li><a href="#v140-rc7" class="table-of-contents__link toc-highlight">v1.4.0-RC7</a></li><li><a href="#v140-rc6" class="table-of-contents__link toc-highlight">v1.4.0-RC6</a></li><li><a href="#v140-rc5" class="table-of-contents__link toc-highlight">v1.4.0-RC5</a></li><li><a href="#v140-rc4" class="table-of-contents__link toc-highlight">v1.4.0-RC4</a></li><li><a href="#v140-rc3" class="table-of-contents__link toc-highlight">v1.4.0-RC3</a></li><li><a href="#v140-rc2" class="table-of-contents__link toc-highlight">v1.4.0-RC2</a></li><li><a href="#v140-rc1" class="table-of-contents__link toc-highlight">v1.4.0-RC1</a></li><li><a href="#v10" class="table-of-contents__link toc-highlight">v1.0</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Community</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://discord.gg/nYzQWcjAmK" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_Wvg3"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://codeberg.org/Kord-Extensions/" target="_blank" rel="noopener noreferrer" class="footer__link-item">Codeberg<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_Wvg3"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://github.com/orgs/Kord-Extensions/discussions" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_Wvg3"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Links</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://kordex.dev" target="_blank" rel="noopener noreferrer" class="footer__link-item">Website<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_Wvg3"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://donate.stripe.com/3csg29aPp95Rgxi7ss?client_reference_id=docs" target="_blank" rel="noopener noreferrer" class="footer__link-item">Donate<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_Wvg3"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://hosted.weblate.org/engage/kord-extensions/" target="_blank" rel="noopener noreferrer" class="footer__link-item">Translate<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_Wvg3"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">⚖️ Creative Commons Zero Licence</div></div></div></footer></div>
+</body>
+</html>
