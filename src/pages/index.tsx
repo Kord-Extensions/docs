@@ -20,6 +20,11 @@ function HomepageHeader() {
 				/>
 
 				<p className="hero__subtitle">{siteConfig.tagline}</p>
+
+				<a href="https://jb.gg/OpenSource" style={{display: "block", color:"var(--ifm-color-text)", textDecoration: "none", marginTop: "1em", borderRadius: ".5em", width:"fit-content", padding: "1em", marginLeft: "auto", marginRight: "auto", backgroundColor: "color-mix(in srgb, var(--ifm-color-secondary) 40%, transparent)"}}>
+					<p style={{ fontSize: "150%", marginBottom: "0" }}>Tooling provided by</p>
+					<img src="https://kordex.dev/jetbrains-dark.svg" style={{ height: "4em", marginLeft: "1em" }} />
+				</a>
 			</div>
 		</header>
 	);
